@@ -58,7 +58,7 @@ const SideMenu: ForwardRefRenderFunction<refProps, props> = (props: props, forwa
               <Space align="center" size={1} className="flex flex-row">
                 <Avatar size={30} src={BehzeeLogoImg} />
                 <CSSTransition in={!collapsed} timeout={600} classNames="menu-title" unmountOnExit>
-                  <Text className="px-3 text-lg text-blueDarker font-bold">{t('behzee')}</Text>
+                  <Text className="px-3 text-lg text-blueDarker font-bold">{t('deed')}</Text>
                 </CSSTransition>
                 <Button
                   type="text"
@@ -76,7 +76,7 @@ const SideMenu: ForwardRefRenderFunction<refProps, props> = (props: props, forwa
         title={
           <Row className="flex flex-row justify-between items-center">
             <Avatar size={40} src={BehzeeLogoImg} />
-            <Text className="px-3 text-lg text-blueDarker font-bold">{t('behzee')}</Text>
+            <Text className="px-3 text-lg text-blueDarker font-bold">{t('deed')}</Text>
             <Button type="text" onClick={collapseMenu} icon={<CloseOutlined className="text-white" />} />
           </Row>
         }

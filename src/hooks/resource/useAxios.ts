@@ -48,7 +48,7 @@ const useAxios = () => {
         });
         // if request is post or patch (not get) show notification to user resend request
         if (failedRequest.response.config?.method !== 'get')
-          notification.warn({
+          notification.warning({
             duration: 2,
             message: t('messages.tryAgain')
           });

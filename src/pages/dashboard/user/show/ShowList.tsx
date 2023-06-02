@@ -161,7 +161,7 @@ const UserShowList: FC = () => {
               <Tooltip title={t('sendWhatsAppMessage')}>
                 <Link
                   to={{
-                    pathname: `https://web.whatsapp.com/send?phone=98${user?.mobile}&text= سلام از بهزی پیام ارسال می کنیم`
+                    pathname: `https://web.whatsapp.com/send?phone=98${user?.mobile}&text= سلام از دید پیام ارسال می کنیم`
                   }}
                   target="_blank">
                   <Button type="text" icon={<WhatsAppOutlined style={{color: '#25d366'}} />} />

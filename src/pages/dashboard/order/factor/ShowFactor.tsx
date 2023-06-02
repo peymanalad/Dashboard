@@ -305,7 +305,7 @@ const ShowFactor: FC = () => {
                         {(fetchFactor?.data?.order_items?.length || 0) + 2}
                       </Table.Summary.Cell>
                       <Table.Summary.Cell index={1} colSpan={4}>
-                        {t('tax_behzee')}
+                        {t('tax_deed')}
                       </Table.Summary.Cell>
                       <Table.Summary.Cell align="center" index={2}>
                         <Text>{toNumber(fetchFactor?.data?.tax)?.toLocaleString()}</Text>

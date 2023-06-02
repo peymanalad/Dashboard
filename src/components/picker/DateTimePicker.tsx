@@ -64,7 +64,7 @@ const DateTimePicker = ({
               <TimePicker
                 className="w-full mt-1/2"
                 popupClassName="time-picker-modal"
-                value={isString(value) ? convertTimeToLocalMoment(value) : undefined}
+                // value={isString(value) ? convertTimeToLocalMoment(value) : undefined}
                 onChange={(timeMoment: any, time: any) => {
                   setDateTime(
                     convertTimeToUTC(

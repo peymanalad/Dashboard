@@ -221,7 +221,7 @@ const RecommendationBaseInfo: FC<props> = ({fetchRecommendation, id, form}) => {
               label={t('writer')}
               name="creator_id"
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchRecommendation?.data?.creator || {id: 188, full_name: 'پزشک بهزی'}}>
+              initialValue={fetchRecommendation?.data?.creator || {id: 188, full_name: 'پزشک دید'}}>
               <MultiSelectPaginate
                 url="users/doctors"
                 placeholder={t('empty')}

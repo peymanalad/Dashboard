@@ -36,7 +36,7 @@ const TaxPrint: FC<Props> = ({financeInfo}) => {
       dataIndex: 'name',
       key: 'name',
       align: 'center',
-      render: () => t('behzeeServices')
+      render: () => t('deedServices')
     },
     {
       title: t('numberOrAmount'),

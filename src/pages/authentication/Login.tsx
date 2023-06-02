@@ -1,95 +1,82 @@
-import React, {useContext, useState, FC} from 'react';
-import {LoginUserName, LoginPassword} from 'containers';
-import {Typography, Row} from 'antd';
+import React, {useContext, FC} from 'react';
+import {Typography, Row, Image, Form, Col, Input, Button, Card} from 'antd';
 import {userAccessProps} from 'types/user';
 import {usePost} from 'hooks';
 import {UsersContext} from 'contexts';
 import {useHistory, useLocation} from 'react-router-dom';
-import {getLangSearchParam, isEnLocale, queryStringToObject} from 'utils';
+import {getLangSearchParam, queryStringToObject} from 'utils';
 import {useTranslation} from 'react-i18next';
-import {CSSTransition} from 'react-transition-group';
+import {BehzeeLogoImg} from 'assets';
 
 const {Text} = Typography;
 
-const Login: FC = () => {
+const LoginPage: FC = () => {
   const {t} = useTranslation('login');
   const location = useLocation();
   const query = queryStringToObject(location.search);
   const history = useHistory();
   const {setUsers} = useContext(UsersContext);
 
-  const [showUsername, setShowUsername] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState<string>('');
-
-  const check = usePost({
-    url: 'auth/check',
-    isGeneral: true,
-    onSuccess: (data) => data?.registered && setShowUsername(false)
-  });
-
   const userToDashboard = (user: userAccessProps) => {
     setUsers([{...user, is_logged_in: true}]);
     query?.redirect ? history.push(getLangSearchParam(query?.redirect)) : history.push(getLangSearchParam('/'));
   };
 
-  const verify = usePost({
+  const loginRequest = usePost({
     url: 'auth/validation',
     isGeneral: true,
     onSuccess: (data) => userToDashboard(data)
   });
 
-  const onCheck = (values: {username: string}) => {
-    setUsername(values.username);
-    const formValue = {
-      username: values.username,
-      language: isEnLocale() ? 'en' : 'fa',
-      app: 'admin',
-      send_code: false
-    };
-    check.post(formValue);
-  };
-
-  const onSubmit = (values: {password: string}) => {
-    const formValue = {
-      username,
-      password: values.password,
-      registered: showPassword,
-      language: isEnLocale() ? 'en' : 'fa',
-      app: 'admin'
-    };
-    verify.post(formValue);
+  const onSubmit = (values: {username: string; password: string}) => {
+    // const formValue = {
+    //   username,
+    //   password: values.password,
+    //   registered: showPassword,
+    //   language: isEnLocale() ? 'en' : 'fa',
+    //   app: 'admin'
+    // };
+    // verify.post(formValue);
   };
 
   return (
     <Row className="login-bg flex flex-col justify-center items-center">
-      <Text className="text-center text-black-md">{t('messages.welcome')}</Text>
-      <CSSTransition
-        in={showUsername}
-        timeout={600}
-        classNames="login"
-        unmountOnExit
-        onEnter={() => setShowPassword(false)}
-        onExited={() => setShowPassword(true)}>
-        <LoginUserName onSubmit={(values) => onCheck(values)} isLoading={check.isLoading} />
-      </CSSTransition>
-      <CSSTransition
-        in={showPassword}
-        timeout={600}
-        classNames="login"
-        unmountOnExit
-        onEnter={() => setShowUsername(false)}
-        onExited={() => setShowUsername(true)}>
-        <LoginPassword
-          onSubmit={(values) => onSubmit(values)}
-          onBackClick={() => {
-            setShowPassword(false);
-          }}
-          isLoading={verify.isLoading}
-        />
-      </CSSTransition>
+      <Text className="text-center text-grayLight">{t('messages.welcome')}</Text>
+      <Card
+        className="mt-2 max-w-12"
+        title={t('login_page')}
+        extra={<Image preview={false} src={BehzeeLogoImg} width={30} />}>
+        <Form layout="vertical" requiredMark={false} name="login_username" className="my-5" onFinish={onSubmit}>
+          <Row gutter={[16, 8]} className="w-full m-0">
+            <Col span={24}>
+              <Form.Item
+                label={t('username')}
+                name="username"
+                rules={[{required: true, message: t('messages.required_username')}]}>
+                <Input className="ltr-input" />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                label={t('password')}
+                name="password"
+                rules={[{required: true, message: t('messages.required_password')}]}>
+                <Input.Password className="ltr-input" type="password" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={[16, 8]} justify="center" className="py-4">
+            <Button type="primary" htmlType="submit" loading={loginRequest.isLoading}>
+              {t('continue')}
+            </Button>
+          </Row>
+        </Form>
+        <Text className="mt-2 text-sm px-3" type="secondary" strong>
+          {t('messages.support')}
+        </Text>
+      </Card>
     </Row>
   );
 };
 
-export default Login;
+export default LoginPage;

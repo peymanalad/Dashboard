@@ -1,18 +1,18 @@
 {
-  "name": "behzee-admin-panel",
+  "name": "deed-dashboard",
   "version": "2.16.2",
   "private": true,
-  "author": "Behzee Company",
-  "description": "admin panel for behzee apps",
+  "author": "deed Company",
+  "description": "admin panel for deed apps",
   "keywords": [
     "behtiam",
     "admin"
   ],
   "bugs": {
-    "url": "https://gitlab.com/behzee/behzee_admin_web/issues",
-    "email": "behzee@behzee.com"
+    "url": "https://gitlab.com/deed/deed_admin_web/issues",
+    "email": "deed@deed.com"
   },
-  "proxy": "https://a.behzee.com",
+  "proxy": "https://a.deed.com",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -47,11 +47,12 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@ant-design/icons": "^4.7.0",
+    "@ant-design/colors": "^7.0.0",
+    "@ant-design/icons": "^5.1.4",
     "@persian-tools/persian-tools": "^3.4.0",
     "@sentry/react": "^7.11.1",
     "@sentry/tracing": "^7.11.1",
-    "antd": "^4.22.3",
+    "antd": "^5.5.2",
     "axios": "^0.27.2",
     "axios-auth-refresh": "^3.3.3",
     "echarts": "^5.3.3",
@@ -64,7 +65,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "moment-jalaali": "^0.9.6",
-    "qs": "^6.11.0",
+    "qs": "^6.11.2",
     "randomcolor": "^0.6.2",
     "react": "^18.2.0",
     "react-audio-recorder": "^2.2.0",
@@ -79,10 +80,10 @@
     "react-h5-audio-player": "^3.8.4",
     "react-hot-keys": "^2.7.2",
     "react-i18next": "^11.18.3",
-    "react-intersection-observer": "^9.4.0",
+    "react-intersection-observer": "^9.4.4",
     "react-json-view": "^1.21.3",
     "react-mic": "^12.4.6",
-    "react-query": "3.39.2",
+    "react-query": "^3.39.3",
     "react-router-dom": "5.3.0",
     "react-scripts": "^5.0.1",
     "react-scroll": "^1.8.7",

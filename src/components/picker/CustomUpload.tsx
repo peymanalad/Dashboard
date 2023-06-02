@@ -81,7 +81,7 @@ const CustomUpload = ({
   const antdUploadRef = useRef<ElementRef<typeof Upload>>(null);
   const user = useUser();
 
-  const action = 'https://a.behzee.com/general/v1/files/upload';
+  const action = 'https://a.deed.com/general/v1/files/upload';
   const headers = {
     Authorization: `Bearer ${user?.access_token}`,
     'content-type': 'multipart/form-data'
@@ -196,7 +196,7 @@ const CustomUpload = ({
           'content-type': 'application/x-www-form-urlencoded'
         },
         data: formData,
-        url: 'https://a.behzee.com/general/v1/files/delete'
+        url: 'https://a.deed.com/general/v1/files/delete'
       };
       return new Promise<boolean>((resolve) => {
         Modal.error({
