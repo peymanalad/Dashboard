@@ -1,0 +1,60 @@
+import {Modal} from 'antd';
+import {useTranslation} from 'react-i18next';
+import {usePost} from 'hooks';
+import isFunction from 'lodash/isFunction';
+import {renderLabel} from 'utils';
+import {useQueryClient} from 'react-query';
+
+interface IPostConfig {
+  name: Array<string | number | undefined | null> | string;
+  url: string;
+  query?: object;
+  version?: number;
+  isGeneral?: boolean;
+  titleKey?: string | string[][] | string[];
+  onSuccess?(): void;
+  onError?(error: any, request?: any, params?: any): void;
+}
+
+const useDelete = ({
+  name,
+  titleKey = 'name',
+  url,
+  query,
+  version,
+  isGeneral = false,
+  onSuccess,
+  onError
+}: IPostConfig) => {
+  const {t} = useTranslation('general');
+  const queryClient = useQueryClient();
+
+  const deleteRequest = usePost({
+    url,
+    version,
+    isGeneral,
+    method: 'DELETE',
+    onSuccess: () => {
+      queryClient.refetchQueries(name);
+      if (isFunction(onSuccess)) onSuccess();
+    },
+    onError
+  });
+
+  const show = (params: object) => {
+    Modal.error({
+      title: t('delete'),
+      content: t('messages.delete', {name: renderLabel(params, titleKey)}),
+      okType: 'danger',
+      okText: t('delete'),
+      className: 'delete',
+      cancelText: t('cancel'),
+      okCancel: true,
+      onOk: () => deleteRequest.post({}, query, params)
+    });
+  };
+
+  return {show, ...deleteRequest};
+};
+
+export default useDelete;

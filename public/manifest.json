@@ -1,0 +1,44 @@
+{
+  "short_name": "بهزی",
+  "name": "پنل ادمین بهزی",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#001529",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "./images/android/48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "./images/android/72.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "./images/android/96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "./images/android/144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "./images/android/192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./images/android/512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

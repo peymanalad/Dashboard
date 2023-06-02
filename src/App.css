@@ -1,0 +1,10 @@
+@import '~antd/dist/antd.css';
+@import '~react-h5-audio-player/lib/styles.css';
+@import '~emoji-mart/css/emoji-mart.css';
+@import '~cropperjs/dist/cropper.css';
+@import './assets/styles/variables.css';
+@import './assets/styles/fonts.css';
+@import './assets/styles/custom.css';
+@import './assets/styles/chat.css';
+@import './assets/styles/common.css';
+@import './assets/styles/error.css';
