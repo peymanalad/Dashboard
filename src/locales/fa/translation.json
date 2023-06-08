@@ -200,7 +200,11 @@
     "create_behavior": "ایجاد رفتار",
     "show_application": "اپلیکیشن‌ها",
     "create_application": "ایجاد اپلیکیشن جدید",
-    "show_users": "کاربران",
+    "organization": "سازمان",
+    "organizations": "سازمان ها",
+    "addOrganization": "سازمان ها",
+    "showOrganization": "نمایش سازمان",
+    "users": "کاربران",
     "add_user": "افزودن کاربر",
     "edit-user": "ویرایش کاربر",
     "dr_report": "گزارش درمانگران",
@@ -2376,8 +2380,7 @@
     "newly_enrolled_patients": "کاربران اخیر",
     "trackable_user_list": "پاسخ مهم بیماران",
     "footer": {
-      "message": "نسخه {{version}} - طراحی با مهر و دقت در بـهــزی",
-      "phone": "شماره پشتیبانی "
+      "message": "نسخه {{version}} - پنل ادمین سامانه دید"
     },
     "exit": "خروج",
     "language": "زبان",

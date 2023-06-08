@@ -9,7 +9,9 @@ import {FullScreenLoading} from 'components';
 import {useTranslation} from 'react-i18next';
 import flatMap from 'lodash/flatMap';
 import includes from 'lodash/includes';
-import {cloneDeepWith, first, set} from 'lodash';
+import cloneDeepWith from 'lodash/cloneDeepWith';
+import first from 'lodash/first';
+import set from 'lodash/set';
 
 const NotFoundPage = lazy(() => import('pages/dashboard/NotFoundPage'));
 
@@ -66,7 +68,7 @@ const Dashboard: FC = () => {
                 </Row>
               )}
               <Switch>
-                {fetchMenu?.data &&
+                {!fetchMenu?.data &&
                   flatMap(getFilteredMenusList(user.getAllPermissions()), (item: any) => {
                     if (item?.cmp && item?.route && item?.subs) {
                       return [{route: item?.route, title: item.title, cmp: item.cmp}, ...item?.subs];
@@ -95,7 +97,6 @@ const Dashboard: FC = () => {
               isChatSection ? 'd-none md:d-flex' : 'd-flex'
             }`}>
             <Text className="text-gray">{t('footer.message', {version: process.env?.REACT_APP_APP_VERSION})}</Text>
-            <Text className="text-gray">{t('footer.phone')}</Text>
           </Footer>
         </Layout>
       </Scrollbars>

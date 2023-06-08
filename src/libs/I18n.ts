@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
-import {fa, en} from 'locales';
+import fa from 'locales/fa/translation.json';
 import {isEnLocale} from 'utils';
 
 const isEn = isEnLocale();
@@ -17,7 +17,7 @@ i18n
   .use(initReactI18next)
   .init({
     lng: 'fa',
-    fallbackLng: isEn ? 'en' : 'fa',
+    fallbackLng: 'fa',
     debug: process.env.NODE_ENV === 'development',
     ns: ['translations'],
     defaultNS: 'translations',
@@ -25,8 +25,7 @@ i18n
       escapeValue: false // not needed for react!!
     },
     resources: {
-      fa,
-      en
+      fa
     }
   });
 
