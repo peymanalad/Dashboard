@@ -30,9 +30,7 @@ const useFetch = ({
   name = 'notLongTimeAvailable',
   query,
   params,
-  version,
   showError = true,
-  isGeneral = false,
   onSuccess,
   onError,
   enabled = false,
@@ -53,7 +51,7 @@ const useFetch = ({
   const requestConfig: AxiosRequestConfig = {
     headers: {Authorization: user?.access_token ? `Bearer ${user?.access_token}` : '', silent: !showError},
 
-    url: allocateParamToString(urlGenerator(url, version, isGeneral), merge(params, dynamicParams?.params)),
+    url: allocateParamToString(urlGenerator(url), merge(params, dynamicParams?.params)),
     method: 'GET',
     params: merge(query, dynamicParams?.query)
   };

@@ -7,15 +7,13 @@ export type metaProps = {
   total: number;
 };
 
-export type responseProps = {
+export type ResponseProps = {
   data: any;
-  meta: metaProps;
-  schema: any;
-  status: number;
-  statusText: string;
+  error: string | null;
+  success: boolean;
 };
 
-export interface mutationRequestProps {
+export interface MutationRequestProps {
   body?: any;
   queryParams?: object;
   params?: object;

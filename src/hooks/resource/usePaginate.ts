@@ -29,14 +29,12 @@ const usePagination = ({
   name = 'notLongTimeAvailable',
   url,
   page = 1,
-  version,
   query,
   search,
   params,
   onSuccess,
   onError,
   enabled = false,
-  isGeneral = false,
   staleTime = 180000,
   cacheTime = 600000
 }: IGetConfig) => {
@@ -53,7 +51,7 @@ const usePagination = ({
   const errorHandler = useError();
 
   const requestConfig: AxiosRequestConfig = {
-    url: allocateParamToString(urlGenerator(url, version, isGeneral), params),
+    url: allocateParamToString(urlGenerator(url), params),
     method: 'GET',
     params: merge(merge({page}, query), search),
     headers: {Authorization: user?.access_token ? `Bearer ${user?.access_token}` : ''}

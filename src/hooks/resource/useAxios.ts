@@ -24,7 +24,7 @@ const useAxios = () => {
     const requestConfig: AxiosRequestConfig = {
       baseURL: process.env.REACT_APP_BASE_URL,
       timeout: 15000,
-      url: urlGenerator('auth/refresh', undefined, true),
+      url: urlGenerator('auth/refresh'),
       method: 'POST',
       headers: {Authorization: `Bearer ${get(token, [0, 'access_token'])}`, silent: true},
       data: {refresh_token: get(token, [0, 'refresh_token'])}

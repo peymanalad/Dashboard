@@ -1,6 +1,6 @@
 import axios, {AxiosResponse, AxiosError} from 'axios';
 import {ResponseErrorHandler} from 'utils';
-import {responseProps} from 'types/request';
+import {ResponseProps} from 'types/request';
 import {notification} from 'antd';
 import {i18n} from 'libs';
 
@@ -9,7 +9,7 @@ const instance = axios.create({
   timeout: 30000
 });
 instance.interceptors.response.use(
-  (response: AxiosResponse): responseProps => {
+  (response: AxiosResponse): ResponseProps => {
     if (response.config.method !== 'get' && !response?.config?.headers?.silent)
       notification.success({
         duration: 2,
@@ -17,11 +17,9 @@ instance.interceptors.response.use(
       });
 
     return {
-      data: response.data?.data,
-      meta: response.data?.meta,
-      schema: response.data?.schema,
-      status: response.status,
-      statusText: response.statusText
+      data: response.data?.result,
+      error: response.data?.error,
+      success: response.data?.success
     };
   },
   (error: AxiosError) => ResponseErrorHandler(error)

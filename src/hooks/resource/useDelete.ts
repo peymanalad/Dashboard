@@ -16,23 +16,12 @@ interface IPostConfig {
   onError?(error: any, request?: any, params?: any): void;
 }
 
-const useDelete = ({
-  name,
-  titleKey = 'name',
-  url,
-  query,
-  version,
-  isGeneral = false,
-  onSuccess,
-  onError
-}: IPostConfig) => {
+const useDelete = ({name, titleKey = 'name', url, query, onSuccess, onError}: IPostConfig) => {
   const {t} = useTranslation('general');
   const queryClient = useQueryClient();
 
   const deleteRequest = usePost({
     url,
-    version,
-    isGeneral,
     method: 'DELETE',
     onSuccess: () => {
       queryClient.refetchQueries(name);

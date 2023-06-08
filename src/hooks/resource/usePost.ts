@@ -6,12 +6,11 @@ import merge from 'lodash/merge';
 import set from 'lodash/set';
 import isFunction from 'lodash/isFunction';
 import forEach from 'lodash/forEach';
-import {mutationRequestProps} from 'types/request';
+import {MutationRequestProps} from 'types/request';
 
 interface IPostConfig {
   url: string;
   query?: object;
-  version?: number;
   method?: 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'GET';
   removeQueries?: Array<Array<string | number | undefined | null> | string>;
   refetchQueries?: Array<Array<string | number | undefined | null> | string>;
@@ -29,9 +28,7 @@ const usePost = ({
   url,
   method = 'POST',
   query,
-  version,
   form,
-  isGeneral = false,
   isMultipart,
   showError = true,
   removeQueries,
@@ -58,15 +55,15 @@ const usePost = ({
       silent: !showError
     },
 
-    url: urlGenerator(url, version, isGeneral),
+    url: urlGenerator(url),
     method,
     params: query
   };
 
-  const createRequest = ({body, queryParams, params, token}: mutationRequestProps) => {
+  const createRequest = ({body, queryParams, params, token}: MutationRequestProps) => {
     if (queryParams) set(requestConfig, 'params', merge(query, queryParams));
     if (token) set(requestConfig, ['headers', 'Authorization'], `Bearer ${token}`);
-    if (params) set(requestConfig, 'url', allocateParamToString(urlGenerator(url, version), params));
+    if (params) set(requestConfig, 'url', allocateParamToString(urlGenerator(url), params));
     set(requestConfig, 'data', body);
     return AxiosInstance(requestConfig);
   };

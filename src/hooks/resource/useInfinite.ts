@@ -14,7 +14,7 @@ import isArray from 'lodash/isArray';
 import values from 'lodash/values';
 import isEmpty from 'lodash/isEmpty';
 import {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
-import {responseProps} from 'types/request';
+import {ResponseProps} from 'types/request';
 import {dynamicParams} from 'types/common';
 
 interface IGetConfig {
@@ -44,9 +44,7 @@ const useInfinite = ({
   params,
   onSuccess,
   onError,
-  version,
   initialData,
-  isGeneral = false,
   enabled = false,
   staleTime = 180000,
   cacheTime = 600000
@@ -65,7 +63,7 @@ const useInfinite = ({
   const [dynamicParams, setDynamicParams] = useState<dynamicParams | undefined>(undefined);
 
   const requestConfig: AxiosRequestConfig = {
-    url: allocateParamToString(urlGenerator(url, version, isGeneral), merge(params, dynamicParams?.params)),
+    url: allocateParamToString(urlGenerator(url), merge(params, dynamicParams?.params)),
     method: 'GET',
 
     headers: {Authorization: user?.access_token ? `Bearer ${user?.access_token}` : ''}
@@ -89,14 +87,14 @@ const useInfinite = ({
     onError,
     initialData,
     retry: errorHandler.handle,
-    getPreviousPageParam: (lastPage: responseProps) => {
+    getPreviousPageParam: (lastPage: ResponseProps) => {
       if (get(lastPage, ['meta', 'current_page']) > 1) return lastPage.data.meta.current_page - 1;
       return false;
     },
-    getNextPageParam: (lastPage: responseProps) => {
+    getNextPageParam: (lastPage: ResponseProps) => {
       if (get(lastPage, ['meta', 'current_page']) < get(lastPage, ['meta', 'last_page']))
-        return lastPage.meta.current_page + 1;
-      return false;
+        // return lastPage.meta.current_page + 1;
+        return false;
     }
   });
   const refresh = () => queryClient.invalidateQueries(prettyName);

@@ -37,8 +37,8 @@
     ]
   },
   "scripts": {
-    "start": "export PORT=3007 && react-scripts start",
-    "start:windows": "set  PORT=3007 && react-scripts start",
+    "start": "export PORT=4200 && react-scripts start",
+    "start:windows": "set PORT=4200 && react-scripts start",
     "build": "set \"NODE_ENV=production\" && node ./update-build.js && react-scripts build",
     "lint": "eslint --fix --ext .ts,.tsx",
     "pretty": "prettier --write .",

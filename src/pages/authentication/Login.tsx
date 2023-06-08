@@ -1,12 +1,13 @@
-import React, {useContext, FC} from 'react';
+import React, {useContext, type FC} from 'react';
 import {Typography, Row, Image, Form, Col, Input, Button, Card} from 'antd';
-import {userAccessProps} from 'types/user';
 import {usePost} from 'hooks';
 import {UsersContext} from 'contexts';
 import {useHistory, useLocation} from 'react-router-dom';
 import {getLangSearchParam, queryStringToObject} from 'utils';
 import {useTranslation} from 'react-i18next';
 import {BehzeeLogoImg} from 'assets';
+import {userAccessProps} from 'types/user';
+import {AuthFormProps} from 'types/auth';
 
 const {Text} = Typography;
 
@@ -23,20 +24,22 @@ const LoginPage: FC = () => {
   };
 
   const loginRequest = usePost({
-    url: 'auth/validation',
-    isGeneral: true,
-    onSuccess: (data) => userToDashboard(data)
+    url: 'TokenAuth/Authenticate',
+    onSuccess: (data) => {
+      console.log(data);
+      // userToDashboard(data);
+    }
   });
 
-  const onSubmit = (values: {username: string; password: string}) => {
-    // const formValue = {
-    //   username,
-    //   password: values.password,
-    //   registered: showPassword,
-    //   language: isEnLocale() ? 'en' : 'fa',
-    //   app: 'admin'
-    // };
-    // verify.post(formValue);
+  const onSubmit = (values: AuthFormProps) => {
+    loginRequest.post({
+      userNameOrEmailAddress: values.username,
+      password: values.password,
+      rememberClient: true,
+      singleSignIn: false,
+      returnUrl: null,
+      captchaResponse: null
+    });
   };
 
   return (

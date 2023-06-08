@@ -9,11 +9,7 @@ import values from 'lodash/values';
 import isEmpty from 'lodash/isEmpty';
 import toNumber from 'lodash/toNumber';
 
-export const urlGenerator = (
-  url: string,
-  version: number | string | undefined = process.env.REACT_APP_VERSION,
-  isGeneral?: boolean
-): string => replace(`${isGeneral ? 'general' : 'admin'}/v${version}/${url}`, '//', '/');
+export const urlGenerator = (url: string): string => replace(`/${url}`, '//', '/');
 
 export const getLangSearchParam = (url: string): string => {
   const lang = new URL(window.location.href).searchParams.get('lang');
