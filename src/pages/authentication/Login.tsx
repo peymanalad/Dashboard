@@ -3,11 +3,11 @@ import {Typography, Row, Image, Form, Col, Input, Button, Card} from 'antd';
 import {usePost} from 'hooks';
 import {UsersContext} from 'contexts';
 import {useHistory, useLocation} from 'react-router-dom';
-import {getLangSearchParam, queryStringToObject} from 'utils';
+import {queryStringToObject} from 'utils';
 import {useTranslation} from 'react-i18next';
 import {BehzeeLogoImg} from 'assets';
-import {userAccessProps} from 'types/user';
-import {AuthFormProps} from 'types/auth';
+import type {userAccessProps} from 'types/user';
+import type {AuthFormProps, AuthResponseProps} from 'types/auth';
 
 const {Text} = Typography;
 
@@ -19,15 +19,20 @@ const LoginPage: FC = () => {
   const {setUsers} = useContext(UsersContext);
 
   const userToDashboard = (user: userAccessProps) => {
-    setUsers([{...user, is_logged_in: true}]);
-    query?.redirect ? history.push(getLangSearchParam(query?.redirect)) : history.push(getLangSearchParam('/'));
+    setUsers([{...user}]);
+    query?.redirect ? history.push(query?.redirect) : history.push('/');
   };
 
   const loginRequest = usePost({
     url: 'TokenAuth/Authenticate',
-    onSuccess: (data) => {
-      console.log(data);
-      // userToDashboard(data);
+    onSuccess: (data: AuthResponseProps) => {
+      userToDashboard({
+        is_logged_in: !!data?.accessToken,
+        access_token: data?.accessToken,
+        refresh_token: data.refreshToken,
+        expires_in: data.expireInSeconds,
+        id: data.userId
+      });
     }
   });
 
