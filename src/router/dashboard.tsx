@@ -114,6 +114,13 @@ const UserReportTable = lazyWithRetry(() => import('pages/dashboard/user/UserRep
 const ShowListEmergency = lazyWithRetry(() => import('pages/dashboard/user/emergency/ShowList'));
 const ShowEmergency = lazyWithRetry(() => import('pages/dashboard/user/emergency/ShowEmergency'));
 
+// news
+const EditNews = lazyWithRetry(() => import('pages/dashboard/news/show/EditNews'));
+const NewsShowList = lazyWithRetry(() => import('pages/dashboard/news/show/ShowList'));
+
+const EditNewsGroup = lazyWithRetry(() => import('pages/dashboard/news/group/EditNewsGroup'));
+const NewsGroupShowList = lazyWithRetry(() => import('pages/dashboard/news/group/ShowList'));
+
 // order
 const ServiceShowList = lazyWithRetry(() => import('pages/dashboard/order/service/ShowList'));
 const EditService = lazyWithRetry(() => import('pages/dashboard/order/service/EditService'));
@@ -314,40 +321,40 @@ const Dashboard: Array<dashboardRouteProps> = [
         hidden: true,
         permission: 'users.update'
       },
-      {
-        key: 'userSpecialization',
-        route: '/user/specialization/list',
-        cmp: <UserSpecialization />,
-        title: i18n.t('side_menu:show_specialization'),
-        permission: 'specializations.view',
-        extra: {
-          route: '/user/specialization/create',
-          title: i18n.t('side_menu:create_specialization'),
-          permission: 'specializations.store'
-        }
-      },
-      {
-        key: 'userSpecializationCreate',
-        route: '/user/specialization/create',
-        cmp: <EditSpecializations />,
-        title: i18n.t('side_menu:user_specialization'),
-        permission: 'specializations.store',
-        hidden: true
-      },
-      {
-        route: '/user/specialization/edit/:id',
-        cmp: <EditSpecializations />,
-        title: i18n.t('side_menu:user_specialization'),
-        permission: 'specializations.update',
-        hidden: true
-      },
-      {
-        route: '/user/DrReport/:id',
-        cmp: <UserDrReport />,
-        title: i18n.t('side_menu:dr_report'),
-        permission: 'users.doctor_report',
-        hidden: true
-      },
+      // {
+      //   key: 'userSpecialization',
+      //   route: '/user/specialization/list',
+      //   cmp: <UserSpecialization />,
+      //   title: i18n.t('side_menu:show_specialization'),
+      //   permission: 'specializations.view',
+      //   extra: {
+      //     route: '/user/specialization/create',
+      //     title: i18n.t('side_menu:create_specialization'),
+      //     permission: 'specializations.store'
+      //   }
+      // },
+      // {
+      //   key: 'userSpecializationCreate',
+      //   route: '/user/specialization/create',
+      //   cmp: <EditSpecializations />,
+      //   title: i18n.t('side_menu:user_specialization'),
+      //   permission: 'specializations.store',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/user/specialization/edit/:id',
+      //   cmp: <EditSpecializations />,
+      //   title: i18n.t('side_menu:user_specialization'),
+      //   permission: 'specializations.update',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/user/DrReport/:id',
+      //   cmp: <UserDrReport />,
+      //   title: i18n.t('side_menu:dr_report'),
+      //   permission: 'users.doctor_report',
+      //   hidden: true
+      // },
       {
         route: '/user/temporary/list',
         cmp: <UserTmpRegister />,
@@ -360,18 +367,18 @@ const Dashboard: Array<dashboardRouteProps> = [
         title: i18n.t('side_menu:report'),
         permission: 'users.report'
       },
-      {
-        route: '/user/emergency/list',
-        cmp: <ShowListEmergency />,
-        title: i18n.t('side_menu:emergency'),
-        permission: 'important_answers.view'
-      },
-      {
-        route: '/user/emergency/view/:id',
-        cmp: <ShowEmergency />,
-        permission: 'important_answer.view',
-        hidden: true
-      },
+      // {
+      //   route: '/user/emergency/list',
+      //   cmp: <ShowListEmergency />,
+      //   title: i18n.t('side_menu:emergency'),
+      //   permission: 'important_answers.view'
+      // },
+      // {
+      //   route: '/user/emergency/view/:id',
+      //   cmp: <ShowEmergency />,
+      //   permission: 'important_answer.view',
+      //   hidden: true
+      // },
       {
         route: '/user/report/table',
         cmp: <UserReportTable />,
@@ -382,850 +389,913 @@ const Dashboard: Array<dashboardRouteProps> = [
     ]
   },
   {
-    title: i18n.t('side_menu:file'),
-    icon: <FileOutlined />,
-    key: 'visits',
+    title: i18n.t('side_menu:news'),
+    icon: <UserOutlined />,
+    key: 'news',
     subs: [
       {
-        route: '/visits/list/',
-        cmp: <FileView />,
-        title: i18n.t('side_menu:file_view'),
-        permission: 'visits.view'
+        key: 'newsList',
+        route: '/news/news/list',
+        cmp: <NewsShowList />,
+        title: i18n.t('side_menu:news'),
+        permission: 'NewsUnits',
+        extra: {
+          route: '/news/news/create',
+          title: i18n.t('side_menu:addNews'),
+          permission: 'NewsUnits'
+        }
       },
       {
-        route: '/visits/report/',
-        cmp: <VisitReport />,
-        title: i18n.t('side_menu:report'),
-        permission: 'visits.view'
+        key: 'newsCreate',
+        route: '/news/news/create',
+        cmp: <EditNews />,
+        title: i18n.t('side_menu:addNews'),
+        hidden: true,
+        permission: 'NewsUnits'
       },
       {
-        route: '/visit/edit/:id',
-        cmp: <EditCreate />,
-        title: i18n.t('side_menu:file_create'),
-        permission: 'visits.update',
+        key: 'newsEdit',
+        route: '/news/news/edit/:id',
+        cmp: <EditNews />,
+        title: i18n.t('side_menu:editNews'),
+        permission: 'NewsUnits',
         hidden: true
       },
       {
-        route: '/visit/create',
-        cmp: <CreateVisit />,
-        title: i18n.t('side_menu:file_create'),
-        permission: 'visits.store',
-        hidden: true
+        key: 'newsGroupList',
+        route: '/news/group/list',
+        cmp: <NewsGroupShowList />,
+        title: i18n.t('side_menu:group'),
+        permission: 'NewsUnits',
+        extra: {
+          route: '/news/group/create',
+          title: i18n.t('side_menu:addNewsGroup'),
+          permission: 'NewsUnits'
+        }
       },
       {
-        route: '/visit/show/:id',
-        cmp: <ShowVisit />,
-        title: i18n.t('side_menu:file_create'),
-        permission: 'visits.view',
+        key: 'newsGroupCreate',
+        route: '/news/group/create',
+        cmp: <EditNewsGroup />,
+        title: i18n.t('side_menu:addNewsGroup'),
+        hidden: true,
+        permission: 'NewsUnits'
+      },
+      {
+        key: 'newsGroupEdit',
+        route: '/news/group/edit/:id',
+        cmp: <EditNewsGroup />,
+        title: i18n.t('side_menu:editNewsGroup'),
+        permission: 'NewsUnits',
         hidden: true
       }
     ]
   },
-  {
-    title: i18n.t('side_menu:education'),
-    icon: <BulbOutlined />,
-    key: 'education',
-    subs: [
-      {
-        route: '/education/recommendation/list',
-        cmp: <EducationViewRcmnd />,
-        title: i18n.t('side_menu:education_view_rcmnd'),
-        permission: 'recommendations.view',
-        extra: {
-          route: '/education/recommendation/create',
-          title: i18n.t('side_menu:education_create_rcmnd'),
-          permission: 'recommendations.store'
-        }
-      },
-      {
-        route: '/education/recommendation/report',
-        cmp: <EducationReportRcmnd />,
-        title: i18n.t('side_menu:recommendation_report'),
-        permission: 'recommendations.report',
-        hidden: true
-      },
-      {
-        route: '/education/care/list',
-        cmp: <EducationViewCare />,
-        title: i18n.t('side_menu:education_view_care'),
-        permission: 'diseases.view',
-        extra: {
-          route: '/education/care/create',
-          title: i18n.t('side_menu:education_create_care'),
-          permission: 'diseases.store'
-        }
-      },
-      {
-        route: '/education/care/show/:id',
-        cmp: <EducationCareView />,
-        title: i18n.t('side_menu:education_care_view'),
-        permission: 'diseases.view',
-        hidden: true
-      },
-      {
-        route: '/education/care/edit/:id',
-        cmp: <EducationEditCare />,
-        title: i18n.t('side_menu:education_edit_care'),
-        permission: 'diseases.update',
-        hidden: true
-      },
-      {
-        route: '/education/care/create',
-        cmp: <EducationEditCare />,
-        title: i18n.t('side_menu:education_create_care'),
-        permission: 'diseases.store',
-        hidden: true
-      },
-      {
-        route: '/education/care/tree',
-        cmp: <EducationCareTree />,
-        title: i18n.t('side_menu:education_care_tree'),
-        permission: 'diseases.view',
-        hidden: false
-      },
-      {
-        route: '/education/recommendation/create',
-        cmp: <CreateRecommendation />,
-        title: i18n.t('side_menu:education_create_rcmnd'),
-        permission: 'recommendations.store',
-        hidden: true
-      },
-      {
-        route: '/education/recommendation/edit/comment/:recommendation_id',
-        cmp: <EducationCommentRcmnd />,
-        title: i18n.t('side_menu:education_comment_rcmnd'),
-        permission: 'recommendations.view',
-        hidden: true
-      },
-      {
-        route: '/education/recommendation/edit/:id',
-        cmp: <EditRecommendation />,
-        title: i18n.t('side_menu:education_edit_rcmnd'),
-        permission: 'recommendations.update',
-        hidden: true
-      },
-      {
-        route: '/education/source/list',
-        cmp: <EducationViewSource />,
-        title: i18n.t('side_menu:education_view_source'),
-        permission: 'sources.view',
-        extra: {
-          route: '/education/source/create',
-          title: i18n.t('side_menu:create_education_view_source'),
-          permission: 'sources.store'
-        }
-      },
-      {
-        route: '/education/source/create',
-        cmp: <EducationEditSource />,
-        title: i18n.t('side_menu:education_view_source'),
-        permission: 'sources.store',
-        hidden: true
-      },
-      {
-        route: '/education/source/edit/:id',
-        cmp: <EducationEditSource />,
-        title: i18n.t('side_menu:education_view_source'),
-        permission: 'sources.update',
-        hidden: true
-      },
-      {
-        route: '/education/reference/list',
-        cmp: <ReferenceShowList />,
-        title: i18n.t('side_menu:view_reference'),
-        permission: 'references.view',
-        extra: {
-          route: '/education/reference/create',
-          title: i18n.t('side_menu:create_view_reference'),
-          permission: 'references.store'
-        }
-      },
-      {
-        route: '/education/reference/create',
-        cmp: <EditReference />,
-        title: i18n.t('side_menu:view_reference'),
-        permission: 'references.store',
-        hidden: true
-      },
-      {
-        route: '/education/reference/edit/:id',
-        cmp: <EditReference />,
-        title: i18n.t('side_menu:view_reference'),
-        permission: 'references.update',
-        hidden: true
-      },
-      {
-        route: '/education/category/list',
-        cmp: <CategoryShowList />,
-        title: i18n.t('side_menu:view_category'),
-        permission: 'categories.view',
-        extra: {
-          route: '/education/category/create',
-          title: i18n.t('side_menu:create_view_category'),
-          permission: 'categories.store'
-        }
-      },
-      {
-        route: '/education/category/create',
-        cmp: <EditCategory />,
-        title: i18n.t('side_menu:view_category'),
-        permission: 'categories.store',
-        hidden: true
-      },
-      {
-        route: '/education/category/edit/:id',
-        cmp: <EditCategory />,
-        title: i18n.t('side_menu:view_category'),
-        permission: 'categories.update',
-        hidden: true
-      },
-      {
-        route: '/education/subject/list',
-        cmp: <SubjectShowList />,
-        title: i18n.t('side_menu:view_subject'),
-        permission: 'subjects.view',
-        extra: {
-          route: '/education/subject/create',
-          title: i18n.t('side_menu:create_view_subject'),
-          permission: 'subjects.store'
-        }
-      },
-      {
-        route: '/education/subject/create',
-        cmp: <EditSubject />,
-        title: i18n.t('side_menu:view_subject'),
-        permission: 'subjects.store',
-        hidden: true
-      },
-      {
-        route: '/education/subject/edit/:id',
-        cmp: <EditSubject />,
-        title: i18n.t('side_menu:view_subject'),
-        permission: 'subjects.update',
-        hidden: true
-      },
-      {
-        route: '/education/tag/list',
-        cmp: <EducationViewTag />,
-        title: i18n.t('side_menu:view_tag'),
-        permission: 'tags.view',
-        extra: {
-          route: '/education/tag/create',
-          title: i18n.t('side_menu:create_view_tag'),
-          permission: 'tags.store'
-        }
-      },
-      {
-        route: '/education/tag/create',
-        cmp: <EducationEditTag />,
-        title: i18n.t('side_menu:view_tag'),
-        permission: 'tags.store',
-        hidden: true
-      },
-      {
-        route: '/education/tag/edit/:id',
-        cmp: <EducationEditTag />,
-        title: i18n.t('side_menu:view_nutritional'),
-        permission: 'tags.update',
-        hidden: true
-      },
-      {
-        route: '/education/nutritional/list',
-        cmp: <NutritionalShowList />,
-        title: i18n.t('side_menu:view_nutritional'),
-        permission: 'nutritional_values.view',
-        extra: {
-          route: '/education/nutritional/create',
-          title: i18n.t('side_menu:create_view_nutritional'),
-          permission: 'nutritional_values.store'
-        }
-      },
-      {
-        route: '/education/nutritional/create',
-        cmp: <EditNutritional />,
-        title: i18n.t('side_menu:view_nutritional'),
-        permission: 'nutritional_values.store',
-        hidden: true
-      },
-      {
-        route: '/education/nutritional/edit/:id',
-        cmp: <EditNutritional />,
-        title: i18n.t('side_menu:view_tag'),
-        permission: 'nutritional_values.update',
-        hidden: true
-      },
-      {
-        title: i18n.t('side_menu:recommendation_log'),
-        permission: 'recommender_logs.view',
-        key: 'recommendationLog',
-        subs: [
-          {
-            route: '/education/recommendationLog/all',
-            cmp: <EducationRecommendationLogAll />,
-            title: i18n.t('side_menu:recommendation_log_all'),
-            permission: 'recommender_logs.view'
-          },
-          {
-            route: '/education/recommendationLog/disease',
-            cmp: <EducationRecommendationLogDisease />,
-            title: i18n.t('side_menu:recommendation_log_disease'),
-            permission: 'recommender_logs.view'
-          },
-          {
-            route: '/education/recommendationLog/doctor',
-            cmp: <EducationRecommendationLogDoctor />,
-            title: i18n.t('side_menu:recommendation_log_doctor'),
-            permission: 'recommender_logs.view'
-          },
-          {
-            route: '/education/recommendationLog/doctor/disease/:id',
-            cmp: <EducationRecommendationLogDoctorDisease />,
-            title: i18n.t('side_menu:recommendation_log_doctor_diseases'),
-            hidden: true,
-            permission: 'recommender_logs.view'
-          }
-        ]
-      },
-      {
-        route: '/education/warning/list',
-        cmp: <WarningShowList />,
-        title: i18n.t('side_menu:warnings_view'),
-        permission: 'warnings.view'
-      }
-    ]
-  },
-  {
-    title: i18n.t('side_menu:comments'),
-    icon: <MessageOutlined />,
-    key: 'comment',
-    subs: [
-      {
-        route: '/comment/doctor/list',
-        cmp: <DoctorCommentRcmnd />,
-        title: i18n.t('side_menu:doctors'),
-        permission: 'comments.view'
-      },
-      {
-        route: '/comment/doctor/edit/:recommendation_id/:reply_id',
-        cmp: <DoctorComment />,
-        title: i18n.t('side_menu:doctors'),
-        permission: 'comments.update',
-        hidden: true
-      },
-      {
-        route: '/comment/patient/list',
-        cmp: <PatientCommentRcmnd />,
-        title: i18n.t('side_menu:patients'),
-        permission: 'comments.view'
-      },
-      {
-        route: '/comment/patient/edit/:recommendation_id/:reply_id',
-        cmp: <PatientComment />,
-        title: i18n.t('side_menu:patients'),
-        permission: 'comments.update',
-        hidden: true
-      }
-    ]
-  },
-  {
-    title: i18n.t('side_menu:messages'),
-    icon: <MailOutlined />,
-    key: 'message',
-    subs: [
-      {
-        route: '/message/default/list',
-        cmp: <DefaultMessageShowList />,
-        title: i18n.t('side_menu:default_question_messages_view'),
-        permission: 'default_question_messages.view',
-        extra: {
-          route: '/message/default/create',
-          title: i18n.t('side_menu:create_default_question_messages'),
-          permission: 'default_question_messages.store'
-        }
-      },
-      {
-        route: '/message/default/create',
-        cmp: <EditDefaultMessage />,
-        title: i18n.t('side_menu:default_question_messages_view'),
-        permission: 'default_question_messages.store',
-        hidden: true
-      },
-      {
-        route: '/message/default/edit/:id',
-        cmp: <EditDefaultMessage />,
-        title: i18n.t('side_menu:default_question_messages_view'),
-        permission: 'default_question_messages.update',
-        hidden: true
-      },
-
-      {
-        route: '/message/support/list',
-        cmp: <SupportChatList />,
-        title: i18n.t('side_menu:support_view'),
-        permission: 'support_messages.view'
-      },
-      {
-        route: '/message/support/chat/:user_id',
-        cmp: <SupportChat />,
-        title: i18n.t('side_menu:support_view'),
-        permission: 'support_messages.store',
-        hidden: true
-      },
-      {
-        route: '/message/ticket/list',
-        cmp: <TicketList />,
-        title: i18n.t('side_menu:ticket_view'),
-        permission: 'tickets.view'
-      },
-      {
-        route: '/message/ticket/:patient_id/:doctor_id',
-        cmp: <ShowTicket />,
-        title: i18n.t('side_menu:ticket_view'),
-        permission: 'messages.view',
-        hidden: true
-      }
-    ]
-  },
-  {
-    title: i18n.t('side_menu:orders'),
-    icon: <ReconciliationOutlined />,
-    key: 'order',
-    subs: [
-      {
-        route: '/order/service/list',
-        cmp: <ServiceShowList />,
-        title: i18n.t('side_menu:service_view'),
-        permission: 'services.view',
-        extra: {
-          route: '/order/service/create',
-          title: i18n.t('side_menu:service_create'),
-          permission: 'services.store'
-        }
-      },
-      {
-        route: '/order/service/create',
-        cmp: <EditService />,
-        title: i18n.t('side_menu:service_create'),
-        permission: 'services.store',
-        hidden: true
-      },
-      {
-        route: '/order/service/edit/:id',
-        cmp: <EditService />,
-        title: i18n.t('side_menu:service_create'),
-        permission: 'services.update',
-        hidden: true
-      },
-      {
-        route: '/order/coupon_group/list',
-        cmp: <CouponGroupShowList />,
-        title: i18n.t('side_menu:coupon_group_view'),
-        permission: 'coupons.view',
-        extra: {
-          route: '/order/coupon_group/create',
-          title: i18n.t('side_menu:coupon_group_create'),
-          permission: 'coupons.store'
-        }
-      },
-      {
-        route: '/order/coupon_group/create',
-        cmp: <EditCouponGroup />,
-        title: i18n.t('side_menu:coupon_group_create'),
-        permission: 'coupons.store',
-        hidden: true
-      },
-      {
-        route: '/order/coupon_group/edit/:id',
-        cmp: <EditCouponGroup />,
-        title: i18n.t('side_menu:coupon_group_create'),
-        permission: 'coupons.update',
-        hidden: true
-      },
-      {
-        route: '/order/coupon/list',
-        cmp: <CouponShowList />,
-        title: i18n.t('side_menu:coupon_view'),
-        permission: 'coupons.view',
-        extra: {
-          route: '/order/coupon/create',
-          title: i18n.t('side_menu:coupon_create'),
-          permission: 'coupons.store'
-        }
-      },
-      {
-        route: '/order/coupon/create',
-        cmp: <EditCoupon />,
-        title: i18n.t('side_menu:coupon_create'),
-        permission: 'coupons.store',
-        hidden: true
-      },
-      {
-        route: '/order/coupon/edit/:id',
-        cmp: <EditCoupon />,
-        title: i18n.t('side_menu:coupon_create'),
-        permission: 'coupons.update',
-        hidden: true
-      },
-      {
-        route: '/order/factor/list',
-        cmp: <FactorShowList />,
-        title: i18n.t('side_menu:factor_view'),
-        permission: 'orders.view',
-        extra: {
-          route: '/order/factor/create',
-          title: i18n.t('side_menu:factor_create'),
-          permission: 'coupons.store'
-        }
-      },
-      {
-        route: '/order/factor/create',
-        cmp: <CreateFactor />,
-        title: i18n.t('side_menu:factor_create'),
-        permission: 'orders.store',
-        hidden: true
-      },
-      {
-        route: '/order/factor/show/:id',
-        cmp: <ShowFactor />,
-        title: i18n.t('side_menu:factor_create'),
-        permission: 'orders.view',
-        hidden: true
-      },
-      {
-        route: '/order/tax/list',
-        cmp: <TaxShowList />,
-        title: i18n.t('side_menu:tax_view'),
-        permission: 'orders.view'
-      },
-      {
-        route: '/order/report',
-        cmp: <OrderReport />,
-        title: i18n.t('side_menu:order_report'),
-        permission: 'orders.view'
-      }
-    ]
-  },
-  {
-    title: i18n.t('side_menu:product'),
-    icon: <DropboxOutlined />,
-    key: 'product',
-    subs: [
-      {
-        route: '/product/product/list',
-        cmp: <ProductShowList />,
-        title: i18n.t('side_menu:product_view'),
-        permission: 'products.view',
-        extra: {
-          route: '/product/product/create',
-          title: i18n.t('side_menu:product_create'),
-          permission: 'products.store'
-        }
-      },
-      {
-        route: '/product/product/create',
-        cmp: <EditProduct />,
-        title: i18n.t('side_menu:product_create'),
-        permission: 'products.store',
-        hidden: true
-      },
-      {
-        route: '/product/product/edit/:id',
-        cmp: <EditProduct />,
-        title: i18n.t('side_menu:product_create'),
-        permission: 'products.update',
-        hidden: true
-      },
-      {
-        route: '/product/group/list',
-        cmp: <ProductGroupShowList />,
-        title: i18n.t('side_menu:product_group_view'),
-        permission: 'products.view',
-        extra: {
-          route: '/product/group/create',
-          title: i18n.t('side_menu:create_product_group_view'),
-          permission: 'products.store'
-        }
-      },
-      {
-        route: '/product/group/create',
-        cmp: <EditProductGroup />,
-        title: i18n.t('side_menu:product_group_view'),
-        permission: 'products.store',
-        hidden: true
-      },
-      {
-        route: '/product/group/edit/:id',
-        cmp: <EditProductGroup />,
-        title: i18n.t('side_menu:product_group_view'),
-        permission: 'products.update',
-        hidden: true
-      },
-      {
-        route: '/product/report',
-        cmp: <ShowReport />,
-        title: i18n.t('side_menu:product_report'),
-        permission: 'products.view'
-      }
-    ]
-  },
-  {
-    title: i18n.t('side_menu:questions'),
-    icon: <QuestionOutlined />,
-    key: 'question',
-    subs: [
-      {
-        route: '/question/group/list',
-        cmp: <QuestionGroupShowList />,
-        title: i18n.t('side_menu:question_group_view'),
-        permission: 'questions.view',
-        extra: {
-          route: '/question/group/create',
-          title: i18n.t('side_menu:create_question_group_view'),
-          permission: 'questions.store'
-        }
-      },
-      {
-        route: '/question/group/create',
-        cmp: <EditQuestionGroup />,
-        title: i18n.t('side_menu:question_group_view'),
-        permission: 'questions.store',
-        hidden: true
-      },
-      {
-        route: '/question/group/edit/:id',
-        cmp: <EditQuestionGroup />,
-        title: i18n.t('side_menu:question_group_view'),
-        permission: 'questions.update',
-        hidden: true
-      },
-      {
-        route: '/question/question/list',
-        cmp: <QuestionShowList />,
-        title: i18n.t('side_menu:question_view'),
-        permission: 'questions.view',
-        extra: {
-          route: '/question/question/create',
-          title: i18n.t('side_menu:create_question_view'),
-          permission: 'questions.store'
-        }
-      },
-      {
-        route: '/question/question/create',
-        cmp: <EditQuestion />,
-        title: i18n.t('side_menu:question_view'),
-        permission: 'questions.store',
-        hidden: true
-      },
-      {
-        route: '/question/question/edit/:id',
-        cmp: <EditQuestion />,
-        title: i18n.t('side_menu:question_view'),
-        permission: 'questions.update',
-        hidden: true
-      },
-      {
-        route: '/question/tree/list',
-        cmp: <ShowTree />,
-        title: i18n.t('side_menu:tree_view'),
-        permission: 'questions.view'
-      },
-      {
-        route: '/question/answer/list',
-        cmp: <AnswerShowList />,
-        title: i18n.t('side_menu:answer_view'),
-        permission: 'answers.view'
-      },
-      {
-        route: '/question/answer_detail/list',
-        cmp: <AnswerDetailShowList />,
-        title: i18n.t('side_menu:answer_detail_view'),
-        permission: 'answers.view'
-      },
-      {
-        route: '/question/answer_detail/show/:id',
-        cmp: <ShowAnswer />,
-        title: i18n.t('side_menu:answer_detail_view'),
-        permission: 'answers.view',
-        hidden: true
-      },
-      {
-        route: '/question/report/',
-        cmp: <AnswerReport />,
-        title: i18n.t('side_menu:report'),
-        permission: 'answers.report'
-      }
-    ]
-  },
-  {
-    title: i18n.t('side_menu:prescription'),
-    icon: <FileTextOutlined />,
-    key: 'prescription',
-    subs: [
-      {
-        route: '/prescription/medicine/list',
-        cmp: <MedicineShowList />,
-        title: i18n.t('side_menu:prescription_view'),
-        permission: 'prescriptions.view',
-        extra: {
-          route: '/prescription/medicine/create',
-          title: i18n.t('side_menu:prescription_add'),
-          permission: 'prescriptions.store'
-        }
-      },
-      {
-        route: '/prescription/medicine/edit/:id',
-        cmp: <EditMedicine />,
-        title: i18n.t('side_menu:prescription_edit'),
-        permission: 'prescriptions.update',
-        hidden: true
-      },
-      {
-        route: '/prescription/medicine/create',
-        cmp: <EditMedicine />,
-        title: i18n.t('side_menu:prescription_add'),
-        permission: 'prescriptions.store',
-        hidden: true
-      },
-      {
-        route: '/prescription/unit/list',
-        cmp: <UnitsShowList />,
-        title: i18n.t('side_menu:unit'),
-        permission: 'units.view',
-        extra: {
-          route: '/prescription/unit/create',
-          title: i18n.t('side_menu:create_unit'),
-          permission: 'units.store'
-        }
-      },
-      {
-        route: '/prescription/unit/edit/:id',
-        cmp: <UnitsEdit />,
-        title: i18n.t('side_menu:unit'),
-        permission: 'units.update',
-        hidden: true
-      },
-      {
-        route: '/prescription/unit/create',
-        cmp: <UnitsEdit />,
-        title: i18n.t('side_menu:unit'),
-        permission: 'units.store',
-        hidden: true
-      },
-      {
-        route: '/prescription/usages/list',
-        cmp: <UsageShowList />,
-        title: i18n.t('side_menu:prescription_usage'),
-        permission: 'prescription_usages.view',
-        extra: {
-          route: '/prescription/usages/create',
-          title: i18n.t('side_menu:create_prescription_usage'),
-          permission: 'prescription_usages.store'
-        }
-      },
-      {
-        route: '/prescription/usages/edit/:id',
-        cmp: <UsageEdit />,
-        title: i18n.t('side_menu:prescription_usage'),
-        permission: 'prescription_usages.update',
-        hidden: true
-      },
-      {
-        route: '/prescription/usages/create',
-        cmp: <UsageEdit />,
-        title: i18n.t('side_menu:prescription_usage'),
-        permission: 'prescription_usages.store',
-        hidden: true
-      },
-      {
-        route: '/prescription/times/list',
-        cmp: <TimesShowList />,
-        title: i18n.t('side_menu:prescription_times'),
-        permission: 'prescription_times.view',
-        extra: {
-          route: '/prescription/times/create',
-          title: i18n.t('side_menu:create_prescription_times'),
-          permission: 'prescription_times.store'
-        }
-      },
-      {
-        route: '/prescription/times/edit/:id',
-        cmp: <TimesEdit />,
-        title: i18n.t('side_menu:prescription_times'),
-        permission: 'prescription_times.update',
-        hidden: true
-      },
-      {
-        route: '/prescription/times/create',
-        cmp: <TimesEdit />,
-        title: i18n.t('side_menu:prescription_times'),
-        permission: 'prescription_times.store',
-        hidden: true
-      },
-      {
-        route: '/prescription/amounts/list',
-        cmp: <AmountsShowList />,
-        title: i18n.t('side_menu:prescription_amounts'),
-        permission: 'prescription_amounts.view',
-        extra: {
-          route: '/prescription/amounts/create',
-          title: i18n.t('side_menu:create_prescription_amounts'),
-          permission: 'prescription_amounts.store'
-        }
-      },
-      {
-        route: '/prescription/amounts/create',
-        cmp: <AmountsEdit />,
-        title: i18n.t('side_menu:prescription_amounts'),
-        permission: 'prescription_amounts.store',
-        hidden: true
-      },
-      {
-        route: '/prescription/amounts/edit/:id',
-        cmp: <AmountsEdit />,
-        title: i18n.t('side_menu:prescription_amounts'),
-        permission: 'prescription_amounts.update',
-        hidden: true
-      },
-      {
-        route: '/prescription/report',
-        cmp: <PrescriptionReport />,
-        title: i18n.t('side_menu:report'),
-        permission: 'prescriptions.view'
-      }
-    ]
-  },
-  {
-    title: i18n.t('side_menu:notifications'),
-    icon: <BellOutlined />,
-    key: 'notifications',
-    subs: [
-      {
-        route: '/notifications/list',
-        cmp: <NotificationShowList />,
-        permission: 'notifications.broadcast',
-        title: i18n.t('side_menu:notifications_view')
-      },
-      {
-        route: '/notifications/group/list',
-        cmp: <NotificationsShowList />,
-        permission: 'notifications.broadcast',
-        title: i18n.t('side_menu:group_notifications_view')
-      },
-      {
-        route: '/notifications/group/:id',
-        cmp: <ShowGroupNotification />,
-        permission: 'notifications.broadcast',
-        hidden: true
-        // title: i18n.t('side_menu:group_notifications_view')
-      },
-      {
-        route: '/notifications/broadcast',
-        cmp: <BroadcastNotification />,
-        title: i18n.t('side_menu:notification_send'),
-        permission: 'notifications.broadcast'
-      }
-    ]
-  },
+  // {
+  //   title: i18n.t('side_menu:file'),
+  //   icon: <FileOutlined />,
+  //   key: 'visits',
+  //   subs: [
+  //     {
+  //       route: '/visits/list/',
+  //       cmp: <FileView />,
+  //       title: i18n.t('side_menu:file_view'),
+  //       permission: 'visits.view'
+  //     },
+  //     {
+  //       route: '/visits/report/',
+  //       cmp: <VisitReport />,
+  //       title: i18n.t('side_menu:report'),
+  //       permission: 'visits.view'
+  //     },
+  //     {
+  //       route: '/visit/edit/:id',
+  //       cmp: <EditCreate />,
+  //       title: i18n.t('side_menu:file_create'),
+  //       permission: 'visits.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/visit/create',
+  //       cmp: <CreateVisit />,
+  //       title: i18n.t('side_menu:file_create'),
+  //       permission: 'visits.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/visit/show/:id',
+  //       cmp: <ShowVisit />,
+  //       title: i18n.t('side_menu:file_create'),
+  //       permission: 'visits.view',
+  //       hidden: true
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: i18n.t('side_menu:education'),
+  //   icon: <BulbOutlined />,
+  //   key: 'education',
+  //   subs: [
+  //     {
+  //       route: '/education/recommendation/list',
+  //       cmp: <EducationViewRcmnd />,
+  //       title: i18n.t('side_menu:education_view_rcmnd'),
+  //       permission: 'recommendations.view',
+  //       extra: {
+  //         route: '/education/recommendation/create',
+  //         title: i18n.t('side_menu:education_create_rcmnd'),
+  //         permission: 'recommendations.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/education/recommendation/report',
+  //       cmp: <EducationReportRcmnd />,
+  //       title: i18n.t('side_menu:recommendation_report'),
+  //       permission: 'recommendations.report',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/care/list',
+  //       cmp: <EducationViewCare />,
+  //       title: i18n.t('side_menu:education_view_care'),
+  //       permission: 'diseases.view',
+  //       extra: {
+  //         route: '/education/care/create',
+  //         title: i18n.t('side_menu:education_create_care'),
+  //         permission: 'diseases.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/education/care/show/:id',
+  //       cmp: <EducationCareView />,
+  //       title: i18n.t('side_menu:education_care_view'),
+  //       permission: 'diseases.view',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/care/edit/:id',
+  //       cmp: <EducationEditCare />,
+  //       title: i18n.t('side_menu:education_edit_care'),
+  //       permission: 'diseases.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/care/create',
+  //       cmp: <EducationEditCare />,
+  //       title: i18n.t('side_menu:education_create_care'),
+  //       permission: 'diseases.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/care/tree',
+  //       cmp: <EducationCareTree />,
+  //       title: i18n.t('side_menu:education_care_tree'),
+  //       permission: 'diseases.view',
+  //       hidden: false
+  //     },
+  //     {
+  //       route: '/education/recommendation/create',
+  //       cmp: <CreateRecommendation />,
+  //       title: i18n.t('side_menu:education_create_rcmnd'),
+  //       permission: 'recommendations.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/recommendation/edit/comment/:recommendation_id',
+  //       cmp: <EducationCommentRcmnd />,
+  //       title: i18n.t('side_menu:education_comment_rcmnd'),
+  //       permission: 'recommendations.view',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/recommendation/edit/:id',
+  //       cmp: <EditRecommendation />,
+  //       title: i18n.t('side_menu:education_edit_rcmnd'),
+  //       permission: 'recommendations.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/source/list',
+  //       cmp: <EducationViewSource />,
+  //       title: i18n.t('side_menu:education_view_source'),
+  //       permission: 'sources.view',
+  //       extra: {
+  //         route: '/education/source/create',
+  //         title: i18n.t('side_menu:create_education_view_source'),
+  //         permission: 'sources.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/education/source/create',
+  //       cmp: <EducationEditSource />,
+  //       title: i18n.t('side_menu:education_view_source'),
+  //       permission: 'sources.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/source/edit/:id',
+  //       cmp: <EducationEditSource />,
+  //       title: i18n.t('side_menu:education_view_source'),
+  //       permission: 'sources.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/reference/list',
+  //       cmp: <ReferenceShowList />,
+  //       title: i18n.t('side_menu:view_reference'),
+  //       permission: 'references.view',
+  //       extra: {
+  //         route: '/education/reference/create',
+  //         title: i18n.t('side_menu:create_view_reference'),
+  //         permission: 'references.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/education/reference/create',
+  //       cmp: <EditReference />,
+  //       title: i18n.t('side_menu:view_reference'),
+  //       permission: 'references.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/reference/edit/:id',
+  //       cmp: <EditReference />,
+  //       title: i18n.t('side_menu:view_reference'),
+  //       permission: 'references.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/category/list',
+  //       cmp: <CategoryShowList />,
+  //       title: i18n.t('side_menu:view_category'),
+  //       permission: 'categories.view',
+  //       extra: {
+  //         route: '/education/category/create',
+  //         title: i18n.t('side_menu:create_view_category'),
+  //         permission: 'categories.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/education/category/create',
+  //       cmp: <EditCategory />,
+  //       title: i18n.t('side_menu:view_category'),
+  //       permission: 'categories.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/category/edit/:id',
+  //       cmp: <EditCategory />,
+  //       title: i18n.t('side_menu:view_category'),
+  //       permission: 'categories.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/subject/list',
+  //       cmp: <SubjectShowList />,
+  //       title: i18n.t('side_menu:view_subject'),
+  //       permission: 'subjects.view',
+  //       extra: {
+  //         route: '/education/subject/create',
+  //         title: i18n.t('side_menu:create_view_subject'),
+  //         permission: 'subjects.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/education/subject/create',
+  //       cmp: <EditSubject />,
+  //       title: i18n.t('side_menu:view_subject'),
+  //       permission: 'subjects.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/subject/edit/:id',
+  //       cmp: <EditSubject />,
+  //       title: i18n.t('side_menu:view_subject'),
+  //       permission: 'subjects.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/tag/list',
+  //       cmp: <EducationViewTag />,
+  //       title: i18n.t('side_menu:view_tag'),
+  //       permission: 'tags.view',
+  //       extra: {
+  //         route: '/education/tag/create',
+  //         title: i18n.t('side_menu:create_view_tag'),
+  //         permission: 'tags.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/education/tag/create',
+  //       cmp: <EducationEditTag />,
+  //       title: i18n.t('side_menu:view_tag'),
+  //       permission: 'tags.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/tag/edit/:id',
+  //       cmp: <EducationEditTag />,
+  //       title: i18n.t('side_menu:view_nutritional'),
+  //       permission: 'tags.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/nutritional/list',
+  //       cmp: <NutritionalShowList />,
+  //       title: i18n.t('side_menu:view_nutritional'),
+  //       permission: 'nutritional_values.view',
+  //       extra: {
+  //         route: '/education/nutritional/create',
+  //         title: i18n.t('side_menu:create_view_nutritional'),
+  //         permission: 'nutritional_values.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/education/nutritional/create',
+  //       cmp: <EditNutritional />,
+  //       title: i18n.t('side_menu:view_nutritional'),
+  //       permission: 'nutritional_values.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/education/nutritional/edit/:id',
+  //       cmp: <EditNutritional />,
+  //       title: i18n.t('side_menu:view_tag'),
+  //       permission: 'nutritional_values.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       title: i18n.t('side_menu:recommendation_log'),
+  //       permission: 'recommender_logs.view',
+  //       key: 'recommendationLog',
+  //       subs: [
+  //         {
+  //           route: '/education/recommendationLog/all',
+  //           cmp: <EducationRecommendationLogAll />,
+  //           title: i18n.t('side_menu:recommendation_log_all'),
+  //           permission: 'recommender_logs.view'
+  //         },
+  //         {
+  //           route: '/education/recommendationLog/disease',
+  //           cmp: <EducationRecommendationLogDisease />,
+  //           title: i18n.t('side_menu:recommendation_log_disease'),
+  //           permission: 'recommender_logs.view'
+  //         },
+  //         {
+  //           route: '/education/recommendationLog/doctor',
+  //           cmp: <EducationRecommendationLogDoctor />,
+  //           title: i18n.t('side_menu:recommendation_log_doctor'),
+  //           permission: 'recommender_logs.view'
+  //         },
+  //         {
+  //           route: '/education/recommendationLog/doctor/disease/:id',
+  //           cmp: <EducationRecommendationLogDoctorDisease />,
+  //           title: i18n.t('side_menu:recommendation_log_doctor_diseases'),
+  //           hidden: true,
+  //           permission: 'recommender_logs.view'
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       route: '/education/warning/list',
+  //       cmp: <WarningShowList />,
+  //       title: i18n.t('side_menu:warnings_view'),
+  //       permission: 'warnings.view'
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: i18n.t('side_menu:comments'),
+  //   icon: <MessageOutlined />,
+  //   key: 'comment',
+  //   subs: [
+  //     {
+  //       route: '/comment/doctor/list',
+  //       cmp: <DoctorCommentRcmnd />,
+  //       title: i18n.t('side_menu:doctors'),
+  //       permission: 'comments.view'
+  //     },
+  //     {
+  //       route: '/comment/doctor/edit/:recommendation_id/:reply_id',
+  //       cmp: <DoctorComment />,
+  //       title: i18n.t('side_menu:doctors'),
+  //       permission: 'comments.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/comment/patient/list',
+  //       cmp: <PatientCommentRcmnd />,
+  //       title: i18n.t('side_menu:patients'),
+  //       permission: 'comments.view'
+  //     },
+  //     {
+  //       route: '/comment/patient/edit/:recommendation_id/:reply_id',
+  //       cmp: <PatientComment />,
+  //       title: i18n.t('side_menu:patients'),
+  //       permission: 'comments.update',
+  //       hidden: true
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: i18n.t('side_menu:messages'),
+  //   icon: <MailOutlined />,
+  //   key: 'message',
+  //   subs: [
+  //     {
+  //       route: '/message/default/list',
+  //       cmp: <DefaultMessageShowList />,
+  //       title: i18n.t('side_menu:default_question_messages_view'),
+  //       permission: 'default_question_messages.view',
+  //       extra: {
+  //         route: '/message/default/create',
+  //         title: i18n.t('side_menu:create_default_question_messages'),
+  //         permission: 'default_question_messages.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/message/default/create',
+  //       cmp: <EditDefaultMessage />,
+  //       title: i18n.t('side_menu:default_question_messages_view'),
+  //       permission: 'default_question_messages.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/message/default/edit/:id',
+  //       cmp: <EditDefaultMessage />,
+  //       title: i18n.t('side_menu:default_question_messages_view'),
+  //       permission: 'default_question_messages.update',
+  //       hidden: true
+  //     },
+  //
+  //     {
+  //       route: '/message/support/list',
+  //       cmp: <SupportChatList />,
+  //       title: i18n.t('side_menu:support_view'),
+  //       permission: 'support_messages.view'
+  //     },
+  //     {
+  //       route: '/message/support/chat/:user_id',
+  //       cmp: <SupportChat />,
+  //       title: i18n.t('side_menu:support_view'),
+  //       permission: 'support_messages.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/message/ticket/list',
+  //       cmp: <TicketList />,
+  //       title: i18n.t('side_menu:ticket_view'),
+  //       permission: 'tickets.view'
+  //     },
+  //     {
+  //       route: '/message/ticket/:patient_id/:doctor_id',
+  //       cmp: <ShowTicket />,
+  //       title: i18n.t('side_menu:ticket_view'),
+  //       permission: 'messages.view',
+  //       hidden: true
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: i18n.t('side_menu:orders'),
+  //   icon: <ReconciliationOutlined />,
+  //   key: 'order',
+  //   subs: [
+  //     {
+  //       route: '/order/service/list',
+  //       cmp: <ServiceShowList />,
+  //       title: i18n.t('side_menu:service_view'),
+  //       permission: 'services.view',
+  //       extra: {
+  //         route: '/order/service/create',
+  //         title: i18n.t('side_menu:service_create'),
+  //         permission: 'services.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/order/service/create',
+  //       cmp: <EditService />,
+  //       title: i18n.t('side_menu:service_create'),
+  //       permission: 'services.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/order/service/edit/:id',
+  //       cmp: <EditService />,
+  //       title: i18n.t('side_menu:service_create'),
+  //       permission: 'services.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/order/coupon_group/list',
+  //       cmp: <CouponGroupShowList />,
+  //       title: i18n.t('side_menu:coupon_group_view'),
+  //       permission: 'coupons.view',
+  //       extra: {
+  //         route: '/order/coupon_group/create',
+  //         title: i18n.t('side_menu:coupon_group_create'),
+  //         permission: 'coupons.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/order/coupon_group/create',
+  //       cmp: <EditCouponGroup />,
+  //       title: i18n.t('side_menu:coupon_group_create'),
+  //       permission: 'coupons.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/order/coupon_group/edit/:id',
+  //       cmp: <EditCouponGroup />,
+  //       title: i18n.t('side_menu:coupon_group_create'),
+  //       permission: 'coupons.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/order/coupon/list',
+  //       cmp: <CouponShowList />,
+  //       title: i18n.t('side_menu:coupon_view'),
+  //       permission: 'coupons.view',
+  //       extra: {
+  //         route: '/order/coupon/create',
+  //         title: i18n.t('side_menu:coupon_create'),
+  //         permission: 'coupons.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/order/coupon/create',
+  //       cmp: <EditCoupon />,
+  //       title: i18n.t('side_menu:coupon_create'),
+  //       permission: 'coupons.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/order/coupon/edit/:id',
+  //       cmp: <EditCoupon />,
+  //       title: i18n.t('side_menu:coupon_create'),
+  //       permission: 'coupons.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/order/factor/list',
+  //       cmp: <FactorShowList />,
+  //       title: i18n.t('side_menu:factor_view'),
+  //       permission: 'orders.view',
+  //       extra: {
+  //         route: '/order/factor/create',
+  //         title: i18n.t('side_menu:factor_create'),
+  //         permission: 'coupons.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/order/factor/create',
+  //       cmp: <CreateFactor />,
+  //       title: i18n.t('side_menu:factor_create'),
+  //       permission: 'orders.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/order/factor/show/:id',
+  //       cmp: <ShowFactor />,
+  //       title: i18n.t('side_menu:factor_create'),
+  //       permission: 'orders.view',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/order/tax/list',
+  //       cmp: <TaxShowList />,
+  //       title: i18n.t('side_menu:tax_view'),
+  //       permission: 'orders.view'
+  //     },
+  //     {
+  //       route: '/order/report',
+  //       cmp: <OrderReport />,
+  //       title: i18n.t('side_menu:order_report'),
+  //       permission: 'orders.view'
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: i18n.t('side_menu:product'),
+  //   icon: <DropboxOutlined />,
+  //   key: 'product',
+  //   subs: [
+  //     {
+  //       route: '/product/product/list',
+  //       cmp: <ProductShowList />,
+  //       title: i18n.t('side_menu:product_view'),
+  //       permission: 'products.view',
+  //       extra: {
+  //         route: '/product/product/create',
+  //         title: i18n.t('side_menu:product_create'),
+  //         permission: 'products.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/product/product/create',
+  //       cmp: <EditProduct />,
+  //       title: i18n.t('side_menu:product_create'),
+  //       permission: 'products.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/product/product/edit/:id',
+  //       cmp: <EditProduct />,
+  //       title: i18n.t('side_menu:product_create'),
+  //       permission: 'products.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/product/group/list',
+  //       cmp: <ProductGroupShowList />,
+  //       title: i18n.t('side_menu:product_group_view'),
+  //       permission: 'products.view',
+  //       extra: {
+  //         route: '/product/group/create',
+  //         title: i18n.t('side_menu:create_product_group_view'),
+  //         permission: 'products.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/product/group/create',
+  //       cmp: <EditProductGroup />,
+  //       title: i18n.t('side_menu:product_group_view'),
+  //       permission: 'products.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/product/group/edit/:id',
+  //       cmp: <EditProductGroup />,
+  //       title: i18n.t('side_menu:product_group_view'),
+  //       permission: 'products.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/product/report',
+  //       cmp: <ShowReport />,
+  //       title: i18n.t('side_menu:product_report'),
+  //       permission: 'products.view'
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: i18n.t('side_menu:questions'),
+  //   icon: <QuestionOutlined />,
+  //   key: 'question',
+  //   subs: [
+  //     {
+  //       route: '/question/group/list',
+  //       cmp: <QuestionGroupShowList />,
+  //       title: i18n.t('side_menu:question_group_view'),
+  //       permission: 'questions.view',
+  //       extra: {
+  //         route: '/question/group/create',
+  //         title: i18n.t('side_menu:create_question_group_view'),
+  //         permission: 'questions.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/question/group/create',
+  //       cmp: <EditQuestionGroup />,
+  //       title: i18n.t('side_menu:question_group_view'),
+  //       permission: 'questions.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/question/group/edit/:id',
+  //       cmp: <EditQuestionGroup />,
+  //       title: i18n.t('side_menu:question_group_view'),
+  //       permission: 'questions.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/question/question/list',
+  //       cmp: <QuestionShowList />,
+  //       title: i18n.t('side_menu:question_view'),
+  //       permission: 'questions.view',
+  //       extra: {
+  //         route: '/question/question/create',
+  //         title: i18n.t('side_menu:create_question_view'),
+  //         permission: 'questions.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/question/question/create',
+  //       cmp: <EditQuestion />,
+  //       title: i18n.t('side_menu:question_view'),
+  //       permission: 'questions.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/question/question/edit/:id',
+  //       cmp: <EditQuestion />,
+  //       title: i18n.t('side_menu:question_view'),
+  //       permission: 'questions.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/question/tree/list',
+  //       cmp: <ShowTree />,
+  //       title: i18n.t('side_menu:tree_view'),
+  //       permission: 'questions.view'
+  //     },
+  //     {
+  //       route: '/question/answer/list',
+  //       cmp: <AnswerShowList />,
+  //       title: i18n.t('side_menu:answer_view'),
+  //       permission: 'answers.view'
+  //     },
+  //     {
+  //       route: '/question/answer_detail/list',
+  //       cmp: <AnswerDetailShowList />,
+  //       title: i18n.t('side_menu:answer_detail_view'),
+  //       permission: 'answers.view'
+  //     },
+  //     {
+  //       route: '/question/answer_detail/show/:id',
+  //       cmp: <ShowAnswer />,
+  //       title: i18n.t('side_menu:answer_detail_view'),
+  //       permission: 'answers.view',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/question/report/',
+  //       cmp: <AnswerReport />,
+  //       title: i18n.t('side_menu:report'),
+  //       permission: 'answers.report'
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: i18n.t('side_menu:prescription'),
+  //   icon: <FileTextOutlined />,
+  //   key: 'prescription',
+  //   subs: [
+  //     {
+  //       route: '/prescription/medicine/list',
+  //       cmp: <MedicineShowList />,
+  //       title: i18n.t('side_menu:prescription_view'),
+  //       permission: 'prescriptions.view',
+  //       extra: {
+  //         route: '/prescription/medicine/create',
+  //         title: i18n.t('side_menu:prescription_add'),
+  //         permission: 'prescriptions.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/prescription/medicine/edit/:id',
+  //       cmp: <EditMedicine />,
+  //       title: i18n.t('side_menu:prescription_edit'),
+  //       permission: 'prescriptions.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/prescription/medicine/create',
+  //       cmp: <EditMedicine />,
+  //       title: i18n.t('side_menu:prescription_add'),
+  //       permission: 'prescriptions.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/prescription/unit/list',
+  //       cmp: <UnitsShowList />,
+  //       title: i18n.t('side_menu:unit'),
+  //       permission: 'units.view',
+  //       extra: {
+  //         route: '/prescription/unit/create',
+  //         title: i18n.t('side_menu:create_unit'),
+  //         permission: 'units.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/prescription/unit/edit/:id',
+  //       cmp: <UnitsEdit />,
+  //       title: i18n.t('side_menu:unit'),
+  //       permission: 'units.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/prescription/unit/create',
+  //       cmp: <UnitsEdit />,
+  //       title: i18n.t('side_menu:unit'),
+  //       permission: 'units.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/prescription/usages/list',
+  //       cmp: <UsageShowList />,
+  //       title: i18n.t('side_menu:prescription_usage'),
+  //       permission: 'prescription_usages.view',
+  //       extra: {
+  //         route: '/prescription/usages/create',
+  //         title: i18n.t('side_menu:create_prescription_usage'),
+  //         permission: 'prescription_usages.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/prescription/usages/edit/:id',
+  //       cmp: <UsageEdit />,
+  //       title: i18n.t('side_menu:prescription_usage'),
+  //       permission: 'prescription_usages.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/prescription/usages/create',
+  //       cmp: <UsageEdit />,
+  //       title: i18n.t('side_menu:prescription_usage'),
+  //       permission: 'prescription_usages.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/prescription/times/list',
+  //       cmp: <TimesShowList />,
+  //       title: i18n.t('side_menu:prescription_times'),
+  //       permission: 'prescription_times.view',
+  //       extra: {
+  //         route: '/prescription/times/create',
+  //         title: i18n.t('side_menu:create_prescription_times'),
+  //         permission: 'prescription_times.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/prescription/times/edit/:id',
+  //       cmp: <TimesEdit />,
+  //       title: i18n.t('side_menu:prescription_times'),
+  //       permission: 'prescription_times.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/prescription/times/create',
+  //       cmp: <TimesEdit />,
+  //       title: i18n.t('side_menu:prescription_times'),
+  //       permission: 'prescription_times.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/prescription/amounts/list',
+  //       cmp: <AmountsShowList />,
+  //       title: i18n.t('side_menu:prescription_amounts'),
+  //       permission: 'prescription_amounts.view',
+  //       extra: {
+  //         route: '/prescription/amounts/create',
+  //         title: i18n.t('side_menu:create_prescription_amounts'),
+  //         permission: 'prescription_amounts.store'
+  //       }
+  //     },
+  //     {
+  //       route: '/prescription/amounts/create',
+  //       cmp: <AmountsEdit />,
+  //       title: i18n.t('side_menu:prescription_amounts'),
+  //       permission: 'prescription_amounts.store',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/prescription/amounts/edit/:id',
+  //       cmp: <AmountsEdit />,
+  //       title: i18n.t('side_menu:prescription_amounts'),
+  //       permission: 'prescription_amounts.update',
+  //       hidden: true
+  //     },
+  //     {
+  //       route: '/prescription/report',
+  //       cmp: <PrescriptionReport />,
+  //       title: i18n.t('side_menu:report'),
+  //       permission: 'prescriptions.view'
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: i18n.t('side_menu:notifications'),
+  //   icon: <BellOutlined />,
+  //   key: 'notifications',
+  //   subs: [
+  //     {
+  //       route: '/notifications/list',
+  //       cmp: <NotificationShowList />,
+  //       permission: 'notifications.broadcast',
+  //       title: i18n.t('side_menu:notifications_view')
+  //     },
+  //     {
+  //       route: '/notifications/group/list',
+  //       cmp: <NotificationsShowList />,
+  //       permission: 'notifications.broadcast',
+  //       title: i18n.t('side_menu:group_notifications_view')
+  //     },
+  //     {
+  //       route: '/notifications/group/:id',
+  //       cmp: <ShowGroupNotification />,
+  //       permission: 'notifications.broadcast',
+  //       hidden: true
+  //       // title: i18n.t('side_menu:group_notifications_view')
+  //     },
+  //     {
+  //       route: '/notifications/broadcast',
+  //       cmp: <BroadcastNotification />,
+  //       title: i18n.t('side_menu:notification_send'),
+  //       permission: 'notifications.broadcast'
+  //     }
+  //   ]
+  // },
   {
     title: i18n.t('side_menu:setting'),
     icon: <SettingOutlined />,
