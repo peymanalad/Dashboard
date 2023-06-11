@@ -19,10 +19,14 @@ interface refProps {
 }
 
 interface props {
+  name?: string;
   ref: RefObject<refProps>;
 }
 
-const Search: ForwardRefRenderFunction<refProps, props> = (props: props, forwardedRef: ForwardedRef<refProps>) => {
+const Search: ForwardRefRenderFunction<refProps, props> = (
+  {name = 'search'}: props,
+  forwardedRef: ForwardedRef<refProps>
+) => {
   const {t} = useTranslation('general');
   const history = useHistory();
   const queryObject = queryStringToObject(useLocation().search);
@@ -58,7 +62,7 @@ const Search: ForwardRefRenderFunction<refProps, props> = (props: props, forward
       visible={visible}>
       <Form layout="vertical" className="h-full relative" onFinish={onFinish}>
         <Row className="d-block h-full overflow-auto px-4 pb-24">
-          <Form.Item name="search" label={t('name')} className="mb-1/2 label-p-0" initialValue={queryObject?.search}>
+          <Form.Item name={name} label={t('name')} className="mb-1/2 label-p-0" initialValue={queryObject?.[name]}>
             <Input placeholder={t('empty')} className="w-full" />
           </Form.Item>
         </Row>
@@ -75,7 +79,7 @@ const Search: ForwardRefRenderFunction<refProps, props> = (props: props, forward
               className="ant-btn-secondary w-full"
               type="primary"
               onClick={() => {
-                history.replace({search: ''});
+                history.replace({[name]: ''});
                 setVisible(false);
               }}
               icon={<CloseOutlined />}>

@@ -114,14 +114,14 @@ const useInfinite = ({
       infiniteKey,
       reduce(
         infiniteQuery.data?.pages,
-        (allData: Array<any>, pageData: AxiosResponse) => concat(allData, get(pageData?.data, infiniteKey)),
+        (allData: Array<any>, pageData: AxiosResponse) => concat(allData, get(pageData?.data?.items, infiniteKey)),
         []
       )
     );
   } else {
     data = reduce(
       infiniteQuery.data?.pages,
-      (allData: Array<any>, pageData: AxiosResponse) => concat(allData, pageData?.data),
+      (allData: Array<any>, pageData: AxiosResponse) => concat(allData, pageData?.data?.items),
       []
     );
   }

@@ -13,22 +13,22 @@ const ShowList: FC = () => {
   const {hasPermission} = useUser();
 
   const deleteRequest = useDelete({
-    url: '/services/app/Organizations/Delete',
-    name: 'organizations',
+    url: '/services/app/OrganizationGroups/Delete',
+    name: 'organizationGroups',
     titleKey: 'organizationName'
   });
 
   const columns: any = [
     {
       title: '#',
-      dataIndex: ['organization', 'id'],
+      dataIndex: ['organizationGroup', 'id'],
       key: 'id',
       align: 'center',
       responsive: ['md']
     },
     {
       title: t('name'),
-      dataIndex: ['organization', 'organizationName'],
+      dataIndex: ['organizationGroup', 'groupName'],
       key: 'name',
       align: 'center'
     },
@@ -37,16 +37,18 @@ const ShowList: FC = () => {
       dataIndex: 'permissions',
       key: 'permissions',
       align: 'center',
-      render: (permissions: simplePermissionProps, organization: any) => (
+      render: (permissions: simplePermissionProps, organizationGroup: any) => (
         <Space size={2}>
           <Tooltip title={t('update')}>
-            <Link to={`/organization/organization/edit/${organization.organization?.id}`}>
+            <Link to={`/organization/group/edit/${organizationGroup.organizationGroup?.id}`}>
               <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
             </Link>
           </Tooltip>
           <Tooltip title={t('do_delete')}>
             <Button
-              onClick={() => deleteRequest.show(organization.organization, {Id: organization.organization?.id})}
+              onClick={() =>
+                deleteRequest.show(organizationGroup.organizationGroup, {Id: organizationGroup.organizationGroup?.id})
+              }
               type="text"
               icon={<DeleteOutlined className="text-red" />}
             />
@@ -62,16 +64,16 @@ const ShowList: FC = () => {
 
   return (
     <Card
-      title={t('title')}
+      title={t('organization_groups')}
       extra={
         <Space size="small">
           {!hasPermission('organizations.store') && (
-            <Link to="/organization/organization/create">
+            <Link to="/organization/group/create">
               <Button
                 type="primary"
                 className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"
                 icon={<FormOutlined />}>
-                {t('add_organization')}
+                {t('add_organization_group')}
               </Button>
             </Link>
           )}
@@ -81,7 +83,7 @@ const ShowList: FC = () => {
         </Space>
       }>
       <Search ref={searchRef} name="OrganizationNameFilter" />
-      <CustomTable fetch="services/app/Organizations/GetAll" dataName="organizations" columns={columns} />
+      <CustomTable fetch="services/app/OrganizationGroups/GetAll" dataName="organizationGroups" columns={columns} />
     </Card>
   );
 };

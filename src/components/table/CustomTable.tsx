@@ -55,7 +55,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     params,
     rowClassName,
     expandable,
-    path = 'data',
+    path = 'items',
     isRowSelection,
     onChange,
     showTableSizeChange = false
@@ -75,7 +75,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     name: dataName,
     page: queryObject?.page,
     query,
-    search: merge({per_page: 15}, merge(queryObject, search)),
+    search: merge(queryObject, search),
     params,
     enabled: true
   });
@@ -112,7 +112,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
   return (
     <>
       <Table
-        dataSource={isArray(get(paginateData, path)) ? get(paginateData, path) : []}
+        dataSource={isArray(get(paginateData?.data, path)) ? get(paginateData?.data, path) : []}
         columns={
           hasIndexColumn
             ? concat(

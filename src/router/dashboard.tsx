@@ -96,6 +96,9 @@ const WarningShowList = lazyWithRetry(() => import('pages/dashboard/education/wa
 const EditOrganization = lazyWithRetry(() => import('pages/dashboard/organization/show/EditOrganization'));
 const OrganizationShowList = lazyWithRetry(() => import('pages/dashboard/organization/show/ShowList'));
 
+const EditOrganizationGroup = lazyWithRetry(() => import('pages/dashboard/organization/group/EditOrganizationGroup'));
+const OrganizationGroupShowList = lazyWithRetry(() => import('pages/dashboard/organization/group/ShowList'));
+
 // user
 const EditUser = lazyWithRetry(() => import('pages/dashboard/user/show/EditUser'));
 const CreateUser = lazyWithRetry(() => import('pages/dashboard/user/show/CreateUser'));
@@ -206,19 +209,19 @@ const Dashboard: Array<dashboardRouteProps> = [
     subs: [
       {
         key: 'organizationList',
-        route: '/organization/list',
+        route: '/organization/organization/list',
         cmp: <OrganizationShowList />,
         title: i18n.t('side_menu:organizations'),
         permission: 'OrganizationUnits',
         extra: {
-          route: '/organization/create',
+          route: '/organization/organization/create',
           title: i18n.t('side_menu:addOrganization'),
           permission: 'OrganizationUnits'
         }
       },
       {
         key: 'organizationCreate',
-        route: '/organization/create',
+        route: '/organization/organization/create',
         cmp: <EditOrganization />,
         title: i18n.t('side_menu:addOrganization'),
         hidden: true,
@@ -226,9 +229,37 @@ const Dashboard: Array<dashboardRouteProps> = [
       },
       {
         key: 'organizationEdit',
-        route: '/organization/edit/:id',
+        route: '/organization/organization/edit/:id',
         cmp: <EditOrganization />,
         title: i18n.t('side_menu:editOrganization'),
+        permission: 'OrganizationUnits',
+        hidden: true
+      },
+      {
+        key: 'organizationGroupList',
+        route: '/organization/group/list',
+        cmp: <OrganizationGroupShowList />,
+        title: i18n.t('side_menu:group'),
+        permission: 'OrganizationUnits',
+        extra: {
+          route: '/organization/group/create',
+          title: i18n.t('side_menu:addOrganizationGroup'),
+          permission: 'OrganizationUnits'
+        }
+      },
+      {
+        key: 'organizationGroupCreate',
+        route: '/organization/group/create',
+        cmp: <EditOrganizationGroup />,
+        title: i18n.t('side_menu:addOrganizationGroup'),
+        hidden: true,
+        permission: 'OrganizationUnits'
+      },
+      {
+        key: 'organizationGroupEdit',
+        route: '/organization/group/edit/:id',
+        cmp: <EditOrganizationGroup />,
+        title: i18n.t('side_menu:editOrganizationGroup'),
         permission: 'OrganizationUnits',
         hidden: true
       }

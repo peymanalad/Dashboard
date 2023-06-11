@@ -8,7 +8,6 @@ import {useQueryClient} from 'react-query';
 interface IPostConfig {
   name: Array<string | number | undefined | null> | string;
   url: string;
-  query?: object;
   version?: number;
   isGeneral?: boolean;
   titleKey?: string | string[][] | string[];
@@ -16,7 +15,7 @@ interface IPostConfig {
   onError?(error: any, request?: any, params?: any): void;
 }
 
-const useDelete = ({name, titleKey = 'name', url, query, onSuccess, onError}: IPostConfig) => {
+const useDelete = ({name, titleKey = 'name', url, onSuccess, onError}: IPostConfig) => {
   const {t} = useTranslation('general');
   const queryClient = useQueryClient();
 
@@ -30,7 +29,7 @@ const useDelete = ({name, titleKey = 'name', url, query, onSuccess, onError}: IP
     onError
   });
 
-  const show = (params: object) => {
+  const show = (params: object, query?: object) => {
     Modal.error({
       title: t('delete'),
       content: t('messages.delete', {name: renderLabel(params, titleKey)}),

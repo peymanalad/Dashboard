@@ -38,7 +38,7 @@ const Dashboard: FC = () => {
     name: 'menu',
     cacheTime: Infinity,
     staleTime: Infinity,
-    enabled: true,
+    enabled: false,
     onSuccess: (response) => {
       const newUsers = cloneDeepWith(user.users, (users) => {
         set(users, 0, {...first(users), ...response.data, permissions: undefined});

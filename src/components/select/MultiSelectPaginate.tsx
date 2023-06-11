@@ -14,6 +14,7 @@ export interface props {
   id?: string;
   alignDropDownTop?: boolean;
   isGeneral?: boolean;
+  keyPath?: string[];
   keyLabel?: string;
   keyValue: string;
   renderCustomLabel?: (option: any) => string;
@@ -54,7 +55,8 @@ const {Option} = Select;
 const MultiSelectPaginate: FC<props> = ({
   id,
   alignDropDownTop,
-  keyLabel,
+  keyPath = [],
+  keyLabel = 'title',
   keyValue,
   renderCustomLabel,
   keySubTitle,
@@ -62,7 +64,6 @@ const MultiSelectPaginate: FC<props> = ({
   className,
   listHeight,
   mode = 'single',
-  isGeneral = false,
   url,
   urlName,
   showSearch,
@@ -89,7 +90,6 @@ const MultiSelectPaginate: FC<props> = ({
   const fetchInfiniteData = useInfinite({
     url,
     name: urlName,
-    isGeneral,
     query: params,
     search: !isEmpty(search) ? {[searchKey || 'search']: search} : undefined
   });
@@ -108,14 +108,14 @@ const MultiSelectPaginate: FC<props> = ({
 
   const chooseLabel = (item: object): string => {
     if (isFunction(renderCustomLabel)) return renderCustomLabel(item);
-    return renderLabel(item, keyLabel);
+    return renderLabel(item, [...keyPath, keyLabel]);
   };
 
   const onSelect = (val: string | string[] | undefined, option: any) => {
     if (onChange && mode !== 'single') {
       const newValue: any = isEmpty(value) ? [option?.item] : [...value, option?.item];
       onChange(newValue, map(newValue, keyValue));
-    } else if (onChange) onChange(option?.item, renderKey(option?.item, keyLabel));
+    } else if (onChange) onChange(option?.item, renderKey(option?.item, [...keyPath, keyLabel]));
   };
   const onDeselect = (label: string | string[] | undefined) => {
     if (onChange && mode !== 'single') {
@@ -212,7 +212,7 @@ const MultiSelectPaginate: FC<props> = ({
                     alt=""
                   />
                 )}
-                <Text>{`${chooseLabel(item)} ${showValue ? `(${renderKey(item, keyValue)})` : ''}`}</Text>
+                <Text>{`${chooseLabel(item)} ${showValue ? `(${renderKey(item, [...keyPath, keyValue])})` : ''}`}</Text>
                 {showSubTitle && (
                   <Text className="mr-2" type="secondary">
                     {renderKey(item, keySubTitle)}
@@ -224,7 +224,11 @@ const MultiSelectPaginate: FC<props> = ({
           if (treeSelect) {
             return (
               <>
-                <Option key={index.toString()} value={renderKey(item, keyValue)} label={chooseLabel(item)} item={item}>
+                <Option
+                  key={index.toString()}
+                  value={renderKey(item, [...keyPath, keyValue])}
+                  label={chooseLabel(item)}
+                  item={item}>
                   {hasImage && (
                     <Image
                       width={30}
@@ -235,14 +239,16 @@ const MultiSelectPaginate: FC<props> = ({
                       alt=""
                     />
                   )}
-                  <Text>{`${chooseLabel(item)} ${showValue ? `(${renderKey(item, keyValue)})` : ''}`}</Text>
+                  <Text>{`${chooseLabel(item)} ${
+                    showValue ? `(${renderKey(item, [...keyPath, keyValue])})` : ''
+                  }`}</Text>
                   {showSubTitle && <Text type="secondary">{renderKey(item, keySubTitle)}</Text>}
                 </Option>
                 {item?.children?.map((i: any, indexChild: number) => (
                   <Option
                     className="mx-5"
                     key={indexChild.toString()}
-                    value={renderKey(i, keyValue)}
+                    value={renderKey(i, [...keyPath, keyValue])}
                     data={item}
                     label={chooseLabel(i)}>
                     {hasImage && (
@@ -255,7 +261,9 @@ const MultiSelectPaginate: FC<props> = ({
                         alt=""
                       />
                     )}
-                    <Text>{`${chooseLabel(item)} ${showValue ? `(${renderKey(item, keyValue)})` : ''}`}</Text>
+                    <Text>{`${chooseLabel(item)} ${
+                      showValue ? `(${renderKey(item, [...keyPath, keyValue])})` : ''
+                    }`}</Text>
                     {showSubTitle && <Text type="secondary">{renderKey(item, keySubTitle)}</Text>}
                   </Option>
                 ))}

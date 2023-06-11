@@ -4,105 +4,51 @@ import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {CustomUpload, SimpleSelect} from 'components';
-import {is_confirm} from 'assets';
-import {getLangSearchParam} from 'utils';
 
-const EditTag: FC = () => {
-  const {t} = useTranslation('tag');
+const EditOrganization: FC = () => {
+  const {t} = useTranslation('organization');
   const history = useHistory();
   const {id} = useParams<{id?: string}>();
 
   const [form] = Form.useForm();
 
-  const fetchTag = useFetch({
-    name: ['tag', id],
-    url: 'tags/{id}',
-    params: {id},
+  const fetchOrganization = useFetch({
+    name: ['organization', id],
+    url: 'services/app/Organizations/GetOrganizationForEdit',
+    query: {Id: id},
     enabled: !!id
   });
 
-  const storeTag = usePost({
-    url: '/tags',
+  const storeOrganization = usePost({
+    url: '/services/app/Organizations/CreateOrEdit',
     method: 'POST',
-    removeQueries: ['tags'],
+    removeQueries: ['organizations'],
     form,
     onSuccess: () => {
       if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace(getLangSearchParam('/education/tag/list'));
-    }
-  });
-
-  const updateTag = usePost({
-    url: 'tags/{id}',
-    method: 'PATCH',
-    removeQueries: ['tags', ['tag', id]],
-    form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace(getLangSearchParam('/education/tag/list'));
+      else history.replace('/organization/organization/list');
     }
   });
 
   const onFinish = (values: any) => {
-    values.picture = values?.picture?.path;
-    id ? updateTag.post(values, {}, {id}) : storeTag.post(values);
+    storeOrganization.post({...values, id: fetchOrganization?.data?.organization?.id});
   };
 
   return (
     <Card
       title={t('title')}
       bordered={false}
-      loading={(id && !fetchTag?.data) || fetchTag.isFetching}
+      loading={(id && !fetchOrganization?.data) || fetchOrganization.isFetching}
       className="w-full">
-      <Form form={form} layout="vertical" name="tag" requiredMark={false} onFinish={onFinish}>
+      <Form form={form} layout="vertical" name="organization" requiredMark={false} onFinish={onFinish}>
         <Row gutter={[16, 8]} className="w-full">
-          <Col xs={{span: 24, order: 2}} md={{span: 12, order: 2}} lg={{span: 8, order: 1}}>
+          <Col span={24}>
             <Form.Item
-              name="name"
+              name="organizationName"
               label={t('name')}
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchTag?.data?.name}>
+              initialValue={fetchOrganization?.data?.organization?.organizationName}>
               <Input />
-            </Form.Item>
-          </Col>
-          <Col xs={{span: 24, order: 3}} md={{span: 12, order: 3}} lg={{span: 8, order: 2}}>
-            <Form.Item
-              name="is_confirm"
-              label={t('status')}
-              rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchTag?.data?.is_confirm}>
-              <SimpleSelect
-                keys="id"
-                label="name_fa"
-                data={is_confirm?.map((value) => ({...value, name_fa: t(value?.name)}))}
-              />
-            </Form.Item>
-          </Col>
-          <Col
-            xs={{span: 24, order: 1}}
-            md={{span: 12, order: 1}}
-            lg={{span: 8, order: 3}}
-            className="flex upload-center">
-            <Form.Item
-              name="picture"
-              noStyle
-              initialValue={
-                fetchTag?.data?.picture_url && {
-                  path: fetchTag?.data?.picture,
-                  url: fetchTag?.data?.picture_url
-                }
-              }>
-              <CustomUpload type="recommendations" name="image" mode="single" typeFile="image" />
-            </Form.Item>
-          </Col>
-          <Col span={24} order={4}>
-            <Form.Item
-              name="description"
-              label={t('description')}
-              className="w-full"
-              initialValue={fetchTag?.data?.description}>
-              <Input.TextArea className="w-full" />
             </Form.Item>
           </Col>
         </Row>
@@ -111,7 +57,7 @@ const EditTag: FC = () => {
             className="w-full sm:w-unset mr-auto"
             type="primary"
             htmlType="submit"
-            loading={updateTag.isLoading || storeTag.isLoading}
+            loading={storeOrganization.isLoading}
             icon={<SaveOutlined />}>
             {t('save')}
           </Button>
@@ -121,4 +67,4 @@ const EditTag: FC = () => {
   );
 };
 
-export default EditTag;
+export default EditOrganization;
