@@ -756,6 +756,8 @@
     "username": "نام کاربری",
     "first_name": "نام",
     "last_name": "نام خانوادگی",
+    "position": "جایگاه",
+    "group": "گروه",
     "title_edit": "تغییر عنوان",
     "title_new": "عنوان جدید",
     "title_show": "نمایش کاربر",

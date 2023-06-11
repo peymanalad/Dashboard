@@ -15,13 +15,13 @@ const EditOrganizationGroup: FC = () => {
 
   const fetchOrganizationGroup = useFetch({
     name: ['organizationGroup', id],
-    url: 'services/app/Organizations/GetOrganizationGroupsForEdit',
+    url: '/services/app/OrganizationGroups/GetOrganizationGroupForEdit',
     query: {Id: id},
     enabled: !!id
   });
 
   const storeOrganizationGroup = usePost({
-    url: '/services/app/OrganizationGroups/CreateOrEdit',
+    url: 'services/app/OrganizationGroups/CreateOrEdit',
     method: 'POST',
     removeQueries: ['organizationGroups'],
     form,
@@ -47,19 +47,29 @@ const EditOrganizationGroup: FC = () => {
             <Form.Item
               name="groupName"
               label={t('name')}
-              rules={[{required: true, message: t('messages.required')}]}
+              rules={[
+                {required: true, message: t('messages.required')},
+                {min: 5, message: t('messages.required')}
+              ]}
               initialValue={fetchOrganizationGroup?.data?.organizationGroup?.groupName}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>
-            <Form.Item label={t('organization')} name="organization">
+            <Form.Item
+              label={t('organization')}
+              name="organization"
+              initialValue={{
+                organization: {
+                  id: fetchOrganizationGroup?.data?.organizationGroup?.organizationId,
+                  organizationName: fetchOrganizationGroup?.data?.organizationOrganizationName
+                }
+              }}>
               <MultiSelectPaginate
                 mode="single"
                 urlName="organizations"
                 url="services/app/Organizations/GetAll"
                 keyPath={['organization']}
-                keyImage="avatar"
                 keyValue="id"
                 keyLabel="organizationName"
                 placeholder={t('choose')}
