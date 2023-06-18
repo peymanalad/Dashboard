@@ -2452,8 +2452,10 @@
     }
   },
   "news": {
-    "title": "خبر ها",
-    "news": "خبر",
+    "title": "عنوان",
+    "news": "خبرها",
+    "position_user": "جایگاه کاربر",
+    "context": "متن",
     "news_groups": "گروه های خبری",
     "organization_group": "گروه سازمانی",
     "name": "نام",
@@ -2483,13 +2485,15 @@
     "delete_organization": "آیا می خواهید این سازمان را حذف کنید ؟",
     "cancel": "انصراف",
     "search": "جستجو",
+    "attachment_file": "فایل پیوست",
     "empty": "خالی",
     "pictures": "تصاویر",
     "actions": "عملیات",
-    "confirm": {
-      "title": "تایید شده",
-      "true": "تایید شده",
-      "false": "تایید نشده"
+    "created_at": "تاریخ ایجاد",
+    "special": {
+      "title": "ویژه",
+      "true": "ویژه",
+      "false": "عادی"
     },
     "apply": "اعمال تغییرات",
     "ok": "بله",

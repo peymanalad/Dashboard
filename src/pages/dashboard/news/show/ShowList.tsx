@@ -1,11 +1,20 @@
 import React, {useRef, ElementRef, FC} from 'react';
-import {Button, Card, Space, Tooltip} from 'antd';
-import {FormOutlined, EditOutlined, DeleteOutlined, FilterOutlined} from '@ant-design/icons';
+import {Button, Card, Space, Tooltip, Image} from 'antd';
+import {
+  FormOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  FilterOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  EyeOutlined
+} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
 import {useDelete, useUser} from 'hooks';
 import {simplePermissionProps} from 'types/common';
+import {convertUtcTimeToLocal} from 'utils';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
@@ -21,16 +30,84 @@ const ShowList: FC = () => {
   const columns: any = [
     {
       title: '#',
-      dataIndex: ['news', 'id'],
+      dataIndex: ['post', 'id'],
       key: 'id',
       align: 'center',
       responsive: ['md']
     },
     {
-      title: t('name'),
-      dataIndex: ['news', 'newsName'],
+      title: t('image'),
+      dataIndex: ['post', 'postFile'],
+      key: 'image',
+      className: 'pt-2 pb-0',
+      align: 'center',
+      render: (imageId: string) =>
+        imageId ? (
+          <Image
+            preview={{
+              className: 'custom-operation',
+              mask: (
+                <div className="w-full h-full bg-black opacity-75 flex flex-center">
+                  <EyeOutlined className="text-yellow" />
+                </div>
+              )
+            }}
+            width={50}
+            height={50}
+            src={`https://api.ideed.ir/File/DownloadBinaryFile?id=${imageId}`}
+          />
+        ) : (
+          '-'
+        )
+    },
+    {
+      title: t('title'),
+      dataIndex: ['post', 'postTitle'],
       key: 'name',
       align: 'center'
+    },
+    {
+      title: t('group'),
+      dataIndex: 'postGroupPostGroupDescription',
+      key: 'group',
+      align: 'center'
+    },
+    {
+      title: t('position_user'),
+      dataIndex: 'groupMemberMemberPosition',
+      key: 'position',
+      align: 'center'
+    },
+    {
+      title: t('context'),
+      dataIndex: ['post', 'postCaption'],
+      key: 'name',
+      align: 'center',
+      render: (text: string) => `${text.substring(0, 30)} ...`
+    },
+    {
+      title: t('created_at'),
+      dataIndex: ['post', 'postTime'],
+      key: 'created_at',
+      align: 'center',
+      responsive: ['md'],
+      render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
+    },
+    {
+      title: t('special.title'),
+      dataIndex: ['post', 'isSpecial'],
+      key: 'isSpecial',
+      align: 'center',
+      responsive: ['sm'],
+      render: (isSpecial: boolean) => (
+        <Tooltip title={t(isSpecial ? 'special.true' : 'special.false')}>
+          {isSpecial ? (
+            <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
+          ) : (
+            <CloseCircleOutlined style={{color: '#F44336', fontSize: 16}} />
+          )}
+        </Tooltip>
+      )
     },
     {
       title: t('actions'),
@@ -81,7 +158,7 @@ const ShowList: FC = () => {
         </Space>
       }>
       <Search ref={searchRef} name="NewsNameFilter" />
-      <CustomTable fetch="services/app/Newss/GetAll" dataName="news" columns={columns} />
+      <CustomTable fetch="services/app/Posts/GetAll" dataName="news" columns={columns} />
     </Card>
   );
 };

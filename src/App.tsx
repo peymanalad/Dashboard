@@ -23,7 +23,10 @@ function MainApp() {
 
   return (
     <ErrorBoundaryHandler>
-      <ConfigProvider direction={isEn ? 'ltr' : 'rtl'} locale={isEn ? enUS : frIR}>
+      <ConfigProvider
+        direction={isEn ? 'ltr' : 'rtl'}
+        locale={isEn ? enUS : frIR}
+        theme={{token: {fontFamily: 'var(--font-family)'}}}>
         <UsersProvider>
           <QueryClientProvider client={queryClient}>
             <Root />

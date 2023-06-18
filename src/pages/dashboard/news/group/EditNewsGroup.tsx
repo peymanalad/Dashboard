@@ -15,7 +15,7 @@ const EditNewsGroup: FC = () => {
 
   const fetchNewsGroup = useFetch({
     name: ['newsGroup', id],
-    url: '/services/app/PostGroups/GetPostGroupForEdi',
+    url: '/services/app/PostGroups/GetPostGroupForEdit',
     query: {Id: id},
     enabled: !!id
   });
@@ -33,6 +33,7 @@ const EditNewsGroup: FC = () => {
 
   const onFinish = (values: any) => {
     storeNewsGroup.post({
+      id,
       postGroupDescription: values?.postGroupDescription,
       organizationGroupId: values?.organizationGroup?.organizationGroup?.id
     });
@@ -51,7 +52,7 @@ const EditNewsGroup: FC = () => {
               name="postGroupDescription"
               label={t('name')}
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchNewsGroup?.data?.newsGroup?.groupName}>
+              initialValue={fetchNewsGroup?.data?.postGroup?.postGroupDescription}>
               <Input />
             </Form.Item>
           </Col>
@@ -60,9 +61,9 @@ const EditNewsGroup: FC = () => {
               label={t('organization_group')}
               name="organizationGroup"
               initialValue={{
-                news: {
-                  id: fetchNewsGroup?.data?.newsGroup?.newsId,
-                  newsName: fetchNewsGroup?.data?.newsNewsName
+                organizationGroup: {
+                  id: fetchNewsGroup?.data?.postGroup?.organizationGroupId,
+                  groupName: fetchNewsGroup?.data?.organizationGroupGroupName
                 }
               }}>
               <MultiSelectPaginate
