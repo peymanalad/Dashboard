@@ -14,7 +14,7 @@ import {Link} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
 import {useDelete, useUser} from 'hooks';
 import {simplePermissionProps} from 'types/common';
-import {convertUtcTimeToLocal} from 'utils';
+import {convertUtcTimeToLocal, getImageUrl} from 'utils';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
@@ -54,7 +54,7 @@ const ShowList: FC = () => {
             }}
             width={50}
             height={50}
-            src={`https://api.ideed.ir/File/DownloadBinaryFile?id=${imageId}`}
+            src={getImageUrl(imageId)}
           />
         ) : (
           '-'
@@ -117,7 +117,7 @@ const ShowList: FC = () => {
       render: (permissions: simplePermissionProps, news: any) => (
         <Space size={2}>
           <Tooltip title={t('update')}>
-            <Link to={`/news/news/edit/${news.news?.id}`}>
+            <Link to={`/news/news/edit/${news.post?.id}`}>
               <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
             </Link>
           </Tooltip>
