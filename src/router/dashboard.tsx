@@ -121,6 +121,9 @@ const NewsShowList = lazyWithRetry(() => import('pages/dashboard/news/show/ShowL
 const EditNewsGroup = lazyWithRetry(() => import('pages/dashboard/news/group/EditNewsGroup'));
 const NewsGroupShowList = lazyWithRetry(() => import('pages/dashboard/news/group/ShowList'));
 
+const EditNewsUserMember = lazyWithRetry(() => import('pages/dashboard/news/user/EditUserMember'));
+const NewsNewUserMemberShowList = lazyWithRetry(() => import('pages/dashboard/news/user/ShowList'));
+
 // order
 const ServiceShowList = lazyWithRetry(() => import('pages/dashboard/order/service/ShowList'));
 const EditService = lazyWithRetry(() => import('pages/dashboard/order/service/EditService'));
@@ -320,7 +323,7 @@ const Dashboard: Array<dashboardRouteProps> = [
         title: i18n.t('side_menu:create'),
         hidden: true,
         permission: 'users.update'
-      },
+      }
       // {
       //   key: 'userSpecialization',
       //   route: '/user/specialization/list',
@@ -355,18 +358,18 @@ const Dashboard: Array<dashboardRouteProps> = [
       //   permission: 'users.doctor_report',
       //   hidden: true
       // },
-      {
-        route: '/user/temporary/list',
-        cmp: <UserTmpRegister />,
-        title: i18n.t('side_menu:show_temporary'),
-        permission: 'temporaries.view'
-      },
-      {
-        route: '/user/report/',
-        cmp: <UserReport />,
-        title: i18n.t('side_menu:report'),
-        permission: 'users.report'
-      },
+      // {
+      //   route: '/user/temporary/list',
+      //   cmp: <UserTmpRegister />,
+      //   title: i18n.t('side_menu:show_temporary'),
+      //   permission: 'temporaries.view'
+      // },
+      // {
+      //   route: '/user/report/',
+      //   cmp: <UserReport />,
+      //   title: i18n.t('side_menu:report'),
+      //   permission: 'users.report'
+      // },
       // {
       //   route: '/user/emergency/list',
       //   cmp: <ShowListEmergency />,
@@ -379,13 +382,13 @@ const Dashboard: Array<dashboardRouteProps> = [
       //   permission: 'important_answer.view',
       //   hidden: true
       // },
-      {
-        route: '/user/report/table',
-        cmp: <UserReportTable />,
-        title: i18n.t('side_menu:report'),
-        permission: 'users.report',
-        hidden: true
-      }
+      // {
+      //   route: '/user/report/table',
+      //   cmp: <UserReportTable />,
+      //   title: i18n.t('side_menu:report'),
+      //   permission: 'users.report',
+      //   hidden: true
+      // }
     ]
   },
   {
@@ -447,6 +450,34 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <EditNewsGroup />,
         title: i18n.t('side_menu:editNewsGroup'),
         permission: 'NewsUnits',
+        hidden: true
+      },
+      {
+        key: 'newsMember',
+        route: '/news/member/list',
+        cmp: <NewsNewUserMemberShowList />,
+        title: i18n.t('side_menu:news_member'),
+        permission: 'NewsMember',
+        extra: {
+          route: '/news/member/create',
+          title: i18n.t('side_menu:news_member'),
+          permission: 'NewsMember'
+        }
+      },
+      {
+        key: 'newsMemberCreate',
+        route: '/news/member/create',
+        cmp: <EditNewsUserMember />,
+        title: i18n.t('side_menu:addNewsMember'),
+        hidden: true,
+        permission: 'NewsMember'
+      },
+      {
+        key: 'newsGroupEdit',
+        route: '/news/member/edit/:id',
+        cmp: <EditNewsUserMember />,
+        title: i18n.t('side_menu:editNewsMember'),
+        permission: 'NewsMember',
         hidden: true
       }
     ]

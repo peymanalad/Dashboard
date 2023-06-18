@@ -139,7 +139,7 @@ const ShowList: FC = () => {
 
   return (
     <Card
-      title={t('title')}
+      title={t('news')}
       extra={
         <Space size="small">
           {!hasPermission('news.store') && (
