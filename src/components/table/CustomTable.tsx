@@ -74,8 +74,13 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     url: fetch,
     name: dataName,
     page: queryObject?.page,
+    perPage: queryObject?.per_page,
     query,
-    search: merge(queryObject, search),
+    search: {
+      page: 1,
+      per_page: 15,
+      ...merge(queryObject, search)
+    },
     params,
     enabled: true
   });
@@ -144,23 +149,21 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
               }
             : undefined
         }
-        pagination={
-          paginateData?.meta?.last_page > 1 && {
-            total: paginateData?.meta?.total,
-            itemRender,
-            onChange: onChangePage,
-            current: paginateData?.meta?.current_page,
-            defaultPageSize: paginateData?.meta?.per_page,
-            pageSize: paginateData?.meta?.per_page,
-            pageSizeOptions: ['10', '15', '20', '25', '50', '100'],
-            showSizeChanger: showTableSizeChange,
-            showQuickJumper: false,
-            showTotal: (total, range) => (
-              <Text className="text-md">{t('showTotal', {from: get(range, 0), to: get(range, 1), total})}</Text>
-            ),
-            responsive: true
-          }
-        }
+        pagination={{
+          total: paginateData?.data?.totalCount,
+          itemRender,
+          onChange: onChangePage,
+          current: queryObject?.page || 1,
+          defaultPageSize: queryObject?.per_page || 10,
+          pageSize: queryObject?.per_page || 10,
+          pageSizeOptions: ['10', '20', '25', '50', '100'],
+          showSizeChanger: showTableSizeChange,
+          showQuickJumper: false,
+          showTotal: (total, range) => (
+            <Text className="text-md">{t('showTotal', {from: get(range, 0), to: get(range, 1), total})}</Text>
+          ),
+          responsive: true
+        }}
       />
       {get(paginateData, path)?.length > 0 && paginateData?.meta?.last_page > 1 && (
         <Space className="flex-center">

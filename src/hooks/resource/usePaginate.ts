@@ -15,6 +15,7 @@ interface IGetConfig {
   url: string;
   version?: number;
   page: number;
+  perPage?: number;
   staleTime?: number;
   cacheTime?: number;
   query?: object;
@@ -29,6 +30,7 @@ const usePagination = ({
   name = 'notLongTimeAvailable',
   url,
   page = 1,
+  perPage,
   query,
   search,
   params,
@@ -53,7 +55,7 @@ const usePagination = ({
   const requestConfig: AxiosRequestConfig = {
     url: allocateParamToString(urlGenerator(url), params),
     method: 'GET',
-    params: merge(merge({page}, query), search),
+    params: merge({page, perPage, query}, search),
     headers: {Authorization: user?.access_token ? `Bearer ${user?.access_token}` : ''}
   };
 
