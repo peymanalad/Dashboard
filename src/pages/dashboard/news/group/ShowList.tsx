@@ -21,13 +21,6 @@ const ShowList: FC = () => {
 
   const columns: any = [
     {
-      title: '#',
-      dataIndex: ['postGroup', 'id'],
-      key: 'id',
-      align: 'center',
-      responsive: ['md']
-    },
-    {
       title: t('image'),
       dataIndex: ['postGroup', 'groupFile'],
       key: 'image',
@@ -113,7 +106,7 @@ const ShowList: FC = () => {
         </Space>
       }>
       <Search ref={searchRef} name="NewsNameFilter" />
-      <CustomTable fetch="services/app/PostGroups/GetAll" dataName="postGroups" columns={columns} />
+      <CustomTable fetch="services/app/PostGroups/GetAll" dataName="postGroups" columns={columns} hasIndexColumn />
     </Card>
   );
 };

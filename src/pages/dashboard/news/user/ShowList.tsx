@@ -86,7 +86,13 @@ const UserMemberShowList: FC = () => {
       className="my-6"
       title={t('news_member')}>
       <SearchUsers ref={searchRef} />
-      <CustomTable fetch="services/app/GroupMembers/GetAll" dataName="groupMembers" columns={columns} ref={tableRef} hasIndexColumn />
+      <CustomTable
+        fetch="services/app/GroupMembers/GetAll"
+        dataName="groupMembers"
+        columns={columns}
+        ref={tableRef}
+        hasIndexColumn
+      />
     </Card>
   );
 };
