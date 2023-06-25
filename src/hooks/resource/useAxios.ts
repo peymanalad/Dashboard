@@ -1,16 +1,17 @@
-import {getLangSearchParam, urlGenerator} from 'utils';
+import {useHistory} from 'react-router-dom';
+import usePersist from 'hooks/storage/usePersist';
+import {useTranslation} from 'react-i18next';
 import {AxiosInstance} from 'libs';
 import axios, {AxiosRequestConfig} from 'axios';
 import createAuthRefreshInterceptor from 'axios-auth-refresh';
 import {useUser} from 'hooks';
-import merge from 'lodash/merge';
 import {notification} from 'antd';
-import {useTranslation} from 'react-i18next';
-import {useHistory} from 'react-router-dom';
 import qs from 'qs';
+import {getLangSearchParam, urlGenerator} from 'utils';
+import set from 'lodash/set';
+import get from 'lodash/get';
+import merge from 'lodash/merge';
 import {userAccessProps} from 'types/user';
-import {get, set} from 'lodash';
-import usePersist from 'hooks/storage/usePersist';
 
 const useAxios = () => {
   const {t} = useTranslation('general');
@@ -19,7 +20,7 @@ const useAxios = () => {
   const history = useHistory();
 
   const refreshAuthLogic = (failedRequest: any) => {
-    const token = persist.getData('token');
+    const token: userAccessProps = persist.getData('token');
 
     const requestConfig: AxiosRequestConfig = {
       baseURL: process.env.REACT_APP_BASE_URL,
@@ -30,18 +31,18 @@ const useAxios = () => {
       data: {refresh_token: get(token, [0, 'refresh_token'])}
     };
 
+    if (!token?.is_logged_in) return Promise.resolve();
+
     return axios(requestConfig)
       .then((tokenRefreshResponse) => {
-        const newUsers: userAccessProps[] = [...token];
+        const newUsers: userAccessProps = {...token};
         set(newUsers, 0, merge({...get(newUsers, 0), is_logged_in: true}, tokenRefreshResponse?.data?.data));
-        user.setUsers(newUsers);
+        user.setUser(newUsers);
         failedRequest.response.config.headers.Authorization = `Bearer ${tokenRefreshResponse.data?.data?.access_token}`;
         return Promise.resolve();
       })
       .catch(() => {
-        const currentUsers = [...token];
-        currentUsers.shift();
-        user.setUsers(currentUsers);
+        user.setUser({is_logged_in: false});
         history.replace({
           pathname: getLangSearchParam('/'),
           search: qs.stringify({redirect: history.location?.pathname})

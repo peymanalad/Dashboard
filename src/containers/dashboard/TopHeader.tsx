@@ -1,13 +1,12 @@
 import React, {FC, useRef, useState} from 'react';
 import {Layout, Button, Drawer, Typography, Space, Row, Avatar, Divider, Popover} from 'antd';
-import {CloseOutlined, MenuOutlined, UserOutlined, AlertOutlined, CheckOutlined, PlusOutlined} from '@ant-design/icons';
-import {HeaderDetail, AddUserModal} from 'containers';
+import {CloseOutlined, MenuOutlined, UserOutlined, AlertOutlined, PlusOutlined} from '@ant-design/icons';
+import {HeaderDetail} from 'containers';
 import {useHistory} from 'react-router-dom';
 import {useFetch, usePost, useUser} from 'hooks';
 import pick from 'lodash/pick';
 import values from 'lodash/values';
 import sum from 'lodash/sum';
-import {filter, isEmpty, map} from 'lodash';
 import {useTranslation} from 'react-i18next';
 
 interface Props {
@@ -40,11 +39,6 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
     showError: false
   });
 
-  const logOutInActiveAccount = (id: number, token: string) => {
-    user.setUsers((prevState) => filter(prevState, (item: any) => item.id !== id));
-    logout.post({platform: 'web', model: navigator.userAgent}, {}, {}, token);
-  };
-
   const navigateToProfile = () => {
     history.push('/profile');
   };
@@ -64,26 +58,6 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
 
   const accounts = (
     <div className="flex flex-col w-full">
-      {!isEmpty(user.users) &&
-        map(user.users, (item: any) => (
-          <Row key={item.id} className="pb-1 justify-between items-center">
-            <Space
-              onClick={item.id !== user.id ? () => user.changeUser(item.id) : undefined}
-              className="cursor-pointer">
-              <Avatar size={30} icon={<UserOutlined />} src={item?.avatar} />
-              <Text className="text-sm" strong>
-                {item?.full_name || item?.id || 'asd'}
-              </Text>
-            </Space>
-            {user.hasPermission('users.switch') && item.id !== user.id && (
-              <CloseOutlined
-                className="text-red cursor-pointer"
-                onClick={() => logOutInActiveAccount(item.id, item?.access_token)}
-              />
-            )}
-            {item.id === user.id && <CheckOutlined className="text-green" />}
-          </Row>
-        ))}
       <Divider className="my-2" />
       <Button onClick={() => addModalRef.current.open()} type="primary" icon={<PlusOutlined />} className="w-full">
         {t('add_account')}
@@ -107,7 +81,7 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
       </Row>
       <Row className="d-none md:d-flex flex-row flex-no-wrap items-center justify-between w-full">
         <HeaderDetail data={headerData} />
-        {user.hasPermission('users.switch') || user.users?.length > 1 ? (
+        {user.hasPermission('users.switch') || user.is_logged_in ? (
           <Popover content={accounts} title={t('your_accounts')} placement="bottomRight">
             <Button className="cursor-pointer items-center h-full border-0 bg-transparent" onClick={navigateToProfile}>
               <Space>
@@ -158,7 +132,6 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
         visible={collapsed}>
         <HeaderDetail data={headerData} />
       </Drawer>
-      <AddUserModal ref={addModalRef} />
     </Header>
   );
 };

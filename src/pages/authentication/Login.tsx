@@ -1,7 +1,7 @@
 import React, {useContext, type FC} from 'react';
 import {Typography, Row, Image, Form, Col, Input, Button, Card} from 'antd';
 import {usePost} from 'hooks';
-import {UsersContext} from 'contexts';
+import {UsersContext} from 'context';
 import {useHistory, useLocation} from 'react-router-dom';
 import {queryStringToObject} from 'utils';
 import {useTranslation} from 'react-i18next';
@@ -16,25 +16,23 @@ const LoginPage: FC = () => {
   const location = useLocation();
   const query = queryStringToObject(location.search);
   const history = useHistory();
-  const {setUsers} = useContext(UsersContext);
+  const {setUser} = useContext(UsersContext);
 
   const userToDashboard = (user: userAccessProps) => {
-    setUsers([{...user}]);
+    setUser({...user});
     query?.redirect ? history.push(query?.redirect) : history.push('/');
   };
 
   const loginRequest = usePost({
     url: 'TokenAuth/Authenticate',
     onSuccess: (data: AuthResponseProps) => {
-      if (data?.accessToken) {
-        userToDashboard({
-          is_logged_in: true,
-          access_token: data?.accessToken,
-          refresh_token: data.refreshToken,
-          expires_in: data.expireInSeconds,
-          id: data.userId
-        });
-      }
+      userToDashboard({
+        is_logged_in: !!data?.accessToken,
+        access_token: data?.accessToken,
+        refresh_token: data.refreshToken,
+        expires_in: data.expireInSeconds,
+        id: data.userId
+      });
     }
   });
 

@@ -25,7 +25,6 @@ export {default as TopCart} from 'containers/users/report/TopCart';
 export {default as SearchUsers} from 'containers/users/show/Search';
 export {default as NoteModal} from 'containers/users/show/NoteModal';
 export {default as SearchTemporary} from 'containers/temporary/show/Search';
-export {default as AddUserModal} from 'containers/dashboard/AddUserModal';
 
 // recommendations
 export {default as SearchRecommendation} from 'containers/recommendation/show/Search';

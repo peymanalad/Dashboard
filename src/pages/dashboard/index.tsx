@@ -9,9 +9,6 @@ import {FullScreenLoading} from 'components';
 import {useTranslation} from 'react-i18next';
 import flatMap from 'lodash/flatMap';
 import includes from 'lodash/includes';
-import cloneDeepWith from 'lodash/cloneDeepWith';
-import first from 'lodash/first';
-import set from 'lodash/set';
 
 const NotFoundPage = lazy(() => import('pages/dashboard/NotFoundPage'));
 
@@ -38,14 +35,7 @@ const Dashboard: FC = () => {
     name: 'menu',
     cacheTime: Infinity,
     staleTime: Infinity,
-    enabled: false,
-    onSuccess: (response) => {
-      const newUsers = cloneDeepWith(user.users, (users) => {
-        set(users, 0, {...first(users), ...response.data, permissions: undefined});
-        return users;
-      });
-      user.setUsers(newUsers);
-    }
+    enabled: false
   });
 
   return (

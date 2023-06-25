@@ -6,7 +6,7 @@ import {ReactQueryDevtools} from 'react-query/devtools';
 import frIR from 'antd/lib/locale/fa_IR';
 import enUS from 'antd/lib/locale/en_US';
 import {isEnLocale} from 'utils';
-import {UsersProvider} from 'contexts/UsersContext';
+import {UsersProvider} from 'context/UsersContext';
 import {ErrorBoundaryHandler} from 'components';
 import withClearCache from 'ClearCache';
 import 'libs/I18n';

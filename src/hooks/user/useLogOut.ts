@@ -1,11 +1,11 @@
 import {useContext} from 'react';
-import {UsersContext} from 'contexts';
+import {UsersContext} from 'context';
 import {useQueryClient} from 'react-query';
 import {usePost} from 'hooks';
 import {useHistory} from 'react-router-dom';
 
 function useLogOut() {
-  const {users, setUsers} = useContext(UsersContext);
+  const {setUser} = useContext(UsersContext);
   const queryClient = useQueryClient();
   const history = useHistory();
 
@@ -14,9 +14,7 @@ function useLogOut() {
     isGeneral: true,
     method: 'POST',
     onSuccess: () => {
-      const currentUsers = [...users];
-      currentUsers.shift();
-      setUsers(currentUsers);
+      setUser({is_logged_in: false});
       history.replace('/');
       queryClient.removeQueries();
     }
