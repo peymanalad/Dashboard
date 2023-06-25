@@ -8,7 +8,6 @@ import {useUser} from 'hooks';
 import {notification} from 'antd';
 import qs from 'qs';
 import {getLangSearchParam, urlGenerator} from 'utils';
-import set from 'lodash/set';
 import get from 'lodash/get';
 import merge from 'lodash/merge';
 import {userAccessProps} from 'types/user';
@@ -25,20 +24,19 @@ const useAxios = () => {
     const requestConfig: AxiosRequestConfig = {
       baseURL: process.env.REACT_APP_BASE_URL,
       timeout: 15000,
-      url: urlGenerator('auth/refresh'),
+      url: urlGenerator('TokenAuth/RefreshToken'),
       method: 'POST',
-      headers: {Authorization: `Bearer ${get(token, [0, 'access_token'])}`, silent: true},
-      data: {refresh_token: get(token, [0, 'refresh_token'])}
+      headers: {silent: true},
+      params: {refreshToken: token?.refresh_token}
     };
 
     if (!token?.is_logged_in) return Promise.resolve();
 
     return axios(requestConfig)
       .then((tokenRefreshResponse) => {
-        const newUsers: userAccessProps = {...token};
-        set(newUsers, 0, merge({...get(newUsers, 0), is_logged_in: true}, tokenRefreshResponse?.data?.data));
+        const newUsers: userAccessProps = {...token, access_token: tokenRefreshResponse?.data?.result?.accessToken};
         user.setUser(newUsers);
-        failedRequest.response.config.headers.Authorization = `Bearer ${tokenRefreshResponse.data?.data?.access_token}`;
+        failedRequest.response.config.headers.Authorization = `Bearer ${tokenRefreshResponse?.data?.result?.accessToken}`;
         return Promise.resolve();
       })
       .catch(() => {

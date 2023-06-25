@@ -25,7 +25,8 @@ const useError = (props?: Props) => {
         console.error(e);
       }
     }
-    if (error?.response?.status === 404 || error?.response?.status === 500) return false;
+    if (error?.response?.status === 404 || error?.response?.status === 500 || error?.response?.status === 401)
+      return false;
     return failureCount <= 1;
   };
 
