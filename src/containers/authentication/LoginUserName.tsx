@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Form, Input, Button, Row, Col, Image, Card, Typography} from 'antd';
 import {useTranslation} from 'react-i18next';
-import {BehzeeLogoImg} from 'assets';
+import {DeedLogoImg} from 'assets';
 
 interface Props {
   onSubmit(values: any): void;
@@ -14,7 +14,7 @@ const LoginUserName: FC<Props> = ({onSubmit, isLoading}) => {
   const {t} = useTranslation('login');
 
   return (
-    <Card className="mt-2" title={t('login_page')} extra={<Image preview={false} src={BehzeeLogoImg} width={30} />}>
+    <Card className="mt-2" title={t('login_page')} extra={<Image preview={false} src={DeedLogoImg} width={30} />}>
       <Form
         layout="vertical"
         requiredMark={false}

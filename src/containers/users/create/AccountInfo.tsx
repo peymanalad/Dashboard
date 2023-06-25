@@ -9,7 +9,6 @@ import {Card, Form, Checkbox, Button, Input, Radio, Row, Col, Typography, InputN
 import {FormOutlined, SaveOutlined, LogoutOutlined} from '@ant-design/icons';
 import get from 'lodash/get';
 import forEach from 'lodash/forEach';
-import {AxiosResponse} from 'axios';
 
 interface Props {
   id: number | string;

@@ -5,7 +5,7 @@ import {UsersContext} from 'contexts';
 import {useHistory, useLocation} from 'react-router-dom';
 import {queryStringToObject} from 'utils';
 import {useTranslation} from 'react-i18next';
-import {BehzeeLogoImg} from 'assets';
+import {DeedLogoImg} from 'assets';
 import type {userAccessProps} from 'types/user';
 import type {AuthFormProps, AuthResponseProps} from 'types/auth';
 
@@ -26,13 +26,15 @@ const LoginPage: FC = () => {
   const loginRequest = usePost({
     url: 'TokenAuth/Authenticate',
     onSuccess: (data: AuthResponseProps) => {
-      userToDashboard({
-        is_logged_in: !!data?.accessToken,
-        access_token: data?.accessToken,
-        refresh_token: data.refreshToken,
-        expires_in: data.expireInSeconds,
-        id: data.userId
-      });
+      if (data?.accessToken) {
+        userToDashboard({
+          is_logged_in: true,
+          access_token: data?.accessToken,
+          refresh_token: data.refreshToken,
+          expires_in: data.expireInSeconds,
+          id: data.userId
+        });
+      }
     }
   });
 
@@ -53,7 +55,7 @@ const LoginPage: FC = () => {
       <Card
         className="mt-2 max-w-12"
         title={t('login_page')}
-        extra={<Image preview={false} src={BehzeeLogoImg} width={30} />}>
+        extra={<Image preview={false} src={DeedLogoImg} width={30} />}>
         <Form layout="vertical" requiredMark={false} name="login_username" className="my-5" onFinish={onSubmit}>
           <Row gutter={[16, 8]} className="w-full m-0">
             <Col span={24}>

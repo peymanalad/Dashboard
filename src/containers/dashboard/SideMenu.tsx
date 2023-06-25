@@ -11,7 +11,7 @@ import ScrollArea from 'react-scrollbar';
 import {Layout, Avatar, Row, Space, Typography, Drawer, Button} from 'antd';
 import {RightOutlined, CloseOutlined} from '@ant-design/icons';
 import {SideMenuDetail} from 'containers';
-import {BehzeeLogoImg} from 'assets';
+import {DeedLogoImg} from 'assets';
 import {useTranslation} from 'react-i18next';
 import {CSSTransition} from 'react-transition-group';
 
@@ -56,7 +56,7 @@ const SideMenu: ForwardRefRenderFunction<refProps, props> = (props: props, forwa
           <Row className="bg-white flex-center flex-col">
             <Row className="w-full h-20 bg-header flex flex-row px-2 items-center justify-around">
               <Space align="center" size={1} className="flex flex-row">
-                <Avatar size={30} src={BehzeeLogoImg} />
+                <Avatar size={30} src={DeedLogoImg} />
                 <CSSTransition in={!collapsed} timeout={600} classNames="menu-title" unmountOnExit>
                   <Text className="px-3 text-lg text-blueDarker font-bold">{t('deed')}</Text>
                 </CSSTransition>
@@ -75,7 +75,7 @@ const SideMenu: ForwardRefRenderFunction<refProps, props> = (props: props, forwa
       <Drawer
         title={
           <Row className="flex flex-row justify-between items-center">
-            <Avatar size={40} src={BehzeeLogoImg} />
+            <Avatar size={40} src={DeedLogoImg} />
             <Text className="px-3 text-lg text-blueDarker font-bold">{t('deed')}</Text>
             <Button type="text" onClick={collapseMenu} icon={<CloseOutlined className="text-white" />} />
           </Row>

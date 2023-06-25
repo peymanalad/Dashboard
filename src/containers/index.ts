@@ -12,6 +12,7 @@ export {default as HeaderDetail} from 'containers/dashboard/Header';
 // users
 export {default as AccountInfo} from 'containers/users/create/AccountInfo';
 export {default as ContactInfo} from 'containers/users/create/ContactInfo';
+export {default as RoleInfo} from 'containers/users/create/RoleInfo';
 export {default as ShowAccountInfo} from 'containers/users/show/ShowAccountInfo';
 export {default as ShowProfessionInfo} from 'containers/users/show/ShowProfessionInfo';
 export {default as ShowContactInfo} from 'containers/users/show/ShowContactInfo';
