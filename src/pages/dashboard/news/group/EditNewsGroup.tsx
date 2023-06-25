@@ -4,7 +4,8 @@ import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {MultiSelectPaginate} from 'components';
+import {CustomUpload, MultiSelectPaginate} from 'components';
+import {getImageUrl} from 'utils';
 
 const EditNewsGroup: FC = () => {
   const {t} = useTranslation('news');
@@ -47,7 +48,20 @@ const EditNewsGroup: FC = () => {
       className="w-full">
       <Form form={form} layout="vertical" name="news" requiredMark={false} onFinish={onFinish}>
         <Row gutter={[16, 8]} className="w-full">
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8} className="flex upload-center">
+            <Form.Item
+              name="postFileToken"
+              noStyle
+              initialValue={
+                fetchNewsGroup?.data?.postGroup?.groupFile && {
+                  path: fetchNewsGroup?.data?.postGroup?.groupFile,
+                  url: getImageUrl(fetchNewsGroup?.data?.postGroup?.groupFile)
+                }
+              }>
+              <CustomUpload type="products" name="image" mode="single" typeFile="image" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={8}>
             <Form.Item
               name="postGroupDescription"
               label={t('name')}
@@ -56,7 +70,7 @@ const EditNewsGroup: FC = () => {
               <Input />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12}>
+          <Col xs={24} md={12} lg={8}>
             <Form.Item
               label={t('organization_group')}
               name="organizationGroup"

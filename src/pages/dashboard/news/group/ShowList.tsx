@@ -1,11 +1,12 @@
 import React, {useRef, ElementRef, FC} from 'react';
-import {Button, Card, Space, Tooltip} from 'antd';
-import {FormOutlined, EditOutlined, DeleteOutlined, FilterOutlined} from '@ant-design/icons';
+import {Button, Card, Image, Space, Tooltip} from 'antd';
+import {FormOutlined, EditOutlined, DeleteOutlined, FilterOutlined, EyeOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
 import {useDelete, useUser} from 'hooks';
 import {simplePermissionProps} from 'types/common';
+import {getImageUrl} from '../../../../utils';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
@@ -25,6 +26,31 @@ const ShowList: FC = () => {
       key: 'id',
       align: 'center',
       responsive: ['md']
+    },
+    {
+      title: t('image'),
+      dataIndex: ['postGroup', 'groupFile'],
+      key: 'image',
+      className: 'pt-2 pb-0',
+      align: 'center',
+      render: (imageId: string) =>
+        imageId ? (
+          <Image
+            preview={{
+              className: 'custom-operation',
+              mask: (
+                <div className="w-full h-full bg-black opacity-75 flex flex-center">
+                  <EyeOutlined className="text-yellow" />
+                </div>
+              )
+            }}
+            width={50}
+            height={50}
+            src={getImageUrl(imageId)}
+          />
+        ) : (
+          '-'
+        )
     },
     {
       title: t('name'),
