@@ -22,13 +22,6 @@ const UserMemberShowList: FC = () => {
 
   const columns = [
     {
-      title: '#',
-      dataIndex: ['groupMember', 'id'],
-      key: 'id',
-      align: 'center',
-      responsive: ['md']
-    },
-    {
       title: t('name'),
       dataIndex: 'userName',
       key: 'userName',
@@ -93,7 +86,7 @@ const UserMemberShowList: FC = () => {
       className="my-6"
       title={t('news_member')}>
       <SearchUsers ref={searchRef} />
-      <CustomTable fetch="services/app/GroupMembers/GetAll" dataName="groupMembers" columns={columns} ref={tableRef} />
+      <CustomTable fetch="services/app/GroupMembers/GetAll" dataName="groupMembers" columns={columns} ref={tableRef} hasIndexColumn />
     </Card>
   );
 };

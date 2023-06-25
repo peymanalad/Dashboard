@@ -58,7 +58,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     path = 'items',
     isRowSelection,
     onChange,
-    showTableSizeChange = false
+    showTableSizeChange = true
   },
   forwardedRef: ForwardedRef<refProps>
 ) => {
@@ -128,7 +128,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
                   align: 'center',
                   responsive: ['md'],
                   render: (text: number, record: any, index: number) =>
-                    (paginateData?.meta?.current_page - 1) * paginateData?.meta?.per_page + index + 1
+                    (queryObject?.page - 1) * queryObject?.per_page + index + 1
                 },
                 columns
               )
