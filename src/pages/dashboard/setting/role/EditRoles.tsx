@@ -28,18 +28,19 @@ const EditRole: FC = () => {
   });
 
   const storeRole = usePost({
-    url: 'services/app/Roles/CreateOrEdit',
+    url: 'services/app/Role/CreateOrUpdateRole',
     method: 'POST',
     removeQueries: ['roles'],
     form,
     onSuccess: () => {
       if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace('/organization/group/list');
+      else history.replace('/setting/role/list');
     }
   });
 
   const onFinish = (values: any) => {
-    storeRole.post({groupName: values?.groupName, organizationId: values?.organization?.organization?.id});
+    values.role.id = fetchRole?.data?.role?.id;
+    storeRole.post(values);
   };
 
   return (
@@ -52,7 +53,7 @@ const EditRole: FC = () => {
         <Row gutter={[16, 8]} className="w-full">
           <Col xs={24} md={12}>
             <Form.Item
-              name="displayName"
+              name={['role', 'displayName']}
               label={t('name')}
               rules={[
                 {required: true, message: t('messages.required')},
@@ -64,17 +65,17 @@ const EditRole: FC = () => {
           </Col>
           <Col xs={24} md={12}>
             <Form.Item
-              name="isDefault"
+              name={['role', 'isDefault']}
               valuePropName="checked"
               className="m-0"
-              initialValue={false}
+              initialValue={fetchRole?.data?.role?.isDefault}
               help={t('assign_to_new_user_by_default')}>
               <Checkbox>{t('default')}</Checkbox>
             </Form.Item>
           </Col>
           <Col span={24}>
             <Form.Item
-              name="permissions"
+              name="grantedPermissionNames"
               label={t('permissions')}
               initialValue={fetchRole?.data?.grantedPermissionNames}>
               <TreeSelect treeData={convertPermissionsToTreeNode(fetchPermissions?.data?.items)} />
