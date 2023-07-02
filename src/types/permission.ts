@@ -16,3 +16,12 @@ export interface permissionRoleProps {
 export interface searchOptionsProps {
   search?: string;
 }
+
+export interface PermissionProps {
+  description: string | null;
+  displayName: string;
+  isGrantedByDefault: boolean;
+  level: number;
+  name: string;
+  parentName: string | null;
+}

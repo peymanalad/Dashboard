@@ -1,29 +1,26 @@
-import React, {FC} from 'react';
+import React, {useRef, type ElementRef, type FC} from 'react';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {Link} from 'react-router-dom';
+import {
+  FormOutlined,
+  FilterOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  EditOutlined,
+  DeleteOutlined
+} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
-import {FormOutlined, DeleteOutlined, EditOutlined, SafetyCertificateOutlined} from '@ant-design/icons';
-import {CustomTable} from 'components';
-import {useDelete, useUser} from 'hooks';
-import {simplePermissionProps} from 'types/common';
+import {Link} from 'react-router-dom';
+import {CustomTable, Search} from 'components';
+import {useUser} from 'hooks';
+import {convertUtcTimeToLocal} from 'utils';
+import type {simplePermissionProps} from 'types/common';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('permission');
+  const searchRef = useRef<ElementRef<typeof Search>>(null);
   const {hasPermission} = useUser();
 
-  const deleteRequest = useDelete({
-    url: '/roles/{id}',
-    name: 'roles'
-  });
-
-  const columns = [
-    {
-      title: '#',
-      dataIndex: 'id',
-      key: 'id',
-      align: 'center',
-      responsive: ['md']
-    },
+  const columns: any = [
     {
       title: t('name'),
       dataIndex: 'name',
@@ -31,10 +28,50 @@ const ShowList: FC = () => {
       align: 'center'
     },
     {
-      title: t('title'),
-      dataIndex: 'title',
-      key: 'title',
+      title: t('display_name'),
+      dataIndex: 'displayName',
+      key: 'displayName',
       align: 'center'
+    },
+    {
+      title: t('default'),
+      dataIndex: 'isDefault',
+      key: 'isDefault',
+      align: 'center',
+      responsive: ['sm'],
+      render: (isDefault: boolean) => (
+        <Tooltip title={t(isDefault ? 'is_default' : 'is_not_default')}>
+          {isDefault ? (
+            <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
+          ) : (
+            <CloseCircleOutlined style={{color: '#F44336', fontSize: 16}} />
+          )}
+        </Tooltip>
+      )
+    },
+    {
+      title: t('static'),
+      dataIndex: 'isStatic',
+      key: 'isStatic',
+      align: 'center',
+      responsive: ['sm'],
+      render: (isStatic: boolean) => (
+        <Tooltip title={t(isStatic ? 'is_static' : 'is_not_static')}>
+          {isStatic ? (
+            <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
+          ) : (
+            <CloseCircleOutlined style={{color: '#F44336', fontSize: 16}} />
+          )}
+        </Tooltip>
+      )
+    },
+    {
+      title: t('created_at'),
+      dataIndex: 'creationTime',
+      key: 'created_at',
+      align: 'center',
+      responsive: ['md'],
+      render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
     {
       title: t('actions'),
@@ -42,49 +79,43 @@ const ShowList: FC = () => {
       key: 'permissions',
       align: 'center',
       render: (permissions: simplePermissionProps, role: any) => (
-        <Space size={2}>
-          {permissions?.update && (
-            <Tooltip title={t('edit')}>
-              <Link to={`/setting/role/edit/${role?.id}`}>
-                <Button type="text" style={{color: '#035aa6'}} icon={<EditOutlined />} />
-              </Link>
-            </Tooltip>
-          )}
-          {permissions?.delete && (
-            <Tooltip title={t('delete')}>
-              <Button
-                type="text"
-                icon={<DeleteOutlined style={{color: 'red'}} />}
-                onClick={() => deleteRequest.show(role)}
-              />
-            </Tooltip>
-          )}
-          <Tooltip title={t('change-role')}>
-            <Link to={`/setting/role/permission/edit/${role?.id}`}>
-              <Button type="text" style={{color: '#10a500'}} icon={<SafetyCertificateOutlined />} />
-            </Link>
-          </Tooltip>
-        </Space>
+        <Tooltip title={t('update')}>
+          <Link to={`/setting/role/edit/${role?.id}`}>
+            <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
+          </Link>
+        </Tooltip>
       )
     }
   ];
+
+  const showSearch = () => {
+    if (searchRef.current) searchRef.current.open();
+  };
+
   return (
     <Card
       title={t('role')}
       extra={
-        hasPermission('roles.store') && (
-          <Link to="/setting/role/new">
-            <Button
-              type="primary"
-              className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"
-              icon={<FormOutlined />}>
-              {t('add_role')}
-            </Button>
-          </Link>
-        )
+        <Space size="small">
+          {!hasPermission('organizations.store') && (
+            <Link to="/setting/role/create">
+              <Button
+                type="primary"
+                className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"
+                icon={<FormOutlined />}>
+                {t('add_role')}
+              </Button>
+            </Link>
+          )}
+          <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
+            {t('filter')}
+          </Button>
+        </Space>
       }>
-      <CustomTable fetch="roles/paginate" dataName="roles" columns={columns} />
+      <Search ref={searchRef} name="name" />
+      <CustomTable fetch="services/app/Role/GetListOfRoles" dataName="roles" columns={columns} hasIndexColumn />
     </Card>
   );
 };
+
 export default ShowList;

@@ -29,6 +29,7 @@ export {default as SimpleSelect} from 'components/select/SimpleSelect';
 export {default as HorizontalSelect} from 'components/select/HorizontalSelect';
 export {default as DrillDownSelectPaginate} from 'components/select/DrillDownSelectPaginate';
 export {default as MultiSelectTime} from 'components/select/MultiSelectTime';
+export {default as TreeSelect} from 'components/select/TreeSelect';
 
 // images
 export {default as ShowImages} from 'components/image/ShowImages';

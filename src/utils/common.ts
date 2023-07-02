@@ -21,6 +21,11 @@ export const isEnLocale = (): boolean => {
   return Boolean(lang && lang?.toString() === 'en');
 };
 
+export const isURL = (str: string): boolean => {
+  const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+  return urlRegex.test(str);
+};
+
 export const validURL = (link: string) => {
   const pattern = new RegExp(
     '^(https?:\\/\\/)?' + // protocol

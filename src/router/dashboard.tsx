@@ -1389,107 +1389,107 @@ const Dashboard: Array<dashboardRouteProps> = [
         hidden: true,
         permission: 'roles.update'
       },
-      {
-        route: '/setting/config/list',
-        cmp: <SettingShows />,
-        title: i18n.t('side_menu:show_configs'),
-        permission: 'configs.view',
-        extra: {
-          route: '/setting/config/new',
-          title: i18n.t('side_menu:create_config'),
-          permission: 'configs.store'
-        }
-      },
-      {
-        route: '/setting/config/new',
-        cmp: <SettingNewShows />,
-        title: i18n.t('side_menu:show_configs'),
-        permission: 'configs.store',
-        hidden: true
-      },
-      {
-        route: '/setting/config/edit/:id',
-        cmp: <SettingEditShows />,
-        title: i18n.t('side_menu:show_configs'),
-        permission: 'configs.update',
-        hidden: true
-      },
-      {
-        route: '/setting/language/list',
-        cmp: <LanguageShowList />,
-        title: i18n.t('side_menu:show_languages'),
-        permission: 'languages.view',
-        extra: {
-          route: '/setting/language/create',
-          title: i18n.t('side_menu:create_language'),
-          permission: 'languages.store'
-        }
-      },
-      {
-        route: '/setting/language/create',
-        cmp: <EditLanguage />,
-        title: i18n.t('side_menu:show_languages'),
-        permission: 'languages.store',
-        hidden: true
-      },
-      {
-        route: '/setting/language/edit/:id',
-        cmp: <EditLanguage />,
-        title: i18n.t('side_menu:show_languages'),
-        permission: 'languages.update',
-        hidden: true
-      },
-      {
-        route: '/setting/behavior/list',
-        cmp: <BehaviorShowList />,
-        title: i18n.t('side_menu:show_behavior'),
-        permission: 'behaviors.view',
-        extra: {
-          route: '/setting/behavior/create',
-          title: i18n.t('side_menu:create_behavior'),
-          permission: 'behaviors.store'
-        }
-      },
-      {
-        route: '/setting/behavior/create',
-        cmp: <EditBehavior />,
-        title: i18n.t('side_menu:show_behavior'),
-        permission: 'behaviors.store',
-        hidden: true
-      },
-      {
-        route: '/setting/behavior/edit/:id',
-        cmp: <EditBehavior />,
-        title: i18n.t('side_menu:show_behavior'),
-        permission: 'behaviors.update',
-        hidden: true
-      },
-      {
-        route: '/setting/location/list',
-        cmp: <LocationShowList />,
-        title: i18n.t('side_menu:show_location'),
-        permission: 'location.view',
-        extra: {
-          route: '/setting/location/create',
-          title: i18n.t('side_menu:create_location'),
-          permission: 'location.store',
-          hidden: true
-        }
-      },
-      {
-        route: '/setting/location/create',
-        cmp: <EditLocation />,
-        title: i18n.t('side_menu:show_location'),
-        permission: 'location.store',
-        hidden: true
-      },
-      {
-        route: '/setting/location/edit/:id',
-        cmp: <EditLocation />,
-        title: i18n.t('side_menu:show_location'),
-        permission: 'location.update',
-        hidden: true
-      },
+      // {
+      //   route: '/setting/config/list',
+      //   cmp: <SettingShows />,
+      //   title: i18n.t('side_menu:show_configs'),
+      //   permission: 'configs.view',
+      //   extra: {
+      //     route: '/setting/config/new',
+      //     title: i18n.t('side_menu:create_config'),
+      //     permission: 'configs.store'
+      //   }
+      // },
+      // {
+      //   route: '/setting/config/new',
+      //   cmp: <SettingNewShows />,
+      //   title: i18n.t('side_menu:show_configs'),
+      //   permission: 'configs.store',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/setting/config/edit/:id',
+      //   cmp: <SettingEditShows />,
+      //   title: i18n.t('side_menu:show_configs'),
+      //   permission: 'configs.update',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/setting/language/list',
+      //   cmp: <LanguageShowList />,
+      //   title: i18n.t('side_menu:show_languages'),
+      //   permission: 'languages.view',
+      //   extra: {
+      //     route: '/setting/language/create',
+      //     title: i18n.t('side_menu:create_language'),
+      //     permission: 'languages.store'
+      //   }
+      // },
+      // {
+      //   route: '/setting/language/create',
+      //   cmp: <EditLanguage />,
+      //   title: i18n.t('side_menu:show_languages'),
+      //   permission: 'languages.store',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/setting/language/edit/:id',
+      //   cmp: <EditLanguage />,
+      //   title: i18n.t('side_menu:show_languages'),
+      //   permission: 'languages.update',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/setting/behavior/list',
+      //   cmp: <BehaviorShowList />,
+      //   title: i18n.t('side_menu:show_behavior'),
+      //   permission: 'behaviors.view',
+      //   extra: {
+      //     route: '/setting/behavior/create',
+      //     title: i18n.t('side_menu:create_behavior'),
+      //     permission: 'behaviors.store'
+      //   }
+      // },
+      // {
+      //   route: '/setting/behavior/create',
+      //   cmp: <EditBehavior />,
+      //   title: i18n.t('side_menu:show_behavior'),
+      //   permission: 'behaviors.store',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/setting/behavior/edit/:id',
+      //   cmp: <EditBehavior />,
+      //   title: i18n.t('side_menu:show_behavior'),
+      //   permission: 'behaviors.update',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/setting/location/list',
+      //   cmp: <LocationShowList />,
+      //   title: i18n.t('side_menu:show_location'),
+      //   permission: 'location.view',
+      //   extra: {
+      //     route: '/setting/location/create',
+      //     title: i18n.t('side_menu:create_location'),
+      //     permission: 'location.store',
+      //     hidden: true
+      //   }
+      // },
+      // {
+      //   route: '/setting/location/create',
+      //   cmp: <EditLocation />,
+      //   title: i18n.t('side_menu:show_location'),
+      //   permission: 'location.store',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/setting/location/edit/:id',
+      //   cmp: <EditLocation />,
+      //   title: i18n.t('side_menu:show_location'),
+      //   permission: 'location.update',
+      //   hidden: true
+      // },
       {
         route: '/setting/application/list',
         cmp: <ApplicationShowList />,
@@ -1515,38 +1515,38 @@ const Dashboard: Array<dashboardRouteProps> = [
         permission: 'versions.update',
         hidden: true
       },
-      {
-        route: '/setting/faqGroup/list',
-        cmp: <FaqGroupShowList />,
-        title: i18n.t('side_menu:show_faq_group'),
-        permission: 'faq_groups.view',
-        extra: {
-          route: '/setting/faqGroup/create',
-          title: i18n.t('side_menu:create_faq_group'),
-          permission: 'faq_groups.store'
-        }
-      },
-      {
-        route: '/setting/faqGroup/create',
-        cmp: <EditFaqGroup />,
-        title: i18n.t('side_menu:show_faq_group'),
-        permission: 'faq_groups.store',
-        hidden: true
-      },
-      {
-        route: '/setting/faqGroup/edit/:id',
-        cmp: <EditFaqGroup />,
-        title: i18n.t('side_menu:show_faq_group'),
-        permission: 'faq_groups.update',
-        hidden: true
-      },
-      {
-        route: '/setting/faqGroup/sort/:id',
-        cmp: <SortFaqGroup />,
-        title: i18n.t('side_menu:show_faq_group'),
-        permission: 'faq_groups.update',
-        hidden: true
-      },
+      // {
+      //   route: '/setting/faqGroup/list',
+      //   cmp: <FaqGroupShowList />,
+      //   title: i18n.t('side_menu:show_faq_group'),
+      //   permission: 'faq_groups.view',
+      //   extra: {
+      //     route: '/setting/faqGroup/create',
+      //     title: i18n.t('side_menu:create_faq_group'),
+      //     permission: 'faq_groups.store'
+      //   }
+      // },
+      // {
+      //   route: '/setting/faqGroup/create',
+      //   cmp: <EditFaqGroup />,
+      //   title: i18n.t('side_menu:show_faq_group'),
+      //   permission: 'faq_groups.store',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/setting/faqGroup/edit/:id',
+      //   cmp: <EditFaqGroup />,
+      //   title: i18n.t('side_menu:show_faq_group'),
+      //   permission: 'faq_groups.update',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/setting/faqGroup/sort/:id',
+      //   cmp: <SortFaqGroup />,
+      //   title: i18n.t('side_menu:show_faq_group'),
+      //   permission: 'faq_groups.update',
+      //   hidden: true
+      // },
       {
         route: '/setting/faq/list',
         cmp: <FaqShowList />,
