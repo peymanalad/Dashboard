@@ -1,4 +1,4 @@
-import {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
+import {AxiosError, AxiosRequestConfig, AxiosResponse, ResponseType} from 'axios';
 import {useQuery} from 'react-query';
 import {useEffect, useState} from 'react';
 import {allocateParamToString, urlGenerator} from 'utils';
@@ -21,6 +21,7 @@ interface IGetConfig {
   cacheTime?: number;
   showError?: boolean;
   isGeneral?: boolean;
+  responseType?: ResponseType;
   enabled?: boolean;
   onSuccess?(data: AxiosResponse): void;
   onError?(error: AxiosError): void;
@@ -33,6 +34,7 @@ const useFetch = ({
   showError = true,
   onSuccess,
   onError,
+  responseType,
   enabled = false,
   staleTime = 180000,
   cacheTime = 600000
@@ -50,7 +52,7 @@ const useFetch = ({
 
   const requestConfig: AxiosRequestConfig = {
     headers: {Authorization: user?.access_token ? `Bearer ${user?.access_token}` : '', silent: !showError},
-
+    responseType,
     url: allocateParamToString(urlGenerator(url), merge(params, dynamicParams?.params)),
     method: 'GET',
     params: merge(query, dynamicParams?.query)

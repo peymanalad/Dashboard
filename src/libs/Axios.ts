@@ -18,7 +18,7 @@ instance.interceptors.response.use(
     }
 
     return {
-      data: response.data?.result,
+      data: response.data?.result || response.data,
       error: response.data?.error,
       success: response.data?.success
     };

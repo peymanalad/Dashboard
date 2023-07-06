@@ -124,6 +124,11 @@ const NewsGroupShowList = lazyWithRetry(() => import('pages/dashboard/news/group
 const EditNewsUserMember = lazyWithRetry(() => import('pages/dashboard/news/user/EditUserMember'));
 const NewsNewUserMemberShowList = lazyWithRetry(() => import('pages/dashboard/news/user/ShowList'));
 
+const NewsLikeShowList = lazyWithRetry(() => import('pages/dashboard/news/like/ShowList'));
+
+const CommentShowList = lazyWithRetry(() => import('pages/dashboard/comment/comment/ShowList'));
+const CommentLikeShowList = lazyWithRetry(() => import('pages/dashboard/comment/like/ShowList'));
+
 // order
 const ServiceShowList = lazyWithRetry(() => import('pages/dashboard/order/service/ShowList'));
 const EditService = lazyWithRetry(() => import('pages/dashboard/order/service/EditService'));
@@ -479,6 +484,12 @@ const Dashboard: Array<dashboardRouteProps> = [
         title: i18n.t('side_menu:editNewsMember'),
         permission: 'NewsMember',
         hidden: true
+      },
+      {
+        route: '/news/like/list',
+        cmp: <NewsLikeShowList />,
+        title: i18n.t('side_menu:likes'),
+        permission: 'comments.view'
       }
     ]
   },
@@ -795,39 +806,39 @@ const Dashboard: Array<dashboardRouteProps> = [
   //     }
   //   ]
   // },
-  // {
-  //   title: i18n.t('side_menu:comments'),
-  //   icon: <MessageOutlined />,
-  //   key: 'comment',
-  //   subs: [
-  //     {
-  //       route: '/comment/doctor/list',
-  //       cmp: <DoctorCommentRcmnd />,
-  //       title: i18n.t('side_menu:doctors'),
-  //       permission: 'comments.view'
-  //     },
-  //     {
-  //       route: '/comment/doctor/edit/:recommendation_id/:reply_id',
-  //       cmp: <DoctorComment />,
-  //       title: i18n.t('side_menu:doctors'),
-  //       permission: 'comments.update',
-  //       hidden: true
-  //     },
-  //     {
-  //       route: '/comment/patient/list',
-  //       cmp: <PatientCommentRcmnd />,
-  //       title: i18n.t('side_menu:patients'),
-  //       permission: 'comments.view'
-  //     },
-  //     {
-  //       route: '/comment/patient/edit/:recommendation_id/:reply_id',
-  //       cmp: <PatientComment />,
-  //       title: i18n.t('side_menu:patients'),
-  //       permission: 'comments.update',
-  //       hidden: true
-  //     }
-  //   ]
-  // },
+  {
+    title: i18n.t('side_menu:comments'),
+    icon: <MessageOutlined />,
+    key: 'comment',
+    subs: [
+      {
+        route: '/comment/comment/list',
+        cmp: <CommentShowList />,
+        title: i18n.t('side_menu:comments'),
+        permission: 'comments.view'
+      },
+      // {
+      //   route: '/comment/doctor/edit/:recommendation_id/:reply_id',
+      //   cmp: <DoctorComment />,
+      //   title: i18n.t('side_menu:doctors'),
+      //   permission: 'comments.update',
+      //   hidden: true
+      // },
+      {
+        route: '/comment/like/list',
+        cmp: <CommentLikeShowList />,
+        title: i18n.t('side_menu:likes'),
+        permission: 'comments.view'
+      }
+      // {
+      //   route: '/comment/patient/edit/:recommendation_id/:reply_id',
+      //   cmp: <PatientComment />,
+      //   title: i18n.t('side_menu:patients'),
+      //   permission: 'comments.update',
+      //   hidden: true
+      // }
+    ]
+  },
   // {
   //   title: i18n.t('side_menu:messages'),
   //   icon: <MailOutlined />,

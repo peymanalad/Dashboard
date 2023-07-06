@@ -13,6 +13,7 @@ const Dashboard: FC = () => {
   const fetchDashboard = useFetch({
     url: 'https://api.ideed.ir/Dashboard',
     name: 'dashboard',
+    // responseType: 'blob',
     staleTime: 10000,
     enabled: true
   });
@@ -35,15 +36,14 @@ const Dashboard: FC = () => {
     );
 
   return (
-    <Row gutter={[8, 8]} className="w-full px-2 m-0">
-      <iframe
-        id="inlineFrameExample"
-        title="Inline Frame Example"
-        width="300"
-        height="200"
-        src="https://api.ideed.ir/Dashboard"
-      />
-    </Row>
+    <iframe
+      id="inlineFrameExample"
+      title="Inline Frame Example"
+      width="100%"
+      style={{height: '80vh'}}
+      srcDoc={`<base href="https://api.ideed.ir">${fetchDashboard?.data}`}
+      // src={URL.createObjectURL(fetchDashboard?.data)}
+    />
   );
 };
 
