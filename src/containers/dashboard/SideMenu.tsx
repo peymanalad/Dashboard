@@ -80,7 +80,7 @@ const SideMenu: ForwardRefRenderFunction<refProps, props> = (props: props, forwa
             <Button type="text" onClick={collapseMenu} icon={<CloseOutlined className="text-white" />} />
           </Row>
         }
-        className="md:d-none"
+        rootClassName="md:d-none"
         closable={false}
         width={350}
         contentWrapperStyle={{maxWidth: '100vw'}}

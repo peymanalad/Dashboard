@@ -12,7 +12,8 @@ import {
   SettingOutlined,
   HomeOutlined,
   SlidersOutlined,
-  BellOutlined
+  BellOutlined,
+  BankOutlined
 } from '@ant-design/icons';
 import {i18n} from 'libs';
 import includes from 'lodash/includes';
@@ -219,7 +220,7 @@ const Dashboard: Array<dashboardRouteProps> = [
   },
   {
     title: i18n.t('side_menu:organization'),
-    icon: <UserOutlined />,
+    icon: <BankOutlined />,
     key: 'organization',
     subs: [
       {
@@ -398,7 +399,7 @@ const Dashboard: Array<dashboardRouteProps> = [
   },
   {
     title: i18n.t('side_menu:news'),
-    icon: <UserOutlined />,
+    icon: <FileTextOutlined />,
     key: 'news',
     subs: [
       {
@@ -1584,23 +1585,23 @@ const Dashboard: Array<dashboardRouteProps> = [
         hidden: true
       }
     ]
-  },
-  {
-    title: i18n.t('side_menu:report'),
-    icon: <SlidersOutlined />,
-    route: '/report',
-    cmp: <Reports />,
-    permission: 'statistics.view',
-    key: 'report',
-    subs: [
-      {
-        route: '/report/api',
-        cmp: <ReportTable />,
-        permission: 'statistics.view',
-        hidden: true
-      }
-    ]
   }
+  // {
+  //   title: i18n.t('side_menu:report'),
+  //   icon: <SlidersOutlined />,
+  //   route: '/report',
+  //   cmp: <Reports />,
+  //   permission: 'statistics.view',
+  //   key: 'report',
+  //   subs: [
+  //     {
+  //       route: '/report/api',
+  //       cmp: <ReportTable />,
+  //       permission: 'statistics.view',
+  //       hidden: true
+  //     }
+  //   ]
+  // }
 ];
 
 export const getFilteredMenusList = (permissions: string[]) =>
