@@ -13,7 +13,7 @@ import {
   LinkOutlined
 } from '@ant-design/icons';
 import {CustomTable} from 'components';
-import {useDelete, useUser} from 'hooks';
+import {useDelete} from 'hooks';
 import {RequiredIcon} from 'assets';
 import isEmpty from 'lodash/isEmpty';
 import {validURL} from 'utils';
