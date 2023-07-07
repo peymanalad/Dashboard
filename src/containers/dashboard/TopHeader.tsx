@@ -1,13 +1,12 @@
-import React, {FC, useRef, useState} from 'react';
-import {Layout, Button, Drawer, Typography, Space, Row, Avatar, Divider, Popover} from 'antd';
-import {CloseOutlined, MenuOutlined, UserOutlined, AlertOutlined, PlusOutlined} from '@ant-design/icons';
+import React, {FC, useState} from 'react';
+import {Layout, Button, Drawer, Typography, Space, Row, Avatar} from 'antd';
+import {CloseOutlined, MenuOutlined, UserOutlined, AlertOutlined} from '@ant-design/icons';
 import {HeaderDetail} from 'containers';
 import {useHistory} from 'react-router-dom';
-import {useFetch, usePost, useUser} from 'hooks';
+import {useFetch, useUser} from 'hooks';
 import pick from 'lodash/pick';
 import values from 'lodash/values';
 import sum from 'lodash/sum';
-import {useTranslation} from 'react-i18next';
 
 interface Props {
   allowFetchDashboard: boolean;
@@ -18,10 +17,8 @@ const {Header} = Layout;
 const {Text} = Typography;
 
 const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
-  const {t} = useTranslation('dashboard');
   const history = useHistory();
   const user = useUser();
-  const addModalRef = useRef<any>();
 
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
@@ -31,12 +28,6 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
     isGeneral: true,
     staleTime: 10000,
     enabled: allowFetchDashboard
-  });
-
-  const logout = usePost({
-    url: 'auth/logout',
-    method: 'POST',
-    showError: false
   });
 
   const navigateToProfile = () => {
@@ -56,15 +47,6 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
     'strength_and_weakness_answers_count'
   ]);
 
-  const accounts = (
-    <div className="flex flex-col w-full">
-      <Divider className="my-2" />
-      <Button onClick={() => addModalRef.current.open()} type="primary" icon={<PlusOutlined />} className="w-full">
-        {t('add_account')}
-      </Button>
-    </div>
-  );
-
   const collapseMenu = () => setCollapsed((prevState: boolean) => !prevState);
 
   return (
@@ -81,27 +63,14 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
       </Row>
       <Row className="d-none md:d-flex flex-row flex-no-wrap items-center justify-between w-full">
         <HeaderDetail data={headerData} />
-        {user.hasPermission('users.switch') || user.is_logged_in ? (
-          <Popover content={accounts} title={t('your_accounts')} placement="bottomRight">
-            <Button className="cursor-pointer items-center h-full border-0 bg-transparent" onClick={navigateToProfile}>
-              <Space>
-                <Avatar size={40} icon={<UserOutlined />} src={user?.getInfo()?.avatar} />
-                <Text className="text-sm" strong>
-                  {user?.getInfo()?.full_name}
-                </Text>
-              </Space>
-            </Button>
-          </Popover>
-        ) : (
-          <Button className="cursor-pointer bg-transparent items-center h-full border-0" onClick={navigateToProfile}>
-            <Space>
-              <Avatar size={40} icon={<UserOutlined />} src={user?.getInfo()?.avatar} />
-              <Text className="text-sm" strong>
-                {user?.getInfo()?.full_name}
-              </Text>
-            </Space>
-          </Button>
-        )}
+        <Button className="cursor-pointer bg-transparent items-center h-full border-0" onClick={navigateToProfile}>
+          <Space>
+            <Avatar size={40} icon={<UserOutlined />} src={user?.getInfo()?.avatar} />
+            <Text className="text-sm" strong>
+              {user?.getInfo()?.full_name}
+            </Text>
+          </Space>
+        </Button>
       </Row>
       <Drawer
         title={

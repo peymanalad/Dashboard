@@ -2485,8 +2485,11 @@
     "behavior": "رفتار",
     "description": "توضیحات",
     "location": "مکان",
+    "link": "لینک",
+    "build_number": "شماره نسخه",
     "read_clipboard": "خواندن کلیپ بورد",
     "setting": "تنظیمات",
+    "goto_link": "رفتن به لینک",
     "locations": "مکان‌ها",
     "application": "اپلیکیشن",
     "add_location": "اضافه‌کردن مکان",
@@ -2524,8 +2527,8 @@
     "direction": "جهت",
     "meta": "اطلاعات",
     "changes": "تغییرات",
-    "required": "ضرروری",
-    "not_required": "غیر ضرروری",
+    "required": "ضروری",
+    "not_required": "غیر ضروری",
     "os": "سیستم عامل",
     "version": "نسخه",
     "add_application": "اضافه کردن اپلیکیشن",
@@ -2626,7 +2629,8 @@
     "messages": {
       "delete": "آیا در مورد حذف {{id}} اطمینان خاطر دارید؟",
       "sameParentLocation": "مکان والد نمیتواند همین مکان باشد",
-      "required": "این فیلد الزامی است"
+      "required": "این فیلد الزامی است",
+      "url": "لطفا لینک را به درستی وارد کنید"
     }
   },
   "charts": {

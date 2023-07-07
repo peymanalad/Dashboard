@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
-import {Card, Form, Row, Col, Input, Button} from 'antd';
-import {SaveOutlined} from '@ant-design/icons';
+import {Card, Form, Row, Col, Input, Button, Checkbox} from 'antd';
+import {SaveOutlined, SearchOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {JsonEditor, SimpleSelect} from 'components';
-import {requiredVersionType, OSType, AppType} from 'assets';
+import {SimpleSelect} from 'components';
+import {requiredVersionType, OSType} from 'assets';
 import {getLangSearchParam} from 'utils';
 import map from 'lodash/map';
 
@@ -17,27 +17,16 @@ const EditApplication: FC = () => {
   const [form] = Form.useForm();
 
   const fetchVersion = useFetch({
-    name: ['version', id],
-    url: 'versions/{id}',
-    params: {id},
+    name: ['softwareUpdates', id],
+    url: '/services/app/SoftwareUpdates/GetSoftwareUpdateForEdit',
+    query: {Id: id},
     enabled: !!id
   });
 
   const storeVersion = usePost({
-    url: '/versions',
+    url: '/services/app/SoftwareUpdates/CreateOrEdit',
     method: 'POST',
-    removeQueries: ['versions'],
-    form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace(getLangSearchParam('/setting/application/list'));
-    }
-  });
-
-  const updateVersion = usePost({
-    url: 'versions/{id}',
-    method: 'PATCH',
-    removeQueries: ['versions', ['version', id]],
+    removeQueries: ['softwareUpdates'],
     form,
     onSuccess: () => {
       if (history.length > 1 && document.URL !== document.referrer) history.goBack();
@@ -46,7 +35,7 @@ const EditApplication: FC = () => {
   });
 
   const onFinish = (values: any) => {
-    id ? updateVersion.post(values, {}, {id}) : storeVersion.post(values);
+    storeVersion.post({id, ...values});
   };
 
   return (
@@ -59,41 +48,28 @@ const EditApplication: FC = () => {
         <Row gutter={[16, 8]} className="w-full">
           <Col xs={24} md={12} lg={6}>
             <Form.Item
-              name="version"
+              name="softwareVersion"
               label={t('version')}
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchVersion?.data?.version}>
+              initialValue={fetchVersion?.data?.softwareUpdate.softwareVersion}>
               <Input className="w-full ltr-input" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={6}>
             <Form.Item
-              name="type"
-              label={t('type')}
+              name="buildNo"
+              label={t('build_number')}
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchVersion?.data?.type}>
-              <SimpleSelect keys="name" label="name" data={AppType} />
+              initialValue={fetchVersion?.data?.softwareUpdate.buildNo}>
+              <Input type="number" className="w-full ltr-input" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={6}>
             <Form.Item
-              name="required"
-              label={t('required')}
-              rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchVersion?.data?.required}>
-              <SimpleSelect
-                keys="id"
-                label="name_fa"
-                data={map(requiredVersionType, (value) => ({...value, name_fa: t(value?.name)}))}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={6}>
-            <Form.Item
-              name="os"
+              name="platform"
               label={t('os')}
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchVersion?.data?.os}>
+              initialValue={fetchVersion?.data?.softwareUpdate.platform}>
               <SimpleSelect
                 keys="name"
                 label="name_fa"
@@ -101,32 +77,55 @@ const EditApplication: FC = () => {
               />
             </Form.Item>
           </Col>
+          <Col xs={24} md={12} lg={6} className="flex-center">
+            <Form.Item
+              name="forceUpdate"
+              valuePropName="checked"
+              className="m-0"
+              initialValue={!!fetchVersion?.data?.softwareUpdate?.forceUpdate}>
+              <Checkbox>{t('required')}</Checkbox>
+            </Form.Item>
+          </Col>
           <Col span={24}>
             <Form.Item
-              name="change_log"
+              name="whatsNew"
               label={t('changes')}
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchVersion?.data?.change_log}>
+              initialValue={fetchVersion?.data?.softwareUpdate.whatsNew}>
               <Input.TextArea />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={[16, 8]} className="w-full">
-          <Form.Item
-            name="meta"
-            label={t('meta')}
-            className="w-full"
-            rules={[{required: true, message: t('messages.required')}]}
-            initialValue={fetchVersion?.data?.meta}>
-            <JsonEditor disableClipboard />
-          </Form.Item>
+          <Col xs={24}>
+            <Input.Group compact className="flex-center">
+              <Form.Item
+                name="updatePath"
+                label={t('link')}
+                style={{width: '80%'}}
+                rules={[{type: 'url', message: t('messages.url')}]}
+                initialValue={fetchVersion?.data?.softwareUpdate.updatePath}>
+                <Input className="ltr-input rounded-l-none" dir="ltr" style={{marginBottom: '4px'}} />
+              </Form.Item>
+              <Button
+                type="primary"
+                className="d-text-none sm:d-text-unset"
+                style={{width: '20%'}}
+                icon={<SearchOutlined />}
+                onClick={() => {
+                  window.open(form.getFieldValue('updatePath'));
+                }}>
+                {t('goto_link')}
+              </Button>
+            </Input.Group>
+          </Col>
         </Row>
         <Row gutter={[16, 8]} className="w-full my-5">
           <Button
             className="w-full sm:w-unset mr-auto my-4"
             type="primary"
             htmlType="submit"
-            loading={updateVersion.isLoading || storeVersion.isLoading}
+            loading={storeVersion.isLoading}
             icon={<SaveOutlined />}>
             {t('save')}
           </Button>
