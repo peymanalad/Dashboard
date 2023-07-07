@@ -1,22 +1,38 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Row, Spin, Space, Typography, Image} from 'antd';
+import {Stimulsoft} from 'stimulsoft-dashboards-js/Scripts/stimulsoft.viewer';
 import {useFetch} from 'hooks';
 import {dashboardImage} from 'assets';
 import isNil from 'lodash/isNil';
 
 const {Text} = Typography;
 
+const viewer = new Stimulsoft.Viewer.StiViewer(undefined, 'StiViewer', false);
+const report = Stimulsoft.Report.StiReport.createNewDashboard();
+
 const Dashboard: FC = () => {
   const {t} = useTranslation('dashboard');
 
+  useEffect(() => {
+    Stimulsoft.Base.StiLicense.loadFromString(process.env.REACT_APP_STIMULSOFT_LICENCE_KEY!);
+  }, []);
+
   const fetchDashboard = useFetch({
-    url: 'https://api.ideed.ir/Dashboard',
+    url: 'https://api.ideed.ir/Dashboard/Js',
     name: 'dashboard',
-    // responseType: 'blob',
+    responseType: 'text',
     staleTime: 10000,
     enabled: true
   });
+
+  useEffect(() => {
+    if (fetchDashboard?.data) {
+      report.load(fetchDashboard?.data);
+      viewer.report = report;
+      viewer.renderHtml('viewer');
+    }
+  }, [fetchDashboard?.data]);
 
   if (fetchDashboard?.isFetching)
     return (
@@ -35,16 +51,7 @@ const Dashboard: FC = () => {
       </Row>
     );
 
-  return (
-    <iframe
-      id="inlineFrameExample"
-      title="Inline Frame Example"
-      width="100%"
-      style={{height: '80vh'}}
-      srcDoc={`<base href="https://api.ideed.ir">${fetchDashboard?.data}`}
-      // src={URL.createObjectURL(fetchDashboard?.data)}
-    />
-  );
+  return <div id="viewer" className="App" />;
 };
 
 export default Dashboard;
