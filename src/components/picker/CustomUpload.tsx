@@ -81,7 +81,7 @@ const CustomUpload = ({
   const antdUploadRef = useRef<ElementRef<typeof Upload>>(null);
   const user = useUser();
 
-  const action = 'https://a.deed.com/general/v1/files/upload';
+  const action = 'https://api.ideed.ir/SoftwareUpdates/UploadUpdateFileFile';
   const headers = {
     Authorization: `Bearer ${user?.access_token}`,
     'content-type': 'multipart/form-data'
@@ -154,9 +154,12 @@ const CustomUpload = ({
     checkConditionForSendFile(files)
       .then(async () => {
         const formData = new FormData();
-        formData.append('type', type);
+        // formData.append('type', type);
         formData.append('file', files.file);
-        if (type === 'visits' || type === 'users' || type === 'messages') formData.append('user_id', user.getId());
+        formData.append('FileName', 'sina.apk');
+        formData.append('FileType', 'application/octet-stream');
+        formData.append('FileToken', '048a74e7-5ed4-42a2-bc1e-8d22f4b5f620');
+        // if (type === 'visits' || type === 'users' || type === 'messages') formData.append('user_id', user.getId());
         const config = {
           headers: files.headers,
           timeout: 120000,
@@ -168,7 +171,7 @@ const CustomUpload = ({
           const res = await axios.post(files.action, formData, config);
           if (res?.status === 200) {
             message.success(t('file_uploaded_successfully'));
-            if (files?.onSuccess) files.onSuccess(res?.data?.data);
+            if (files?.onSuccess) files.onSuccess(res?.data?.result);
           } else {
             message.error(t('file_upload_failed'));
             if (files?.onError) files.onError();
@@ -185,9 +188,9 @@ const CustomUpload = ({
   };
 
   const onRemove = (file: any) => {
-    if (notifyDelete && (file?.url || file?.path)) {
+    if (notifyDelete && (file?.url || file?.fileToken)) {
       const formData = new URLSearchParams();
-      formData.append('path', file?.path || file?.url);
+      formData.append('path', file?.fileToken || file?.url);
       formData.append('type', type);
       const options: any = {
         method: 'DELETE',
@@ -235,6 +238,8 @@ const CustomUpload = ({
         return 'video/*';
       case 'pdf':
         return 'application/pdf';
+      case 'application':
+        return '*/*';
       case 'excel':
         return '.csv ,application/vnd.ms-excel ,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
       default:

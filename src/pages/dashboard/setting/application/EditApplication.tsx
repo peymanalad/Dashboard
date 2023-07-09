@@ -1,12 +1,12 @@
 import React, {FC} from 'react';
 import {Card, Form, Row, Col, Input, Button, Checkbox} from 'antd';
-import {SaveOutlined, SearchOutlined} from '@ant-design/icons';
+import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {SimpleSelect} from 'components';
-import {requiredVersionType, OSType} from 'assets';
-import {getLangSearchParam} from 'utils';
+import {CustomUpload, SimpleSelect} from 'components';
+import {OSType} from 'assets';
+import {getImageUrl, getLangSearchParam} from 'utils';
 import map from 'lodash/map';
 
 const EditApplication: FC = () => {
@@ -35,7 +35,7 @@ const EditApplication: FC = () => {
   });
 
   const onFinish = (values: any) => {
-    storeVersion.post({id, ...values});
+    storeVersion.post({id, ...values, updateFileToken: values?.updateFileToken?.fileToken});
   };
 
   return (
@@ -46,7 +46,7 @@ const EditApplication: FC = () => {
       className="w-full">
       <Form form={form} layout="vertical" name="version" requiredMark={false} onFinish={onFinish}>
         <Row gutter={[16, 8]} className="w-full">
-          <Col xs={24} md={12} lg={6}>
+          <Col xs={24} md={12} lg={8}>
             <Form.Item
               name="softwareVersion"
               label={t('version')}
@@ -55,7 +55,7 @@ const EditApplication: FC = () => {
               <Input className="w-full ltr-input" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={6}>
+          <Col xs={24} md={12} lg={8}>
             <Form.Item
               name="buildNo"
               label={t('build_number')}
@@ -64,7 +64,20 @@ const EditApplication: FC = () => {
               <Input type="number" className="w-full ltr-input" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={6}>
+          <Col xs={24} md={12} lg={8} className="flex upload-center">
+            <Form.Item
+              name="updateFileToken"
+              noStyle
+              initialValue={
+                fetchVersion?.data?.softwareUpdate?.updateFile && {
+                  updateFileToken: fetchVersion?.data?.softwareUpdate?.updateFile,
+                  url: getImageUrl(fetchVersion?.data?.softwareUpdate?.updateFile)
+                }
+              }>
+              <CustomUpload type="users" name="apk" mode="single" typeFile="application" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={8}>
             <Form.Item
               name="platform"
               label={t('os')}
@@ -77,7 +90,7 @@ const EditApplication: FC = () => {
               />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={6} className="flex-center">
+          <Col xs={24} md={12} lg={8} className="flex-center">
             <Form.Item
               name="forceUpdate"
               valuePropName="checked"
@@ -94,30 +107,6 @@ const EditApplication: FC = () => {
               initialValue={fetchVersion?.data?.softwareUpdate.whatsNew}>
               <Input.TextArea />
             </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={[16, 8]} className="w-full">
-          <Col xs={24}>
-            <Input.Group compact className="flex-center">
-              <Form.Item
-                name="updatePath"
-                label={t('link')}
-                style={{width: '80%'}}
-                rules={[{type: 'url', message: t('messages.url')}]}
-                initialValue={fetchVersion?.data?.softwareUpdate.updatePath}>
-                <Input className="ltr-input rounded-l-none" dir="ltr" style={{marginBottom: '4px'}} />
-              </Form.Item>
-              <Button
-                type="primary"
-                className="d-text-none sm:d-text-unset"
-                style={{width: '20%'}}
-                icon={<SearchOutlined />}
-                onClick={() => {
-                  window.open(form.getFieldValue('updatePath'));
-                }}>
-                {t('goto_link')}
-              </Button>
-            </Input.Group>
           </Col>
         </Row>
         <Row gutter={[16, 8]} className="w-full my-5">

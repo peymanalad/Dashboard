@@ -92,17 +92,6 @@ const ShowList: FC = () => {
       align: 'center',
       render: (updatePath: string, softwareUpdate: any) => (
         <Space size={2}>
-          <Tooltip title={t('goto_link')}>
-            <Button
-              type="text"
-              style={{
-                color: validURL(updatePath) ? '#009a9a' : ''
-              }}
-              icon={<LinkOutlined />}
-              disabled={!validURL(updatePath)}
-              onClick={() => window.open(updatePath)}
-            />
-          </Tooltip>
           <Tooltip title={t('update')}>
             <Link to={`/setting/application/edit/${softwareUpdate?.softwareUpdate?.id}`}>
               <Button type="text" icon={<EditOutlined style={{color: '#035aa6'}} />} />
