@@ -1046,6 +1046,9 @@
 .bg-red {
   background-color: red;
 }
+.bg-grayDark {
+  background: var(--color-grayDark) !important;
+}
 .hover\:border-summerSky:hover {
   border-color: var(--color-summerSky);
 }
@@ -1418,6 +1421,9 @@
 }
 .text-grayLight {
   color: #8a8a8a !important;
+}
+.text-grayDark {
+  color: var(--color-grayDark) !important;
 }
 .text-grayDarker {
   color: var(--color-grayDarker) !important;

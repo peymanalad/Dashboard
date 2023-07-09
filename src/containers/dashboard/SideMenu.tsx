@@ -58,13 +58,13 @@ const SideMenu: ForwardRefRenderFunction<refProps, props> = (props: props, forwa
               <Space align="center" size={1} className="flex flex-row">
                 <Avatar size={30} src={DeedLogoImg} />
                 <CSSTransition in={!collapsed} timeout={600} classNames="menu-title" unmountOnExit>
-                  <Text className="px-3 text-lg text-blueDarker font-bold">{t('deed')}</Text>
+                  <Text className="px-3 text-lg text-white font-bold">{t('deed')}</Text>
                 </CSSTransition>
                 <Button
                   type="text"
                   onClick={collapseMenu}
                   className="d-none lg:d-block"
-                  icon={<RightOutlined className={`text-blueDarker font-bold ${collapsed ? 'rotate-180' : ''}`} />}
+                  icon={<RightOutlined className={`text-white font-bold ${collapsed ? 'rotate-180' : ''}`} />}
                 />
               </Space>
             </Row>
@@ -76,7 +76,7 @@ const SideMenu: ForwardRefRenderFunction<refProps, props> = (props: props, forwa
         title={
           <Row className="flex flex-row justify-between items-center">
             <Avatar size={40} src={DeedLogoImg} />
-            <Text className="px-3 text-lg text-blueDarker font-bold">{t('deed')}</Text>
+            <Text className="px-3 text-lg text-white font-bold">{t('deed')}</Text>
             <Button type="text" onClick={collapseMenu} icon={<CloseOutlined className="text-white" />} />
           </Row>
         }
@@ -84,8 +84,8 @@ const SideMenu: ForwardRefRenderFunction<refProps, props> = (props: props, forwa
         closable={false}
         width={350}
         contentWrapperStyle={{maxWidth: '100vw'}}
-        bodyStyle={{paddingRight: 0, paddingLeft: 0, background: '#001529'}}
-        headerStyle={{background: '#001529', color: 'white', paddingTop: '1.5rem'}}
+        bodyStyle={{paddingRight: 0, paddingLeft: 0, background: '#0A325A'}}
+        headerStyle={{background: '#0A325A', color: 'white', paddingTop: '1.5rem'}}
         placement="right"
         onClose={collapseMenu}
         visible={collapsed}>

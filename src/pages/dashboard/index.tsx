@@ -20,6 +20,7 @@ const Dashboard: FC = () => {
   const sideMenuRef = useRef<ElementRef<typeof SideMenu>>(null);
   const location = useLocation();
   const user = useUser();
+  const isDashboard = includes(location.pathname, 'dashboard');
   const isChatSection = useMemo(
     () =>
       includes(location.pathname, 'comment/doctor/edit') ||
@@ -39,18 +40,22 @@ const Dashboard: FC = () => {
   });
 
   return (
-    <Layout className="w-screen h-screen">
+    <Layout className={`w-screen h-screen ${isDashboard ? 'bg-grayDark' : ''}`}>
       <SideMenu ref={sideMenuRef} />
       <Scrollbars id="MainContent" style={{width: '0'}}>
         <Layout className={`${isChatSection ? 'h-full md:h-unset' : ''}`}>
-          <TopHeader
-            allowFetchDashboard={fetchMenu.isSuccess}
-            onMenuClick={() => {
-              if (sideMenuRef.current) sideMenuRef.current.collapseMenu();
-            }}
-          />
+          {!isDashboard && (
+            <TopHeader
+              allowFetchDashboard={fetchMenu.isSuccess}
+              onMenuClick={() => {
+                if (sideMenuRef.current) sideMenuRef.current.collapseMenu();
+              }}
+            />
+          )}
           <Content
-            className={`mt-4 w-full h-full m-0 min-h-75vh px-0 md:px-6 ${!isChatSection ? 'py-6' : 'py-0 md:py-6'}`}>
+            className={`mt-4 w-full h-full m-0 min-h-75vh px-0 ${!isDashboard ? 'md:px-6' : ''}  ${
+              !isChatSection ? (isDashboard ? '' : 'py-6') : 'py-0 md:py-6'
+            }`}>
             <Suspense fallback={<FullScreenLoading />}>
               {fetchMenu?.isFetching && (
                 <Row justify="center" align="middle" className="min-h-75vh">
@@ -82,12 +87,14 @@ const Dashboard: FC = () => {
               </Switch>
             </Suspense>
           </Content>
-          <Footer
-            className={`w-full flex-col sm:flex-row justify-around items-center p-8 ${
-              isChatSection ? 'd-none md:d-flex' : 'd-flex'
-            }`}>
-            <Text className="text-gray">{t('footer.message', {version: process.env?.REACT_APP_APP_VERSION})}</Text>
-          </Footer>
+          {!isDashboard && (
+            <Footer
+              className={`w-full flex-col sm:flex-row justify-around items-center p-8 ${
+                isChatSection ? 'd-none md:d-flex' : 'd-flex'
+              }`}>
+              <Text className="text-gray">{t('footer.message', {version: process.env?.REACT_APP_APP_VERSION})}</Text>
+            </Footer>
+          )}
         </Layout>
       </Scrollbars>
     </Layout>

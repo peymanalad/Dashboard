@@ -14,10 +14,6 @@ const report = Stimulsoft.Report.StiReport.createNewDashboard();
 const Dashboard: FC = () => {
   const {t} = useTranslation('dashboard');
 
-  useEffect(() => {
-    Stimulsoft.Base.StiLicense.loadFromString(process.env.REACT_APP_STIMULSOFT_LICENCE_KEY!);
-  }, []);
-
   const fetchDashboard = useFetch({
     url: 'https://api.ideed.ir/Dashboard/Js',
     name: 'dashboard',
@@ -28,6 +24,7 @@ const Dashboard: FC = () => {
 
   useEffect(() => {
     if (fetchDashboard?.data) {
+      Stimulsoft.Base.StiLicense.loadFromString(process.env.REACT_APP_STIMULSOFT_LICENCE_KEY!);
       report.load(fetchDashboard?.data);
       viewer.report = report;
       viewer.renderHtml('viewer');
@@ -51,7 +48,7 @@ const Dashboard: FC = () => {
       </Row>
     );
 
-  return <div id="viewer" className="App" />;
+  return <div id="viewer" className="ltr" />;
 };
 
 export default Dashboard;

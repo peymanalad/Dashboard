@@ -44,7 +44,7 @@ span {
   font-size: 0.95rem;
 }
 div {
-  font-size: 1rem !important;
+  font-size: 1rem;
 }
 
 .ant-form-item-label label {
@@ -317,7 +317,7 @@ button.ant-btn.d-text-unset span:last-child {
 }
 
 .bg-header {
-  background-color: #001529;
+  background-color: #0A325A;
 }
 
 h5.ant-typography,
