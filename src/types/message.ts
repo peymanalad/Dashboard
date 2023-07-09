@@ -42,21 +42,21 @@ export type chatType = 'sound' | 'text' | 'image' | 'video' | 'prescription' | '
 export type commentType = 'support_to_patient' | 'support_to_doctor' | 'research_to_research';
 
 export interface chatMessageProps {
+  userId: number;
+  tenantId: number;
+  targetUserId: number;
+  targetTenantId: number;
+  side: number;
+  readState: number;
+  receiverReadState: number;
+  message: string;
+  creationTime: string;
+  sharedMessageId: string;
   id: number;
   recommendation_id?: {id: number; title: string};
-  from?: user;
-  to?: user | null;
-  from_id?: number;
-  to_id?: number;
-  user?: user;
-  mentions?: userProps[];
   content: any;
-  created_at: string;
-  ticket_id?: number;
   status?: chatStatus;
-  reply?: replyUpdateProps;
   type: chatType;
-  permissions?: permissions;
 }
 
 export interface commentMessageProps {

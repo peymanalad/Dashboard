@@ -172,6 +172,8 @@ const SupportChatList = lazyWithRetry(() => import('pages/dashboard/message/supp
 const SupportChat = lazyWithRetry(() => import('pages/dashboard/message/support/Chat'));
 const TicketList = lazyWithRetry(() => import('pages/dashboard/message/ticket/ShowList'));
 const ShowTicket = lazyWithRetry(() => import('pages/dashboard/message/ticket/ShowTicket'));
+const FriendChatList = lazyWithRetry(() => import('pages/dashboard/message/friend/ShowList'));
+const FriendChat = lazyWithRetry(() => import('pages/dashboard/message/friend/Chat'));
 
 // permission
 const PermissionRole = lazyWithRetry(() => import('pages/dashboard/setting/role/ShowList'));
@@ -840,65 +842,65 @@ const Dashboard: Array<dashboardRouteProps> = [
       // }
     ]
   },
-  // {
-  //   title: i18n.t('side_menu:messages'),
-  //   icon: <MailOutlined />,
-  //   key: 'message',
-  //   subs: [
-  //     {
-  //       route: '/message/default/list',
-  //       cmp: <DefaultMessageShowList />,
-  //       title: i18n.t('side_menu:default_question_messages_view'),
-  //       permission: 'default_question_messages.view',
-  //       extra: {
-  //         route: '/message/default/create',
-  //         title: i18n.t('side_menu:create_default_question_messages'),
-  //         permission: 'default_question_messages.store'
-  //       }
-  //     },
-  //     {
-  //       route: '/message/default/create',
-  //       cmp: <EditDefaultMessage />,
-  //       title: i18n.t('side_menu:default_question_messages_view'),
-  //       permission: 'default_question_messages.store',
-  //       hidden: true
-  //     },
-  //     {
-  //       route: '/message/default/edit/:id',
-  //       cmp: <EditDefaultMessage />,
-  //       title: i18n.t('side_menu:default_question_messages_view'),
-  //       permission: 'default_question_messages.update',
-  //       hidden: true
-  //     },
-  //
-  //     {
-  //       route: '/message/support/list',
-  //       cmp: <SupportChatList />,
-  //       title: i18n.t('side_menu:support_view'),
-  //       permission: 'support_messages.view'
-  //     },
-  //     {
-  //       route: '/message/support/chat/:user_id',
-  //       cmp: <SupportChat />,
-  //       title: i18n.t('side_menu:support_view'),
-  //       permission: 'support_messages.store',
-  //       hidden: true
-  //     },
-  //     {
-  //       route: '/message/ticket/list',
-  //       cmp: <TicketList />,
-  //       title: i18n.t('side_menu:ticket_view'),
-  //       permission: 'tickets.view'
-  //     },
-  //     {
-  //       route: '/message/ticket/:patient_id/:doctor_id',
-  //       cmp: <ShowTicket />,
-  //       title: i18n.t('side_menu:ticket_view'),
-  //       permission: 'messages.view',
-  //       hidden: true
-  //     }
-  //   ]
-  // },
+  {
+    title: i18n.t('side_menu:messages'),
+    icon: <MailOutlined />,
+    key: 'message',
+    subs: [
+      // {
+      //   route: '/message/default/list',
+      //   cmp: <DefaultMessageShowList />,
+      //   title: i18n.t('side_menu:default_question_messages_view'),
+      //   permission: 'default_question_messages.view',
+      //   extra: {
+      //     route: '/message/default/create',
+      //     title: i18n.t('side_menu:create_default_question_messages'),
+      //     permission: 'default_question_messages.store'
+      //   }
+      // },
+      // {
+      //   route: '/message/default/create',
+      //   cmp: <EditDefaultMessage />,
+      //   title: i18n.t('side_menu:default_question_messages_view'),
+      //   permission: 'default_question_messages.store',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/message/default/edit/:id',
+      //   cmp: <EditDefaultMessage />,
+      //   title: i18n.t('side_menu:default_question_messages_view'),
+      //   permission: 'default_question_messages.update',
+      //   hidden: true
+      // },
+
+      {
+        route: '/message/friend/list',
+        cmp: <FriendChatList />,
+        title: i18n.t('side_menu:friends'),
+        permission: 'support_messages.view'
+      },
+      {
+        route: '/message/friend/:user_id',
+        cmp: <FriendChat />,
+        title: i18n.t('side_menu:friends'),
+        permission: 'support_messages.store',
+        hidden: true
+      }
+      // {
+      //   route: '/message/ticket/list',
+      //   cmp: <TicketList />,
+      //   title: i18n.t('side_menu:ticket_view'),
+      //   permission: 'tickets.view'
+      // },
+      // {
+      //   route: '/message/ticket/:patient_id/:doctor_id',
+      //   cmp: <ShowTicket />,
+      //   title: i18n.t('side_menu:ticket_view'),
+      //   permission: 'messages.view',
+      //   hidden: true
+      // }
+    ]
+  },
   // {
   //   title: i18n.t('side_menu:orders'),
   //   icon: <ReconciliationOutlined />,

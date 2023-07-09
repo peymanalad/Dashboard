@@ -51,7 +51,7 @@ const MessageActions = ({
     if (setReply)
       setReply({
         id: data?.id,
-        user: data?.user,
+        // user: data?.userId,
         type: data?.type || 'text',
         content: data?.content,
         isReply: true
@@ -63,7 +63,7 @@ const MessageActions = ({
     if (setReply)
       setReply({
         id: data?.id,
-        user: data?.user,
+        // user: data?.userId,
         type: data?.type || 'text',
         content: data?.content,
         isReply: false

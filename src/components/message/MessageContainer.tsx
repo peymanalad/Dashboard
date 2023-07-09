@@ -338,11 +338,6 @@ const MessageContainer = ({
                 after={get(messages, index + 1)}
                 getReply={getReplyData}
                 hasReply={hasReply}
-                hasUpdate={message?.permissions?.update}
-                hasDelete={message?.permissions?.delete}
-                hasConfirm={message?.permissions?.confirm}
-                hasReject={message?.permissions?.reject}
-                hasRead={message?.permissions?.read}
                 actionLoading={
                   loadingId === message?.id &&
                   (deleteMessage.isLoading ||

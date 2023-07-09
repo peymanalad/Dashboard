@@ -88,7 +88,10 @@
     "Invalid_user_name_or_password": "نام کاربری یا رمزعبور اشتباه است"
   },
   "login": {
+    "deed": "دیـــــد",
     "login_page": "صفحه ورود",
+    "download_app": "دانلود اپلیکیشن دیــد",
+    "to_login_admin": "ورود به ادمین پنل دیــد",
     "login": "ورود",
     "setting": "تنظیمات",
     "save": "ذخیره",
@@ -101,6 +104,7 @@
       "required_username": "نام کاربری خود را وارد کنید",
       "required_password": "رمزعبور خود را وارد کنید",
       "correct_url": "لطفا آدرس را به درستی وارد کنید",
+      "welcome_to_deed": "به سامانه دیــــد خوش آمدید",
       "welcome": "به ادمین پنل دیــــد خوش آمدید"
     }
   },
@@ -165,6 +169,7 @@
     "factor_view": "فاکتورها",
     "tax_view": "مالیات",
     "support_view": "پشتیبانی",
+    "friends": "دوستان",
     "ticket_view": "تیکت",
     "importantAnswer_view": "پاسخ‌های مهم",
     "default_question_messages_view": "پیام پیش‌ فرض",

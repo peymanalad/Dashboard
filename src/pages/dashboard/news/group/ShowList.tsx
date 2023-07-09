@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
 import {useDelete, useUser} from 'hooks';
 import {simplePermissionProps} from 'types/common';
-import {getImageUrl} from '../../../../utils';
+import {getImageUrl} from 'utils';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
