@@ -1,18 +1,18 @@
 import React, {FC, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Row, Spin, Space, Typography, Image} from 'antd';
-import {Stimulsoft} from 'stimulsoft-dashboards-js/Scripts/stimulsoft.viewer';
-import {useFetch} from 'hooks';
+import {Stimulsoft, StiOptions} from 'stimulsoft-dashboards-js/Scripts/stimulsoft.viewer';
+import {useFetch, useUser} from 'hooks';
 import {dashboardImage} from 'assets';
 import isNil from 'lodash/isNil';
 
 const {Text} = Typography;
 
 const viewer = new Stimulsoft.Viewer.StiViewer(undefined, 'StiViewer', false);
-const report = Stimulsoft.Report.StiReport.createNewDashboard();
 
 const Dashboard: FC = () => {
   const {t} = useTranslation('dashboard');
+  const user = useUser();
 
   const fetchDashboard = useFetch({
     url: 'https://api.ideed.ir/Dashboard/Js',
@@ -24,10 +24,17 @@ const Dashboard: FC = () => {
 
   useEffect(() => {
     if (fetchDashboard?.data) {
+      const report = Stimulsoft.Report.StiReport.createNewDashboard();
+      StiOptions.WebServer.url = 'https://api.ideed.ir/DataAdapters';
+      StiOptions.WebServer.encryptData = false;
+      StiOptions.WebServer.checkDataAdaptersVersion = false;
       Stimulsoft.Base.StiLicense.loadFromString(process.env.REACT_APP_STIMULSOFT_LICENCE_KEY!);
+      report.onBeginProcessData = function (args) {
+        args.headers.push({key: 'Authorization', value: `Bearer ${user.access_token}`});
+      };
       report.load(fetchDashboard?.data);
       viewer.report = report;
-      viewer.renderHtml('viewer');
+      viewer.renderHtml('dashboard-viewer');
     }
   }, [fetchDashboard?.data]);
 
@@ -48,7 +55,7 @@ const Dashboard: FC = () => {
       </Row>
     );
 
-  return <div id="viewer" className="ltr" />;
+  return <div id="dashboard-viewer" className="ltr" />;
 };
 
 export default Dashboard;

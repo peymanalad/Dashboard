@@ -154,12 +154,10 @@ const CustomUpload = ({
     checkConditionForSendFile(files)
       .then(async () => {
         const formData = new FormData();
-        // formData.append('type', type);
         formData.append('file', files.file);
-        formData.append('FileName', 'sina.apk');
-        formData.append('FileType', 'application/octet-stream');
-        formData.append('FileToken', '048a74e7-5ed4-42a2-bc1e-8d22f4b5f620');
-        // if (type === 'visits' || type === 'users' || type === 'messages') formData.append('user_id', user.getId());
+        formData.append('FileName', files.file?.name);
+        formData.append('FileType', 'application/vnd.android.package-archive');
+        formData.append('FileToken', files?.file?.token);
         const config = {
           headers: files.headers,
           timeout: 120000,
@@ -239,7 +237,7 @@ const CustomUpload = ({
       case 'pdf':
         return 'application/pdf';
       case 'application':
-        return '*/*';
+        return 'application/vnd.android.package-archive';
       case 'excel':
         return '.csv ,application/vnd.ms-excel ,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
       default:

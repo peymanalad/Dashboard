@@ -32,8 +32,8 @@ const Dashboard: FC = () => {
   );
 
   const fetchMenu = useFetch({
-    url: 'menu',
-    name: 'menu',
+    url: 'services/app/Session/GetCurrentLoginInformations',
+    name: 'currentInformation',
     cacheTime: Infinity,
     staleTime: Infinity,
     enabled: false
@@ -82,8 +82,8 @@ const Dashboard: FC = () => {
                       ))
                     )
                   )}
-                {fetchMenu?.data && <Redirect from="/" to="/dashboard" exact />}
-                {fetchMenu?.data && <Route component={NotFoundPage} />}
+                {!fetchMenu?.data && <Redirect from="/" to="/dashboard" exact />}
+                {!fetchMenu?.data && <Route component={NotFoundPage} />}
               </Switch>
             </Suspense>
           </Content>

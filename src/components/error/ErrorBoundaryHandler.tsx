@@ -7,7 +7,8 @@ Sentry.init({
   dsn: 'https://f4281d7a02c541e68828f202af96d088@sentry.deed.com/11',
   integrations: [new BrowserTracing()],
   release: process.env.REACT_APP_APP_VERSION,
-  enabled: process.env.NODE_ENV === 'production',
+  // enabled: process.env.NODE_ENV === 'production',
+  enabled: false,
   debug: process.env.NODE_ENV === 'development'
 });
 
