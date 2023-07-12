@@ -27,6 +27,7 @@ import min from 'lodash/min';
 import {useFetch, useUser} from 'hooks';
 import cloneWith from 'lodash/cloneWith';
 import isFunction from 'lodash/isFunction';
+import {v4 as uuidv4} from 'uuid';
 import type {UploadProps} from 'antd/lib/upload/interface';
 import type {FileTypeProps, FileModeProps, uploadType} from 'types/file';
 
@@ -81,7 +82,6 @@ const CustomUpload = ({
   const antdUploadRef = useRef<ElementRef<typeof Upload>>(null);
   const user = useUser();
 
-  const action = 'https://api.ideed.ir/SoftwareUpdates/UploadUpdateFileFile';
   const headers = {
     Authorization: `Bearer ${user?.access_token}`,
     'content-type': 'multipart/form-data'
@@ -151,16 +151,17 @@ const CustomUpload = ({
     });
 
   const customRequest = async (files: any) => {
+    const uniqueId = uuidv4();
     checkConditionForSendFile(files)
       .then(async () => {
         const formData = new FormData();
         formData.append('file', files.file);
         formData.append('FileName', files.file?.name);
-        formData.append('FileType', 'application/vnd.android.package-archive');
-        formData.append('FileToken', files?.file?.token);
+        formData.append('FileType', files.file?.type);
+        formData.append('FileToken', uniqueId);
         const config = {
           headers: files.headers,
-          timeout: 120000,
+          timeout: 1200000,
           onUploadProgress: (event: any) => {
             if (files?.onProgress) files.onProgress({percent: (event.loaded / event.total) * 100});
           }
@@ -169,7 +170,7 @@ const CustomUpload = ({
           const res = await axios.post(files.action, formData, config);
           if (res?.status === 200) {
             message.success(t('file_uploaded_successfully'));
-            if (files?.onSuccess) files.onSuccess(res?.data?.result);
+            if (files?.onSuccess) files.onSuccess(res?.data?.result || {fileToken: uniqueId});
           } else {
             message.error(t('file_upload_failed'));
             if (files?.onError) files.onError();
@@ -225,6 +226,17 @@ const CustomUpload = ({
     }
     return true;
   };
+
+  const getAction = useMemo(() => {
+    switch (type) {
+      case 'users':
+        return 'https://api.ideed.ir/Profile/UploadProfilePicture';
+      case 'applications':
+        return 'https://api.ideed.ir/SoftwareUpdates/UploadUpdateFileFile';
+      default:
+        return 'https://api.ideed.ir/SoftwareUpdates/UploadUpdateFileFile';
+    }
+  }, []);
 
   const getAccess = useMemo(() => {
     switch (typeFile) {
@@ -406,7 +418,7 @@ const CustomUpload = ({
         }}
         onChange={onChangeFile}
         disabled={isLoading || disabled}
-        action={action}
+        action={getAction}
         headers={headers}
         method="POST"
         customRequest={customRequest}

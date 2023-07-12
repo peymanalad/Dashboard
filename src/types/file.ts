@@ -6,6 +6,7 @@ export type uploadAdvancedInputType = 'messages' | 'visits' | 'recommendations';
 
 export type uploadType =
   | 'users'
+  | 'applications'
   | 'messages'
   | 'visits'
   | 'banks'

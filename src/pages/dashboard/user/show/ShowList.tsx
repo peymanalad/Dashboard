@@ -30,13 +30,6 @@ const UserShowList: FC = () => {
 
   const columns = [
     {
-      title: '#',
-      dataIndex: 'id',
-      key: 'id',
-      align: 'center',
-      responsive: ['md']
-    },
-    {
       title: t('username'),
       dataIndex: 'userName',
       key: 'userName',
@@ -150,7 +143,13 @@ const UserShowList: FC = () => {
       className="my-6"
       title={t('title')}>
       <SearchUsers ref={searchRef} />
-      <CustomTable fetch="/services/app/User/GetListOfUsers" dataName="users" columns={columns} ref={tableRef} />
+      <CustomTable
+        fetch="/services/app/User/GetListOfUsers"
+        dataName="users"
+        columns={columns}
+        ref={tableRef}
+        hasIndexColumn
+      />
     </Card>
   );
 };

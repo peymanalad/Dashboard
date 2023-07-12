@@ -16,7 +16,6 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {queryStringToObject} from 'utils';
 import isArray from 'lodash/isArray';
 import get from 'lodash/get';
-import merge from 'lodash/merge';
 import concat from 'lodash/concat';
 import isFunction from 'lodash/isFunction';
 
@@ -124,7 +123,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
                   align: 'center',
                   responsive: ['md'],
                   render: (text: number, record: any, index: number) =>
-                    (queryObject?.page - 1) * queryObject?.per_page + index + 1
+                    ((+queryObject?.page || 1) - 1) * (+queryObject?.per_page || 10) + index + 1
                 },
                 columns
               )
@@ -149,9 +148,9 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
           total: paginateData?.data?.totalCount,
           itemRender,
           onChange: onChangePage,
-          current: queryObject?.page || 1,
-          defaultPageSize: queryObject?.per_page || 10,
-          pageSize: queryObject?.per_page || 10,
+          current: +queryObject?.page || 1,
+          defaultPageSize: +queryObject?.per_page || 10,
+          pageSize: +queryObject?.per_page || 10,
           pageSizeOptions: ['10', '20', '25', '50', '100'],
           showSizeChanger: showTableSizeChange,
           showQuickJumper: false,

@@ -74,7 +74,7 @@ const EditApplication: FC = () => {
                   url: getImageUrl(fetchVersion?.data?.softwareUpdate?.updateFile)
                 }
               }>
-              <CustomUpload type="users" name="apk" mode="single" typeFile="application" />
+              <CustomUpload type="applications" name="apk" mode="single" typeFile="application" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>

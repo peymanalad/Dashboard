@@ -6,7 +6,6 @@ import {useFetch, useLogOut, usePost, useUser} from 'hooks';
 import {getImageUrl, getLangSearchParam} from 'utils';
 import {Card, Form, Checkbox, Button, Input, Row, Col} from 'antd';
 import {SaveOutlined, LogoutOutlined} from '@ant-design/icons';
-import forEach from 'lodash/forEach';
 import map from 'lodash/map';
 import filter from 'lodash/filter';
 
@@ -29,10 +28,14 @@ const EditUser: FC = () => {
     enabled: !!id
   });
 
-  const updateUser = usePost({
-    url: 'users/{id}',
-    method: 'PATCH',
-    isUrlencoded: true,
+  const sendPicture = usePost({
+    url: 'services/app/Profile/UpdateProfilePicture',
+    method: 'PUT'
+  });
+
+  const sendUser = usePost({
+    url: 'services/app/User/CreateOrUpdateUser',
+    method: 'POST',
     removeQueries: ['users', ['user', id, 'account']],
     form,
     onSuccess: () => {
@@ -42,19 +45,20 @@ const EditUser: FC = () => {
   });
 
   const onFinish = (val: any) => {
-    const urlencoded = new URLSearchParams();
-    if (val?.degree && fetchUser?.data?.permissions?.degree) {
-      urlencoded.append('value[degree]', val?.degree || '');
-    }
-    if (val?.weight && fetchUser?.data?.permissions?.weight) {
-      urlencoded.append('value[weight]', val?.weight || '');
-    }
-    if (fetchUser?.data?.permissions?.parents) {
-      forEach(val?.parents_id, (parent: any, index: number) => {
-        urlencoded.append(`parents_id[${index}]`, parent?.id);
-      });
-    }
-    updateUser.post(urlencoded, {}, {id});
+    sendUser.post({
+      assignedRoleNames: [],
+      organizationUnits: [1],
+      sendActivationEmail: false,
+      setRandomPassword: val?.randomPassword,
+      user: {
+        ...val,
+        isTwoFactorEnabled: false,
+        password: val?.password || null,
+        updateFileToken: val?.updateFileToken?.fileToken,
+        id: +id
+      }
+    });
+    sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken});
   };
 
   return (
@@ -87,11 +91,11 @@ const EditUser: FC = () => {
           </Col>
           <Col xs={24} md={12} lg={8} className="flex upload-center">
             <Form.Item
-              name="avatar"
+              name="updateFileToken"
               noStyle
               initialValue={
                 fetchUser?.data?.profilePictureId && {
-                  path: fetchUser?.data?.profilePictureId,
+                  updateFileToken: fetchUser?.data?.profilePictureId,
                   url: getImageUrl(fetchUser?.data?.profilePictureId)
                 }
               }>
@@ -99,17 +103,17 @@ const EditUser: FC = () => {
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="first_name" label={t('first_name')} initialValue={fetchUser?.data?.user?.name || ''}>
+            <Form.Item name="name" label={t('first_name')} initialValue={fetchUser?.data?.user?.name || ''}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="last_name" label={t('last_name')} initialValue={fetchUser?.data?.user?.surname || ''}>
+            <Form.Item name="surname" label={t('last_name')} initialValue={fetchUser?.data?.user?.surname || ''}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="mobile" label={t('mobile')} initialValue={fetchUser?.data?.user?.phoneNumber}>
+            <Form.Item name="phoneNumber" label={t('mobile')} initialValue={fetchUser?.data?.user?.phoneNumber}>
               <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
             </Form.Item>
           </Col>
@@ -134,7 +138,7 @@ const EditUser: FC = () => {
           </Form.Item>
           <Col xs={24} md={12} lg={8}>
             <Form.Item
-              name="email"
+              name="emailAddress"
               rules={[{type: 'email', message: t('validation.email')}]}
               label={t('email')}
               initialValue={fetchUser?.data?.user?.emailAddress || ''}>
@@ -187,7 +191,7 @@ const EditUser: FC = () => {
               className="w-full sm:w-unset mr-auto my-4"
               type="primary"
               htmlType="submit"
-              loading={updateUser.isLoading}
+              loading={sendUser.isLoading}
               icon={<SaveOutlined />}>
               {t('save')}
             </Button>
