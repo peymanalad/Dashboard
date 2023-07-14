@@ -7,6 +7,7 @@ import {useFetch, useUser} from 'hooks';
 import pick from 'lodash/pick';
 import values from 'lodash/values';
 import sum from 'lodash/sum';
+import {getImageUrl} from 'utils/image';
 
 interface Props {
   allowFetchDashboard: boolean;
@@ -19,6 +20,7 @@ const {Text} = Typography;
 const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
   const history = useHistory();
   const user = useUser();
+  const userInfo = user?.getInfo();
 
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
@@ -65,9 +67,9 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
         <HeaderDetail data={headerData} />
         <Button className="cursor-pointer bg-transparent items-center h-full border-0" onClick={navigateToProfile}>
           <Space>
-            <Avatar size={40} icon={<UserOutlined />} src={user?.getInfo()?.avatar} />
+            <Avatar size={40} icon={<UserOutlined />} src={getImageUrl(userInfo?.profilePictureId)} />
             <Text className="text-sm" strong>
-              {user?.getInfo()?.full_name}
+              {`${userInfo?.name || ''} ${userInfo?.surname || ''}`}
             </Text>
           </Space>
         </Button>
@@ -82,9 +84,9 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
                 setCollapsed(false);
               }}>
               <Space className="flex h-full">
-                <Avatar size={30} icon={<UserOutlined />} src={user?.getInfo()?.avatar} />
+                <Avatar size={30} icon={<UserOutlined />} src={getImageUrl(userInfo?.profilePictureId)} />
                 <Text className="text-sm" strong>
-                  {user?.getInfo()?.full_name}
+                  {`${userInfo?.name || ''} ${userInfo?.surname || ''}`}
                 </Text>
               </Space>
             </Button>

@@ -10,28 +10,28 @@ function useUser() {
   const queryClient = useQueryClient();
 
   const hasPermission = (permission: string): boolean => {
-    const menu: any = queryClient.getQueryData('menu');
+    const menu: any = queryClient.getQueryData('profile');
     return includes(get(menu, ['data', 'permissions']), permission);
   };
 
   const getAllPermissions = () => {
-    const menu: any = queryClient.getQueryData('menu');
+    const menu: any = queryClient.getQueryData('profile');
     return get(menu, ['data', 'permissions']);
   };
 
   const getInfo = () => {
-    const menu: any = queryClient.getQueryData('menu');
-    return get(menu, ['data']);
+    const profile: any = queryClient.getQueryData('profile');
+    return get(profile, ['data', 'user']);
   };
 
   const getId = () => {
-    const menu: any = queryClient.getQueryData('menu');
-    return get(menu, ['data', 'id']);
+    const profile: any = queryClient.getQueryData('profile');
+    return get(profile, ['data', 'user', 'id']);
   };
 
   const isMySelf = (id?: number | string) => {
-    const menu: any = queryClient.getQueryData('menu');
-    return get(menu, ['data', 'id']) === toNumber(id);
+    const menu: any = queryClient.getQueryData('profile');
+    return get(menu, ['data', 'user', 'id']) === toNumber(id);
   };
 
   return {...user, setUser, hasPermission, getAllPermissions, getInfo, isMySelf, getId};

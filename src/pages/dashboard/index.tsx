@@ -33,10 +33,10 @@ const Dashboard: FC = () => {
 
   const fetchMenu = useFetch({
     url: 'services/app/Session/GetCurrentLoginInformations',
-    name: 'currentInformation',
+    name: 'profile',
     cacheTime: Infinity,
     staleTime: Infinity,
-    enabled: false
+    enabled: true
   });
 
   return (
@@ -63,7 +63,7 @@ const Dashboard: FC = () => {
                 </Row>
               )}
               <Switch>
-                {!fetchMenu?.data &&
+                {fetchMenu?.data &&
                   flatMap(getFilteredMenusList(user.getAllPermissions()), (item: any) => {
                     if (item?.cmp && item?.route && item?.subs) {
                       return [{route: item?.route, title: item.title, cmp: item.cmp}, ...item?.subs];
@@ -82,8 +82,8 @@ const Dashboard: FC = () => {
                       ))
                     )
                   )}
-                {!fetchMenu?.data && <Redirect from="/" to="/dashboard" exact />}
-                {!fetchMenu?.data && <Route component={NotFoundPage} />}
+                {fetchMenu?.data && <Redirect from="/" to="/dashboard" exact />}
+                {fetchMenu?.data && <Route component={NotFoundPage} />}
               </Switch>
             </Suspense>
           </Content>
