@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
-import {Space} from 'antd';
+import {Button} from 'antd';
+import {UserOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
-import {DropDownMenu, MessageContainer} from 'components';
-import {useParams, useHistory} from 'react-router-dom';
+import {MessageContainer} from 'components';
+import {useParams, useHistory, Link} from 'react-router-dom';
 import * as signalR from '@microsoft/signalr';
-import {getLangSearchParam} from 'utils';
 import {useInfinite} from 'hooks';
 import get from 'lodash/get';
 
@@ -52,23 +52,16 @@ const SupportChat = () => {
       postUrl="/support_messages"
       useAdvancedComposer
       disableMentionUser
+      disableReadyMessage
       cardTitle={
         get(getMessageData?.data, ['user', 'full_name']) || get(getMessageData?.data, ['user', 'username']) || ''
       }
       cardExtra={
-        <Space size="small">
-          <DropDownMenu
-            items={[
-              {
-                name: t('user-show'),
-                onClick: () => {
-                  history.push(getLangSearchParam(`/user/show/${user_id}`));
-                },
-                icon: ''
-              }
-            ]}
-          />
-        </Space>
+        <Link to={`/user/edit/${user_id}`}>
+          <Button className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset" icon={<UserOutlined />}>
+            {t('user-show')}
+          </Button>
+        </Link>
       }
     />
   );

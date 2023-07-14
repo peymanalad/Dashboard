@@ -17,7 +17,6 @@ import {
   UpOutlined
 } from '@ant-design/icons';
 import ScrollArea from 'react-scrollbar';
-import {useQueryClient} from 'react-query';
 import {useTranslation} from 'react-i18next';
 import {MultiSelect, MultiSelectPaginate, UploadFileChat} from 'components';
 import {ReactMic} from 'react-mic';
