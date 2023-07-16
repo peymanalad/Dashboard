@@ -1,7 +1,7 @@
 import React, {memo, useMemo, useRef} from 'react';
 import {chatMessageProps, replyUpdateProps} from 'types/message';
 import {
-  AndroidOutlined,
+  FileZipOutlined,
   CheckCircleOutlined,
   ClockCircleOutlined,
   CloseCircleOutlined,
@@ -100,6 +100,8 @@ const MessageChat = ({
     };
   }, [data?.message]);
 
+  console.log(message);
+
   return (
     <>
       {(!before ||
@@ -117,6 +119,19 @@ const MessageChat = ({
           !before ? 'mt-1' : ''
         }`}>
         <Space direction="vertical" size="small" className="w-full mb-10-p">
+          {message?.type === 'file' && (
+            <div className="message__text">
+              <div className="message__text__content">
+                <Button
+                  className="w-full"
+                  type="dashed"
+                  icon={<FileZipOutlined />}
+                  onClick={() => window.open(getChatImageUrl(message?.content, user?.encrypted_access_token!))}>
+                  {t('download-file')}
+                </Button>
+              </div>
+            </div>
+          )}
           {message?.type === 'image' && (
             <div className="message__image">
               <Image
@@ -180,7 +195,7 @@ const MessageChat = ({
               </Space>
             </div>
           )}
-          {!includes(['image', 'video', 'sound', 'audio', 'link'], message?.type) && (
+          {!includes(['image', 'video', 'sound', 'audio', 'link', 'file'], message?.type) && (
             <div className="message__text">
               <div className="message__text__content">
                 <Linkify options={{target: '_blank'}}>
