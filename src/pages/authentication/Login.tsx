@@ -29,6 +29,7 @@ const LoginPage: FC = () => {
       userToDashboard({
         is_logged_in: !!data?.accessToken,
         access_token: data?.accessToken,
+        encrypted_access_token: data?.encryptedAccessToken,
         refresh_token: data.refreshToken,
         expires_in: data.expireInSeconds,
         id: data.userId

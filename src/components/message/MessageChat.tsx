@@ -1,17 +1,24 @@
-import React, {memo} from 'react';
+import React, {memo, useMemo, useRef} from 'react';
 import {chatMessageProps, replyUpdateProps} from 'types/message';
-import {CheckCircleOutlined, ClockCircleOutlined, CloseCircleOutlined} from '@ant-design/icons';
-import {Col, ConfigProvider, Divider, Space, Typography, Image, Modal} from 'antd';
+import {
+  AndroidOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  CloseCircleOutlined,
+  LinkOutlined
+} from '@ant-design/icons';
+import {Col, ConfigProvider, Divider, Space, Typography, Image, Modal, Button} from 'antd';
 import {useTranslation} from 'react-i18next';
 import {chatImageDefault, Drop, PrescriptionIcon} from 'assets';
 import * as Scroll from 'react-scroll';
 import AudioPlayer from 'react-h5-audio-player';
-import {convertUtcTimeToLocal} from 'utils';
+import {convertUtcTimeToLocal, getChatImageUrl, getImageUrl, validURL} from 'utils';
 import {MessageActions} from 'components';
 import {useUser} from 'hooks';
 import toString from 'lodash/toString';
 import {includes} from 'lodash';
 import Linkify from 'linkify-react';
+import get from 'lodash/get';
 
 export interface props {
   data: chatMessageProps;
@@ -57,8 +64,6 @@ const MessageChat = ({
   const UserId: number = myUserID || user.getId();
   const {Text, Title} = Typography;
 
-  console.log(UserId);
-
   const isMyMessage = UserId === data?.userId;
   const isLastMessage = after?.userId !== data?.userId;
 
@@ -79,6 +84,22 @@ const MessageChat = ({
     });
   };
 
+  const message = useMemo(() => {
+    const matches: any = data?.message?.matchAll(/\[\w+\]/g);
+    // eslint-disable-next-line no-restricted-syntax,no-unreachable-loop
+    for (const match of matches) {
+      const messageObj = JSON.parse(data?.message?.replaceAll(match[0], ''));
+      return {
+        content: messageObj,
+        type: match[0]?.replaceAll(/\[|\]/g, '')
+      };
+    }
+    return {
+      type: 'text',
+      content: data?.message
+    };
+  }, [data?.message]);
+
   return (
     <>
       {(!before ||
@@ -96,16 +117,20 @@ const MessageChat = ({
           !before ? 'mt-1' : ''
         }`}>
         <Space direction="vertical" size="small" className="w-full mb-10-p">
-          {data?.type === 'image' && (
+          {message?.type === 'image' && (
             <div className="message__image">
               <Image
                 alt="image"
                 fallback={chatImageDefault}
-                src={typeof data?.content === 'string' ? data?.content : URL.createObjectURL(data?.content)}
+                src={
+                  typeof message?.content?.id === 'string'
+                    ? getChatImageUrl(message?.content, user?.encrypted_access_token!)
+                    : URL.createObjectURL(message?.content)
+                }
               />
             </div>
           )}
-          {data?.type === 'sound' && (
+          {message?.type === 'sound' && (
             <div>
               <ConfigProvider direction="ltr">
                 <Col dir="ltr" className="voicePlayer">
@@ -121,7 +146,20 @@ const MessageChat = ({
               </ConfigProvider>
             </div>
           )}
-          {data?.type === 'video' && (
+          {message?.type === 'link' && (
+            <div className="message__text">
+              <div className="message__text__content">
+                <Button
+                  className="w-full"
+                  type="primary"
+                  icon={<LinkOutlined />}
+                  onClick={() => window.open(message?.content?.message)}>
+                  {t('goto-link')}
+                </Button>
+              </div>
+            </div>
+          )}
+          {message?.type === 'video' && (
             <div className="message__text">
               <div className="message__text__content">
                 <video className="max-w-full max-h-400px rounded-xl" controls>
@@ -131,7 +169,7 @@ const MessageChat = ({
               </div>
             </div>
           )}
-          {data?.type === 'prescription' && (
+          {message?.type === 'prescription' && (
             <div className="message__text">
               <Space direction="horizontal">
                 <PrescriptionIcon />
@@ -142,7 +180,7 @@ const MessageChat = ({
               </Space>
             </div>
           )}
-          {!includes(['image', 'video', 'sound', 'audio', 'prescription'], data?.type) && (
+          {!includes(['image', 'video', 'sound', 'audio', 'link'], message?.type) && (
             <div className="message__text">
               <div className="message__text__content">
                 <Linkify options={{target: '_blank'}}>

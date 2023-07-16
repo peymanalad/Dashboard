@@ -5,7 +5,6 @@ import {useTranslation} from 'react-i18next';
 import {PaperClipOutlined} from '@ant-design/icons';
 import useUser from 'hooks/user/useUser';
 import {chatType} from 'types/message';
-import toString from 'lodash/toString';
 import first from 'lodash/first';
 import {uploadAdvancedInputType} from 'types/file';
 
@@ -16,7 +15,7 @@ export interface props {
   uploadType: uploadAdvancedInputType;
   sendFile: (file: File) => void;
   ErrorFile: () => void;
-  sendPath: (path: string, type: chatType) => void;
+  sendPath: (path: string, type: chatType, file: File) => void;
 }
 
 const ShowImages: FC<props> = ({className, style, sendFile, sendPath, disabled, uploadType, ErrorFile}) => {
@@ -32,10 +31,9 @@ const ShowImages: FC<props> = ({className, style, sendFile, sendPath, disabled, 
     const {onSuccess, onError} = files;
 
     const formData = new FormData();
-    formData.append('type', uploadType);
+    // formData.append('type', uploadType);
     formData.append('file', files.file);
-    console.log(files.file);
-    formData.append('user_id', toString(user.getId()));
+    // formData.append('user_id', toString(user.getId()));
 
     const config = {
       headers: files.headers,
@@ -49,7 +47,7 @@ const ShowImages: FC<props> = ({className, style, sendFile, sendPath, disabled, 
       onSuccess('Ok');
       if (res?.status === 200) {
         message.success(`${t('file_uploaded_successfully')}`);
-        sendPath(res?.data?.data?.path, first(files?.file?.type?.split('/')) || 'image');
+        sendPath(res?.data?.result?.id, first(files?.file?.type?.split('/')) || 'image', files?.file);
       } else message.error(`${t('file_upload_failed')}`);
     } catch (err) {
       message.error(`${t('file_upload_failed')}`);
@@ -63,7 +61,7 @@ const ShowImages: FC<props> = ({className, style, sendFile, sendPath, disabled, 
       className={className}
       style={style}
       accept={'image/*,audio/*,video/*'}
-      action="https://a.deed.com/general/v1/files/upload"
+      action="https://api.ideed.ir/Chat/UploadFile"
       headers={headers}
       showUploadList={false}
       method="POST"

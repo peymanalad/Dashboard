@@ -34,7 +34,7 @@ interface refProps {
 
 export interface props {
   onClick: (val: string | File, mentions?: userProps[]) => void;
-  onSend: (val: string, type: chatType, mentions?: userProps[]) => void;
+  onSend: (id: string, type: chatType, file?: File) => void;
   onError: () => void;
   loading?: boolean;
   uploadType: uploadAdvancedInputType;
@@ -44,6 +44,7 @@ export interface props {
   disableEmoji?: boolean;
   disableReadyMessage?: boolean;
   disableMentionUser?: boolean;
+  disableVoice?: boolean;
 }
 
 const {Text} = Typography;
@@ -60,7 +61,8 @@ const AdvancedComposer: ForwardRefRenderFunction<refProps, props> = (
     uploadType,
     disableEmoji,
     disableReadyMessage,
-    disableMentionUser
+    disableMentionUser,
+    disableVoice
   }: props,
   forwardedRef: ForwardedRef<refProps>
 ) => {
@@ -243,49 +245,53 @@ const AdvancedComposer: ForwardRefRenderFunction<refProps, props> = (
             </ScrollArea>
           )}
           <Space direction="horizontal" size={2} className="d-none md:d-flex px-1 pt-1">
-            {recordShow ? (
-              recording ? (
-                <Button
-                  onClick={() => {
-                    setRecording(false);
-                  }}
-                  disabled={disabled}
-                  className="mx-4"
-                  type="text"
-                  icon={<RecordingStopIcon style={{fontSize: 18}} />}
-                />
-              ) : recordData ? (
-                <Button
-                  onClick={() => {
-                    setRecordData(null);
-                    setRecordShow(false);
-                  }}
-                  className="mx-4"
-                  disabled={disabled}
-                  type="text"
-                  icon={<DeleteOutlined style={{color: 'red', fontSize: 18}} />}
-                />
-              ) : (
-                <Button
-                  onClick={() => {
-                    setRecording(true);
-                  }}
-                  className="mx-4"
-                  disabled={disabled}
-                  type="text"
-                  icon={<RecordingIcon style={{fontSize: 18}} />}
-                />
-              )
-            ) : (
-              <Button
-                onClick={() => {
-                  setRecordShow(true);
-                }}
-                className="mx-4"
-                disabled={(reply && reply?.type === 'text') || disabled}
-                type="text"
-                icon={<AudioOutlined style={{color: 'rgba(0,0,0,.45)', fontSize: 18}} />}
-              />
+            {!disableVoice && (
+              <>
+                {recordShow ? (
+                  recording ? (
+                    <Button
+                      onClick={() => {
+                        setRecording(false);
+                      }}
+                      disabled={disabled}
+                      className="mx-4"
+                      type="text"
+                      icon={<RecordingStopIcon style={{fontSize: 18}} />}
+                    />
+                  ) : recordData ? (
+                    <Button
+                      onClick={() => {
+                        setRecordData(null);
+                        setRecordShow(false);
+                      }}
+                      className="mx-4"
+                      disabled={disabled}
+                      type="text"
+                      icon={<DeleteOutlined style={{color: 'red', fontSize: 18}} />}
+                    />
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        setRecording(true);
+                      }}
+                      className="mx-4"
+                      disabled={disabled}
+                      type="text"
+                      icon={<RecordingIcon style={{fontSize: 18}} />}
+                    />
+                  )
+                ) : (
+                  <Button
+                    onClick={() => {
+                      setRecordShow(true);
+                    }}
+                    className="mx-4"
+                    disabled={(reply && reply?.type === 'text') || disabled}
+                    type="text"
+                    icon={<AudioOutlined style={{color: 'rgba(0,0,0,.45)', fontSize: 18}} />}
+                  />
+                )}
+              </>
             )}
             {!recordShow && (
               <>
@@ -333,8 +339,8 @@ const AdvancedComposer: ForwardRefRenderFunction<refProps, props> = (
                   sendFile={(file) => setContentBefore(file)}
                   ErrorFile={onError}
                   uploadType={uploadType}
-                  sendPath={(path, type) => {
-                    onSend(path, type);
+                  sendPath={(id, type, file) => {
+                    onSend(id, type, file);
                   }}
                 />
               </>
@@ -369,7 +375,7 @@ const AdvancedComposer: ForwardRefRenderFunction<refProps, props> = (
                   sendVoiceToServer();
                 } else if (typeof message === 'string') {
                   setContentBefore(message);
-                  onSend(message, 'text', mentions);
+                  onSend(message, 'text');
                   setMessage('');
                 }
               }}
@@ -503,8 +509,8 @@ const AdvancedComposer: ForwardRefRenderFunction<refProps, props> = (
                     sendFile={(file) => setContentBefore(file)}
                     uploadType={uploadType}
                     ErrorFile={onError}
-                    sendPath={(path, type) => {
-                      onSend(path, type === 'audio' ? 'sound' : type);
+                    sendPath={(path, type, file) => {
+                      onSend(path, type === 'audio' ? 'sound' : type, file);
                     }}
                   />
                   <small>{t('sendFile')}</small>

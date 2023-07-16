@@ -9,6 +9,7 @@ export interface UserProfile {
 export interface userAccessProps {
   is_logged_in: boolean;
   access_token?: string;
+  encrypted_access_token?: string;
   expires_in?: number;
   refresh_token?: string;
   full_name?: string;

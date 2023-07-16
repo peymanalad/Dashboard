@@ -29,7 +29,7 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
     name: 'dashboard',
     isGeneral: true,
     staleTime: 10000,
-    enabled: allowFetchDashboard
+    enabled: false
   });
 
   const navigateToProfile = () => {

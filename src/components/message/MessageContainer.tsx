@@ -21,6 +21,7 @@ import toString from 'lodash/toString';
 import flattenDeep from 'lodash/flattenDeep';
 import {uploadAdvancedInputType} from 'types/file';
 import {userProps} from 'types/user';
+import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 
 export interface props {
   getMessageData: any;
@@ -41,6 +42,7 @@ export interface props {
   useAdvancedComposer?: boolean;
   disableEmoji?: boolean;
   disableReadyMessage?: boolean;
+  disableVoice?: boolean;
   disableMentionUser?: boolean;
 }
 
@@ -65,10 +67,11 @@ const MessageContainer = ({
   useAdvancedComposer,
   disableEmoji,
   disableReadyMessage,
+  disableVoice,
   disableMentionUser
 }: props) => {
   const {t} = useTranslation('message');
-
+  const connection = useRef<HubConnection>();
   const {recommendation_id, patient_id, doctor_id, user_id, reply_id} = useParams<{
     recommendation_id?: string;
     patient_id?: string;
@@ -86,9 +89,7 @@ const MessageContainer = ({
   const [loadingId, setLoadingId] = useState<number | undefined>(undefined);
 
   const messages = useMemo(() => {
-    return (messagesKey ? flattenDeep(get(getMessageData?.data, messagesKey)) : getMessageData?.data)
-      ?.slice(0)
-      ?.reverse();
+    return (messagesKey ? flattenDeep(get(getMessageData?.data, messagesKey)) : getMessageData?.data)?.slice(0);
   }, [getMessageData.data, messagesKey]);
 
   const updateMessage = useCallback(
@@ -136,43 +137,73 @@ const MessageContainer = ({
 
   const addToMessages = useCallback(
     (
-      content: string | File,
-      parent: replyUpdateProps | undefined,
-      status: chatStatus,
-      ChatID: number | string,
-      mentions?: userProps[]
+      message: any
+      // parent: replyUpdateProps | undefined,
+      // status: chatStatus,
+      // ChatID: number | string
     ) => {
       queryClient.setQueryData(urlName, (responses: any) =>
         cloneWith(responses, (value: any[]) => {
-          (get(value, messagesKey ? ['pages', 0, 'data', messagesKey] : ['pages', 0, 'data']) || []).unshift({
-            id: ChatID,
-            content,
-            status,
-            parent,
-            mentions,
-            user: {id: UserId},
-            created_at: undefined,
-            type: typeof content !== 'string' ? first(content?.type?.split('/')) || 'image' : 'text',
-            permissions: {delete: true}
-          });
+          (
+            get(value, messagesKey ? ['pages', 0, 'data', 'items', messagesKey] : ['pages', 0, 'data', 'items']) || []
+          ).push(message);
           return value;
         })
       );
-      if (status === 'loading') setReplyData(undefined);
+      // if (status === 'loading') setReplyData(undefined);
     },
     [UserId, messagesKey, urlName]
   );
 
-  const postChat = usePost({
-    url: postUrl,
-    method: 'POST',
-    onSuccess: () => {
-      getMessageData.refetch();
-    },
-    onError: () => {
-      updateMessage({content: inputRef?.current?.getContent(), status: 'error'}, 'newMessage');
-    }
-  });
+  useEffect(() => {
+    connection.current = new HubConnectionBuilder()
+      // .configureLogging(LogLevel.Debug)
+      .withUrl(`wss://api.ideed.ir/signalr-chat?enc_auth_token=${encodeURIComponent(user.encrypted_access_token!)}`, {
+        skipNegotiation: true,
+        transport: HttpTransportType.WebSockets
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    connection.current
+      .start()
+      .then(() => {
+        console.log('SignalR connection established.');
+      })
+      .catch((error) => console.error('Error starting SignalR connection:', error));
+
+    connection.current.on('getChatMessage', (message) => {
+      console.log('app.chat.messageReceived', message);
+      addToMessages(message);
+    });
+
+    connection.current.on('getAllFriends', (friends) => {
+      console.log('abp.chat.friendListChanged', friends);
+    });
+
+    connection.current.on('getFriendshipRequest', (friendData, isOwnRequest) => {
+      console.log('app.chat.friendshipRequestReceived', friendData, isOwnRequest);
+    });
+
+    connection.current.on('getUserConnectNotification', (friend, isConnected) => {
+      console.log('app.chat.userConnectionStateChanged');
+    });
+
+    return () => {
+      connection?.current?.stop();
+    };
+  }, []);
+
+  // const postChat = usePost({
+  //   url: postUrl,
+  //   method: 'POST',
+  //   onSuccess: () => {
+  //     getMessageData.refetch();
+  //   },
+  //   onError: () => {
+  //     updateMessage({content: inputRef?.current?.getContent(), status: 'error'}, 'newMessage');
+  //   }
+  // });
 
   const updateChat = usePost({
     url: updateUrl,
@@ -251,7 +282,7 @@ const MessageContainer = ({
     message: string | File,
     reply: replyUpdateProps | undefined,
     type: chatType | commentType,
-    mentions?: userProps[]
+    file?: File
   ) => {
     const sendData = {
       content: message,
@@ -260,14 +291,22 @@ const MessageContainer = ({
       doctor_id,
       recommendation_id,
       user_id,
-      reply_id,
-      meta: {mentions: map(mentions, 'id')}
+      reply_id
+      // meta: {mentions: map(mentions, 'id')}
     };
     if (reply?.isReply === false) {
       updateChat.post(sendData, undefined, {id: reply?.id});
     } else {
-      set(sendData, 'reply_id', reply?.id || reply_id);
-      postChat.post(sendData);
+      console.log(message, file);
+      // set(sendData, 'reply_id', reply?.id || reply_id);
+      connection.current?.invoke('sendMessage', {
+        message: !!file
+          ? `[${type}]${JSON.stringify({id: message, contentType: file?.type, name: file?.name})}`
+          : message,
+        userId: +user_id!,
+        tenantId: 1
+      });
+      // postChat.post(sendData);
     }
   };
 
@@ -378,28 +417,29 @@ const MessageContainer = ({
             disableEmoji={disableEmoji}
             disableMentionUser={disableMentionUser}
             disableReadyMessage={disableReadyMessage}
-            loading={postChat.isLoading}
+            disableVoice={disableVoice}
+            // loading={postChat.isLoading}
             onClick={(content: string | File, mentions?: userProps[]) => {
               if (reply?.isReply === false) updateMessage({content, status: 'loading'}, reply?.id);
-              else addToMessages(content, reply, 'loading', 'newMessage', mentions);
+              // else addToMessages(content, reply, 'loading', 'newMessage', mentions);
             }}
             onError={() => {
               updateMessage({content: inputRef?.current?.getContent(), status: 'error'}, 'newMessage');
             }}
-            onSend={(message: string, type: chatType, mentions?: userProps[]) => {
-              onStoreMessage(message, reply, commentType || type, mentions);
+            onSend={(message: string, type: chatType, file?: File) => {
+              onStoreMessage(message, reply, commentType || type, file);
             }}
           />
         ) : (
           <SimpleComposer
-            loading={postChat.isLoading}
+            // loading={postChat.isLoading}
             reply={reply}
             replyEmpty={() => {
               setReplyData(undefined);
             }}
             onSend={(content: string) => {
               if (reply?.isReply === false) updateMessage({content, status: 'loading'}, reply?.id);
-              else addToMessages(content, reply, 'loading', 'newMessage');
+              // else addToMessages(content, reply, 'loading', 'newMessage');
               onStoreMessage(content, reply, commentType || 'text');
             }}
           />

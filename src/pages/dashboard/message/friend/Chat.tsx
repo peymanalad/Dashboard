@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Button} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {MessageContainer} from 'components';
 import {useParams, useHistory, Link} from 'react-router-dom';
-import * as signalR from '@microsoft/signalr';
-import {useInfinite} from 'hooks';
+import {useInfinite, useUser} from 'hooks';
 import get from 'lodash/get';
 
 const SupportChat = () => {
@@ -20,29 +19,6 @@ const SupportChat = () => {
     enabled: true
   });
 
-  useEffect(() => {
-    const connection = new signalR.HubConnectionBuilder()
-      .withUrl('/signalr') // Replace with your SignalR hub URL
-      .build();
-
-    connection
-      .start()
-      .then(() => {
-        console.log('SignalR connection established.');
-      })
-      .catch((error) => console.error('Error starting SignalR connection:', error));
-
-    // Define message handling
-    connection.on('ReceiveMessage', (message) => {
-      console.log('Message received:', message);
-      // Do something with the received message in your React component
-    });
-
-    return () => {
-      connection.stop();
-    };
-  }, []);
-
   return (
     <MessageContainer
       getMessageData={getMessageData}
@@ -53,6 +29,7 @@ const SupportChat = () => {
       useAdvancedComposer
       disableMentionUser
       disableReadyMessage
+      disableVoice
       cardTitle={
         get(getMessageData?.data, ['user', 'full_name']) || get(getMessageData?.data, ['user', 'username']) || ''
       }
