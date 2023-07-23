@@ -8,6 +8,7 @@ import chunk from 'lodash/chunk';
 import sortBy from 'lodash/sortBy';
 import {useFetch} from 'hooks';
 import type {PostGroupProps} from 'types/news';
+import {generateUniqueColorCodeById} from 'utils';
 
 const {Meta} = Card;
 
@@ -50,7 +51,14 @@ const SquareCard: FC<{
     <div ref={(node) => drag(drop(node))} className="h-full" style={{opacity: isDragging ? 0.5 : 1}}>
       <Card
         rootClassName="h-full"
-        bodyStyle={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        bodyStyle={{
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: news?.color,
+          borderRadius: 8
+        }}>
         <Meta title={news.postGroupDescription || '-'} />
       </Card>
     </div>
@@ -107,6 +115,7 @@ const NewsGroupOrder: FC = () => {
     onSuccess(data) {
       initialNews.current = data?.data?.items?.map((postGroup: any, index: number) => ({
         ...postGroup?.postGroup,
+        color: generateUniqueColorCodeById(postGroup?.postGroup?.id),
         ordering: postGroup?.postGroup?.ordering || index + 1
       }));
       setNews(initialNews.current);
@@ -117,7 +126,7 @@ const NewsGroupOrder: FC = () => {
     <Card
       title={t('news_groups_order')}
       loading={fetchNewsGroup?.isFetching}
-      bodyStyle={{direction: 'ltr'}}
+      bodyStyle={{direction: 'ltr', maxWidth: !fetchNewsGroup?.isFetching ? '450px' : undefined, margin: 'auto'}}
       extra={
         <Space size="small">
           <Button
