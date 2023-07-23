@@ -1,23 +1,33 @@
 import React, {FC, useRef, ElementRef} from 'react';
-import {Link} from 'react-router-dom';
-import {useDelete, useUser} from 'hooks';
+import {Link, useLocation} from 'react-router-dom';
+import {useDelete, usePost} from 'hooks';
 import {useTranslation} from 'react-i18next';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {FormOutlined, FilterOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
+import {FormOutlined, FilterOutlined, EditOutlined, DeleteOutlined, FileExcelOutlined} from '@ant-design/icons';
 import {CustomTable} from 'components';
 import {SearchUsers} from 'containers';
-import {simplePermissionProps} from 'types/common';
+import {queryStringToObject} from 'utils/common';
+import {getTempFileUrl} from 'utils/file';
+import type {simplePermissionProps} from 'types/common';
 
 const UserMemberShowList: FC = () => {
   const {t} = useTranslation('news');
   const searchRef = useRef<ElementRef<typeof SearchUsers>>(null);
   const tableRef = useRef<ElementRef<typeof CustomTable>>(null);
-  const {hasPermission} = useUser();
+  const location = useLocation();
 
   const deleteRequest = useDelete({
-    url: 'users/{id}',
-    name: 'users',
+    url: 'services/app/GroupMembers/Delete',
+    name: 'groupMembers',
     titleKey: 'id'
+  });
+
+  const fetchExcel = usePost({
+    url: 'services/app/GroupMembers/GetGroupMembersToExcel',
+    method: 'GET',
+    onSuccess(data: any) {
+      window.open(getTempFileUrl(data?.fileType, data?.fileToken, data?.fileName), '_self');
+    }
   });
 
   const columns = [
@@ -28,9 +38,9 @@ const UserMemberShowList: FC = () => {
       align: 'center'
     },
     {
-      title: t('position'),
-      dataIndex: ['groupMember', 'memberPosition'],
-      key: 'memberPosition',
+      title: t('organization_position'),
+      dataIndex: ['groupMember', 'memberPos'],
+      key: 'memberPos',
       align: 'center'
     },
     {
@@ -71,13 +81,21 @@ const UserMemberShowList: FC = () => {
     <Card
       extra={
         <Space size="small">
-          {!hasPermission('users.store') && (
-            <Link to="/news/member/create">
-              <Button className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset" icon={<FormOutlined />}>
-                {t('add')}
-              </Button>
-            </Link>
-          )}
+          <Button
+            className="ant-btn-success d-text-none md:d-text-unset"
+            type="primary"
+            icon={<FileExcelOutlined />}
+            loading={fetchExcel.isLoading}
+            onClick={() => {
+              fetchExcel.post({}, queryStringToObject(location.search));
+            }}>
+            {t('excel')}
+          </Button>
+          <Link to="/news/member/create">
+            <Button className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset" icon={<FormOutlined />}>
+              {t('add')}
+            </Button>
+          </Link>
           <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
             {t('filter')}
           </Button>

@@ -1,15 +1,25 @@
 import React, {useRef, ElementRef, FC} from 'react';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {DeleteOutlined, FilterOutlined} from '@ant-design/icons';
+import {DeleteOutlined, FileExcelOutlined, FilterOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
+import {useLocation} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
-import {useDelete} from 'hooks';
-import {convertUtcTimeToLocal} from 'utils';
+import {useDelete, usePost} from 'hooks';
+import {convertUtcTimeToLocal, getTempFileUrl, queryStringToObject} from 'utils';
 import {simplePermissionProps} from 'types/common';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('comments');
   const searchRef = useRef<ElementRef<typeof Search>>(null);
+  const location = useLocation();
+
+  const fetchExcel = usePost({
+    url: 'services/app/Comments/GetCommentsToExcel',
+    method: 'GET',
+    onSuccess(data: any) {
+      window.open(getTempFileUrl(data?.fileType, data?.fileToken, data?.fileName), '_self');
+    }
+  });
 
   const deleteRequest = useDelete({
     url: '/services/app/Comments/Delete',
@@ -72,6 +82,16 @@ const ShowList: FC = () => {
       title={t('comments')}
       extra={
         <Space size="small">
+          <Button
+            className="ant-btn-success d-text-none md:d-text-unset"
+            type="primary"
+            icon={<FileExcelOutlined />}
+            loading={fetchExcel.isLoading}
+            onClick={() => {
+              fetchExcel.post({}, queryStringToObject(location.search));
+            }}>
+            {t('excel')}
+          </Button>
           <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
             {t('filter')}
           </Button>

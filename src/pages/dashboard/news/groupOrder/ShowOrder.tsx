@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef, useState, type FC, type Dispatch, type SetStateAction} from 'react';
 import {Row, Col, Card, Space, Button} from 'antd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {DndProvider, useDrag, useDrop, DropTargetMonitor} from 'react-dnd';
@@ -7,20 +7,20 @@ import {useTranslation} from 'react-i18next';
 import chunk from 'lodash/chunk';
 import sortBy from 'lodash/sortBy';
 import {useFetch} from 'hooks';
-import {PostGroupProps} from 'types/news';
+import type {PostGroupProps} from 'types/news';
 
 const {Meta} = Card;
 
-const SquareCard: React.FC<{
+const SquareCard: FC<{
   initialNews: PostGroupProps[];
   news: PostGroupProps;
-  setNews: React.Dispatch<React.SetStateAction<PostGroupProps[]>>;
+  setNews: Dispatch<SetStateAction<PostGroupProps[]>>;
 }> = ({initialNews, news, setNews}) => {
   const [{isDragging}, drag] = useDrag({
     type: 'news',
     item: {id: news.id, ordering: news.ordering},
     collect: (monitor) => ({
-      isDragging: !!monitor.isDragging()
+      isDragging: monitor.isDragging()
     })
   });
 
@@ -59,8 +59,8 @@ const SquareCard: React.FC<{
 
 const generateRow = (initialNews: PostGroupProps[], chunkNews: PostGroupProps[], setNews: any, index: number) => {
   switch (index % 4) {
-    case 2:
     case 0:
+    case 2:
       return (
         <Row gutter={[16, 16]} className={index % 4 === 2 ? 'mb-1' : 'flex-row-reverse mb-1'}>
           <Col span={8}>
@@ -94,7 +94,7 @@ const generateRow = (initialNews: PostGroupProps[], chunkNews: PostGroupProps[],
   }
 };
 
-const NewsGroupOrder: React.FC = () => {
+const NewsGroupOrder: FC = () => {
   const {t} = useTranslation('news');
   const initialNews = useRef<PostGroupProps[]>([]);
   const [news, setNews] = useState<PostGroupProps[]>([]);
@@ -103,6 +103,7 @@ const NewsGroupOrder: React.FC = () => {
     name: 'postGroups',
     url: '/services/app/PostGroups/GetAll',
     enabled: true,
+    staleTime: 100,
     onSuccess(data) {
       initialNews.current = data?.data?.items?.map((postGroup: any, index: number) => ({
         ...postGroup?.postGroup,
@@ -114,7 +115,7 @@ const NewsGroupOrder: React.FC = () => {
 
   return (
     <Card
-      title={t('news_groups')}
+      title={t('news_groups_order')}
       loading={fetchNewsGroup?.isFetching}
       bodyStyle={{direction: 'ltr'}}
       extra={

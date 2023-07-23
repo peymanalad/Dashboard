@@ -308,11 +308,11 @@ input.ant-input[type='number'] {
   width: 100%;
 }
 
-button.ant-btn.d-text-none span:last-child {
+button.ant-btn.d-text-none > span:last-child {
   display: none;
 }
 
-button.ant-btn.d-text-unset span:last-child {
+button.ant-btn.d-text-unset > span:last-child {
   display: unset;
 }
 
@@ -798,10 +798,10 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
     font-size: 13px;
   }
 
-  button.ant-btn.xs\:d-text-none span:last-child {
+  button.ant-btn.xs\:d-text-none > span:last-child {
     display: none;
   }
-  button.ant-btn.xs\:d-text-unset span:last-child {
+  button.ant-btn.xs\:d-text-unset > span:last-child {
     display: unset;
   }
   .ant-form .ant-form-item .ant-form-item-label,
@@ -819,10 +819,10 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
     font-size: 14px;
   }
 
-  button.ant-btn.sm\:d-text-none span:last-child {
+  button.ant-btn.sm\:d-text-none > span:last-child {
     display: none;
   }
-  button.ant-btn.sm\:d-text-unset span:last-child {
+  button.ant-btn.sm\:d-text-unset > span:last-child {
     display: unset;
   }
   ul.ant-pagination.ant-table-pagination li:not(:first-child) {
@@ -837,10 +837,13 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
     font-size: 14px;
   }
 
-  button.ant-btn.md\:d-text-none span:last-child {
+  button.ant-btn.md\:d-text-none > span:first-child {
+    margin: 0!important;
+  }
+  button.ant-btn.md\:d-text-none > span:last-child {
     display: none;
   }
-  button.ant-btn.md\:d-text-unset span:last-child {
+  button.ant-btn.md\:d-text-unset > span:last-child {
     display: unset;
   }
   .ant-upload.ant-upload-select-picture-card,
@@ -862,10 +865,13 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
     font-size: 14px;
   }
 
-  button.ant-btn.lg\:d-text-none span:last-child {
+  button.ant-btn.lg\:d-text-none > span:first-child {
+    margin: 0!important;
+  }
+  button.ant-btn.lg\:d-text-none > span:last-child {
     display: none;
   }
-  button.ant-btn.lg\:d-text-unset span:last-child {
+  button.ant-btn.lg\:d-text-unset > span:last-child {
     display: unset;
   }
   ul.ant-pagination.ant-table-pagination li:not(:first-child) {
@@ -883,10 +889,13 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
     font-size: 15px;
   }
 
-  button.ant-btn.xl\:d-text-none span:last-child {
+  button.ant-btn.xl\:d-text-none > span:first-child {
+    margin: 0!important;
+  }
+  button.ant-btn.xl\:d-text-none > span:last-child {
     display: none;
   }
-  button.ant-btn.xl\:d-text-unset span:last-child {
+  button.ant-btn.xl\:d-text-unset > span:last-child {
     display: unset;
   }
 }
@@ -894,11 +903,13 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
   html {
     font-size: 15px;
   }
-
-  button.ant-btn.xxl\:d-text-none span:last-child {
+  button.ant-btn.xxl\:d-text-none > span:first-child {
+    margin: 0!important;
+  }
+  button.ant-btn.xxl\:d-text-none > span:last-child {
     display: none;
   }
-  button.ant-btn.xxl\:d-text-unset span:last-child {
+  button.ant-btn.xxl\:d-text-unset > span:last-child {
     display: unset;
   }
 }

@@ -14,7 +14,7 @@ const EditMemberShowList: FC = () => {
   const [form] = Form.useForm();
 
   const fetchNewsUserMember = useFetch({
-    name: ['newsGroup', id],
+    name: ['groupMembers', id],
     url: 'services/app/GroupMembers/GetGroupMemberForEdit',
     query: {Id: id},
     enabled: !!id
@@ -23,7 +23,7 @@ const EditMemberShowList: FC = () => {
   const storeNewsUserMember = usePost({
     url: 'services/app/GroupMembers/CreateOrEdit',
     method: 'POST',
-    removeQueries: ['newsGroups'],
+    removeQueries: ['groupMembers', ['groupMembers', id]],
     form,
     onSuccess: () => {
       if (history.length > 1 && document.URL !== document.referrer) history.goBack();
@@ -34,9 +34,9 @@ const EditMemberShowList: FC = () => {
   const onFinish = (values: any) => {
     storeNewsUserMember.post({
       id,
-      memberPosition: values.memberPosition,
+      memberPos: +values.memberPos,
       userId: values?.organizationUser?.id,
-      organizationGroupId: values?.organizationGroup?.organizationGroup?.id
+      organizationGroupId: values?.organizationGroup?.id
     });
   };
 
@@ -50,11 +50,11 @@ const EditMemberShowList: FC = () => {
         <Row gutter={[16, 8]} className="w-full">
           <Col xs={24} md={12}>
             <Form.Item
-              name="memberPosition"
-              label={t('name')}
+              name="memberPos"
+              label={t('organization_position')}
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchNewsUserMember?.data?.groupMember?.memberPosition}>
-              <Input />
+              initialValue={fetchNewsUserMember?.data?.groupMember?.memberPos}>
+              <Input type="number" className="ltr-input" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>

@@ -1,17 +1,33 @@
 import React, {useRef, ElementRef, FC} from 'react';
 import {Button, Card, Image, Space, Tooltip} from 'antd';
-import {FormOutlined, EditOutlined, DeleteOutlined, FilterOutlined, EyeOutlined} from '@ant-design/icons';
+import {
+  FormOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  FilterOutlined,
+  EyeOutlined,
+  FileExcelOutlined
+} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
-import {useDelete, useUser} from 'hooks';
+import {useDelete, usePost, useUser} from 'hooks';
 import {simplePermissionProps} from 'types/common';
-import {getImageUrl} from 'utils';
+import {getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
   const searchRef = useRef<ElementRef<typeof Search>>(null);
   const {hasPermission} = useUser();
+  const location = useLocation();
+
+  const fetchExcel = usePost({
+    url: 'services/app/PostGroups/GetPostGroupsToExcel',
+    method: 'GET',
+    onSuccess(data: any) {
+      window.open(getTempFileUrl(data?.fileType, data?.fileToken, data?.fileName), '_self');
+    }
+  });
 
   const deleteRequest = useDelete({
     url: '/services/app/PostGroups/Delete',
@@ -90,6 +106,16 @@ const ShowList: FC = () => {
       title={t('news_groups')}
       extra={
         <Space size="small">
+          <Button
+            className="ant-btn-success d-text-none md:d-text-unset"
+            type="primary"
+            icon={<FileExcelOutlined />}
+            loading={fetchExcel.isLoading}
+            onClick={() => {
+              fetchExcel.post({}, queryStringToObject(location.search));
+            }}>
+            {t('excel')}
+          </Button>
           {!hasPermission('news.store') && (
             <Link to="/news/group/create">
               <Button

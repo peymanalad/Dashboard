@@ -1,16 +1,27 @@
 import React, {useRef, ElementRef, FC} from 'react';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {FormOutlined, EditOutlined, DeleteOutlined, FilterOutlined} from '@ant-design/icons';
+import {FormOutlined, EditOutlined, DeleteOutlined, FilterOutlined, FileExcelOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
-import {Link} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
-import {useDelete, useUser} from 'hooks';
-import {simplePermissionProps} from 'types/common';
+import {useDelete, usePost, useUser} from 'hooks';
+import {getTempFileUrl} from 'utils/file';
+import {queryStringToObject} from 'utils';
+import type {simplePermissionProps} from 'types/common';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('organization');
   const searchRef = useRef<ElementRef<typeof Search>>(null);
   const {hasPermission} = useUser();
+  const location = useLocation();
+
+  const fetchExcel = usePost({
+    url: 'services/app/Organizations/GetOrganizationsToExcel',
+    method: 'GET',
+    onSuccess(data: any) {
+      window.open(getTempFileUrl(data?.fileType, data?.fileToken, data?.fileName), '_self');
+    }
+  });
 
   const deleteRequest = useDelete({
     url: '/services/app/Organizations/Delete',
@@ -65,6 +76,16 @@ const ShowList: FC = () => {
       title={t('title')}
       extra={
         <Space size="small">
+          <Button
+            className="ant-btn-success d-text-none md:d-text-unset"
+            type="primary"
+            icon={<FileExcelOutlined />}
+            loading={fetchExcel.isLoading}
+            onClick={() => {
+              fetchExcel.post({}, queryStringToObject(location.search));
+            }}>
+            {t('excel')}
+          </Button>
           {!hasPermission('organizations.store') && (
             <Link to="/organization/organization/create">
               <Button

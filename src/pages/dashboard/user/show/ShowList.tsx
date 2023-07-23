@@ -1,6 +1,6 @@
 import React, {FC, useRef, ElementRef} from 'react';
-import {Link} from 'react-router-dom';
-import {useDelete, useUser} from 'hooks';
+import {Link, useLocation} from 'react-router-dom';
+import {useDelete, usePost, useUser} from 'hooks';
 import {useTranslation} from 'react-i18next';
 import {Button, Card, Space, Tooltip} from 'antd';
 import {
@@ -9,11 +9,12 @@ import {
   EditOutlined,
   DeleteOutlined,
   CheckCircleOutlined,
-  CloseCircleOutlined
+  CloseCircleOutlined,
+  FileExcelOutlined
 } from '@ant-design/icons';
 import {CustomTable} from 'components';
 import {SearchUsers} from 'containers';
-import {convertUtcTimeToLocal} from 'utils';
+import {convertUtcTimeToLocal, queryStringToObject, getTempFileUrl} from 'utils';
 import {simplePermissionProps} from 'types/common';
 
 const UserShowList: FC = () => {
@@ -21,6 +22,15 @@ const UserShowList: FC = () => {
   const searchRef = useRef<ElementRef<typeof SearchUsers>>(null);
   const tableRef = useRef<ElementRef<typeof CustomTable>>(null);
   const {hasPermission} = useUser();
+  const location = useLocation();
+
+  const fetchExcel = usePost({
+    url: 'services/app/User/GetUsersToExcel',
+    method: 'GET',
+    onSuccess(data: any) {
+      window.open(getTempFileUrl(data?.fileType, data?.fileToken, data?.fileName), '_self');
+    }
+  });
 
   const deleteRequest = useDelete({
     url: 'users/{id}',
@@ -128,6 +138,16 @@ const UserShowList: FC = () => {
           {/*<Button className="ant-btn-success d-text-none md:d-text-unset" icon={<UploadOutlined />}>*/}
           {/*  {t('upload')}*/}
           {/*</Button>*/}
+          <Button
+            className="ant-btn-success d-text-none md:d-text-unset"
+            type="primary"
+            icon={<FileExcelOutlined />}
+            loading={fetchExcel.isLoading}
+            onClick={() => {
+              fetchExcel.post({}, queryStringToObject(location.search));
+            }}>
+            {t('excel')}
+          </Button>
           {!hasPermission('users.store') && (
             <Link to="/user/create">
               <Button className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset" icon={<FormOutlined />}>
