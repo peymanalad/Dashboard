@@ -44,7 +44,7 @@ const UserMemberShowList: FC = () => {
       align: 'center'
     },
     {
-      title: t('group'),
+      title: t('organization'),
       dataIndex: 'organizationGroupGroupName',
       key: 'organizationGroupGroupName',
       align: 'center'

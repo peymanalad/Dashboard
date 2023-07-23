@@ -9,6 +9,8 @@ import sortBy from 'lodash/sortBy';
 import {useFetch} from 'hooks';
 import type {PostGroupProps} from 'types/news';
 import {generateUniqueColorCodeById} from 'utils';
+import times from 'lodash/times';
+import constant from 'lodash/constant';
 
 const {Meta} = Card;
 
@@ -70,9 +72,9 @@ const generateRow = (initialNews: PostGroupProps[], chunkNews: PostGroupProps[],
     case 0:
     case 2:
       return (
-        <Row gutter={[16, 16]} className={index % 4 === 2 ? 'mb-1' : 'flex-row-reverse mb-1'}>
+        <Row gutter={[5, 5]} className={index % 4 === 2 ? 'mb-1/4' : 'flex-row-reverse mb-1/4'}>
           <Col span={8}>
-            <Row gutter={[16, 16]}>
+            <Row gutter={[5, 5]}>
               <Col span={24} className="h-full">
                 <SquareCard initialNews={initialNews} news={chunkNews[1]} setNews={setNews} />
               </Col>
@@ -89,7 +91,7 @@ const generateRow = (initialNews: PostGroupProps[], chunkNews: PostGroupProps[],
     case 1:
     case 3:
       return (
-        <Row gutter={[16, 16]} className="mb-1">
+        <Row gutter={[5, 5]} className="mb-1">
           {chunkNews?.map((chunckNew: PostGroupProps) => (
             <Col span={8}>
               <SquareCard initialNews={initialNews} news={chunckNew} setNews={setNews} />
@@ -113,11 +115,13 @@ const NewsGroupOrder: FC = () => {
     enabled: true,
     staleTime: 100,
     onSuccess(data) {
-      initialNews.current = data?.data?.items?.map((postGroup: any, index: number) => ({
-        ...postGroup?.postGroup,
-        color: generateUniqueColorCodeById(postGroup?.postGroup?.id),
-        ordering: postGroup?.postGroup?.ordering || index + 1
-      }));
+      initialNews.current = [...data?.data?.items, ...times(5, constant(null))]?.map(
+        (postGroup: any, index: number) => ({
+          ...postGroup?.postGroup,
+          color: generateUniqueColorCodeById(postGroup?.postGroup?.id),
+          ordering: postGroup ? postGroup?.postGroup?.ordering || index + 1 : null
+        })
+      );
       setNews(initialNews.current);
     }
   });

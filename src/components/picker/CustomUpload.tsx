@@ -233,6 +233,8 @@ const CustomUpload = ({
         return 'https://api.ideed.ir/Profile/UploadProfilePicture';
       case 'applications':
         return 'https://api.ideed.ir/SoftwareUpdates/UploadUpdateFileFile';
+      case 'posts':
+        return 'https://api.ideed.ir/Posts/UploadPostFileFile';
       default:
         return 'https://api.ideed.ir/SoftwareUpdates/UploadUpdateFileFile';
     }
@@ -240,6 +242,8 @@ const CustomUpload = ({
 
   const getAccess = useMemo(() => {
     switch (typeFile) {
+      case 'image,video':
+        return 'image/*, video/*';
       case 'image':
         return 'image/*';
       case 'sound':

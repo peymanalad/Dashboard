@@ -36,7 +36,7 @@ const EditMemberShowList: FC = () => {
       id,
       memberPos: +values.memberPos,
       userId: values?.organizationUser?.id,
-      organizationGroupId: values?.organizationGroup?.id
+      organizationId: values?.organization?.id
     });
   };
 
@@ -79,9 +79,9 @@ const EditMemberShowList: FC = () => {
           <Col xs={24} md={12}>
             <Form.Item
               label={t('organization_group')}
-              name="organizationGroup"
+              name="organization"
               initialValue={{
-                id: fetchNewsUserMember?.data?.groupMember?.organizationGroupId,
+                id: fetchNewsUserMember?.data?.groupMember?.organizationId,
                 displayName: fetchNewsUserMember?.data?.organizationGroupGroupName
               }}>
               <MultiSelectPaginate

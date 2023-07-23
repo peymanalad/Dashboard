@@ -119,9 +119,6 @@ const ShowEmergency = lazyWithRetry(() => import('pages/dashboard/user/emergency
 const EditNews = lazyWithRetry(() => import('pages/dashboard/news/show/EditNews'));
 const NewsShowList = lazyWithRetry(() => import('pages/dashboard/news/show/ShowList'));
 
-const EditNewsGroup = lazyWithRetry(() => import('pages/dashboard/news/group/EditNewsGroup'));
-const NewsGroupShowList = lazyWithRetry(() => import('pages/dashboard/news/group/ShowList'));
-
 const NewsGroupOrder = lazyWithRetry(() => import('pages/dashboard/news/groupOrder/ShowOrder'));
 
 const EditNewsUserMember = lazyWithRetry(() => import('pages/dashboard/news/user/EditUserMember'));
@@ -431,34 +428,6 @@ const Dashboard: Array<dashboardRouteProps> = [
         route: '/news/news/edit/:id',
         cmp: <EditNews />,
         title: i18n.t('side_menu:editNews'),
-        permission: 'NewsUnits',
-        hidden: true
-      },
-      {
-        key: 'newsGroupList',
-        route: '/news/group/list',
-        cmp: <NewsGroupShowList />,
-        title: i18n.t('side_menu:group'),
-        permission: 'NewsUnits',
-        extra: {
-          route: '/news/group/create',
-          title: i18n.t('side_menu:addNewsGroup'),
-          permission: 'NewsUnits'
-        }
-      },
-      {
-        key: 'newsGroupCreate',
-        route: '/news/group/create',
-        cmp: <EditNewsGroup />,
-        title: i18n.t('side_menu:addNewsGroup'),
-        hidden: true,
-        permission: 'NewsUnits'
-      },
-      {
-        key: 'newsGroupEdit',
-        route: '/news/group/edit/:id',
-        cmp: <EditNewsGroup />,
-        title: i18n.t('side_menu:editNewsGroup'),
         permission: 'NewsUnits',
         hidden: true
       },

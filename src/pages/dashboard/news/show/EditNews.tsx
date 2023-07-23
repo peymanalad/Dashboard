@@ -6,6 +6,7 @@ import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {CustomUpload, DateTimePicker, MultiSelectPaginate} from 'components';
 import {getImageUrl, wordCounter} from 'utils';
+import compact from 'lodash/compact';
 
 const {TextArea} = Input;
 
@@ -24,7 +25,7 @@ const EditNews: FC = () => {
   });
 
   const storeNews = usePost({
-    url: '/services/app/Newss/CreateOrEdit',
+    url: '/services/app/Posts/CreateOrEdit',
     method: 'POST',
     removeQueries: ['news'],
     form,
@@ -37,8 +38,10 @@ const EditNews: FC = () => {
   const onFinish = (values: any) => {
     values.postGroupId = values.postGroupId?.id;
     values.groupMemberId = values.groupMemberId?.id;
-    values.postFileToken = values.postFileToken?.path;
-    storeNews.post({id, ...values});
+    values.postFileToken2 = values.postFileToken?.[1]?.fileToken;
+    values.postFileToken3 = values.postFileToken?.[2]?.fileToken;
+    values.postFileToken = values.postFileToken?.[0]?.fileToken;
+    storeNews.post({id: id ? +id : undefined, ...values});
   };
 
   return (
@@ -49,20 +52,7 @@ const EditNews: FC = () => {
       className="w-full">
       <Form form={form} layout="vertical" name="product" requiredMark={false} onFinish={onFinish}>
         <Row gutter={[16, 8]} className="w-full">
-          <Col xs={24} md={12} lg={8} className="flex upload-center">
-            <Form.Item
-              name="postFileToken"
-              noStyle
-              initialValue={
-                fetchNews?.data?.post?.postFile && {
-                  path: fetchNews?.data?.post?.postFile,
-                  url: getImageUrl(fetchNews?.data?.post?.postFile)
-                }
-              }>
-              <CustomUpload type="products" name="image" mode="single" typeFile="image" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={16}>
+          <Col xs={24} md={12} lg={8}>
             <Form.Item
               name="postTitle"
               label={t('title')}
@@ -109,6 +99,33 @@ const EditNews: FC = () => {
               />
             </Form.Item>
           </Col>
+        </Row>
+        <Row className="flex-center w-full flex-col">
+          <Form.Item
+            name="postFileToken"
+            noStyle
+            initialValue={compact([
+              fetchNews?.data?.post?.postFile
+                ? {
+                    fileToken: fetchNews?.data?.post?.postFile,
+                    url: getImageUrl(fetchNews?.data?.post?.postFile)
+                  }
+                : null,
+              fetchNews?.data?.post?.postFile2
+                ? {
+                    fileToken: fetchNews?.data?.post?.postFile2,
+                    url: getImageUrl(fetchNews?.data?.post?.postFile2)
+                  }
+                : null,
+              fetchNews?.data?.post?.postFile3
+                ? {
+                    fileToken: fetchNews?.data?.post?.postFile3,
+                    url: getImageUrl(fetchNews?.data?.post?.postFile3)
+                  }
+                : null
+            ])}>
+            <CustomUpload type="posts" name="image" mode="multiple" typeFile="image,video" />
+          </Form.Item>
         </Row>
         <Row gutter={[16, 8]} className="w-full" justify="end">
           <Col span={24}>
