@@ -25,7 +25,7 @@
       "last 1 safari version"
     ]
   },
-  "buildDate": 1689098086839,
+  "buildDate": 1690579979208,
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
