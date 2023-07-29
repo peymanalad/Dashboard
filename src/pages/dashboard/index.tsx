@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-brace-presence */
 import React, {Suspense, lazy, FC, useRef, ElementRef, useMemo} from 'react';
 import {useUser, useFetch} from 'hooks';
 import {Redirect, Switch, Route, useLocation} from 'react-router-dom';

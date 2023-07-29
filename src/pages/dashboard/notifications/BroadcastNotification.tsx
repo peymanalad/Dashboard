@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-brace-presence */
 import React from 'react';
 import {Card, Row, Form, Col, Button, notification, Input, Radio} from 'antd';
 import {usePost} from 'hooks';

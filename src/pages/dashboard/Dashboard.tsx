@@ -1,3 +1,5 @@
+/* eslint-disable func-names */
+/* eslint-disable no-debugger */
 import React, {FC, useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Row, Spin, Space, Typography, Image} from 'antd';
@@ -15,7 +17,7 @@ const Dashboard: FC = () => {
   const user = useUser();
 
   const fetchDashboard = useFetch({
-    url: 'https://api.ideed.ir/Dashboard/Js',
+    url: `${process.env.REACT_APP_BASE_URL_RAW}/Dashboard/Js`,
     name: 'dashboard',
     responseType: 'text',
     staleTime: 10000,
@@ -25,7 +27,7 @@ const Dashboard: FC = () => {
   useEffect(() => {
     if (fetchDashboard?.data) {
       const report = Stimulsoft.Report.StiReport.createNewDashboard();
-      StiOptions.WebServer.url = 'https://api.ideed.ir/DataAdapters';
+      StiOptions.WebServer.url = `${process.env.REACT_APP_BASE_URL_RAW}/DataAdapters`;
       StiOptions.WebServer.encryptData = false;
       StiOptions.WebServer.checkDataAdaptersVersion = false;
       Stimulsoft.Base.StiLicense.loadFromString(process.env.REACT_APP_STIMULSOFT_LICENCE_KEY!);
@@ -34,6 +36,8 @@ const Dashboard: FC = () => {
       };
       report.load(fetchDashboard?.data);
       viewer.report = report;
+      //Stimulsoft.Base.StiFontCollection.addOpentypeFontFile('../assets/fonts/ttf/IRANSans.ttf');
+      //Stimulsoft.Base.StiFontCollection.addOpentypeFontFile('../assets/fonts/ttf/IRANSans(FaNum)_Medium.ttf');
       viewer.renderHtml('dashboard-viewer');
     }
   }, [fetchDashboard?.data]);
