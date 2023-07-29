@@ -2,6 +2,7 @@ import React, {useRef, useState, type FC, type Dispatch, type SetStateAction} fr
 import {Row, Col, Card, Space, Button} from 'antd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {DndProvider, useDrag, useDrop, DropTargetMonitor} from 'react-dnd';
+import IPhone8FrameView from 'components/view/Iphone8FrameView';
 import {SaveOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import chunk from 'lodash/chunk';
@@ -9,8 +10,6 @@ import sortBy from 'lodash/sortBy';
 import {useFetch} from 'hooks';
 import type {PostGroupProps} from 'types/news';
 import {generateUniqueColorCodeById} from 'utils';
-import times from 'lodash/times';
-import constant from 'lodash/constant';
 
 const {Meta} = Card;
 
@@ -115,13 +114,11 @@ const NewsGroupOrder: FC = () => {
     enabled: true,
     staleTime: 100,
     onSuccess(data) {
-      initialNews.current = [...data?.data?.items, ...times(5, constant(null))]?.map(
-        (postGroup: any, index: number) => ({
-          ...postGroup?.postGroup,
-          color: generateUniqueColorCodeById(postGroup?.postGroup?.id),
-          ordering: postGroup ? postGroup?.postGroup?.ordering || index + 1 : null
-        })
-      );
+      initialNews.current = data?.data?.items?.map((postGroup: any, index: number) => ({
+        ...postGroup?.postGroup,
+        color: generateUniqueColorCodeById(postGroup?.postGroup?.id),
+        ordering: postGroup ? postGroup?.postGroup?.ordering || index + 1 : null
+      }));
       setNews(initialNews.current);
     }
   });
@@ -143,11 +140,13 @@ const NewsGroupOrder: FC = () => {
           </Button>
         </Space>
       }>
-      <DndProvider backend={HTML5Backend}>
-        {chunk(news, 3)?.map((chunkNews: PostGroupProps[], index: number) =>
-          generateRow(initialNews.current, chunkNews, setNews, index)
-        )}
-      </DndProvider>
+      <IPhone8FrameView>
+        <DndProvider backend={HTML5Backend}>
+          {chunk(news, 3)?.map((chunkNews: PostGroupProps[], index: number) =>
+            generateRow(initialNews.current, chunkNews, setNews, index)
+          )}
+        </DndProvider>
+      </IPhone8FrameView>
     </Card>
   );
 };
