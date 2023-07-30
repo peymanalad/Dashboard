@@ -7,9 +7,10 @@ import {SaveOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import chunk from 'lodash/chunk';
 import sortBy from 'lodash/sortBy';
-import {useFetch} from 'hooks';
+import {useFetch, usePost} from 'hooks';
 import type {PostGroupProps} from 'types/news';
 import {generateUniqueColorCodeById} from 'utils';
+import {orderBy} from 'lodash';
 
 const {Meta} = Card;
 
@@ -114,14 +115,31 @@ const NewsGroupOrder: FC = () => {
     enabled: true,
     staleTime: 100,
     onSuccess(data) {
-      initialNews.current = data?.data?.items?.map((postGroup: any, index: number) => ({
-        ...postGroup?.postGroup,
-        color: generateUniqueColorCodeById(postGroup?.postGroup?.id),
-        ordering: postGroup ? postGroup?.postGroup?.ordering || index + 1 : null
-      }));
+      initialNews.current = orderBy(
+        data?.data?.items?.map((postGroup: any, index: number) => ({
+          ...postGroup?.postGroup,
+          color: generateUniqueColorCodeById(postGroup?.postGroup?.id),
+          ordering: postGroup ? postGroup?.postGroup?.ordering || index + 1 : null
+        })),
+        'ordering'
+      );
       setNews(initialNews.current);
     }
   });
+
+  const storePostGroupOrder = usePost({
+    url: 'services/app/PostGroups/UpdatePostGroupOrdering',
+    method: 'PUT',
+    removeQueries: ['postGroups']
+  });
+
+  const onSave = () => {
+    const orderData: any = {};
+    news?.forEach((theNew: PostGroupProps, index: number) => {
+      orderData[theNew.id] = index + 1;
+    });
+    storePostGroupOrder.post(orderData);
+  };
 
   return (
     <Card
@@ -134,7 +152,8 @@ const NewsGroupOrder: FC = () => {
             className="w-full sm:w-unset mr-auto"
             type="primary"
             htmlType="submit"
-            // loading={storeNewsGroup.isLoading}
+            onClick={onSave}
+            loading={storePostGroupOrder.isLoading}
             icon={<SaveOutlined />}>
             {t('save')}
           </Button>
