@@ -37,6 +37,8 @@
     "react/jsx-filename-extension": [2, {"extensions": [".js", ".jsx", ".ts", ".tsx"]}],
     "vars-on-top": "error",
     "max-len": "off",
+    "no-unreachable-loop": "off",
+    "no-restricted-syntax": "off",
     "no-undefined": "off",
     "comma-dangle": ["error", "never"],
     "quotes": ["error", "single"],

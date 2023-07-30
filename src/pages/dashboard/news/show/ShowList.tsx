@@ -90,7 +90,15 @@ const ShowList: FC = () => {
     },
     {
       title: t('created_at'),
-      dataIndex: ['post', 'postTime'],
+      dataIndex: ['post', 'creationTime'],
+      key: 'created_at',
+      align: 'center',
+      responsive: ['md'],
+      render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
+    },
+    {
+      title: t('updated_at'),
+      dataIndex: ['post', 'lastModificationTIme'],
       key: 'created_at',
       align: 'center',
       responsive: ['md'],

@@ -684,9 +684,8 @@ td.ant-table-cell {
 
 .calendarContainer {
   margin: 0.6rem 0 0 0 !important;
+  padding: 0 !important;
   width: 100% !important;
-  border: 1px solid #d9d9d9;
-  border-radius: 2px !important;
   box-shadow: none;
   -webkit-box-shadow: none;
 }

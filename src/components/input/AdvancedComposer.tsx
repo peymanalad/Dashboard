@@ -380,67 +380,71 @@ const AdvancedComposer: ForwardRefRenderFunction<refProps, props> = (
                 }
               }}
               type="text"
-              className="text-center w-full h-full"
+              className="text-center w-full h-full rounded-none"
               icon={<SendOutlined className="text-gray text-lg text-grayDarker rotate-180" />}
             />
           </div>
         </Row>
         <div className={`chat-actions-wrapper md:d-none ${showActions ? 'show' : ''}`}>
           <Row className="chat-actions-container">
-            {recordShow ? (
-              recording ? (
-                <Col span={12} className="flex flex-col items-center">
-                  <Button
-                    onClick={() => {
-                      setRecording(false);
-                    }}
-                    disabled={disabled}
-                    type="text"
-                    icon={<RecordingStopIcon style={{fontSize: 18}} />}
-                  />
-                </Col>
-              ) : recordData ? (
-                <Col span={12} className="flex flex-col items-center">
-                  <Button
-                    onClick={() => {
-                      setRecordData(null);
-                      setRecordShow(false);
-                    }}
-                    className=""
-                    disabled={disabled}
-                    type="text"
-                    icon={<DeleteOutlined style={{color: 'red', fontSize: 18}} />}
-                  />
-                </Col>
-              ) : (
-                <Col span={12} className="flex flex-col items-center">
-                  <Button
-                    onClick={() => {
-                      setRecording(true);
-                    }}
-                    className=""
-                    disabled={disabled}
-                    type="text"
-                    icon={<RecordingIcon style={{fontSize: 18}} />}
-                  />
-                </Col>
-              )
-            ) : (
-              <Col span={12} className="flex flex-col items-center">
-                <Button
-                  onClick={() => {
-                    setRecordShow(true);
-                    setConfigShow(false);
-                    setMentionUserShow(false);
-                    setShowEmoji(false);
-                  }}
-                  className=""
-                  disabled={(reply && reply?.type === 'text') || disabled}
-                  type="text"
-                  icon={<AudioOutlined style={{color: 'rgba(0,0,0,.45)', fontSize: 18}} />}
-                />
-                <small>{t('sendVoice')}</small>
-              </Col>
+            {!disableVoice && (
+              <>
+                {recordShow ? (
+                  recording ? (
+                    <Col span={12} className="flex flex-col items-center">
+                      <Button
+                        onClick={() => {
+                          setRecording(false);
+                        }}
+                        disabled={disabled}
+                        type="text"
+                        icon={<RecordingStopIcon style={{fontSize: 18}} />}
+                      />
+                    </Col>
+                  ) : recordData ? (
+                    <Col span={12} className="flex flex-col items-center">
+                      <Button
+                        onClick={() => {
+                          setRecordData(null);
+                          setRecordShow(false);
+                        }}
+                        className=""
+                        disabled={disabled}
+                        type="text"
+                        icon={<DeleteOutlined style={{color: 'red', fontSize: 18}} />}
+                      />
+                    </Col>
+                  ) : (
+                    <Col span={12} className="flex flex-col items-center">
+                      <Button
+                        onClick={() => {
+                          setRecording(true);
+                        }}
+                        className=""
+                        disabled={disabled}
+                        type="text"
+                        icon={<RecordingIcon style={{fontSize: 18}} />}
+                      />
+                    </Col>
+                  )
+                ) : (
+                  <Col span={12} className="flex flex-col items-center">
+                    <Button
+                      onClick={() => {
+                        setRecordShow(true);
+                        setConfigShow(false);
+                        setMentionUserShow(false);
+                        setShowEmoji(false);
+                      }}
+                      className=""
+                      disabled={(reply && reply?.type === 'text') || disabled}
+                      type="text"
+                      icon={<AudioOutlined style={{color: 'rgba(0,0,0,.45)', fontSize: 18}} />}
+                    />
+                    <small>{t('sendVoice')}</small>
+                  </Col>
+                )}
+              </>
             )}
             {!recordShow && (
               <>

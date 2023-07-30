@@ -46,6 +46,12 @@ const UserShowList: FC = () => {
       align: 'center'
     },
     {
+      title: t('mobile'),
+      dataIndex: 'phoneNumber',
+      key: 'mobile',
+      align: 'center'
+    },
+    {
       title: t('name'),
       dataIndex: 'name',
       key: 'name',

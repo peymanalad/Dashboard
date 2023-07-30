@@ -847,7 +847,7 @@
     "confirm": "تایید شده",
     "not_confirm": "تایید نشده",
     "inactive": "غیر فعال",
-    "email_activate": "تایید پست الکترونیکی",
+    "email_activate": "تایید ایمیل",
     "actions": "عملیات",
     "edit": "ویرایش",
     "delete": "حذف",
@@ -2455,6 +2455,7 @@
     "pictures": "تصاویر",
     "actions": "عملیات",
     "created_at": "تاریخ ایجاد",
+    "updated_at": "تاریخ بروز رسانی",
     "special": {
       "title": "ویژه",
       "true": "ویژه",

@@ -4,7 +4,7 @@ import {SaveOutlined, SearchOutlined, SmileOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {CustomUpload, DateTimePicker, MultiSelectPaginate} from 'components';
+import {CustomUpload, MultiSelectPaginate} from 'components';
 import {getImageUrl, wordCounter} from 'utils';
 import compact from 'lodash/compact';
 import {Picker} from 'emoji-mart';
@@ -67,7 +67,7 @@ const EditNews: FC = () => {
         className="w-full">
         <Form form={form} layout="vertical" name="product" requiredMark={false} onFinish={onFinish}>
           <Row gutter={[16, 8]} className="w-full">
-            <Col xs={24} md={12} lg={8}>
+            <Col xs={24} md={16}>
               <Form.Item
                 name="postTitle"
                 label={t('title')}
@@ -76,7 +76,7 @@ const EditNews: FC = () => {
                 <Input />
               </Form.Item>
             </Col>
-            <Col xs={24} md={12} lg={8}>
+            <Col xs={24} md={8}>
               <Form.Item
                 label={t('news_group')}
                 name="postGroupId"
@@ -95,53 +95,46 @@ const EditNews: FC = () => {
                 />
               </Form.Item>
             </Col>
-            <Col xs={24} md={12} lg={8}>
+          </Row>
+          <Row gutter={[16, 8]} className="w-full">
+            <Col xs={24} md={16}>
               <Form.Item
-                label={t('news_user')}
-                name="groupMemberId"
-                initialValue={{
-                  id: fetchNews?.data?.post?.groupMemberId,
-                  displayName: fetchNews?.data?.groupMemberMemberPosition
-                }}>
-                <MultiSelectPaginate
-                  mode="single"
-                  urlName="groupMemberSearch"
-                  url="services/app/Posts/GetAllGroupMemberForLookupTable"
-                  keyValue="id"
-                  keyLabel="displayName"
-                  placeholder={t('choose')}
-                  showSearch={false}
-                />
+                name="postFileToken"
+                noStyle
+                initialValue={compact([
+                  fetchNews?.data?.post?.postFile
+                    ? {
+                        fileToken: fetchNews?.data?.post?.postFile,
+                        url: getImageUrl(fetchNews?.data?.post?.postFile)
+                      }
+                    : null,
+                  fetchNews?.data?.post?.postFile2
+                    ? {
+                        fileToken: fetchNews?.data?.post?.postFile2,
+                        url: getImageUrl(fetchNews?.data?.post?.postFile2)
+                      }
+                    : null,
+                  fetchNews?.data?.post?.postFile3
+                    ? {
+                        fileToken: fetchNews?.data?.post?.postFile3,
+                        url: getImageUrl(fetchNews?.data?.post?.postFile3)
+                      }
+                    : null
+                ])}>
+                <CustomUpload type="posts" name={t('file')} mode="multiple" maxFile={3} typeFile="image,video" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={8} className="flex align-center justify-center">
+              <Form.Item
+                name="isSpecial"
+                valuePropName="checked"
+                className="m-0"
+                initialValue={fetchNews?.data?.post?.isSpecial}>
+                <Checkbox>{t('special.title')}</Checkbox>
               </Form.Item>
             </Col>
           </Row>
-          <Row className="flex-center w-full flex-col">
-            <Form.Item
-              name="postFileToken"
-              noStyle
-              initialValue={compact([
-                fetchNews?.data?.post?.postFile
-                  ? {
-                      fileToken: fetchNews?.data?.post?.postFile,
-                      url: getImageUrl(fetchNews?.data?.post?.postFile)
-                    }
-                  : null,
-                fetchNews?.data?.post?.postFile2
-                  ? {
-                      fileToken: fetchNews?.data?.post?.postFile2,
-                      url: getImageUrl(fetchNews?.data?.post?.postFile2)
-                    }
-                  : null,
-                fetchNews?.data?.post?.postFile3
-                  ? {
-                      fileToken: fetchNews?.data?.post?.postFile3,
-                      url: getImageUrl(fetchNews?.data?.post?.postFile3)
-                    }
-                  : null
-              ])}>
-              <CustomUpload type="posts" name={t('file')} mode="multiple" maxFile={3} typeFile="image,video" />
-            </Form.Item>
-          </Row>
+          <Row className="flex-center w-full flex-col" />
           <Row gutter={[16, 8]} className="w-full" justify="end">
             <Col span={24}>
               <Form.Item
@@ -174,8 +167,6 @@ const EditNews: FC = () => {
                 );
               }}
             </Form.Item>
-          </Row>
-          <Row>
             <Col xs={24}>
               <Input.Group compact className="flex-center">
                 <Form.Item
@@ -199,29 +190,9 @@ const EditNews: FC = () => {
               </Input.Group>
             </Col>
           </Row>
-          <Row gutter={[16, 8]} className="w-full">
-            <Col xs={24} md={12} lg={8}>
-              <Form.Item
-                name="postTime"
-                initialValue={fetchNews?.data?.post?.postTime}
-                rules={[{required: true, message: t('messages.date_time')}]}
-                label={t('news_time')}>
-                <DateTimePicker timePicker />
-              </Form.Item>
-            </Col>
-            <Col xs={24} md={12} lg={8} className="flex align-center justify-center">
-              <Form.Item
-                name="isSpecial"
-                valuePropName="checked"
-                className="m-0"
-                initialValue={fetchNews?.data?.post?.isSpecial}>
-                <Checkbox>{t('special.title')}</Checkbox>
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={[16, 8]} className="w-full my-5">
+          <Row gutter={[16, 8]} className="my-5">
             <Button
-              className="w-full sm:w-unset mr-auto my-4"
+              className="sm:w-unset mr-auto my-4"
               type="primary"
               htmlType="submit"
               loading={storeNews.isLoading}

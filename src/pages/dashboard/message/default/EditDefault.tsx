@@ -117,7 +117,7 @@ const EditCare = () => {
         </Row>
         <Row gutter={[16, 8]} className="w-full my-5">
           <Button
-            className="w-full sm:w-unset mr-auto"
+            className="sm:w-unset mr-auto"
             type="primary"
             htmlType="submit"
             loading={createDefaultMessage?.isLoading || updateDefaultMessage?.isLoading}

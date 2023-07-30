@@ -1,4 +1,4 @@
-import React, {memo, useMemo, useRef} from 'react';
+import React, {memo, useMemo} from 'react';
 import {chatMessageProps, replyUpdateProps} from 'types/message';
 import {
   FileZipOutlined,
@@ -12,13 +12,13 @@ import {useTranslation} from 'react-i18next';
 import {chatImageDefault, Drop, PrescriptionIcon} from 'assets';
 import * as Scroll from 'react-scroll';
 import AudioPlayer from 'react-h5-audio-player';
-import {convertUtcTimeToLocal, getChatImageUrl, getImageUrl, validURL} from 'utils';
+import {convertUtcTimeToLocal, getChatImageUrl} from 'utils';
 import {MessageActions} from 'components';
 import {useUser} from 'hooks';
 import toString from 'lodash/toString';
 import {includes} from 'lodash';
 import Linkify from 'linkify-react';
-import get from 'lodash/get';
+import {normalizeMessage} from '../../utils/message';
 
 export interface props {
   data: chatMessageProps;
@@ -51,7 +51,6 @@ const MessageChat = ({
   onConfirmClick,
   actionLoading,
   setReply,
-  getReply,
   hasDelete,
   hasReply,
   hasUpdate,
@@ -84,23 +83,9 @@ const MessageChat = ({
     });
   };
 
-  const message = useMemo(() => {
-    const matches: any = data?.message?.matchAll(/\[\w+\]/g);
-    // eslint-disable-next-line no-restricted-syntax,no-unreachable-loop
-    for (const match of matches) {
-      const messageObj = JSON.parse(data?.message?.replaceAll(match[0], ''));
-      return {
-        content: messageObj,
-        type: match[0]?.replaceAll(/\[|\]/g, '')
-      };
-    }
-    return {
-      type: 'text',
-      content: data?.message
-    };
-  }, [data?.message]);
+  const message = useMemo(() => normalizeMessage(data), [data?.message]);
 
-  console.log(message);
+  if (message?.type === 'upload') return null;
 
   return (
     <>
@@ -108,7 +93,7 @@ const MessageChat = ({
         convertUtcTimeToLocal(before?.creationTime, 'jYYYY/jMM/jDD') !==
           convertUtcTimeToLocal(data?.creationTime, 'jYYYY/jMM/jDD')) && (
         <Divider plain style={{borderTop: 2, borderTopColor: '#9e9e9e'}}>
-          <Text className="text-xs" type="secondary">
+          <Text className="text-xs text-no-wrap" type="secondary">
             {convertUtcTimeToLocal(data?.creationTime, 'jYYYY/jMM/jDD')}
           </Text>
         </Divider>
@@ -138,7 +123,7 @@ const MessageChat = ({
                 alt="image"
                 fallback={chatImageDefault}
                 src={
-                  typeof message?.content?.id === 'string'
+                  !data?.status
                     ? getChatImageUrl(message?.content, user?.encrypted_access_token!)
                     : URL.createObjectURL(message?.content)
                 }
@@ -155,7 +140,11 @@ const MessageChat = ({
                     showJumpControls={false}
                     defaultCurrentTime=""
                     customAdditionalControls={[]}
-                    src={typeof data?.content === 'string' ? data?.content : URL.createObjectURL(data?.content)}
+                    src={
+                      !data?.status
+                        ? getChatImageUrl(message?.content, user?.encrypted_access_token!)
+                        : URL.createObjectURL(data?.content)
+                    }
                   />
                 </Col>
               </ConfigProvider>
@@ -178,7 +167,14 @@ const MessageChat = ({
             <div className="message__text">
               <div className="message__text__content">
                 <video className="max-w-full max-h-400px rounded-xl" controls>
-                  <source src={data?.content} type="video/mp4" />
+                  <source
+                    src={
+                      !data?.status
+                        ? getChatImageUrl(message?.content, user?.encrypted_access_token!)
+                        : URL.createObjectURL(message?.content)
+                    }
+                    type="video/mp4"
+                  />
                   Your browser does not support HTML video.
                 </video>
               </div>

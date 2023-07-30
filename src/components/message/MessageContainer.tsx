@@ -5,11 +5,10 @@ import {SimpleComposer, AdvancedComposer, MessageChat} from 'components';
 import {usePost, useUser} from 'hooks';
 import {useParams} from 'react-router-dom';
 import {EmptyMessage} from 'assets';
-import {chatMessageProps, replyUpdateProps, chatStatus, chatType, updateMessageProps, commentType} from 'types/message';
 import {useQueryClient} from 'react-query';
+import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
 import * as Scroll from 'react-scroll';
 import cloneWith from 'lodash/cloneWith';
-import first from 'lodash/first';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 import get from 'lodash/get';
@@ -19,9 +18,10 @@ import forEach from 'lodash/forEach';
 import filter from 'lodash/filter';
 import toString from 'lodash/toString';
 import flattenDeep from 'lodash/flattenDeep';
-import {uploadAdvancedInputType} from 'types/file';
-import {userProps} from 'types/user';
-import {HttpTransportType, HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
+import {normalizeMessage} from 'utils/message';
+import type {chatMessageProps, replyUpdateProps, chatType, updateMessageProps, commentType} from 'types/message';
+import type {uploadAdvancedInputType} from 'types/file';
+import type {userProps} from 'types/user';
 
 export interface props {
   getMessageData: any;
@@ -142,11 +142,21 @@ const MessageContainer = ({
       // status: chatStatus,
       // ChatID: number | string
     ) => {
+      const msgNormalize = normalizeMessage(message);
       queryClient.setQueryData(urlName, (responses: any) =>
         cloneWith(responses, (value: any[]) => {
-          (
-            get(value, messagesKey ? ['pages', 0, 'data', 'items', messagesKey] : ['pages', 0, 'data', 'items']) || []
-          ).push(message);
+          let messages =
+            get(value, messagesKey ? ['pages', 0, 'data', 'items', messagesKey] : ['pages', 0, 'data', 'items']) || [];
+          if (!message?.type)
+            messages = messages?.filter(
+              (msg: any) => !msg?.status && msg?.content?.name !== msgNormalize?.content?.name
+            );
+          messages.push(message);
+          set(
+            value,
+            messagesKey ? ['pages', 0, 'data', 'items', messagesKey] : ['pages', 0, 'data', 'items'],
+            messages
+          );
           return value;
         })
       );
@@ -420,7 +430,8 @@ const MessageContainer = ({
             disableVoice={disableVoice}
             // loading={postChat.isLoading}
             onClick={(content: string | File, mentions?: userProps[]) => {
-              if (reply?.isReply === false) updateMessage({content, status: 'loading'}, reply?.id);
+              addToMessages({type: 'video', content, status: 'loading', userId: 2});
+              // if (reply?.isReply === false) updateMessage({content, status: 'loading'}, reply?.id);
               // else addToMessages(content, reply, 'loading', 'newMessage', mentions);
             }}
             onError={() => {
@@ -438,7 +449,7 @@ const MessageContainer = ({
               setReplyData(undefined);
             }}
             onSend={(content: string) => {
-              if (reply?.isReply === false) updateMessage({content, status: 'loading'}, reply?.id);
+              // if (reply?.isReply === false) updateMessage({content, status: 'loading'}, reply?.id);
               // else addToMessages(content, reply, 'loading', 'newMessage');
               onStoreMessage(content, reply, commentType || 'text');
             }}

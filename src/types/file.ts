@@ -9,6 +9,7 @@ export type uploadType =
   | 'applications'
   | 'messages'
   | 'posts'
+  | 'postGroups'
   | 'visits'
   | 'banks'
   | 'recommendations'

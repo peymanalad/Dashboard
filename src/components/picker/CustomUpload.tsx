@@ -237,6 +237,8 @@ const CustomUpload = ({
         return 'https://api.ideed.ir/SoftwareUpdates/UploadUpdateFileFile';
       case 'posts':
         return 'https://api.ideed.ir/Posts/UploadPostFileFile';
+      case 'postGroups':
+        return 'https://api.ideed.ir/PostGroups/UploadGroupFileFile';
       default:
         return 'https://api.ideed.ir/SoftwareUpdates/UploadUpdateFileFile';
     }

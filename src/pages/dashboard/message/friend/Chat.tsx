@@ -3,14 +3,13 @@ import {Button} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {MessageContainer} from 'components';
-import {useParams, useHistory, Link} from 'react-router-dom';
-import {useInfinite, useUser} from 'hooks';
+import {useParams, Link} from 'react-router-dom';
+import {useInfinite} from 'hooks';
 import get from 'lodash/get';
 
 const SupportChat = () => {
   const {t} = useTranslation('message');
   const {user_id} = useParams<{user_id: string}>();
-  const history = useHistory();
 
   const getMessageData = useInfinite({
     url: 'services/app/Chat/GetUserChatMessages?TenantId=1&',

@@ -1265,7 +1265,7 @@
   width: 95%;
 }
 .w-full {
-  width: 100%;
+  width: 100% !important;
 }
 .w-half {
   width: 50%;

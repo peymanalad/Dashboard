@@ -59,7 +59,7 @@ const EditNewsGroup: FC = () => {
                   url: getImageUrl(fetchNewsGroup?.data?.postGroup?.groupFile)
                 }
               }>
-              <CustomUpload type="products" name="image" mode="single" typeFile="image" />
+              <CustomUpload type="postGroups" name="image" mode="single" typeFile="image" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -93,7 +93,7 @@ const EditNewsGroup: FC = () => {
         </Row>
         <Row gutter={[16, 8]} className="w-full my-5">
           <Button
-            className="w-full sm:w-unset mr-auto"
+            className="sm:w-unset mr-auto"
             type="primary"
             htmlType="submit"
             loading={storeNewsGroup.isLoading}

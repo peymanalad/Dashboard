@@ -28,6 +28,7 @@ const Dashboard: FC = () => {
       includes(location.pathname, 'comment/patient/edit') ||
       includes(location.pathname, 'education/recommendation/edit/comment') ||
       includes(location.pathname, 'message/support/chat') ||
+      includes(location.pathname, 'message/friend/') ||
       includes(location.pathname, 'message/ticket'),
     [location]
   );
