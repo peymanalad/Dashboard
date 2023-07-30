@@ -38,9 +38,9 @@ const EditNews: FC = () => {
   const onFinish = (values: any) => {
     values.postGroupId = values.postGroupId?.id;
     values.groupMemberId = values.groupMemberId?.id;
-    values.postFileToken2 = values.postFileToken?.[1]?.fileToken;
-    values.postFileToken3 = values.postFileToken?.[2]?.fileToken;
-    values.postFileToken = values.postFileToken?.[0]?.fileToken;
+    values.postFileToken2 = values.postFileToken?.[1]?.response?.fileToken;
+    values.postFileToken3 = values.postFileToken?.[2]?.response?.fileToken;
+    values.postFileToken = values.postFileToken?.[0]?.response?.fileToken;
     storeNews.post({id: id ? +id : undefined, ...values});
   };
 

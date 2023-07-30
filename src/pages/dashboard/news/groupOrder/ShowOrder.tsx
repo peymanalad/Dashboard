@@ -8,9 +8,9 @@ import {useTranslation} from 'react-i18next';
 import chunk from 'lodash/chunk';
 import sortBy from 'lodash/sortBy';
 import {useFetch, usePost} from 'hooks';
-import type {PostGroupProps} from 'types/news';
 import {generateUniqueColorCodeById} from 'utils';
-import {orderBy} from 'lodash';
+import orderBy from 'lodash/orderBy';
+import type {PostGroupProps} from 'types/news';
 
 const {Meta} = Card;
 
