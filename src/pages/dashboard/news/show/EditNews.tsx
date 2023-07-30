@@ -124,7 +124,7 @@ const EditNews: FC = () => {
                   }
                 : null
             ])}>
-            <CustomUpload type="posts" name="image" mode="multiple" typeFile="image,video" />
+            <CustomUpload type="posts" name={t('file')} mode="multiple" maxFile={3} typeFile="image,video" />
           </Form.Item>
         </Row>
         <Row gutter={[16, 8]} className="w-full" justify="end">

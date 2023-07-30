@@ -33,6 +33,7 @@ import type {FileTypeProps, FileModeProps, uploadType} from 'types/file';
 
 interface props {
   mode: FileModeProps;
+  maxFile?: number;
   name?: string;
   aspect?: number;
   hasCrop?: boolean;
@@ -58,6 +59,7 @@ const {Text} = Typography;
 
 const CustomUpload = ({
   mode,
+  maxFile = Infinity,
   name,
   value,
   onChange,
@@ -99,7 +101,7 @@ const CustomUpload = ({
       key: 'file_max_size_per_type'
     },
     showError: false,
-    enabled: true
+    enabled: false
   });
 
   const fetchMaxSizeExtension = useFetch({
@@ -109,7 +111,7 @@ const CustomUpload = ({
       key: 'file_max_size_per_extension'
     },
     showError: false,
-    enabled: true
+    enabled: false
   });
 
   const getWidthHeightImage = (file: File) => {
@@ -335,7 +337,7 @@ const CustomUpload = ({
             name,
             status: 'done',
             url: file,
-            type: getAccess
+            type: getAccess?.includes(',') ? '*/*' : getAccess
           };
         return {
           uid: index.toString(),
@@ -344,7 +346,7 @@ const CustomUpload = ({
           path: file?.path || file?.picture,
           url: file?.path_url || file?.picture_url,
           ...file,
-          type: getAccess
+          type: getAccess?.includes(',') ? '*/*' : getAccess
         };
       });
     if (isString(value || valueState))
@@ -354,7 +356,7 @@ const CustomUpload = ({
           name,
           status: 'done',
           url: value || valueState,
-          type: getAccess
+          type: getAccess?.includes(',') ? '*/*' : getAccess
         }
       ];
     if (!isEmpty(value || valueState))
@@ -366,7 +368,7 @@ const CustomUpload = ({
           path: (value || valueState)?.path || (value || valueState)?.picture,
           url: (value || valueState)?.path_url || (value || valueState)?.picture_url,
           ...(value || valueState),
-          type: getAccess
+          type: getAccess?.includes(',') ? '*/*' : getAccess
         }
       ];
     return [];
@@ -429,7 +431,7 @@ const CustomUpload = ({
         onRemove={onRemove}
         name={name}
         listType={listType}>
-        {isDraggingMode || (mode === 'single' && value) ? null : renderButton()}
+        {isDraggingMode || value?.length >= maxFile || (mode === 'single' && value) ? null : renderButton()}
       </Upload>
     );
   };
