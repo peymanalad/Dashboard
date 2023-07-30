@@ -1,12 +1,13 @@
-import React, {FC} from 'react';
-import {Card, Form, Row, Col, Input, Button, Checkbox, Tag} from 'antd';
-import {SaveOutlined} from '@ant-design/icons';
+import React, {FC, useState} from 'react';
+import {Card, Form, Row, Col, Input, Button, Checkbox, Tag, Modal} from 'antd';
+import {SaveOutlined, SearchOutlined, SmileOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {CustomUpload, DateTimePicker, MultiSelectPaginate} from 'components';
 import {getImageUrl, wordCounter} from 'utils';
 import compact from 'lodash/compact';
+import {Picker} from 'emoji-mart';
 
 const {TextArea} = Input;
 
@@ -14,6 +15,8 @@ const EditNews: FC = () => {
   const {t} = useTranslation('news');
   const history = useHistory();
   const {id} = useParams<{id?: string}>();
+  const [showEmoji, setShowEmoji] = useState<boolean>();
+  const [contentPos, setContentPos] = useState<number>(0);
 
   const [form] = Form.useForm();
 
@@ -44,140 +47,208 @@ const EditNews: FC = () => {
     storeNews.post({id: id ? +id : undefined, ...values});
   };
 
+  const onChangePosition = (e: any) => {
+    setContentPos(e.target.selectionStart);
+  };
+
+  const emojiSelect = (emoji: any) => {
+    const des = form.getFieldValue('postCaption');
+    const pos = contentPos;
+    const addData = emoji?.native;
+    form.setFieldValue('postCaption', des?.slice(0, pos) + addData + des?.slice(pos));
+  };
+
   return (
-    <Card
-      title={id ? t('edit_news') : t('create_news')}
-      loading={(id && !fetchNews?.data) || fetchNews.isFetching}
-      bordered={false}
-      className="w-full">
-      <Form form={form} layout="vertical" name="product" requiredMark={false} onFinish={onFinish}>
-        <Row gutter={[16, 8]} className="w-full">
-          <Col xs={24} md={12} lg={8}>
+    <>
+      <Card
+        title={id ? t('edit_news') : t('create_news')}
+        loading={(id && !fetchNews?.data) || fetchNews.isFetching}
+        bordered={false}
+        className="w-full">
+        <Form form={form} layout="vertical" name="product" requiredMark={false} onFinish={onFinish}>
+          <Row gutter={[16, 8]} className="w-full">
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item
+                name="postTitle"
+                label={t('title')}
+                rules={[{required: true, message: t('messages.required')}]}
+                initialValue={fetchNews?.data?.post?.postTitle || ''}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item
+                label={t('news_group')}
+                name="postGroupId"
+                initialValue={{
+                  id: fetchNews?.data?.post?.postGroupId,
+                  displayName: fetchNews?.data?.postGroupPostGroupDescription
+                }}>
+                <MultiSelectPaginate
+                  mode="single"
+                  urlName="newsGroupSearch"
+                  url="services/app/Posts/GetAllPostGroupForLookupTable"
+                  keyValue="id"
+                  keyLabel="displayName"
+                  placeholder={t('choose')}
+                  showSearch={false}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item
+                label={t('news_user')}
+                name="groupMemberId"
+                initialValue={{
+                  id: fetchNews?.data?.post?.groupMemberId,
+                  displayName: fetchNews?.data?.groupMemberMemberPosition
+                }}>
+                <MultiSelectPaginate
+                  mode="single"
+                  urlName="groupMemberSearch"
+                  url="services/app/Posts/GetAllGroupMemberForLookupTable"
+                  keyValue="id"
+                  keyLabel="displayName"
+                  placeholder={t('choose')}
+                  showSearch={false}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row className="flex-center w-full flex-col">
             <Form.Item
-              name="postTitle"
-              label={t('title')}
-              rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchNews?.data?.post?.postTitle || ''}>
-              <Input />
+              name="postFileToken"
+              noStyle
+              initialValue={compact([
+                fetchNews?.data?.post?.postFile
+                  ? {
+                      fileToken: fetchNews?.data?.post?.postFile,
+                      url: getImageUrl(fetchNews?.data?.post?.postFile)
+                    }
+                  : null,
+                fetchNews?.data?.post?.postFile2
+                  ? {
+                      fileToken: fetchNews?.data?.post?.postFile2,
+                      url: getImageUrl(fetchNews?.data?.post?.postFile2)
+                    }
+                  : null,
+                fetchNews?.data?.post?.postFile3
+                  ? {
+                      fileToken: fetchNews?.data?.post?.postFile3,
+                      url: getImageUrl(fetchNews?.data?.post?.postFile3)
+                    }
+                  : null
+              ])}>
+              <CustomUpload type="posts" name={t('file')} mode="multiple" maxFile={3} typeFile="image,video" />
             </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              label={t('news_group')}
-              name="postGroupId"
-              initialValue={{
-                id: fetchNews?.data?.post?.postGroupId,
-                displayName: fetchNews?.data?.postGroupPostGroupDescription
-              }}>
-              <MultiSelectPaginate
-                mode="single"
-                urlName="newsGroupSearch"
-                url="services/app/Posts/GetAllPostGroupForLookupTable"
-                keyValue="id"
-                keyLabel="displayName"
-                placeholder={t('choose')}
-                showSearch={false}
+          </Row>
+          <Row gutter={[16, 8]} className="w-full" justify="end">
+            <Col span={24}>
+              <Form.Item
+                name="postCaption"
+                label={t('context')}
+                initialValue={fetchNews?.data?.post?.postCaption}
+                rules={[{required: true, message: t('messages.required')}]}>
+                <TextArea rows={7} onChangeCapture={onChangePosition} onClick={onChangePosition} />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row justify="end" align="middle">
+            <Col>
+              <Button
+                onClick={() => {
+                  setShowEmoji(true);
+                }}
+                className="d-none md:d-block mx-4"
+                type="text"
+                icon={<SmileOutlined style={{color: 'rgba(0,0,0,.45)', fontSize: 18}} />}
               />
+            </Col>
+            <Form.Item noStyle shouldUpdate={(prevValues, nextValues) => prevValues?.content !== nextValues?.content}>
+              {() => {
+                const wordCount = wordCounter(form.getFieldValue('postCaption'));
+                return (
+                  <Col>
+                    <Tag color={wordCount > 300 ? 'magenta' : wordCount > 200 ? 'green' : 'geekblue'}>{wordCount}</Tag>
+                  </Col>
+                );
+              }}
             </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              label={t('news_user')}
-              name="groupMemberId"
-              initialValue={{
-                id: fetchNews?.data?.post?.groupMemberId,
-                displayName: fetchNews?.data?.groupMemberMemberPosition
-              }}>
-              <MultiSelectPaginate
-                mode="single"
-                urlName="groupMemberSearch"
-                url="services/app/Posts/GetAllGroupMemberForLookupTable"
-                keyValue="id"
-                keyLabel="displayName"
-                placeholder={t('choose')}
-                showSearch={false}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row className="flex-center w-full flex-col">
-          <Form.Item
-            name="postFileToken"
-            noStyle
-            initialValue={compact([
-              fetchNews?.data?.post?.postFile
-                ? {
-                    fileToken: fetchNews?.data?.post?.postFile,
-                    url: getImageUrl(fetchNews?.data?.post?.postFile)
-                  }
-                : null,
-              fetchNews?.data?.post?.postFile2
-                ? {
-                    fileToken: fetchNews?.data?.post?.postFile2,
-                    url: getImageUrl(fetchNews?.data?.post?.postFile2)
-                  }
-                : null,
-              fetchNews?.data?.post?.postFile3
-                ? {
-                    fileToken: fetchNews?.data?.post?.postFile3,
-                    url: getImageUrl(fetchNews?.data?.post?.postFile3)
-                  }
-                : null
-            ])}>
-            <CustomUpload type="posts" name={t('file')} mode="multiple" maxFile={3} typeFile="image,video" />
-          </Form.Item>
-        </Row>
-        <Row gutter={[16, 8]} className="w-full" justify="end">
-          <Col span={24}>
-            <Form.Item
-              name="postCaption"
-              label={t('context')}
-              initialValue={fetchNews?.data?.post?.postCaption}
-              rules={[{required: true, message: t('messages.required')}]}>
-              <TextArea rows={7} />
-            </Form.Item>
-          </Col>
-          <Form.Item noStyle shouldUpdate={(prevValues, nextValues) => prevValues?.content !== nextValues?.content}>
-            {() => {
-              const wordCount = wordCounter(form.getFieldValue('postCaption'));
-              return (
-                <Tag color={wordCount > 300 ? 'magenta' : wordCount > 200 ? 'green' : 'geekblue'}>{wordCount}</Tag>
-              );
-            }}
-          </Form.Item>
-        </Row>
-        <Row gutter={[16, 8]} className="w-full">
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="postTime"
-              initialValue={fetchNews?.data?.post?.postTime}
-              rules={[{required: true, message: t('messages.date_time')}]}
-              label={t('news_time')}>
-              <DateTimePicker timePicker />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8} className="flex align-center justify-center">
-            <Form.Item
-              name="isSpecial"
-              valuePropName="checked"
-              className="m-0"
-              initialValue={fetchNews?.data?.post?.isSpecial}>
-              <Checkbox>{t('special.title')}</Checkbox>
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={[16, 8]} className="w-full my-5">
-          <Button
-            className="w-full sm:w-unset mr-auto my-4"
-            type="primary"
-            htmlType="submit"
-            loading={storeNews.isLoading}
-            icon={<SaveOutlined />}>
-            {t('save')}
-          </Button>
-        </Row>
-      </Form>
-    </Card>
+          </Row>
+          <Row>
+            <Col xs={24}>
+              <Input.Group compact className="flex-center">
+                <Form.Item
+                  name="postRefLink"
+                  label={t('link')}
+                  style={{width: '80%'}}
+                  rules={[{type: 'url', message: t('messages.url')}]}
+                  initialValue={fetchNews?.data?.post?.postRefLink}>
+                  <Input className="ltr-input" dir="ltr" style={{marginBottom: '4px'}} />
+                </Form.Item>
+                <Button
+                  type="primary"
+                  className="d-text-none lg:d-text-unset"
+                  style={{width: '20%'}}
+                  icon={<SearchOutlined />}
+                  onClick={() => {
+                    window.open(form.getFieldValue('link'));
+                  }}>
+                  {t('goto_link')}
+                </Button>
+              </Input.Group>
+            </Col>
+          </Row>
+          <Row gutter={[16, 8]} className="w-full">
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item
+                name="postTime"
+                initialValue={fetchNews?.data?.post?.postTime}
+                rules={[{required: true, message: t('messages.date_time')}]}
+                label={t('news_time')}>
+                <DateTimePicker timePicker />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8} className="flex align-center justify-center">
+              <Form.Item
+                name="isSpecial"
+                valuePropName="checked"
+                className="m-0"
+                initialValue={fetchNews?.data?.post?.isSpecial}>
+                <Checkbox>{t('special.title')}</Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={[16, 8]} className="w-full my-5">
+            <Button
+              className="w-full sm:w-unset mr-auto my-4"
+              type="primary"
+              htmlType="submit"
+              loading={storeNews.isLoading}
+              icon={<SaveOutlined />}>
+              {t('save')}
+            </Button>
+          </Row>
+        </Form>
+      </Card>
+      <Modal
+        visible={showEmoji}
+        closable={false}
+        width={300}
+        className="not-body-modal"
+        onCancel={() => {
+          setShowEmoji(false);
+        }}
+        footer={null}>
+        <Picker
+          set="apple"
+          enableFrequentEmojiSort
+          showPreview={false}
+          onSelect={emojiSelect}
+          i18n={t('emojis', {returnObjects: true})}
+        />
+      </Modal>
+    </>
   );
 };
 

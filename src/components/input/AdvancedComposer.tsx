@@ -23,9 +23,9 @@ import {ReactMic} from 'react-mic';
 import {RecordingIcon, RecordingStopIcon} from 'assets';
 import {usePost, useUser} from 'hooks';
 import {Picker} from 'emoji-mart';
-import {chatType, replyUpdateProps} from 'types/message';
-import {uploadAdvancedInputType} from 'types/file';
-import {userProps} from 'types/user';
+import type {chatType, replyUpdateProps} from 'types/message';
+import type {uploadAdvancedInputType} from 'types/file';
+import type {userProps} from 'types/user';
 import {last, split, toString} from 'lodash';
 
 interface refProps {

@@ -2406,6 +2406,8 @@
     "position_user": "جایگاه کاربر",
     "context": "متن",
     "file": "فایل",
+    "link": "لینک خبر",
+    "goto_link": "رفتن به لینک",
     "excel": "اکسل",
     "organization": "سازمان",
     "news_groups": "گروه های خبری",
