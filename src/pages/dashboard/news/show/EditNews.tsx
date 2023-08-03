@@ -183,7 +183,7 @@ const EditNews: FC = () => {
                   style={{width: '20%'}}
                   icon={<SearchOutlined />}
                   onClick={() => {
-                    window.open(form.getFieldValue('link'));
+                    window.open(form.getFieldValue('postRefLink'));
                   }}>
                   {t('goto_link')}
                 </Button>
