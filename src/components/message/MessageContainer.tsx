@@ -18,6 +18,7 @@ import forEach from 'lodash/forEach';
 import filter from 'lodash/filter';
 import toString from 'lodash/toString';
 import flattenDeep from 'lodash/flattenDeep';
+import isString from 'lodash/isString';
 import {normalizeMessage} from 'utils/message';
 import type {chatMessageProps, replyUpdateProps, chatType, updateMessageProps, commentType} from 'types/message';
 import type {uploadAdvancedInputType} from 'types/file';
@@ -147,7 +148,7 @@ const MessageContainer = ({
         cloneWith(responses, (value: any[]) => {
           let messages =
             get(value, messagesKey ? ['pages', 0, 'data', 'items', messagesKey] : ['pages', 0, 'data', 'items']) || [];
-          if (!message?.type)
+          if (msgNormalize?.type !== 'text')
             messages = messages?.filter(
               (msg: any) => !msg?.status && msg?.content?.name !== msgNormalize?.content?.name
             );
@@ -430,7 +431,8 @@ const MessageContainer = ({
             disableVoice={disableVoice}
             // loading={postChat.isLoading}
             onClick={(content: string | File, mentions?: userProps[]) => {
-              addToMessages({type: 'video', content, status: 'loading', userId: 2});
+              if (!isString(content))
+                addToMessages({type: content?.type?.split('/')?.[0], content, status: 'loading', userId: myUserID});
               // if (reply?.isReply === false) updateMessage({content, status: 'loading'}, reply?.id);
               // else addToMessages(content, reply, 'loading', 'newMessage', mentions);
             }}

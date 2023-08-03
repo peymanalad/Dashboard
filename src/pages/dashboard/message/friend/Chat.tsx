@@ -4,11 +4,12 @@ import {UserOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {MessageContainer} from 'components';
 import {useParams, Link} from 'react-router-dom';
-import {useInfinite} from 'hooks';
+import {useInfinite, useUser} from 'hooks';
 import get from 'lodash/get';
 
 const SupportChat = () => {
   const {t} = useTranslation('message');
+  const user = useUser();
   const {user_id} = useParams<{user_id: string}>();
 
   const getMessageData = useInfinite({
@@ -18,10 +19,13 @@ const SupportChat = () => {
     enabled: true
   });
 
+  console.log(getMessageData);
+
   return (
     <MessageContainer
       getMessageData={getMessageData}
       urlName={['chatFriends', user_id]}
+      myUserID={user.getId()}
       deleteUrl={`/support_messages/{id}?user_id=${user_id}`}
       updateUrl="/support_messages/{id}/"
       postUrl="/support_messages"
