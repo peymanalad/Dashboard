@@ -24,6 +24,8 @@ function useUser() {
     return get(profile, ['data', 'user']);
   };
 
+  const isSuperUser = () => getInfo()?.isSuperUser;
+
   const getId = () => {
     const profile: any = queryClient.getQueryData('profile');
     return get(profile, ['data', 'user', 'id']);
@@ -34,6 +36,6 @@ function useUser() {
     return get(menu, ['data', 'user', 'id']) === toNumber(id);
   };
 
-  return {...user, setUser, hasPermission, getAllPermissions, getInfo, isMySelf, getId};
+  return {...user, setUser, isSuperUser, hasPermission, getAllPermissions, getInfo, isMySelf, getId};
 }
 export default useUser;

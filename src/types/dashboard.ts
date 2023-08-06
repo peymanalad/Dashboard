@@ -19,6 +19,7 @@ export interface dashboardRouteProps {
   key?: string;
   route?: string;
   hidden?: boolean;
+  forSuperAdmin?: boolean;
   permission?: string;
   cmp?: ReactNode;
   subs?: Array<subDashboardRouteProps>;
