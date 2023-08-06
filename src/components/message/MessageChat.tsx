@@ -1,5 +1,4 @@
 import React, {memo, useMemo} from 'react';
-import {chatMessageProps, replyUpdateProps} from 'types/message';
 import {
   FileZipOutlined,
   CheckCircleOutlined,
@@ -12,13 +11,13 @@ import {useTranslation} from 'react-i18next';
 import {chatImageDefault, Drop, PrescriptionIcon} from 'assets';
 import * as Scroll from 'react-scroll';
 import AudioPlayer from 'react-h5-audio-player';
-import {convertUtcTimeToLocal, getChatImageUrl} from 'utils';
+import {convertUtcTimeToLocal, getChatImageUrl, normalizeMessage} from 'utils';
 import {MessageActions} from 'components';
 import {useUser} from 'hooks';
 import toString from 'lodash/toString';
-import {includes} from 'lodash';
+import includes from 'lodash/includes';
 import Linkify from 'linkify-react';
-import {normalizeMessage} from '../../utils/message';
+import type {chatMessageProps, replyUpdateProps} from 'types/message';
 
 export interface props {
   data: chatMessageProps;
@@ -60,10 +59,9 @@ const MessageChat = ({
 }: props) => {
   const {t} = useTranslation('message');
   const user = useUser();
-  const UserId: number = myUserID || user.getId();
   const {Text, Title} = Typography;
 
-  const isMyMessage = UserId === data?.userId;
+  const isMyMessage = data?.side === 1;
   const isLastMessage = after?.userId !== data?.userId;
 
   const deleteMessage = () => {

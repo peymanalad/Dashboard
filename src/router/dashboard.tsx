@@ -100,6 +100,8 @@ const OrganizationShowList = lazyWithRetry(() => import('pages/dashboard/organiz
 const EditOrganizationGroup = lazyWithRetry(() => import('pages/dashboard/organization/group/EditOrganizationGroup'));
 const OrganizationGroupShowList = lazyWithRetry(() => import('pages/dashboard/organization/group/ShowList'));
 
+const OrganizationShowGraph = lazyWithRetry(() => import('pages/dashboard/organization/graph/ShowGraph'));
+
 // user
 const EditUser = lazyWithRetry(() => import('pages/dashboard/user/show/EditUser'));
 const CreateUser = lazyWithRetry(() => import('pages/dashboard/user/show/CreateUser'));
@@ -279,6 +281,13 @@ const Dashboard: Array<dashboardRouteProps> = [
         title: i18n.t('side_menu:editOrganizationGroup'),
         permission: 'OrganizationUnits',
         hidden: true
+      },
+      {
+        key: 'organizationGraphList',
+        route: '/organization/graph/list',
+        cmp: <OrganizationShowGraph />,
+        title: i18n.t('side_menu:graph'),
+        permission: 'OrganizationUnits'
       }
     ]
   },

@@ -232,15 +232,15 @@ const CustomUpload = ({
   const getAction = useMemo(() => {
     switch (type) {
       case 'users':
-        return 'https://api.ideed.ir/Profile/UploadProfilePicture';
+        return `${process.env.REACT_APP_BASE_URL}/Profile/UploadProfilePicture`;
       case 'applications':
-        return 'https://api.ideed.ir/SoftwareUpdates/UploadUpdateFileFile';
+        return `${process.env.REACT_APP_BASE_URL}/SoftwareUpdates/UploadUpdateFileFile`;
       case 'posts':
-        return 'https://api.ideed.ir/Posts/UploadPostFileFile';
+        return `${process.env.REACT_APP_BASE_URL}/Posts/UploadPostFileFile`;
       case 'postGroups':
-        return 'https://api.ideed.ir/PostGroups/UploadGroupFileFile';
+        return `${process.env.REACT_APP_BASE_URL}/PostGroups/UploadGroupFileFile`;
       default:
-        return 'https://api.ideed.ir/SoftwareUpdates/UploadUpdateFileFile';
+        return `${process.env.REACT_APP_BASE_URL}/SoftwareUpdates/UploadUpdateFileFile`;
     }
   }, []);
 

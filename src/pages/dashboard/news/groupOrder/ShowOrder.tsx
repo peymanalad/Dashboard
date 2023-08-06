@@ -1,4 +1,4 @@
-import React, {useRef, useState, type FC, type Dispatch, type SetStateAction} from 'react';
+import React, {useRef, useState, type FC, type Dispatch, type SetStateAction, CSSProperties} from 'react';
 import {Row, Col, Card, Space, Button} from 'antd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {DndProvider, useDrag, useDrop, DropTargetMonitor} from 'react-dnd';
@@ -18,10 +18,11 @@ const SquareCard: FC<{
   initialNews: PostGroupProps[];
   news: PostGroupProps;
   setNews: Dispatch<SetStateAction<PostGroupProps[]>>;
-}> = ({initialNews, news, setNews}) => {
+  style?: CSSProperties;
+}> = ({initialNews, news, setNews, style}) => {
   const [{isDragging}, drag] = useDrag({
     type: 'news',
-    item: {id: news.id, ordering: news.ordering},
+    item: {id: news?.id, ordering: news?.ordering},
     collect: (monitor) => ({
       isDragging: monitor.isDragging()
     })
@@ -32,7 +33,7 @@ const SquareCard: FC<{
     hover: (item: PostGroupProps, monitor: DropTargetMonitor) => {
       if (!monitor.isOver()) return;
       const draggedOrder = item.ordering;
-      const targetOrder = news.ordering;
+      const targetOrder = news?.ordering;
 
       if (draggedOrder === targetOrder) return;
 
@@ -50,7 +51,7 @@ const SquareCard: FC<{
   });
 
   return (
-    <div ref={(node) => drag(drop(node))} className="h-full" style={{opacity: isDragging ? 0.5 : 1}}>
+    <div ref={(node) => drag(drop(node))} className="h-full" style={{opacity: isDragging ? 0.5 : 1, ...style}}>
       <Card
         rootClassName="h-full"
         bodyStyle={{
@@ -61,7 +62,7 @@ const SquareCard: FC<{
           backgroundColor: news?.color,
           borderRadius: 8
         }}>
-        <Meta title={news.postGroupDescription || '-'} />
+        <Meta title={news?.postGroupDescription || '-'} />
       </Card>
     </div>
   );
@@ -75,23 +76,29 @@ const generateRow = (initialNews: PostGroupProps[], chunkNews: PostGroupProps[],
         <Row gutter={[5, 5]} className={index % 4 === 2 ? 'mb-1/4' : 'flex-row-reverse mb-1/4'}>
           <Col span={8}>
             <Row gutter={[5, 5]}>
-              <Col span={24} className="h-full">
-                <SquareCard initialNews={initialNews} news={chunkNews[1]} setNews={setNews} />
-              </Col>
-              <Col span={24}>
-                <SquareCard initialNews={initialNews} news={chunkNews[2]} setNews={setNews} />
-              </Col>
+              {chunkNews?.[1] && (
+                <Col span={24} className="h-full">
+                  <SquareCard initialNews={initialNews} news={chunkNews[1]} setNews={setNews} />
+                </Col>
+              )}
+              {chunkNews?.[2] && (
+                <Col span={24}>
+                  <SquareCard initialNews={initialNews} news={chunkNews[2]} setNews={setNews} />
+                </Col>
+              )}
             </Row>
           </Col>
-          <Col span={16}>
-            <SquareCard initialNews={initialNews} news={chunkNews[0]} setNews={setNews} />
-          </Col>
+          {chunkNews?.[0] && (
+            <Col span={16} style={{height: 140}}>
+              <SquareCard initialNews={initialNews} news={chunkNews[0]} setNews={setNews} />
+            </Col>
+          )}
         </Row>
       );
     case 1:
     case 3:
       return (
-        <Row gutter={[5, 5]} className="mb-1">
+        <Row gutter={[5, 5]} className="mb-1/4">
           {chunkNews?.map((chunckNew: PostGroupProps) => (
             <Col span={8}>
               <SquareCard initialNews={initialNews} news={chunckNew} setNews={setNews} />

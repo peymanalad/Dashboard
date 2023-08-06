@@ -1,2 +1,2 @@
 export const getTempFileUrl = (fileType: string, fileToken: string, fileName: string) =>
-  `https://api.ideed.ir/File/DownloadTempFile?fileType=${fileType}&fileToken=${fileToken}&fileName=${fileName}`;
+  `${process.env.REACT_APP_BASE_URL}/File/DownloadTempFile?fileType=${fileType}&fileToken=${fileToken}&fileName=${fileName}`;

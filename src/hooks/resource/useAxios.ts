@@ -22,7 +22,7 @@ const useAxios = () => {
     const token: userAccessProps = persist.getData('token');
 
     const requestConfig: AxiosRequestConfig = {
-      baseURL: process.env.REACT_APP_BASE_URL,
+      baseURL: `${process.env.REACT_APP_BASE_URL}/api`,
       timeout: 15000,
       url: urlGenerator('TokenAuth/RefreshToken'),
       method: 'POST',
