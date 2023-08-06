@@ -79,7 +79,7 @@ const EditLanguage = () => {
         </Row>
         <Row gutter={[16, 8]} className="w-full my-5">
           <Button
-            className="w-full sm:w-unset mr-auto my-4"
+            className="sm:w-unset mr-auto my-4"
             type="primary"
             htmlType="submit"
             loading={storeLanguage.isLoading || updateLanguage.isLoading}

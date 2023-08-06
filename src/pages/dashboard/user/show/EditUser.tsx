@@ -188,7 +188,7 @@ const EditUser: FC = () => {
               </Button>
             )}
             <Button
-              className="w-full sm:w-unset mr-auto my-4"
+              className="sm:w-unset mr-auto my-4"
               type="primary"
               htmlType="submit"
               loading={sendUser.isLoading}
