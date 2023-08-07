@@ -812,7 +812,7 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
   top: -30px;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #333;
+  background: #f1f2fd;
   border-radius: 10px;
 }
 
@@ -826,7 +826,7 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
   left: 50%;
   bottom: -65px;
   transform: translate(-50%, -50%);
-  background: #333;
+  background: #f1f2fd;
   border-radius: 50%;
 }
 
@@ -837,6 +837,7 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
 }
 
 .smartphone .smartphone-content > div  {
+  overflow: auto;
   position:absolute;
   top:0;
   left:0;

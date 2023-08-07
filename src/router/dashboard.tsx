@@ -100,6 +100,8 @@ const OrganizationShowList = lazyWithRetry(() => import('pages/dashboard/organiz
 const EditOrganizationGroup = lazyWithRetry(() => import('pages/dashboard/organization/group/EditOrganizationGroup'));
 const OrganizationGroupShowList = lazyWithRetry(() => import('pages/dashboard/organization/group/ShowList'));
 
+const OrganizationShowGraph = lazyWithRetry(() => import('pages/dashboard/organization/graph/ShowGraph'));
+
 // user
 const EditUser = lazyWithRetry(() => import('pages/dashboard/user/show/EditUser'));
 const CreateUser = lazyWithRetry(() => import('pages/dashboard/user/show/CreateUser'));
@@ -230,6 +232,7 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <OrganizationShowList />,
         title: i18n.t('side_menu:organizations'),
         permission: 'OrganizationUnits',
+        forSuperAdmin: true,
         extra: {
           route: '/organization/organization/create',
           title: i18n.t('side_menu:addOrganization'),
@@ -242,6 +245,7 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <EditOrganization />,
         title: i18n.t('side_menu:addOrganization'),
         hidden: true,
+        forSuperAdmin: true,
         permission: 'OrganizationUnits'
       },
       {
@@ -250,6 +254,7 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <EditOrganization />,
         title: i18n.t('side_menu:editOrganization'),
         permission: 'OrganizationUnits',
+        forSuperAdmin: true,
         hidden: true
       },
       {
@@ -279,6 +284,13 @@ const Dashboard: Array<dashboardRouteProps> = [
         title: i18n.t('side_menu:editOrganizationGroup'),
         permission: 'OrganizationUnits',
         hidden: true
+      },
+      {
+        key: 'organizationGraphList',
+        route: '/organization/graph/list',
+        cmp: <OrganizationShowGraph />,
+        title: i18n.t('side_menu:graph'),
+        permission: 'OrganizationUnits'
       }
     ]
   },
@@ -1584,7 +1596,7 @@ const Dashboard: Array<dashboardRouteProps> = [
   // }
 ];
 
-export const getFilteredMenusList = (permissions: string[]) =>
+export const getFilteredMenusList = (permissions: string[], isSuperUser?: boolean) =>
   compact(
     map(Dashboard, (menuItem: any) => {
       if (!menuItem?.permission || true || includes(permissions, menuItem?.permission))
@@ -1592,7 +1604,8 @@ export const getFilteredMenusList = (permissions: string[]) =>
           ...menuItem,
           subs: compact(
             map(menuItem?.subs, (firstSub: any) => {
-              if (true || includes(permissions, firstSub?.permission)) {
+              // if (true || includes(permissions, firstSub?.permission))
+              if (!firstSub?.forSuperAdmin || isSuperUser) {
                 return {
                   ...firstSub,
                   extra: (includes(permissions, firstSub?.extra?.permission) || true) && firstSub?.extra,

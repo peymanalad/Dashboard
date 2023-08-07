@@ -18,7 +18,7 @@ const LandingPage: FC = () => {
           <Col span={24}>
             <Button
               type="link"
-              href="https://api.ideed.ir/File/LatestBuild"
+              href={`${process.env.REACT_APP_BASE_URL}/File/LatestBuild`}
               className="w-full flex-center"
               style={{color: '#8FBC46'}}
               size="large"

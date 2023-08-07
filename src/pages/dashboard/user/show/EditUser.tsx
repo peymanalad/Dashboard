@@ -130,7 +130,10 @@ const EditUser: FC = () => {
                 <Form.Item
                   name="password"
                   label={t('password')}
-                  rules={[{pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')}]}>
+                  rules={[
+                    {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')},
+                    {min: 6, message: t('validation.minSixCharacter')}
+                  ]}>
                   <Input className="ltr-input" disabled={fields.getFieldValue('randomPassword')} />
                 </Form.Item>
               </Col>
@@ -179,7 +182,7 @@ const EditUser: FC = () => {
               <Button
                 type="primary"
                 htmlType="button"
-                className="ml-auto w-full sm:w-unset"
+                className="ml-auto sm:w-unset"
                 loading={logOut.isLoading}
                 icon={<LogoutOutlined />}
                 onClick={logOut.logOut}
@@ -188,7 +191,7 @@ const EditUser: FC = () => {
               </Button>
             )}
             <Button
-              className="w-full sm:w-unset mr-auto my-4"
+              className="sm:w-unset mr-auto my-4"
               type="primary"
               htmlType="submit"
               loading={sendUser.isLoading}

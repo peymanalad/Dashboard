@@ -10,9 +10,9 @@ function useLogOut() {
   const history = useHistory();
 
   const logOutRequest = usePost({
-    url: 'users/logout',
+    url: 'TokenAuth/LogOut',
     isGeneral: true,
-    method: 'POST',
+    method: 'GET',
     onSuccess: () => {
       setUser({is_logged_in: false});
       history.replace('/');
@@ -21,7 +21,7 @@ function useLogOut() {
   });
 
   const logOut = () => {
-    logOutRequest.post({platform: 'web', model: navigator.userAgent});
+    logOutRequest.post();
   };
 
   return {logOut, isLoading: logOutRequest.isLoading};

@@ -7,7 +7,7 @@ import {usePost, useFetch} from 'hooks';
 import {CustomUpload, MultiSelectPaginate} from 'components';
 import {getImageUrl} from 'utils';
 
-const EditNewsGroup: FC = () => {
+const EditOrganizationGroup: FC = () => {
   const {t} = useTranslation('news');
   const history = useHistory();
   const {id} = useParams<{id?: string}>();
@@ -106,4 +106,4 @@ const EditNewsGroup: FC = () => {
   );
 };
 
-export default EditNewsGroup;
+export default EditOrganizationGroup;

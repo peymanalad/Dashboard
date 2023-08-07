@@ -32,9 +32,9 @@ const ShowList: FC = () => {
   });
 
   const deleteRequest = useDelete({
-    url: '/services/app/Newss/Delete',
+    url: '/services/app/Posts/Delete',
     name: 'news',
-    titleKey: 'newsName'
+    titleKey: 'postTitle'
   });
 
   const columns: any = [
@@ -134,7 +134,7 @@ const ShowList: FC = () => {
           </Tooltip>
           <Tooltip title={t('do_delete')}>
             <Button
-              onClick={() => deleteRequest.show(news.news, {Id: news.news?.id})}
+              onClick={() => deleteRequest.show(news.post, {Id: news.post?.id})}
               type="text"
               icon={<DeleteOutlined className="text-red" />}
             />

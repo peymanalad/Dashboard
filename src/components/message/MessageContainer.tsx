@@ -13,6 +13,7 @@ import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 import get from 'lodash/get';
 import set from 'lodash/set';
+import remove from 'lodash/remove';
 import findIndex from 'lodash/findIndex';
 import forEach from 'lodash/forEach';
 import filter from 'lodash/filter';
@@ -128,6 +129,26 @@ const MessageContainer = ({
     [messagesKey, queryClient, urlName]
   );
 
+  const deleteMessage = useCallback(
+    (messageId: number) => {
+      queryClient.setQueryData(urlName, (responses: any) =>
+        cloneWith(responses, (value: any[]) => {
+          const messages =
+            get(value, messagesKey ? ['pages', 0, 'data', 'items', messagesKey] : ['pages', 0, 'data', 'items']) || [];
+          remove(messages, ['id', messageId]);
+          set(
+            value,
+            messagesKey ? ['pages', 0, 'data', 'items', messagesKey] : ['pages', 0, 'data', 'items'],
+            messages
+          );
+          return value;
+        })
+      );
+      // if (status === 'loading') setReplyData(undefined);
+    },
+    [UserId, messagesKey, urlName]
+  );
+
   const setSearch = useCallback((isSearch: boolean) => {
     setSearchRef(isSearch);
   }, []);
@@ -169,10 +190,15 @@ const MessageContainer = ({
   useEffect(() => {
     connection.current = new HubConnectionBuilder()
       // .configureLogging(LogLevel.Debug)
-      .withUrl(`wss://api.ideed.ir/signalr-chat?enc_auth_token=${encodeURIComponent(user.encrypted_access_token!)}`, {
-        skipNegotiation: true,
-        transport: HttpTransportType.WebSockets
-      })
+      .withUrl(
+        `${process.env.REACT_APP_BASE_URL?.replace('https', 'wss')}/signalr-chat?enc_auth_token=${encodeURIComponent(
+          user.encrypted_access_token!
+        )}`,
+        {
+          skipNegotiation: true,
+          transport: HttpTransportType.WebSockets
+        }
+      )
       .withAutomaticReconnect()
       .build();
 
@@ -186,6 +212,11 @@ const MessageContainer = ({
     connection.current.on('getChatMessage', (message) => {
       console.log('app.chat.messageReceived', message);
       addToMessages(message);
+    });
+
+    connection.current.on('deleteChatMessage', (messageId) => {
+      console.log('app.chat.deleteChatMessage', messageId);
+      deleteMessage(messageId);
     });
 
     connection.current.on('getAllFriends', (friends) => {
@@ -227,17 +258,17 @@ const MessageContainer = ({
     }
   });
 
-  const deleteMessage = usePost({
-    url: deleteUrl,
-    method: 'DELETE',
-    onSuccess() {
-      setLoadingId(undefined);
-      getMessageData.refetch();
-    },
-    onError() {
-      setLoadingId(undefined);
-    }
-  });
+  // const deleteMessage = usePost({
+  //   url: deleteUrl,
+  //   method: 'DELETE',
+  //   onSuccess() {
+  //     setLoadingId(undefined);
+  //     getMessageData.refetch();
+  //   },
+  //   onError() {
+  //     setLoadingId(undefined);
+  //   }
+  // });
 
   const confirmMessage = usePost({
     url: confirmUrl,
@@ -388,16 +419,22 @@ const MessageContainer = ({
                 after={get(messages, index + 1)}
                 getReply={getReplyData}
                 hasReply={hasReply}
-                actionLoading={
-                  loadingId === message?.id &&
-                  (deleteMessage.isLoading ||
-                    confirmMessage.isLoading ||
-                    rejectMessage.isLoading ||
-                    readMessage.isLoading)
-                }
-                onDeleteClick={(id) => {
-                  setLoadingId(id);
-                  deleteMessage.post({recommendation_id}, {}, {id});
+                hasDelete
+                // actionLoading={
+                //   loadingId === message?.id &&
+                //   (deleteMessage.isLoading ||
+                //     confirmMessage.isLoading ||
+                //     rejectMessage.isLoading ||
+                //     readMessage.isLoading)
+                // }
+                onDeleteClick={(messageId) => {
+                  setLoadingId(messageId);
+                  connection.current?.invoke('DeleteMessage', {
+                    messageId,
+                    userId: +user_id!,
+                    tenantId: 1
+                  });
+                  // deleteMessage.post({recommendation_id}, {}, {id});
                 }}
                 onConfirmClick={(id) => {
                   setLoadingId(id);

@@ -18,6 +18,7 @@ export const UsersProvider: FC = ({children}) => {
   const initialUser: userAccessProps = {
     is_logged_in: false,
     access_token: '',
+    encrypted_access_token: '',
     expires_in: 604800,
     refresh_token: '',
     full_name: '',

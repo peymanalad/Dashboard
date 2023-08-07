@@ -17,7 +17,7 @@ const Dashboard: FC = () => {
   const user = useUser();
 
   const fetchDashboard = useFetch({
-    url: `${process.env.REACT_APP_BASE_URL_RAW}/Dashboard/Js`,
+    url: `${process.env.REACT_APP_BASE_URL}/Dashboard/Js`,
     name: 'dashboard',
     responseType: 'text',
     staleTime: 10000,
@@ -27,7 +27,7 @@ const Dashboard: FC = () => {
   useEffect(() => {
     if (fetchDashboard?.data) {
       const report = Stimulsoft.Report.StiReport.createNewDashboard();
-      StiOptions.WebServer.url = `${process.env.REACT_APP_BASE_URL_RAW}/DataAdapters`;
+      StiOptions.WebServer.url = `${process.env.REACT_APP_BASE_URL}/DataAdapters`;
       StiOptions.WebServer.encryptData = false;
       StiOptions.WebServer.checkDataAdaptersVersion = false;
       Stimulsoft.Base.StiLicense.loadFromString(process.env.REACT_APP_STIMULSOFT_LICENCE_KEY!);
