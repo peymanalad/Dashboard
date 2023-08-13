@@ -846,6 +846,15 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
   padding: 5px;
 }
 
+.smartphone .smartphone-content > div::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.smartphone .smartphone-content > div {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 /*--------------------medias */
 
 @media only screen and (max-width: 575px) {

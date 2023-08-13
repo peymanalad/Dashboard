@@ -66,20 +66,16 @@ const ShowList: FC = () => {
     {
       title: t('title'),
       dataIndex: ['post', 'postTitle'],
-      key: 'name',
-      align: 'center'
+      key: 'postTitle',
+      align: 'center',
+      sorter: true
     },
     {
       title: t('group'),
       dataIndex: 'postGroupPostGroupDescription',
-      key: 'group',
-      align: 'center'
-    },
-    {
-      title: t('position_user'),
-      dataIndex: 'groupMemberMemberPosition',
-      key: 'position',
-      align: 'center'
+      key: 'postGroupPostGroupDescription',
+      align: 'center',
+      sorter: true
     },
     {
       title: t('context'),
@@ -91,17 +87,19 @@ const ShowList: FC = () => {
     {
       title: t('created_at'),
       dataIndex: ['post', 'creationTime'],
-      key: 'created_at',
+      key: 'creationTime',
       align: 'center',
       responsive: ['md'],
+      sorter: true,
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
     {
       title: t('updated_at'),
       dataIndex: ['post', 'lastModificationTIme'],
-      key: 'created_at',
+      key: 'lastModificationTIme',
       align: 'center',
       responsive: ['md'],
+      sorter: true,
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
     {
@@ -110,6 +108,7 @@ const ShowList: FC = () => {
       key: 'isSpecial',
       align: 'center',
       responsive: ['sm'],
+      sorter: true,
       render: (isSpecial: boolean) => (
         <Tooltip title={t(isSpecial ? 'special.true' : 'special.false')}>
           {isSpecial ? (
