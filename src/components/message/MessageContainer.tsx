@@ -107,26 +107,26 @@ const MessageContainer = ({
   };
 
   const updateMessage = useCallback(
-    (changesMessage: updateMessageProps, chatId: number | string) => {
+    (changesMessage: any, chatId: number | string) => {
       queryClient.setQueryData(urlName, (responses: any) =>
         cloneWith(responses, (value: {pages: any[]}) => {
           forEach(value?.pages, (response: object, index: number) => {
-            const messageIndex = findIndex(get(response, messagesKey ? ['data', messagesKey] : ['data']), [
-              'id',
-              chatId
-            ]);
+            const messages =
+              get(value, messagesKey ? ['pages', 0, 'data', 'items', messagesKey] : ['pages', 0, 'data', 'items']) ||
+              [];
+            const messageIndex = findIndex(messages, ['sharedMessageId', chatId]);
             if (messageIndex > -1) {
               const oldMessage = get(
                 value,
                 messagesKey
-                  ? ['pages', index, 'data', messagesKey, messageIndex]
-                  : ['pages', index, 'data', messageIndex]
+                  ? ['pages', 0, 'data', 'items', messagesKey, messageIndex]
+                  : ['pages', 0, 'data', 'items', messageIndex]
               );
               set(
                 value,
                 messagesKey
-                  ? ['pages', index, 'data', messagesKey, messageIndex]
-                  : ['pages', index, 'data', messageIndex],
+                  ? ['pages', 0, 'data', 'items', messagesKey, messageIndex]
+                  : ['pages', 0, 'data', 'items', messageIndex],
                 {
                   ...oldMessage,
                   ...changesMessage
@@ -231,6 +231,11 @@ const MessageContainer = ({
     connection.current.on('deleteChatMessage', (messageId) => {
       console.log('app.chat.deleteChatMessage', messageId);
       deleteMessage(messageId);
+    });
+
+    connection.current.on('editChatMessage', (id, message) => {
+      console.log('app.chat.editChatMessageReceived', id, message);
+      updateMessage({message}, id);
     });
 
     connection.current.on('getAllFriends', (friends) => {
@@ -497,7 +502,7 @@ const MessageContainer = ({
               // else addToMessages(content, reply, 'loading', 'newMessage', mentions);
             }}
             onError={() => {
-              updateMessage({content: inputRef?.current?.getContent(), status: 'error'}, 'newMessage');
+              // updateMessage({content: inputRef?.current?.getContent(), status: 'error'}, 'newMessage');
             }}
             onSend={(message: string, type: chatType, file?: File) => {
               onStoreMessage(message, reply, commentType || type, file);
