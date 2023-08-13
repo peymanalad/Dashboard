@@ -14,8 +14,8 @@ import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
 import {useDelete, usePost, useUser} from 'hooks';
-import {simplePermissionProps} from 'types/common';
 import {convertUtcTimeToLocal, getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
+import type {simplePermissionProps} from 'types/common';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');

@@ -27,7 +27,7 @@ export interface props {
   setReply?: (parent: replyUpdateProps) => void;
   getReply?: (parent: replyUpdateProps) => void;
   actionLoading?: boolean;
-  onDeleteClick: (id: number) => void;
+  onDeleteClick: (sharedMessageId: string) => void;
   onRejectClick: (id?: number) => void;
   onReadClick: (id?: number) => void;
   onConfirmClick: (id?: number) => void;
@@ -65,7 +65,7 @@ const MessageChat = ({
   const isLastMessage = after?.userId !== data?.userId;
 
   const deleteMessage = () => {
-    if (onDeleteClick) onDeleteClick(data?.id);
+    if (onDeleteClick) onDeleteClick(data?.sharedMessageId);
   };
 
   const showDeleteModal = () => {

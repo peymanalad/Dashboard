@@ -218,6 +218,7 @@
 }
 .message__image {
   border-radius: 6px;
+  margin-bottom: 10px;
 }
 .message__image__content {
   border-radius: 6px;

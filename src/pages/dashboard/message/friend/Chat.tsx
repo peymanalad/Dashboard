@@ -13,9 +13,9 @@ const SupportChat = () => {
   const {user_id} = useParams<{user_id: string}>();
 
   const getMessageData = useInfinite({
-    url: 'services/app/Chat/GetUserChatMessages?TenantId=1&',
+    url: 'services/app/Chat/GetPagedUserChatMessages?TenantId=1&',
     name: ['chatFriends', user_id],
-    query: {UserId: user_id, TenantId: 1},
+    query: {UserId: user_id, TenantId: 1, MaxResultCount: 50},
     enabled: true
   });
 
@@ -28,6 +28,7 @@ const SupportChat = () => {
       deleteUrl={`/support_messages/{id}?user_id=${user_id}`}
       updateUrl="/support_messages/{id}/"
       postUrl="/support_messages"
+      hasReply
       useAdvancedComposer
       disableMentionUser
       disableReadyMessage

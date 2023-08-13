@@ -175,18 +175,25 @@ const EditNews: FC = () => {
                   style={{width: '80%'}}
                   rules={[{type: 'url', message: t('messages.url')}]}
                   initialValue={fetchNews?.data?.post?.postRefLink}>
-                  <Input className="ltr-input" dir="ltr" style={{marginBottom: '4px'}} />
+                  <Input className="ltr-input rounded-l-none" dir="ltr" style={{marginBottom: '6px'}} />
                 </Form.Item>
-                <Button
-                  type="primary"
-                  className="d-text-none lg:d-text-unset"
-                  style={{width: '20%'}}
-                  icon={<SearchOutlined />}
-                  onClick={() => {
-                    window.open(form.getFieldValue('postRefLink'));
-                  }}>
-                  {t('goto_link')}
-                </Button>
+                <Form.Item
+                  noStyle
+                  shouldUpdate={(prevValues, nextValues) => prevValues?.postRefLink !== nextValues?.postRefLink}>
+                  {() => (
+                    <Button
+                      type="primary"
+                      className="d-text-none lg:d-text-unset"
+                      style={{width: '20%'}}
+                      disabled={!form.getFieldValue('postRefLink')?.length}
+                      icon={<SearchOutlined />}
+                      onClick={() => {
+                        window.open(form.getFieldValue('postRefLink'));
+                      }}>
+                      {t('goto_link')}
+                    </Button>
+                  )}
+                </Form.Item>
               </Input.Group>
             </Col>
           </Row>

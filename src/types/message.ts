@@ -79,7 +79,7 @@ export interface commentMessageProps {
 }
 
 export interface replyUpdateProps {
-  id: number;
+  id: number | string;
   user?: user;
   type?: chatType;
   content?: string | File;

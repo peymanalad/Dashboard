@@ -50,10 +50,12 @@ const MessageActions = ({
     e.stopPropagation();
     if (setReply)
       setReply({
-        id: data?.id,
-        // user: data?.userId,
+        id: data?.sharedMessageId,
+        user: {
+          id: data?.side === 1 ? data?.userId : data?.targetUserId
+        },
         type: data?.type || 'text',
-        content: data?.content,
+        content: data?.message,
         isReply: true
       });
   };
@@ -62,10 +64,12 @@ const MessageActions = ({
     e.stopPropagation();
     if (setReply)
       setReply({
-        id: data?.id,
-        // user: data?.userId,
+        id: data?.sharedMessageId,
+        user: {
+          id: data?.side === 1 ? data?.userId : data?.targetUserId
+        },
         type: data?.type || 'text',
-        content: data?.content,
+        content: data?.message,
         isReply: false
       });
   };

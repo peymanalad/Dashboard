@@ -119,6 +119,9 @@ const NewsGroupOrder: FC = () => {
   const fetchNewsGroup = useFetch({
     name: 'postGroups',
     url: '/services/app/PostGroups/GetAll',
+    query: {
+      MaxResultCount: 50
+    },
     enabled: true,
     staleTime: 100,
     onSuccess(data) {

@@ -90,7 +90,7 @@ const MessageContainer = ({
 
   const [reply, setReply] = useState<replyUpdateProps | undefined>(undefined);
   const [searchRef, setSearchRef] = useState<boolean>(false);
-  const [loadingId, setLoadingId] = useState<number | undefined>(undefined);
+  const [loadingId, setLoadingId] = useState<number | string | undefined>(undefined);
 
   const messages = useMemo(() => {
     return (messagesKey ? flattenDeep(get(getMessageData?.data, messagesKey)) : getMessageData?.data)?.slice(0);
@@ -147,7 +147,7 @@ const MessageContainer = ({
         cloneWith(responses, (value: any[]) => {
           const messages =
             get(value, messagesKey ? ['pages', 0, 'data', 'items', messagesKey] : ['pages', 0, 'data', 'items']) || [];
-          remove(messages, ['id', messageId]);
+          remove(messages, ['sharedMessageId', messageId]);
           set(
             value,
             messagesKey ? ['pages', 0, 'data', 'items', messagesKey] : ['pages', 0, 'data', 'items'],
@@ -261,16 +261,16 @@ const MessageContainer = ({
   //   }
   // });
 
-  const updateChat = usePost({
-    url: updateUrl,
-    method: 'PATCH',
-    onSuccess: (response: any, request: any, params: {id: number}) => {
-      updateMessage({status: 'done'}, params?.id);
-    },
-    onError: (err: any, data: any, params: {id: number}) => {
-      updateMessage({status: 'error'}, params?.id);
-    }
-  });
+  // const updateChat = usePost({
+  //   url: updateUrl,
+  //   method: 'PATCH',
+  //   onSuccess: (response: any, request: any, params: {id: number}) => {
+  //     updateMessage({status: 'done'}, params?.id);
+  //   },
+  //   onError: (err: any, data: any, params: {id: number}) => {
+  //     updateMessage({status: 'error'}, params?.id);
+  //   }
+  // });
 
   // const deleteMessage = usePost({
   //   url: deleteUrl,
@@ -351,9 +351,16 @@ const MessageContainer = ({
       // meta: {mentions: map(mentions, 'id')}
     };
     if (reply?.isReply === false) {
-      updateChat.post(sendData, undefined, {id: reply?.id});
+      connection.current?.invoke('editMessage', {
+        sharedMessageId: reply?.id,
+        message: !!file
+          ? `[${type}]${JSON.stringify({id: message, contentType: file?.type, name: file?.name})}`
+          : message,
+        userId: +user_id!,
+        tenantId: 1
+      });
+      // updateChat.post(sendData, undefined, {id: reply?.id.});
     } else {
-      console.log(message, file);
       // set(sendData, 'reply_id', reply?.id || reply_id);
       connection.current?.invoke('sendMessage', {
         message: !!file
@@ -364,6 +371,7 @@ const MessageContainer = ({
       });
       // postChat.post(sendData);
     }
+    setReply(undefined);
   };
 
   const onPopupScroll = (e: any) => {
@@ -427,13 +435,14 @@ const MessageContainer = ({
             {map(messages, (message: chatMessageProps, index: number) => (
               <MessageChat
                 data={message}
-                key={index.toString()}
+                key={`${index}`}
                 myUserID={myUserID}
                 before={get(messages, index - 1)}
                 after={get(messages, index + 1)}
                 getReply={getReplyData}
                 hasReply={hasReply}
                 hasDelete
+                hasUpdate
                 // actionLoading={
                 //   loadingId === message?.id &&
                 //   (deleteMessage.isLoading ||
@@ -441,10 +450,10 @@ const MessageContainer = ({
                 //     rejectMessage.isLoading ||
                 //     readMessage.isLoading)
                 // }
-                onDeleteClick={(messageId) => {
-                  setLoadingId(messageId);
+                onDeleteClick={(sharedMessageId: string) => {
+                  setLoadingId(sharedMessageId);
                   connection.current?.invoke('DeleteMessage', {
-                    messageId,
+                    sharedMessageId,
                     userId: +user_id!,
                     tenantId: 1
                   });
