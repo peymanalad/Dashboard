@@ -29,6 +29,7 @@ export interface props {
   getMessageData: any;
   urlName: Array<string | number | undefined | null> | string;
   myUserID?: number;
+  friendUserID?: number;
   messagesKey?: string;
   postUrl: string;
   uploadType?: uploadAdvancedInputType;
@@ -54,6 +55,7 @@ const MessageContainer = ({
   getMessageData,
   urlName,
   myUserID,
+  friendUserID,
   messagesKey = '',
   uploadType = 'messages',
   commentType,
@@ -93,6 +95,16 @@ const MessageContainer = ({
   const messages = useMemo(() => {
     return (messagesKey ? flattenDeep(get(getMessageData?.data, messagesKey)) : getMessageData?.data)?.slice(0);
   }, [getMessageData.data, messagesKey]);
+
+  const postReadMessages = usePost({
+    url: 'services/app/Chat/MarkAllUnreadMessagesOfUserAsRead',
+    method: 'POST',
+    showError: false
+  });
+
+  const readMessages = () => {
+    postReadMessages.post({userId: friendUserID, tenantId: 1});
+  };
 
   const updateMessage = useCallback(
     (changesMessage: updateMessageProps, chatId: number | string) => {
@@ -206,12 +218,14 @@ const MessageContainer = ({
       .start()
       .then(() => {
         console.log('SignalR connection established.');
+        readMessages();
       })
       .catch((error) => console.error('Error starting SignalR connection:', error));
 
     connection.current.on('getChatMessage', (message) => {
       console.log('app.chat.messageReceived', message);
       addToMessages(message);
+      readMessages();
     });
 
     connection.current.on('deleteChatMessage', (messageId) => {

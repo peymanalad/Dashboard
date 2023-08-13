@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react';
 import {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
 import {useQuery} from 'react-query';
 import useUser from 'hooks/user/useUser';
@@ -9,6 +10,9 @@ import {useAxios, useError} from 'hooks';
 import compact from 'lodash/compact';
 import concat from 'lodash/concat';
 import isEmpty from 'lodash/isEmpty';
+import type {dynamicParams} from 'types/common';
+import values from 'lodash/values';
+import without from 'lodash/without';
 
 interface IGetConfig {
   name?: Array<string | number | undefined | null> | string;
@@ -40,10 +44,14 @@ const usePagination = ({
   staleTime = 180000,
   cacheTime = 600000
 }: IGetConfig) => {
-  let prettyName = isString(name) ? name : compact(name);
+  const [dynamicParams, setDynamicParams] = useState<dynamicParams | undefined>(undefined);
+  let prettyName: Array<string | number | undefined | null> | string = isString(name) ? name : compact(name);
 
-  if (prettyName === 'notLongTimeAvailable' || !isEmpty(search)) {
-    prettyName = [];
+  if (
+    prettyName === 'notLongTimeAvailable' ||
+    !isEmpty(without(values(merge(search, dynamicParams?.search)), undefined, null))
+  ) {
+    prettyName = concat(name, ['search']);
     staleTime = 0;
     cacheTime = 0;
   }
@@ -55,7 +63,7 @@ const usePagination = ({
   const requestConfig: AxiosRequestConfig = {
     url: allocateParamToString(urlGenerator(url), params),
     method: 'GET',
-    params: merge({page, perPage, query}, search),
+    params: merge(merge({page, per_page: perPage}, query), merge(search, dynamicParams?.search)),
     headers: {Authorization: user?.access_token ? `Bearer ${user?.access_token}` : ''}
   };
 
@@ -77,7 +85,17 @@ const usePagination = ({
   const data = get(paginateQuery, ['data', 'data']);
   const meta = get(paginateQuery, ['data', 'meta']);
 
-  return {...paginateQuery, refresh, data, meta};
+  useEffect(() => {
+    if (!isEmpty(compact(values(dynamicParams)))) {
+      paginateQuery.refetch();
+    }
+  }, [dynamicParams]);
+
+  const fetch = (params?: object, query?: object, search?: object) => {
+    setDynamicParams({params, query, search});
+  };
+
+  return {...paginateQuery, refresh, data, meta, fetch};
 };
 
 export default usePagination;

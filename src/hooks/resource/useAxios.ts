@@ -9,8 +9,7 @@ import {notification} from 'antd';
 import qs from 'qs';
 import {getLangSearchParam, urlGenerator} from 'utils';
 import get from 'lodash/get';
-import merge from 'lodash/merge';
-import {userAccessProps} from 'types/user';
+import type {userAccessProps} from 'types/user';
 
 const useAxios = () => {
   const {t} = useTranslation('general');

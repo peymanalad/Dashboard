@@ -12,7 +12,7 @@ import {chatImageDefault, Drop, PrescriptionIcon} from 'assets';
 import * as Scroll from 'react-scroll';
 import AudioPlayer from 'react-h5-audio-player';
 import {convertUtcTimeToLocal, getChatImageUrl, normalizeMessage} from 'utils';
-import {MessageActions} from 'components';
+import {MessageActions, ShowLocation} from 'components';
 import {useUser} from 'hooks';
 import toString from 'lodash/toString';
 import includes from 'lodash/includes';
@@ -178,6 +178,13 @@ const MessageChat = ({
               </div>
             </div>
           )}
+          {message?.type === 'location' && (
+            <div className="message__text">
+              <div className="message__text__content">
+                <ShowLocation longitude={message?.content?.userLong} latitude={message?.content?.userLat} />
+              </div>
+            </div>
+          )}
           {message?.type === 'prescription' && (
             <div className="message__text">
               <Space direction="horizontal">
@@ -189,7 +196,7 @@ const MessageChat = ({
               </Space>
             </div>
           )}
-          {!includes(['image', 'video', 'sound', 'audio', 'link', 'file'], message?.type) && (
+          {!includes(['image', 'video', 'sound', 'audio', 'link', 'file', 'location'], message?.type) && (
             <div className="message__text">
               <div className="message__text__content">
                 <Linkify options={{target: '_blank'}}>

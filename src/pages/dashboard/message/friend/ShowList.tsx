@@ -18,7 +18,7 @@ const SupportMessages: FC = () => {
       align: 'center',
       render: (friendProfilePictureId: string, friend: any) => (
         <Badge.Ribbon text={friend?.unreadMessageCount} placement="start" color="cyan">
-          <Badge color="green" dot={!friend?.isOnline}>
+          <Badge color="green" dot={friend?.isOnline}>
             <Avatar shape="square" size="large" draggable={false} src={getImageUrl(friendProfilePictureId)} />
           </Badge>
         </Badge.Ribbon>

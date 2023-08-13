@@ -18,6 +18,7 @@ import isArray from 'lodash/isArray';
 import get from 'lodash/get';
 import concat from 'lodash/concat';
 import isFunction from 'lodash/isFunction';
+import replace from 'lodash/replace';
 
 interface refProps {
   refresh: () => void;
@@ -134,6 +135,9 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
         expandable={expandable}
         rowKey="id"
         rowClassName={rowClassName}
+        onChange={(pagination, filters, sorter: any) => {
+          paginateData.fetch(undefined, undefined, {sort: sorter?.columnKey, order: replace(sorter?.order, 'end', '')});
+        }}
         rowSelection={
           isRowSelection
             ? {

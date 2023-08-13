@@ -1,6 +1,7 @@
 @import '~react-h5-audio-player/lib/styles.css';
 @import '~emoji-mart/css/emoji-mart.css';
 @import '~cropperjs/dist/cropper.css';
+@import '~leaflet/dist/leaflet.css';
 @import './assets/styles/variables.css';
 @import './assets/styles/fonts.css';
 @import './assets/styles/custom.css';

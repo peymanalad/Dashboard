@@ -19,13 +19,12 @@ const SupportChat = () => {
     enabled: true
   });
 
-  console.log(getMessageData);
-
   return (
     <MessageContainer
       getMessageData={getMessageData}
       urlName={['chatFriends', user_id]}
       myUserID={user.getId()}
+      friendUserID={+user_id}
       deleteUrl={`/support_messages/{id}?user_id=${user_id}`}
       updateUrl="/support_messages/{id}/"
       postUrl="/support_messages"

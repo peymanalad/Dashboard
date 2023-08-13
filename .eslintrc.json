@@ -52,6 +52,7 @@
     "react-hooks/exhaustive-deps": "off",
     "no-useless-return": "off",
     "react/no-unused-prop-types": "off",
+    "react/no-deprecated": "off",
     "no-underscore-dangle": "off",
     "jsx-a11y/media-has-caption": "off",
     "no-undef": "off",

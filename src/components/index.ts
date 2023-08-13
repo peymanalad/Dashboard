@@ -35,6 +35,9 @@ export {default as TreeSelect} from 'components/select/TreeSelect';
 export {default as ShowImages} from 'components/image/ShowImages';
 export {default as CropImageModal} from 'components/image/CropImageModal';
 
+// map
+export {default as ShowLocation} from 'components/map/ShowLocation';
+
 // messages
 export {default as MessageChat} from 'components/message/MessageChat';
 export {default as MessageContainer} from 'components/message/MessageContainer';

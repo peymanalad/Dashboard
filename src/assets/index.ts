@@ -15,6 +15,7 @@ export {default as MinusIcon} from 'assets/svg/Minus';
 export {default as CloseIcon} from 'assets/svg/Closed';
 export {default as PlusIcon} from 'assets/svg/Plus';
 export {default as maintenanceImg} from 'assets/img/maintenance.svg';
+export {default as MapImage} from 'assets/img/map.svg';
 export {default as UserIcon} from 'assets/svg/User';
 export {default as User1Icon} from 'assets/svg/User1';
 export {default as User2Icon} from 'assets/svg/User2';
