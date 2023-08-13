@@ -43,31 +43,36 @@ const UserShowList: FC = () => {
       title: t('username'),
       dataIndex: 'userName',
       key: 'userName',
-      align: 'center'
+      align: 'center',
+      sorter: true
     },
     {
       title: t('mobile'),
       dataIndex: 'phoneNumber',
       key: 'mobile',
-      align: 'center'
+      align: 'center',
+      sorter: true
     },
     {
       title: t('name'),
       dataIndex: 'name',
       key: 'name',
-      align: 'center'
+      align: 'center',
+      sorter: true
     },
     {
       title: t('last_name'),
       dataIndex: 'surname',
       key: 'surname',
-      align: 'center'
+      align: 'center',
+      sorter: true
     },
     {
       title: t('role'),
       dataIndex: ['roles', 0, 'roleName'],
-      key: 'surname',
-      align: 'center'
+      key: 'roles',
+      align: 'center',
+      sorter: true
     },
     {
       title: t('active'),
@@ -75,6 +80,7 @@ const UserShowList: FC = () => {
       key: 'isActive',
       align: 'center',
       responsive: ['sm'],
+      sorter: true,
       render: (isActive: boolean) => (
         <Tooltip title={t(isActive ? 'active' : 'inactive')}>
           {isActive ? (
@@ -91,6 +97,7 @@ const UserShowList: FC = () => {
       key: 'isEmailConfirmed',
       align: 'center',
       responsive: ['md'],
+      sorter: true,
       render: (isActive: boolean) => (
         <Tooltip title={t(isActive ? 'confirm' : 'not_confirm')}>
           {isActive ? (
@@ -104,9 +111,10 @@ const UserShowList: FC = () => {
     {
       title: t('created_at'),
       dataIndex: 'creationTime',
-      key: 'created_at',
+      key: 'creationTime',
       align: 'center',
       responsive: ['md'],
+      sorter: true,
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
     {

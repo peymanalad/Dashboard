@@ -136,7 +136,9 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
         rowKey="id"
         rowClassName={rowClassName}
         onChange={(pagination, filters, sorter: any) => {
-          paginateData.fetch(undefined, undefined, {sort: sorter?.columnKey, order: replace(sorter?.order, 'end', '')});
+          paginateData.fetch(undefined, undefined, {
+            Sorting: sorter?.order ? `${sorter?.columnKey} ${replace(sorter?.order, 'end', '')}` : undefined
+          });
         }}
         rowSelection={
           isRowSelection
