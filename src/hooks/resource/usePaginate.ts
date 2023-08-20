@@ -63,7 +63,10 @@ const usePagination = ({
   const requestConfig: AxiosRequestConfig = {
     url: allocateParamToString(urlGenerator(url), params),
     method: 'GET',
-    params: merge(merge({page, per_page: perPage}, query), merge(search, dynamicParams?.search)),
+    params: merge(
+      merge({SkipCount: (page - 1) * (perPage || 10), MaxResultCount: perPage}, query),
+      merge(search, dynamicParams?.search)
+    ),
     headers: {Authorization: user?.access_token ? `Bearer ${user?.access_token}` : ''}
   };
 
