@@ -1,4 +1,4 @@
-import React, {useRef, ElementRef, FC, useMemo} from 'react';
+import React, {useRef, ElementRef, FC, useMemo, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useFetch} from 'hooks';
 import {Button, Card, Dropdown, Space} from 'antd';
@@ -11,6 +11,8 @@ import AddOrganizationUserModal from 'containers/organization/AddOrganizationUse
 
 const ShowGraph: FC = () => {
   const {t} = useTranslation('organization');
+  const CardRef = useRef<HTMLDivElement | null>(null);
+  const [width, setWidth] = useState<number | null>(null);
   const showOrganizationUserRef = useRef<ElementRef<typeof ShowOrganizationUserModal>>(null);
   const addOrganizationRef = useRef<ElementRef<typeof ShowOrganizationUserModal>>(null);
   const addOrganizationUserRef = useRef<ElementRef<typeof AddOrganizationUserModal>>(null);
@@ -58,6 +60,11 @@ const ShowGraph: FC = () => {
     }
   ];
 
+  useEffect(() => {
+    const cardBodyWidth = CardRef.current?.querySelector('.ant-card-body')?.clientWidth;
+    if (!!cardBodyWidth) setWidth(cardBodyWidth - 50 || 800);
+  }, [CardRef.current]);
+
   const myConfig: GraphProps<any, any>['config'] | any = {
     automaticRearrangeAfterDropNode: true,
     collapsible: false,
@@ -69,14 +76,14 @@ const ShowGraph: FC = () => {
     highlightDegree: 1,
     highlightOpacity: 0.2,
     linkHighlightBehavior: true,
-    initialZoom: 0.6,
+    initialZoom: 0.7,
     maxZoom: 12,
     minZoom: 0.05,
     nodeHighlightBehavior: true,
     panAndZoom: false,
     staticGraph: false,
     staticGraphWithDragAndDrop: false,
-    width: 800,
+    width: width || 800,
     d3: {
       alphaTarget: 0.05,
       gravity: -250,
@@ -166,6 +173,7 @@ const ShowGraph: FC = () => {
     <Card
       title={t('title')}
       loading={!data?.nodes?.length}
+      ref={CardRef}
       extra={
         <Space size="small">
           {/*<Button*/}
@@ -176,10 +184,14 @@ const ShowGraph: FC = () => {
           {/*</Button>*/}
         </Space>
       }>
-      <Graph id="graph-id" className="w-full" data={data} config={myConfig} />
-      <ShowOrganizationUserModal ref={showOrganizationUserRef} />
-      <AddOrganizationModal ref={addOrganizationRef} />
-      <AddOrganizationUserModal ref={addOrganizationUserRef} />
+      {!!width && (
+        <>
+          <Graph id="graph-id" className="w-full" data={data} config={myConfig} />
+          <ShowOrganizationUserModal ref={showOrganizationUserRef} />
+          <AddOrganizationModal ref={addOrganizationRef} />
+          <AddOrganizationUserModal ref={addOrganizationUserRef} />
+        </>
+      )}
     </Card>
   );
 };
