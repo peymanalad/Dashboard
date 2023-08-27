@@ -90,7 +90,7 @@ const EditPermissionOnRole: FC = () => {
                       <Form.Item
                         noStyle
                         {...field}
-                        shouldUpdate={(prevValues, curValues) =>
+                        shouldUpdate={(prevValues: any, curValues: any) =>
                           prevValues.permission !== curValues.permission || prevValues.on_role !== curValues.on_role
                         }>
                         <Col span={10} className="pl-10">
