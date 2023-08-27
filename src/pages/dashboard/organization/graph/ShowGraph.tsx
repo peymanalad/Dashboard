@@ -176,7 +176,7 @@ const ShowGraph: FC = () => {
           {/*</Button>*/}
         </Space>
       }>
-      <Graph id="graph-id" data={data} config={myConfig} />
+      <Graph id="graph-id" className="w-full" data={data} config={myConfig} />
       <ShowOrganizationUserModal ref={showOrganizationUserRef} />
       <AddOrganizationModal ref={addOrganizationRef} />
       <AddOrganizationUserModal ref={addOrganizationUserRef} />

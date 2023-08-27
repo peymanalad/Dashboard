@@ -46,6 +46,13 @@ const UserMemberShowList: FC = () => {
       sorter: true
     },
     {
+      title: t('organization_situation'),
+      dataIndex: ['groupMember', 'memberPosition'],
+      key: 'memberPosition',
+      align: 'center',
+      sorter: true
+    },
+    {
       title: t('organization'),
       dataIndex: 'organizationGroupGroupName',
       key: 'organizationGroupGroupName',

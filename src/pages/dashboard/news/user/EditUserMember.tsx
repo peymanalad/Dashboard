@@ -35,6 +35,7 @@ const EditMemberShowList: FC = () => {
     storeNewsUserMember.post({
       id,
       memberPos: +values.memberPos,
+      memberPosition: values.memberPosition,
       userId: values?.organizationUser?.id,
       organizationId: values?.organization?.id
     });
@@ -55,6 +56,15 @@ const EditMemberShowList: FC = () => {
               rules={[{required: true, message: t('messages.required')}]}
               initialValue={fetchNewsUserMember?.data?.groupMember?.memberPos}>
               <Input type="number" className="ltr-input" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12}>
+            <Form.Item
+              name="memberPosition"
+              label={t('organization_situation')}
+              rules={[{required: true, message: t('messages.required')}]}
+              initialValue={fetchNewsUserMember?.data?.groupMember?.memberPosition}>
+              <Input />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>
