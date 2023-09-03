@@ -4,9 +4,10 @@ import {useFetch} from 'hooks';
 import {Button, Card, Dropdown, Space} from 'antd';
 // @ts-ignore
 import {Graph, GraphProps} from 'react-d3-graph';
-import {UserOutlined, UserAddOutlined, UsergroupAddOutlined} from '@ant-design/icons';
+import {UserOutlined, UserAddOutlined, UsergroupAddOutlined, BankOutlined} from '@ant-design/icons';
 import ShowOrganizationUserModal from 'containers/organization/ShowOrganizationUser';
 import AddOrganizationModal from 'containers/organization/AddOrganization';
+import SetOrganizationModal from 'containers/organization/SetOrganization';
 import AddOrganizationUserModal from 'containers/organization/AddOrganizationUser';
 
 const ShowGraph: FC = () => {
@@ -15,6 +16,7 @@ const ShowGraph: FC = () => {
   const [width, setWidth] = useState<number | null>(null);
   const showOrganizationUserRef = useRef<ElementRef<typeof ShowOrganizationUserModal>>(null);
   const addOrganizationRef = useRef<ElementRef<typeof ShowOrganizationUserModal>>(null);
+  const setOrganizationRef = useRef<ElementRef<typeof SetOrganizationModal>>(null);
   const addOrganizationUserRef = useRef<ElementRef<typeof AddOrganizationUserModal>>(null);
 
   const fetchOrganizationChart = useFetch({
@@ -26,6 +28,7 @@ const ShowGraph: FC = () => {
   const data = useMemo(() => {
     const nodes = fetchOrganizationChart?.data?.items?.map((organization: any) => ({
       id: `${organization?.organizationChart?.id}`,
+      leafPath: organization?.organizationChart?.leafPath,
       label: organization?.organizationChart?.caption
     }));
     const links: any[] = [];
@@ -39,8 +42,6 @@ const ShowGraph: FC = () => {
     });
     return {nodes, links};
   }, [fetchOrganizationChart?.data]);
-
-  // console.log(data, 'sina');
 
   const items = [
     {
@@ -59,6 +60,12 @@ const ShowGraph: FC = () => {
       icon: <UsergroupAddOutlined />
     }
   ];
+
+  const setOrganizationAction = {
+    label: t('setOrganization'),
+    key: 'setOrganization',
+    icon: <BankOutlined />
+  };
 
   useEffect(() => {
     const cardBodyWidth = CardRef.current?.querySelector('.ant-card-body')?.clientWidth;
@@ -115,12 +122,14 @@ const ShowGraph: FC = () => {
       // svg: '',
       symbolType: 'circle',
       viewGenerator: (node: any) => {
+        // console.log(node?.leafPath);
+        const isSecondLayer = node?.leafPath?.slice(0, -1)?.split('\\')?.length === 2;
         return (
           <div {...node}>
             <Dropdown
               trigger={['click']}
               menu={{
-                items,
+                items: isSecondLayer ? [...items, setOrganizationAction] : items,
                 triggerSubMenuAction: 'click',
                 onClick: ({key}) => {
                   switch (key) {
@@ -132,6 +141,9 @@ const ShowGraph: FC = () => {
                       break;
                     case 'addSubset':
                       if (addOrganizationRef.current) addOrganizationRef.current.open(node?.id);
+                      break;
+                    case 'setOrganization':
+                      if (setOrganizationRef.current) setOrganizationRef.current.open(node?.id);
                       break;
                     default:
                       return;
@@ -189,6 +201,7 @@ const ShowGraph: FC = () => {
           <Graph id="graph-id" className="w-full" data={data} config={myConfig} />
           <ShowOrganizationUserModal ref={showOrganizationUserRef} />
           <AddOrganizationModal ref={addOrganizationRef} />
+          <SetOrganizationModal ref={setOrganizationRef} />
           <AddOrganizationUserModal ref={addOrganizationUserRef} />
         </>
       )}

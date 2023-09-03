@@ -2368,6 +2368,7 @@
     "status": "وضعیت",
     "description": "توضیحات",
     "show_description": "نمایش توضیحات",
+    "setOrganization": "تبدیل به سازمان",
     "inactive": "غیرفعال",
     "choose": "انتخاب کنید",
     "active": "فعال",

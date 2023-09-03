@@ -83,12 +83,13 @@ const EditMemberShowList: FC = () => {
                 keyLabel="displayName"
                 placeholder={t('choose')}
                 showSearch={false}
+                disabled={!!id}
               />
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>
             <Form.Item
-              label={t('organization_group')}
+              label={t('organization')}
               name="organization"
               initialValue={{
                 id: fetchNewsUserMember?.data?.groupMember?.organizationId,
@@ -102,6 +103,7 @@ const EditMemberShowList: FC = () => {
                 keyLabel="displayName"
                 placeholder={t('choose')}
                 showSearch={false}
+                disabled={!!id}
               />
             </Form.Item>
           </Col>
