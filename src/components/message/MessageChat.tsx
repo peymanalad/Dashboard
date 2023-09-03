@@ -6,18 +6,19 @@ import {
   CloseCircleOutlined,
   LinkOutlined
 } from '@ant-design/icons';
-import {Col, ConfigProvider, Divider, Space, Typography, Image, Modal, Button} from 'antd';
+import {Col, ConfigProvider, Divider, Space, Typography, Image, Modal, Button, Card} from 'antd';
 import {useTranslation} from 'react-i18next';
 import {chatImageDefault, Drop, PrescriptionIcon} from 'assets';
 import * as Scroll from 'react-scroll';
 import AudioPlayer from 'react-h5-audio-player';
-import {convertUtcTimeToLocal, getChatImageUrl, normalizeMessage} from 'utils';
+import {convertUtcTimeToLocal, getChatImageUrl, getImageUrl, normalizeMessage} from 'utils';
 import {MessageActions, ShowLocation} from 'components';
 import {useUser} from 'hooks';
 import toString from 'lodash/toString';
 import includes from 'lodash/includes';
 import Linkify from 'linkify-react';
 import type {chatMessageProps, replyUpdateProps} from 'types/message';
+import {Link} from 'react-router-dom';
 
 export interface props {
   data: chatMessageProps;
@@ -38,6 +39,8 @@ export interface props {
   hasReject?: boolean;
   hasRead?: boolean;
 }
+
+const {Meta} = Card;
 
 const MessageChat = ({
   data,
@@ -185,6 +188,23 @@ const MessageChat = ({
               </div>
             </div>
           )}
+          {message?.type === 'post' && (
+            <div className="message__text">
+              <div className="message__text__content">
+                <Card
+                  hoverable
+                  bordered
+                  actions={[
+                    <Link to={`/news/news/edit/${message?.content?.id}`}>
+                      <LinkOutlined key="link" />
+                    </Link>
+                  ]}
+                  cover={<img alt="example" src={getImageUrl(message?.content?.postFiles?.[0])} />}>
+                  <Meta title={message?.content?.postTitle} description={message?.content?.postCaption} />
+                </Card>
+              </div>
+            </div>
+          )}
           {message?.type === 'prescription' && (
             <div className="message__text">
               <Space direction="horizontal">
@@ -196,7 +216,7 @@ const MessageChat = ({
               </Space>
             </div>
           )}
-          {!includes(['image', 'video', 'sound', 'audio', 'link', 'file', 'location'], message?.type) && (
+          {!includes(['image', 'video', 'sound', 'audio', 'link', 'file', 'location', 'post'], message?.type) && (
             <div className="message__text">
               <div className="message__text__content">
                 <Linkify options={{target: '_blank'}}>
