@@ -4,7 +4,7 @@ import momentJ, {Moment} from 'moment-jalaali';
 export const getNowDateTime = (format: string = 'jYYYY/jMM/jDD HH:mm:ss') => momentJ().utc(true).format(format);
 
 export const convertUtcTimeToLocal = (dateTime?: string, format: string = 'jYYYY/jMM/jDD HH:mm:ss') => {
-  if (dateTime) return momentJ(dateTime).utc(true).local().format(format);
+  if (dateTime) return momentJ(dateTime).utc(false).local().format(format);
   return getNowDateTime(format);
 };
 
