@@ -789,6 +789,10 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
   cursor: pointer;
 }
 
+.ant-select-selection-item > span {
+  line-height: 2.4;
+}
+
 /* The device with borders */
 .smartphone {
   position: relative;

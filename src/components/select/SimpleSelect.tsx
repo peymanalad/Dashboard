@@ -97,7 +97,7 @@ const SimpleSelect = ({
       listHeight={listHeight}
       defaultActiveFirstOption
       filterOption={false}
-      dropdownMatchSelectWidth={dropDownWith}
+      popupMatchSelectWidth={dropDownWith}
       getPopupContainer={(trigger) => trigger.parentNode}>
       {map(data, (item: any, index: number) => (
         <Option
