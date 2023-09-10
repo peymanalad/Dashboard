@@ -2358,6 +2358,7 @@
     "title": "سازمان ها",
     "organization": "سازمان",
     "excel": "اکسل",
+    "isGovernmental": "سازمان دولتی است",
     "organization_groups": "گروه های سازمان",
     "organization_nationalId": "شناسه ملی سازمان",
     "organization_ContactPerson": "مدیر مربوطه",

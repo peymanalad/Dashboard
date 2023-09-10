@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Card, Form, Row, Col, Input, Button} from 'antd';
+import {Card, Form, Row, Col, Input, Button, Checkbox} from 'antd';
 import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
@@ -105,6 +105,11 @@ const EditOrganization: FC = () => {
               rules={[{required: true, message: t('messages.required')}]}
               initialValue={fetchOrganization?.data?.organization?.organizationLocation}>
               <Input />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={8} className="flex justify-center align-center">
+            <Form.Item name="isGovernmental" valuePropName="checked">
+              <Checkbox style={{lineHeight: '32px'}}>{t('isGovernmental')}</Checkbox>
             </Form.Item>
           </Col>
           <Col span={24}>
