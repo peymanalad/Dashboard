@@ -1,7 +1,7 @@
 import React, {useRef, ElementRef, FC, useMemo, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useFetch} from 'hooks';
-import {Button, Card, Dropdown, Space} from 'antd';
+import {Avatar, Button, Card, Dropdown, Image, Space, Typography} from 'antd';
 // @ts-ignore
 import {Graph, GraphProps} from 'react-d3-graph';
 import {UserOutlined, UserAddOutlined, UsergroupAddOutlined, BankOutlined} from '@ant-design/icons';
@@ -9,6 +9,8 @@ import ShowOrganizationUserModal from 'containers/organization/ShowOrganizationU
 import AddOrganizationModal from 'containers/organization/AddOrganization';
 import SetOrganizationModal from 'containers/organization/SetOrganization';
 import AddOrganizationUserModal from 'containers/organization/AddOrganizationUser';
+
+const {Text} = Typography;
 
 const ShowGraph: FC = () => {
   const {t} = useTranslation('organization');
@@ -22,6 +24,10 @@ const ShowGraph: FC = () => {
   const fetchOrganizationChart = useFetch({
     name: 'OrganizationCharts',
     url: '/services/app/OrganizationCharts/GetAll',
+    query: {
+      SkipCount: 0,
+      MaxResultCount: 50
+    },
     enabled: true
   });
 
@@ -73,13 +79,13 @@ const ShowGraph: FC = () => {
   }, [CardRef.current]);
 
   const myConfig: GraphProps<any, any>['config'] | any = {
-    automaticRearrangeAfterDropNode: true,
+    automaticRearrangeAfterDropNode: false,
     collapsible: false,
     directed: true,
     focusAnimationDuration: 0.75,
     focusZoom: 1,
     freezeAllDragEvents: false,
-    height: 600,
+    height: 700,
     highlightDegree: 1,
     highlightOpacity: 0.2,
     linkHighlightBehavior: true,
@@ -93,9 +99,9 @@ const ShowGraph: FC = () => {
     width: width || 800,
     d3: {
       alphaTarget: 0.05,
-      gravity: -250,
-      linkLength: 120,
-      linkStrength: 2,
+      gravity: -1000,
+      linkLength: 200,
+      linkStrength: 1.5,
       disableLinkForce: false
     },
     node: {
@@ -112,20 +118,21 @@ const ShowGraph: FC = () => {
       opacity: 0.9,
       labelPosition: 'bottom',
       labelProperty: 'label',
-      renderLabel: false,
+      renderLabel: true,
       size: {
-        height: 350,
-        width: 1200
+        height: 700,
+        width: 700
       },
       strokeColor: 'none',
       strokeWidth: 1.5,
       // svg: '',
       symbolType: 'circle',
       viewGenerator: (node: any) => {
-        // console.log(node?.leafPath);
-        const isSecondLayer = node?.leafPath?.slice(0, -1)?.split('\\')?.length === 2;
+        const splitLayer = node?.leafPath?.slice(0, -1)?.split('\\');
+        const isSecondLayer = splitLayer?.length === 2;
+        const isFirstLayer = splitLayer?.length === 1;
         return (
-          <div {...node}>
+          <div {...node} style={{...node.style, display: 'flex', justifyContent: 'center'}}>
             <Dropdown
               trigger={['click']}
               menu={{
@@ -152,7 +159,12 @@ const ShowGraph: FC = () => {
               }}
               placement="bottom"
               arrow>
-              <Button style={{background: node?.fill}}>{node?.label}</Button>
+              <Avatar
+                size={55}
+                className={`p-1 main-node ${isSecondLayer && 'bg-danger'} ${isFirstLayer && 'bg-primary'}`}
+                src="https://images.adsttc.com/media/images/53fd/5ba7/c07a/8038/8e00/094d/large_jpg/PORTADA.jpg?1409112975"
+                style={{background: node?.fill}}
+              />
             </Dropdown>
           </div>
         );
@@ -182,20 +194,7 @@ const ShowGraph: FC = () => {
   };
 
   return (
-    <Card
-      title={t('title')}
-      loading={!data?.nodes?.length}
-      ref={CardRef}
-      extra={
-        <Space size="small">
-          {/*<Button*/}
-          {/*  type="primary"*/}
-          {/*  className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"*/}
-          {/*  icon={<FormOutlined />}>*/}
-          {/*  {t('add_organization')}*/}
-          {/*</Button>*/}
-        </Space>
-      }>
+    <Card title={t('title')} loading={!data?.nodes?.length} ref={CardRef}>
       {!!width && (
         <>
           <Graph id="graph-id" className="w-full" data={data} config={myConfig} />

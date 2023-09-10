@@ -90,6 +90,25 @@ const EditOrganizationGroup: FC = () => {
               />
             </Form.Item>
           </Col>
+          <Col span={24}>
+            <Form.Item label={t('users')} name="users">
+              <MultiSelectPaginate
+                mode="multiple"
+                urlName="usersSearch"
+                url="services/app/GroupMembers/GetAll"
+                renderCustomLabel={(option) => {
+                  return `${option?.userName} ${
+                    option?.groupMember?.memberPosition ? `- ${option?.groupMember?.memberPosition}` : ''
+                  }`;
+                }}
+                keyPath={['groupMember']}
+                keyValue="id"
+                keyLabel="memberPosition"
+                placeholder={t('choose')}
+                showSearch={false}
+              />
+            </Form.Item>
+          </Col>
         </Row>
         <Row gutter={[16, 8]} className="w-full my-5">
           <Button

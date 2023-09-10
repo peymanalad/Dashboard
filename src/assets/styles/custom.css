@@ -806,6 +806,10 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
   background: white;
 }
 
+.main-node img {
+  border-radius: 100%;
+}
+
 /* The horizontal line on the top of the device */
 .smartphone:before {
   content: '';

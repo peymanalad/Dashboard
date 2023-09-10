@@ -1612,16 +1612,16 @@
   background: linear-gradient(90deg, #feac5e, #c779d0, #4bc0c8);
 }
 .bg-primary {
-  background-color: rgba(0, 216, 170, 1);
+  background-color: rgba(0, 216, 170, 1) !important;
 }
 
 .bg-danger {
-  background-color: #fa1616;
+  background-color: #fa1616!important;
 }
 
 .border-primary {
   border-width: 1px;
-  border-color: #00d8aa;
+  border-color: #00d8aa!important;
 }
 /*---------------visibility-----------*/
 .visible {

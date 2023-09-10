@@ -117,12 +117,10 @@ const MultiSelectPaginate: FC<props> = ({
       onChange(newValue, map(newValue, keyValue));
     } else if (onChange) onChange(option?.item, renderKey(option?.item, [...keyPath, keyLabel]));
   };
-  const onDeselect = (label: string | string[] | undefined) => {
+  const onDeselect = (label: string | string[] | undefined, item: any) => {
     if (onChange && mode !== 'single') {
       const newValue: any = [...value];
-      remove(newValue, {
-        [keyLabel || 'title']: label
-      });
+      remove(newValue, item?.item);
       onChange(newValue, map(newValue, keyValue));
     } else if (onChange) onChange(undefined, undefined);
   };
