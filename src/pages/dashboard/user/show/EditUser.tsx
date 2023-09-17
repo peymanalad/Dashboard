@@ -117,9 +117,9 @@ const EditUser: FC = () => {
               <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={8} className="flex-center">
-            <Form.Item name="randomPassword" valuePropName="checked" className="m-0" initialValue={false}>
-              <Checkbox>{t('random_password')}</Checkbox>
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item name="nationalId" label={t('nationalId')} initialValue={fetchUser?.data?.user?.nationalId}>
+              <Input inputMode="tel" minLength={10} maxLength={10} className="ltr-input" />
             </Form.Item>
           </Col>
           <Form.Item
@@ -148,7 +148,12 @@ const EditUser: FC = () => {
               <Input type="email" className="ltr-input" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={8} className="flex-center">
+          <Col xs={24} md={12} lg={6} className="flex-center">
+            <Form.Item name="randomPassword" valuePropName="checked" className="m-0" initialValue={false}>
+              <Checkbox>{t('random_password')}</Checkbox>
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={6} className="flex-center">
             <Form.Item
               name="shouldChangePasswordOnNextLogin"
               valuePropName="checked"
@@ -157,7 +162,7 @@ const EditUser: FC = () => {
               <Checkbox>{t('change_password_next_login')}</Checkbox>
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={8} className="flex-center">
+          <Col xs={24} md={12} lg={6} className="flex-center">
             <Form.Item
               name="isActive"
               valuePropName="checked"
@@ -166,7 +171,7 @@ const EditUser: FC = () => {
               <Checkbox>{t('active')}</Checkbox>
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={8} className="flex-center">
+          <Col xs={24} md={12} lg={6} className="flex-center">
             <Form.Item
               name="isLockoutEnabled"
               valuePropName="checked"

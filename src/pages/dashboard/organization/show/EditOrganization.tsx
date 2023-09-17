@@ -4,8 +4,8 @@ import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {getImageUrl} from '../../../../utils';
-import {CustomUpload} from '../../../../components';
+import {getImageUrl} from 'utils';
+import {CustomUpload} from 'components';
 
 const EditOrganization: FC = () => {
   const {t} = useTranslation('organization');

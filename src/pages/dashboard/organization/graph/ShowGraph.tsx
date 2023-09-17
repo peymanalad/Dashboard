@@ -1,7 +1,7 @@
 import React, {useRef, ElementRef, FC, useMemo, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useFetch} from 'hooks';
-import {Avatar, Button, Card, Dropdown, Image, Space, Typography} from 'antd';
+import {Avatar, Card, Dropdown} from 'antd';
 // @ts-ignore
 import {Graph, GraphProps} from 'react-d3-graph';
 import {UserOutlined, UserAddOutlined, UsergroupAddOutlined, BankOutlined} from '@ant-design/icons';
@@ -9,8 +9,6 @@ import ShowOrganizationUserModal from 'containers/organization/ShowOrganizationU
 import AddOrganizationModal from 'containers/organization/AddOrganization';
 import SetOrganizationModal from 'containers/organization/SetOrganization';
 import AddOrganizationUserModal from 'containers/organization/AddOrganizationUser';
-
-const {Text} = Typography;
 
 const ShowGraph: FC = () => {
   const {t} = useTranslation('organization');

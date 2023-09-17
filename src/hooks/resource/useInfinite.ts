@@ -22,6 +22,7 @@ interface IGetConfig {
   name?: Array<string | number | undefined | null> | string;
   infiniteKey?: string;
   staticKey?: string[];
+  perPage?: number;
   query?: object;
   search?: object;
   params?: object;
@@ -39,6 +40,7 @@ const useInfinite = ({
   name = 'notLongTimeAvailable',
   infiniteKey,
   staticKey,
+  perPage = 10,
   query,
   search,
   params,
@@ -70,7 +72,16 @@ const useInfinite = ({
   };
 
   const fetchData: any = ({pageParam = 1}) => {
-    set(requestConfig, 'params', merge(merge({page: pageParam}, merge(query, dynamicParams?.query)), search));
+    set(
+      requestConfig,
+      'params',
+      merge(
+        {SkipCount: (pageParam - 1) * (perPage || 10), MaxResultCount: perPage},
+        query,
+        dynamicParams?.query,
+        search
+      )
+    );
     return AxiosInstance(requestConfig);
   };
   const infiniteQuery = useInfiniteQuery(prettyName, fetchData, {
@@ -87,14 +98,15 @@ const useInfinite = ({
     onError,
     initialData,
     retry: errorHandler.handle,
-    getPreviousPageParam: (lastPage: ResponseProps) => {
-      if (get(lastPage, ['meta', 'current_page']) > 1) return lastPage.data.meta.current_page - 1;
+    getPreviousPageParam: (lastPage: ResponseProps, allPages: ResponseProps[]) => {
+      const page = allPages?.length;
+      if (lastPage?.data?.totalCount > perPage * page && page > 1) return page - 1;
       return false;
     },
-    getNextPageParam: (lastPage: ResponseProps) => {
-      if (get(lastPage, ['meta', 'current_page']) < get(lastPage, ['meta', 'last_page']))
-        // return lastPage.meta.current_page + 1;
-        return false;
+    getNextPageParam: (lastPage: ResponseProps, allPages: ResponseProps[]) => {
+      const page = allPages?.length;
+      if (lastPage?.data?.totalCount > perPage * page) return page + 1;
+      return false;
     }
   });
   const refresh = () => queryClient.invalidateQueries(prettyName);

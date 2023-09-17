@@ -8,7 +8,7 @@ import {CustomUpload, MultiSelectPaginate} from 'components';
 import {getImageUrl} from 'utils';
 
 const EditOrganizationGroup: FC = () => {
-  const {t} = useTranslation('news');
+  const {t} = useTranslation('organization');
   const history = useHistory();
   const {id} = useParams<{id?: string}>();
 

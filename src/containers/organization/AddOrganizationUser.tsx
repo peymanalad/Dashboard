@@ -50,8 +50,8 @@ const AddOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
 
   const onFinish = (values: any) => {
     sendOrganizationUser.post({
-      userId: values?.organizationUser?.id,
-      organizationChartId: selectedOrganizationId
+      userId: +values?.organizationUser?.groupMember?.userId,
+      organizationChartId: selectedOrganizationId ? +selectedOrganizationId : null
     });
   };
 
@@ -61,6 +61,7 @@ const AddOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
       title={t('addUser')}
       closable
       centered
+      destroyOnClose
       onCancel={() => {
         setSelectedOrganizationId(null);
       }}

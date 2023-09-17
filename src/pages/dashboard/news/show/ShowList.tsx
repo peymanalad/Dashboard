@@ -95,8 +95,8 @@ const ShowList: FC = () => {
     },
     {
       title: t('updated_at'),
-      dataIndex: ['post', 'lastModificationTIme'],
-      key: 'lastModificationTIme',
+      dataIndex: ['post', 'lastModificationTime'],
+      key: 'lastModificationTime',
       align: 'center',
       responsive: ['md'],
       sorter: true,
