@@ -740,6 +740,7 @@
     "excel": "اکسل",
     "created_from": "ایجاد شده از",
     "created_to": "ایجاد شده تا",
+    "do_delete": "حذف کردن",
     "patient_name": "نام بیمار : {{name}}",
     "doctorName": "نام پزشک : {{name}}",
     "reviewer_name": "نام بازبین : {{name}}",
