@@ -4,6 +4,7 @@ export * from 'utils/storage';
 export * from 'utils/request';
 export * from 'utils/image';
 export * from 'utils/message';
+export * from 'utils/number';
 export * from 'utils/file';
 export * from 'utils/cache';
 export * from 'utils/color';

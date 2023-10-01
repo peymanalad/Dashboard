@@ -73,7 +73,7 @@ const AddOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
               <MultiSelectPaginate
                 mode="single"
                 urlName="usersSearch"
-                url="services/app/GroupMembers/GetAll"
+                url="services/app/GroupMembers/GetAllNoOrganization"
                 renderCustomLabel={(option) => {
                   return `${option?.userName} - ${
                     option?.groupMember?.memberPosition ? `${option?.groupMember?.memberPosition} -` : ''

@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {type FC} from 'react';
 import {Card, Form, Row, Col, Input, Button} from 'antd';
 import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
@@ -53,8 +53,7 @@ const EditMemberShowList: FC = () => {
             <Form.Item
               name="memberPos"
               label={t('organization_position')}
-              rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchNewsUserMember?.data?.groupMember?.memberPos}>
+              initialValue={fetchNewsUserMember?.data?.groupMember?.memberPos || 0}>
               <Input type="number" className="ltr-input" />
             </Form.Item>
           </Col>
@@ -71,10 +70,15 @@ const EditMemberShowList: FC = () => {
             <Form.Item
               label={t('user')}
               name="organizationUser"
-              initialValue={{
-                id: fetchNewsUserMember?.data?.groupMember?.userId,
-                displayName: fetchNewsUserMember?.data?.userName
-              }}>
+              rules={[{required: true, message: t('messages.required')}]}
+              initialValue={
+                fetchNewsUserMember?.data?.groupMember?.userId
+                  ? {
+                      id: fetchNewsUserMember?.data?.groupMember?.userId,
+                      displayName: fetchNewsUserMember?.data?.userName
+                    }
+                  : undefined
+              }>
               <MultiSelectPaginate
                 mode="single"
                 urlName="usersSearch"
@@ -91,10 +95,15 @@ const EditMemberShowList: FC = () => {
             <Form.Item
               label={t('organization')}
               name="organization"
-              initialValue={{
-                id: fetchNewsUserMember?.data?.groupMember?.organizationId,
-                displayName: fetchNewsUserMember?.data?.organizationGroupGroupName
-              }}>
+              rules={[{required: true, message: t('messages.required')}]}
+              initialValue={
+                fetchNewsUserMember?.data?.groupMember?.organizationId
+                  ? {
+                      id: fetchNewsUserMember?.data?.groupMember?.organizationId,
+                      displayName: fetchNewsUserMember?.data?.organizationGroupGroupName
+                    }
+                  : undefined
+              }>
               <MultiSelectPaginate
                 mode="single"
                 urlName="organizationGroupsSearch"

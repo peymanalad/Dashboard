@@ -258,34 +258,6 @@ const Dashboard: Array<dashboardRouteProps> = [
         hidden: true
       },
       {
-        key: 'organizationGroupList',
-        route: '/organization/group/list',
-        cmp: <OrganizationGroupShowList />,
-        title: i18n.t('side_menu:group'),
-        permission: 'OrganizationUnits',
-        extra: {
-          route: '/organization/group/create',
-          title: i18n.t('side_menu:addOrganizationGroup'),
-          permission: 'OrganizationUnits'
-        }
-      },
-      {
-        key: 'organizationGroupCreate',
-        route: '/organization/group/create',
-        cmp: <EditOrganizationGroup />,
-        title: i18n.t('side_menu:addOrganizationGroup'),
-        hidden: true,
-        permission: 'OrganizationUnits'
-      },
-      {
-        key: 'organizationGroupEdit',
-        route: '/organization/group/edit/:id',
-        cmp: <EditOrganizationGroup />,
-        title: i18n.t('side_menu:editOrganizationGroup'),
-        permission: 'OrganizationUnits',
-        hidden: true
-      },
-      {
         key: 'organizationGraphList',
         route: '/organization/graph/list',
         cmp: <OrganizationShowGraph />,
@@ -295,7 +267,7 @@ const Dashboard: Array<dashboardRouteProps> = [
     ]
   },
   {
-    title: i18n.t('side_menu:user'),
+    title: i18n.t('side_menu:identity'),
     icon: <UserOutlined />,
     key: 'user',
     subs: [
@@ -342,6 +314,35 @@ const Dashboard: Array<dashboardRouteProps> = [
         title: i18n.t('side_menu:create'),
         hidden: true,
         permission: 'users.update'
+      },
+      {
+        key: 'newsMember',
+        route: '/news/member/list',
+        cmp: <NewsNewUserMemberShowList />,
+        title: i18n.t('side_menu:news_member'),
+        permission: 'NewsMember'
+        // extra: {
+        //   route: '/news/member/create',
+        //   title: i18n.t('side_menu:news_member'),
+        //   permission: 'NewsMember'
+        // }
+      },
+      {
+        key: 'newsMemberCreate',
+        route: '/news/member/create',
+        cmp: <EditNewsUserMember />,
+        forSuperAdmin: true,
+        title: i18n.t('side_menu:addNewsMember'),
+        hidden: true,
+        permission: 'NewsMember'
+      },
+      {
+        key: 'newsGroupEdit',
+        route: '/news/member/edit/:id',
+        cmp: <EditNewsUserMember />,
+        title: i18n.t('side_menu:editNewsMember'),
+        permission: 'NewsMember',
+        hidden: true
       }
       // {
       //   key: 'userSpecialization',
@@ -444,39 +445,39 @@ const Dashboard: Array<dashboardRouteProps> = [
         hidden: true
       },
       {
+        key: 'organizationGroupList',
+        route: '/organization/group/list',
+        cmp: <OrganizationGroupShowList />,
+        title: i18n.t('side_menu:group'),
+        permission: 'OrganizationUnits',
+        extra: {
+          route: '/organization/group/create',
+          title: i18n.t('side_menu:addOrganizationGroup'),
+          permission: 'OrganizationUnits'
+        }
+      },
+      {
+        key: 'organizationGroupCreate',
+        route: '/organization/group/create',
+        cmp: <EditOrganizationGroup />,
+        title: i18n.t('side_menu:addOrganizationGroup'),
+        hidden: true,
+        permission: 'OrganizationUnits'
+      },
+      {
+        key: 'organizationGroupEdit',
+        route: '/organization/group/edit/:id',
+        cmp: <EditOrganizationGroup />,
+        title: i18n.t('side_menu:editOrganizationGroup'),
+        permission: 'OrganizationUnits',
+        hidden: true
+      },
+      {
         key: 'newsGroupList',
         route: '/news/group/order',
         cmp: <NewsGroupOrder />,
         title: i18n.t('side_menu:order_group'),
         permission: 'NewsUnits'
-      },
-      {
-        key: 'newsMember',
-        route: '/news/member/list',
-        cmp: <NewsNewUserMemberShowList />,
-        title: i18n.t('side_menu:news_member'),
-        permission: 'NewsMember',
-        extra: {
-          route: '/news/member/create',
-          title: i18n.t('side_menu:news_member'),
-          permission: 'NewsMember'
-        }
-      },
-      {
-        key: 'newsMemberCreate',
-        route: '/news/member/create',
-        cmp: <EditNewsUserMember />,
-        title: i18n.t('side_menu:addNewsMember'),
-        hidden: true,
-        permission: 'NewsMember'
-      },
-      {
-        key: 'newsGroupEdit',
-        route: '/news/member/edit/:id',
-        cmp: <EditNewsUserMember />,
-        title: i18n.t('side_menu:editNewsMember'),
-        permission: 'NewsMember',
-        hidden: true
       },
       {
         route: '/news/like/list',
@@ -1335,6 +1336,7 @@ const Dashboard: Array<dashboardRouteProps> = [
     title: i18n.t('side_menu:setting'),
     icon: <SettingOutlined />,
     key: 'setting',
+    forSuperAdmin: true,
     subs: [
       {
         route: '/setting/role/list',
@@ -1599,22 +1601,26 @@ const Dashboard: Array<dashboardRouteProps> = [
 export const getFilteredMenusList = (permissions: string[], isSuperUser?: boolean) =>
   compact(
     map(Dashboard, (menuItem: any) => {
-      if (!menuItem?.permission || true || includes(permissions, menuItem?.permission))
-        return {
-          ...menuItem,
-          subs: compact(
-            map(menuItem?.subs, (firstSub: any) => {
-              // if (true || includes(permissions, firstSub?.permission))
-              if (!firstSub?.forSuperAdmin || isSuperUser) {
-                return {
-                  ...firstSub,
-                  extra: (includes(permissions, firstSub?.extra?.permission) || true) && firstSub?.extra,
-                  subs: filter(firstSub?.subs, (secondSub: any) => true || includes(permissions, secondSub?.permission))
-                };
-              }
-            })
-          )
-        };
+      if (!menuItem?.forSuperAdmin || isSuperUser)
+        if (!menuItem?.permission || true || includes(permissions, menuItem?.permission))
+          return {
+            ...menuItem,
+            subs: compact(
+              map(menuItem?.subs, (firstSub: any) => {
+                // if (true || includes(permissions, firstSub?.permission))
+                if (!firstSub?.forSuperAdmin || isSuperUser) {
+                  return {
+                    ...firstSub,
+                    extra: (includes(permissions, firstSub?.extra?.permission) || true) && firstSub?.extra,
+                    subs: filter(
+                      firstSub?.subs,
+                      (secondSub: any) => true || includes(permissions, secondSub?.permission)
+                    )
+                  };
+                }
+              })
+            )
+          };
     })
   );
 

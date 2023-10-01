@@ -1,27 +1,16 @@
-import React, {useState, useEffect, FC} from 'react';
-import {Card, Form, Checkbox, Button, Input, Radio, Row, Col, Typography, InputNumber} from 'antd';
-import {LogoutOutlined, SaveOutlined} from '@ant-design/icons';
+import React, {type FC} from 'react';
+import {Card, Form, Checkbox, Button, Input, Row, Col} from 'antd';
+import {SaveOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
-import {CustomUpload, DateTimePicker, MultiSelect, MultiSelectPaginate, SimpleSelect} from 'components';
+import {CustomUpload, MultiSelectPaginate} from 'components';
 import {useHistory} from 'react-router-dom';
-import {useFetch, usePost} from 'hooks';
-import {getImageUrl, getLangSearchParam} from 'utils';
-import map from 'lodash/map';
-import filter from 'lodash/filter';
-import {convertNumbers2English} from '../../../../utils/number';
-
-const {Text} = Typography;
+import {usePost} from 'hooks';
+import {getLangSearchParam, convertNumbers2English} from 'utils';
 
 const AccountInfo: FC = () => {
   const {t} = useTranslation('user_create');
   const history = useHistory();
   const [form] = Form.useForm();
-  const [role, setRole] = useState<number | null>(null);
-
-  const getPermissions = useFetch({
-    url: 'users/access_store',
-    params: {role_id: role}
-  });
 
   const sendPicture = usePost({
     url: 'services/app/Profile/UpdateProfilePicture',
@@ -48,6 +37,7 @@ const AccountInfo: FC = () => {
       user: {
         id: null,
         ...val,
+        isLockoutEnabled: 1,
         phoneNumber: convertNumbers2English(val?.phoneNumber),
         username: convertNumbers2English(val?.phoneNumber),
         isTwoFactorEnabled: false,
@@ -55,12 +45,10 @@ const AccountInfo: FC = () => {
         updateFileToken: val?.updateFileToken?.fileToken
       }
     });
+    // if (val?.updateFileToken?.fileToken)
+    //   sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken});
     // sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken});
   };
-
-  // useEffect(() => {
-  //   if (role) getPermissions.refetch();
-  // }, [role]);
 
   return (
     <Form layout="vertical" requiredMark={false} form={form} className=" w-full" name="AccountInfo" onFinish={onFinish}>
@@ -107,9 +95,9 @@ const AccountInfo: FC = () => {
               <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={8} className="flex-center">
-            <Form.Item name="randomPassword" valuePropName="checked" className="m-0" initialValue={false}>
-              <Checkbox>{t('random_password')}</Checkbox>
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item name="nationalId" label={t('nationalId')}>
+              <Input inputMode="tel" minLength={10} maxLength={10} className="ltr-input" />
             </Form.Item>
           </Col>
           <Form.Item
@@ -130,8 +118,19 @@ const AccountInfo: FC = () => {
             )}
           </Form.Item>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="emailAddress" rules={[{type: 'email', message: t('validation.email')}]} label={t('email')}>
+            <Form.Item
+              name="emailAddress"
+              rules={[
+                {required: true, message: t('messages.required')},
+                {type: 'email', message: t('validation.email')}
+              ]}
+              label={t('email')}>
               <Input type="email" className="ltr-input" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={8} className="flex-center">
+            <Form.Item name="randomPassword" valuePropName="checked" className="m-0" initialValue={false}>
+              <Checkbox>{t('random_password')}</Checkbox>
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8} className="flex-center">
@@ -142,11 +141,6 @@ const AccountInfo: FC = () => {
           <Col xs={24} md={12} lg={8} className="flex-center">
             <Form.Item name="isActive" valuePropName="checked" className="m-0">
               <Checkbox>{t('active')}</Checkbox>
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8} className="flex-center">
-            <Form.Item name="isLockoutEnabled" valuePropName="checked" className="m-0">
-              <Checkbox>{t('lockout')}</Checkbox>
             </Form.Item>
           </Col>
         </Row>

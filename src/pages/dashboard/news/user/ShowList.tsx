@@ -1,6 +1,6 @@
 import React, {FC, useRef, ElementRef} from 'react';
 import {Link, useLocation} from 'react-router-dom';
-import {useDelete, usePost} from 'hooks';
+import {useDelete, usePost, useUser} from 'hooks';
 import {useTranslation} from 'react-i18next';
 import {Button, Card, Space, Tooltip} from 'antd';
 import {FormOutlined, FilterOutlined, EditOutlined, DeleteOutlined, FileExcelOutlined} from '@ant-design/icons';
@@ -12,6 +12,7 @@ import type {simplePermissionProps} from 'types/common';
 
 const UserMemberShowList: FC = () => {
   const {t} = useTranslation('news');
+  const user = useUser();
   const searchRef = useRef<ElementRef<typeof SearchUsers>>(null);
   const tableRef = useRef<ElementRef<typeof CustomTable>>(null);
   const location = useLocation();
@@ -101,11 +102,13 @@ const UserMemberShowList: FC = () => {
             }}>
             {t('excel')}
           </Button>
-          <Link to="/news/member/create">
-            <Button className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset" icon={<FormOutlined />}>
-              {t('add')}
-            </Button>
-          </Link>
+          {user?.isSuperUser() && (
+            <Link to="/news/member/create">
+              <Button className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset" icon={<FormOutlined />}>
+                {t('add')}
+              </Button>
+            </Link>
+          )}
           <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
             {t('filter')}
           </Button>

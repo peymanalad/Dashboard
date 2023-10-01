@@ -33,7 +33,7 @@ const UserShowList: FC = () => {
   });
 
   const deleteRequest = useDelete({
-    url: 'users/{id}',
+    url: '/services/app/User/DeleteUser',
     name: 'users',
     titleKey: [['username'], ['name'], ['id']]
   });

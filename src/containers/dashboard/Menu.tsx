@@ -60,9 +60,15 @@ const SideMenu: FC<Props> = ({onChangeRoute}) => {
       {map(filterMenu, (item: dashboardRouteProps) =>
         item?.route && !item?.hidden ? (
           <Item icon={item?.icon} className="side-menu-item" key={item.route}>
-            <NavLink to={item.route} onClick={onChangeRoute}>
-              {item.title}
-            </NavLink>
+            {item?.key === 'dashboard' ? (
+              <a href={item.route} onClick={onChangeRoute}>
+                {item.title}
+              </a>
+            ) : (
+              <NavLink to={item.route} onClick={onChangeRoute}>
+                {item.title}
+              </NavLink>
+            )}
           </Item>
         ) : (
           !isEmpty(item?.subs) && (

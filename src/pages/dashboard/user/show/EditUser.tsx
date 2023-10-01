@@ -36,7 +36,7 @@ const EditUser: FC = () => {
   const sendUser = usePost({
     url: 'services/app/User/CreateOrUpdateUser',
     method: 'POST',
-    removeQueries: ['users', ['user', id, 'account']],
+    removeQueries: ['users', ['user', id]],
     form,
     onSuccess: () => {
       if (history.length > 1 && document.URL !== document.referrer) history.goBack();
@@ -52,13 +52,14 @@ const EditUser: FC = () => {
       setRandomPassword: val?.randomPassword,
       user: {
         ...val,
+        isLockoutEnabled: 1,
         isTwoFactorEnabled: false,
         password: val?.password || null,
         updateFileToken: val?.updateFileToken?.fileToken,
         id: +id
       }
     });
-    sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken});
+    if (val?.updateFileToken?.fileToken) sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken});
   };
 
   return (
@@ -148,12 +149,12 @@ const EditUser: FC = () => {
               <Input type="email" className="ltr-input" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={6} className="flex-center">
+          <Col xs={24} md={12} lg={8} className="flex-center">
             <Form.Item name="randomPassword" valuePropName="checked" className="m-0" initialValue={false}>
               <Checkbox>{t('random_password')}</Checkbox>
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={6} className="flex-center">
+          <Col xs={24} md={12} lg={8} className="flex-center">
             <Form.Item
               name="shouldChangePasswordOnNextLogin"
               valuePropName="checked"
@@ -162,22 +163,13 @@ const EditUser: FC = () => {
               <Checkbox>{t('change_password_next_login')}</Checkbox>
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={6} className="flex-center">
+          <Col xs={24} md={12} lg={8} className="flex-center">
             <Form.Item
               name="isActive"
               valuePropName="checked"
               className="m-0"
               initialValue={fetchUser?.data?.user?.isActive}>
               <Checkbox>{t('active')}</Checkbox>
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={6} className="flex-center">
-            <Form.Item
-              name="isLockoutEnabled"
-              valuePropName="checked"
-              className="m-0"
-              initialValue={fetchUser?.data?.user?.isLockoutEnabled}>
-              <Checkbox>{t('lockout')}</Checkbox>
             </Form.Item>
           </Col>
         </Row>

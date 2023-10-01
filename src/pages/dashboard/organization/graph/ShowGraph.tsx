@@ -9,6 +9,8 @@ import ShowOrganizationUserModal from 'containers/organization/ShowOrganizationU
 import AddOrganizationModal from 'containers/organization/AddOrganization';
 import SetOrganizationModal from 'containers/organization/SetOrganization';
 import AddOrganizationUserModal from 'containers/organization/AddOrganizationUser';
+import findIndex from 'lodash/findIndex';
+import {getChatImageUrl, getImageUrl} from 'utils';
 
 const ShowGraph: FC = () => {
   const {t} = useTranslation('organization');
@@ -33,15 +35,22 @@ const ShowGraph: FC = () => {
     const nodes = fetchOrganizationChart?.data?.items?.map((organization: any) => ({
       id: `${organization?.organizationChart?.id}`,
       leafPath: organization?.organizationChart?.leafPath,
+      logo: organization?.organizationChart?.organizationLogo,
       label: organization?.organizationChart?.caption
     }));
     const links: any[] = [];
     fetchOrganizationChart?.data?.items?.forEach((organization: any) => {
       const link = organization?.organizationChart?.leafPath?.slice(0, -1)?.split('\\');
-      if (link.length > 1)
+      const source = link?.[link.length - 2];
+      const target = link?.[link.length - 1];
+      if (
+        link.length > 1 &&
+        findIndex(fetchOrganizationChart?.data?.items, ['organizationChart.id', +source]) > -1 &&
+        findIndex(fetchOrganizationChart?.data?.items, ['organizationChart.id', +target]) > -1
+      )
         links.push({
-          source: link?.[link.length - 2],
-          target: link?.[link.length - 1]
+          source,
+          target
         });
     });
     return {nodes, links};
@@ -160,7 +169,7 @@ const ShowGraph: FC = () => {
               <Avatar
                 size={55}
                 className={`p-1 main-node ${isSecondLayer && 'bg-danger'} ${isFirstLayer && 'bg-primary'}`}
-                src="https://images.adsttc.com/media/images/53fd/5ba7/c07a/8038/8e00/094d/large_jpg/PORTADA.jpg?1409112975"
+                src={getImageUrl(node?.logo)}
                 style={{background: node?.fill}}
               />
             </Dropdown>
