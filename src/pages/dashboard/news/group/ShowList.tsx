@@ -131,7 +131,7 @@ const ShowList: FC = () => {
           </Button>
         </Space>
       }>
-      <Search ref={searchRef} name="NewsNameFilter" />
+      <Search ref={searchRef} />
       <CustomTable fetch="services/app/PostGroups/GetAll" dataName="postGroups" columns={columns} hasIndexColumn />
     </Card>
   );

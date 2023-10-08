@@ -1,4 +1,4 @@
-import React, {FC, useRef, ElementRef} from 'react';
+import React, {type FC, useRef, type ElementRef} from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import {useDelete, usePost, useUser} from 'hooks';
 import {useTranslation} from 'react-i18next';
@@ -7,19 +7,19 @@ import {
   FormOutlined,
   FilterOutlined,
   EditOutlined,
+  MailOutlined,
   DeleteOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
   FileExcelOutlined
 } from '@ant-design/icons';
-import {CustomTable} from 'components';
-import {SearchUsers} from 'containers';
+import {CustomTable, Search} from 'components';
 import {convertUtcTimeToLocal, queryStringToObject, getTempFileUrl} from 'utils';
-import {simplePermissionProps} from 'types/common';
+import type {simplePermissionProps} from 'types/common';
 
 const UserShowList: FC = () => {
   const {t} = useTranslation('user-show');
-  const searchRef = useRef<ElementRef<typeof SearchUsers>>(null);
+  const searchRef = useRef<ElementRef<typeof Search>>(null);
   const tableRef = useRef<ElementRef<typeof CustomTable>>(null);
   const {hasPermission} = useUser();
   const location = useLocation();
@@ -124,6 +124,11 @@ const UserShowList: FC = () => {
       align: 'center',
       render: (permissions: simplePermissionProps, user: any) => (
         <Space size={2}>
+          <Tooltip title={t('send_message')}>
+            <Link to={`/message/friend/${user?.id}`}>
+              <Button type="text" icon={<MailOutlined className="text-orange" />} />
+            </Link>
+          </Tooltip>
           <Tooltip title={t('update')}>
             <Link to={`/user/edit/${user?.id}`}>
               <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
@@ -176,7 +181,7 @@ const UserShowList: FC = () => {
       }
       className="my-6"
       title={t('title')}>
-      <SearchUsers ref={searchRef} />
+      <Search ref={searchRef} />
       <CustomTable
         fetch="/services/app/User/GetListOfUsers"
         dataName="users"

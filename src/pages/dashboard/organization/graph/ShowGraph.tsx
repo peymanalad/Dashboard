@@ -10,7 +10,9 @@ import AddOrganizationModal from 'containers/organization/AddOrganization';
 import SetOrganizationModal from 'containers/organization/SetOrganization';
 import AddOrganizationUserModal from 'containers/organization/AddOrganizationUser';
 import findIndex from 'lodash/findIndex';
-import {getChatImageUrl, getImageUrl} from 'utils';
+import {getImageUrl} from 'utils';
+import {DeedLogoImg} from 'assets';
+import {HomeOutlined} from '@ant-design/icons';
 
 const ShowGraph: FC = () => {
   const {t} = useTranslation('organization');
@@ -26,7 +28,7 @@ const ShowGraph: FC = () => {
     url: '/services/app/OrganizationCharts/GetAll',
     query: {
       SkipCount: 0,
-      MaxResultCount: 50
+      MaxResultCount: 200
     },
     enabled: true
   });
@@ -35,6 +37,7 @@ const ShowGraph: FC = () => {
     const nodes = fetchOrganizationChart?.data?.items?.map((organization: any) => ({
       id: `${organization?.organizationChart?.id}`,
       leafPath: organization?.organizationChart?.leafPath,
+      organizationId: organization?.organizationChart?.organizationId,
       logo: organization?.organizationChart?.organizationLogo,
       label: organization?.organizationChart?.caption
     }));
@@ -96,7 +99,7 @@ const ShowGraph: FC = () => {
     highlightDegree: 1,
     highlightOpacity: 0.2,
     linkHighlightBehavior: true,
-    initialZoom: 0.7,
+    initialZoom: 0.5,
     maxZoom: 12,
     minZoom: 0.05,
     nodeHighlightBehavior: true,
@@ -143,7 +146,7 @@ const ShowGraph: FC = () => {
             <Dropdown
               trigger={['click']}
               menu={{
-                items: isSecondLayer ? [...items, setOrganizationAction] : items,
+                items: isSecondLayer && !node?.organizationId ? [...items, setOrganizationAction] : items,
                 triggerSubMenuAction: 'click',
                 onClick: ({key}) => {
                   switch (key) {
@@ -168,8 +171,16 @@ const ShowGraph: FC = () => {
               arrow>
               <Avatar
                 size={55}
-                className={`p-1 main-node ${isSecondLayer && 'bg-danger'} ${isFirstLayer && 'bg-primary'}`}
-                src={getImageUrl(node?.logo)}
+                className={`p-1 main-node ${!!node?.organizationId && 'bg-danger'} ${isFirstLayer && 'bg-primary'}`}
+                src={
+                  isFirstLayer ? (
+                    DeedLogoImg
+                  ) : node?.logo ? (
+                    getImageUrl(node?.logo)
+                  ) : (
+                    <HomeOutlined style={{fontSize: '1.7rem'}} />
+                  )
+                }
                 style={{background: node?.fill}}
               />
             </Dropdown>

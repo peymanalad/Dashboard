@@ -91,7 +91,7 @@ const ShowList: FC = () => {
           </Button>
         </Space>
       }>
-      <Search ref={searchRef} name="OrganizationNameFilter" />
+      <Search ref={searchRef} />
       <CustomTable fetch="services/app/CommentLikes/GetAll" dataName="commentLikes" columns={columns} />
     </Card>
   );

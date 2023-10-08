@@ -112,7 +112,7 @@ const ShowList: FC = () => {
           </Button>
         </Space>
       }>
-      <Search ref={searchRef} name="name" />
+      <Search ref={searchRef} />
       <CustomTable fetch="services/app/Role/GetListOfRoles" dataName="roles" columns={columns} hasIndexColumn />
     </Card>
   );

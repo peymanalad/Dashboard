@@ -9,7 +9,7 @@ import React, {
 import {Button, Row, Form, Col, Input, Drawer} from 'antd';
 import {SearchOutlined, CloseOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
-import {queryStringToObject} from 'utils';
+import {convertNumbers2English, queryStringToObject} from 'utils';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'qs';
 
@@ -35,7 +35,7 @@ const Search: ForwardRefRenderFunction<refProps, props> = (
 
   const onFinish = (values: any) => {
     history.replace({
-      search: qs.stringify(values)
+      search: qs.stringify({[name]: convertNumbers2English(values?.[name])})
     });
   };
 
@@ -62,8 +62,12 @@ const Search: ForwardRefRenderFunction<refProps, props> = (
       visible={visible}>
       <Form layout="vertical" className="h-full relative" onFinish={onFinish}>
         <Row className="d-block h-full overflow-auto px-4 pb-24">
-          <Form.Item name={name} label={t('name')} className="mb-1/2 label-p-0" initialValue={queryObject?.[name]}>
-            <Input placeholder={t('empty')} className="w-full" />
+          <Form.Item
+            name={name}
+            label={t('advancedSearch')}
+            className="mb-1/2 label-p-0"
+            initialValue={queryObject?.[name]}>
+            <Input placeholder={t('searchOnAllParameters')} className="w-full" />
           </Form.Item>
         </Row>
         <Row

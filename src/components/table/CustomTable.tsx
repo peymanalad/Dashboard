@@ -76,7 +76,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     page: queryObject?.page,
     perPage: queryObject?.per_page,
     query,
-    search,
+    search: {...search, Filter: queryObject?.search},
     params,
     enabled: true
   });
