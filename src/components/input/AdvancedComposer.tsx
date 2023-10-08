@@ -3,8 +3,8 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useEffect,
-  ForwardRefRenderFunction,
-  ForwardedRef
+  type ForwardRefRenderFunction,
+  type ForwardedRef
 } from 'react';
 import {Badge, Button, Col, Input, Modal, Row, Space, Typography} from 'antd';
 import {
@@ -23,10 +23,12 @@ import {ReactMic} from 'react-mic';
 import {RecordingIcon, RecordingStopIcon} from 'assets';
 import {usePost, useUser} from 'hooks';
 import {Picker} from 'emoji-mart';
+import last from 'lodash/last';
+import split from 'lodash/split';
+import toString from 'lodash/toString';
 import type {chatType, replyUpdateProps} from 'types/message';
 import type {uploadAdvancedInputType} from 'types/file';
 import type {userProps} from 'types/user';
-import {last, split, toString} from 'lodash';
 
 interface refProps {
   getContent: () => string | File;
@@ -110,11 +112,10 @@ const AdvancedComposer: ForwardRefRenderFunction<refProps, props> = (
   });
 
   const blobToFile = (theBlob: Blob, fileName: string): File => {
-    const newFile = new File([theBlob], `${fileName}.${last(split(theBlob.type, '/'))}`, {
+    return new File([theBlob], `${fileName}.${last(split(theBlob.type, '/'))}`, {
       type: theBlob.type,
       lastModified: Date.now()
     });
-    return newFile;
   };
 
   //create function to convert blob to file :
@@ -167,11 +168,15 @@ const AdvancedComposer: ForwardRefRenderFunction<refProps, props> = (
         />
       </Modal>
       <div className="flex flex-col w-full relative bg-white">
-        {reply && reply?.type === 'text' && (
+        {!!reply?.type && (
           <Row className="reply">
             <Row className="content flex-1 flex-col">
               <Text>{reply?.user?.id !== UserId ? reply?.user?.full_name : t('you')}</Text>
-              <Text type="secondary">{reply?.content}</Text>
+              <Text type="secondary">
+                {reply?.type === 'text'
+                  ? reply?.content
+                  : t(`replyMessage.${reply?.type}`, {name: reply?.content?.name, title: reply?.content?.postTitle})}
+              </Text>
             </Row>
             <Button
               type="text"

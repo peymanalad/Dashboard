@@ -12,6 +12,7 @@ import {
 } from '@ant-design/icons';
 import {Button, Space} from 'antd';
 import {ReplyIcon} from 'assets';
+import {normalizeMessage} from '../../utils';
 
 export interface props {
   data: chatMessageProps;
@@ -54,8 +55,7 @@ const MessageActions = ({
         user: {
           id: data?.side === 1 ? data?.userId : data?.targetUserId
         },
-        type: data?.type || 'text',
-        content: data?.message,
+        ...normalizeMessage(data),
         isReply: true
       });
   };

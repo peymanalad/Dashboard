@@ -21,7 +21,7 @@ import toString from 'lodash/toString';
 import flattenDeep from 'lodash/flattenDeep';
 import isString from 'lodash/isString';
 import {normalizeMessage} from 'utils/message';
-import type {chatMessageProps, replyUpdateProps, chatType, updateMessageProps, commentType} from 'types/message';
+import type {chatMessageProps, replyUpdateProps, chatType, commentType} from 'types/message';
 import type {uploadAdvancedInputType} from 'types/file';
 import type {userProps} from 'types/user';
 
@@ -465,16 +465,16 @@ const MessageContainer = ({
                   // deleteMessage.post({recommendation_id}, {}, {id});
                 }}
                 onConfirmClick={(id) => {
-                  setLoadingId(id);
-                  confirmMessage.post({recommendation_id}, {}, {id});
+                  // setLoadingId(id);
+                  // confirmMessage.post({recommendation_id}, {}, {id});
                 }}
                 onRejectClick={(id) => {
-                  setLoadingId(id);
-                  rejectMessage.post({recommendation_id}, {}, {id});
+                  // setLoadingId(id);
+                  // rejectMessage.post({recommendation_id}, {}, {id});
                 }}
                 onReadClick={(id) => {
-                  setLoadingId(id);
-                  readMessage.post({recommendation_id}, {}, {id});
+                  // setLoadingId(id);
+                  // readMessage.post({recommendation_id}, {}, {id});
                 }}
                 setReply={setReplyData}
               />
@@ -497,7 +497,14 @@ const MessageContainer = ({
             // loading={postChat.isLoading}
             onClick={(content: string | File, mentions?: userProps[]) => {
               if (!isString(content))
-                addToMessages({type: content?.type?.split('/')?.[0], content, status: 'loading', userId: myUserID});
+                addToMessages({
+                  type: content?.type?.split('/')?.[0],
+                  content,
+                  status: 'loading',
+                  userId: myUserID,
+                  side: 1,
+                  targetUserId: friendUserID
+                });
               // if (reply?.isReply === false) updateMessage({content, status: 'loading'}, reply?.id);
               // else addToMessages(content, reply, 'loading', 'newMessage', mentions);
             }}

@@ -33,7 +33,6 @@ const EditOrganization: FC = () => {
   });
 
   const onFinish = (values: any) => {
-    console.log(values);
     storeOrganization.post({
       ...values,
       organizationLogoToken: values?.organizationLogoToken?.fileToken,

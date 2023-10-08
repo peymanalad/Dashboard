@@ -82,7 +82,7 @@ export interface replyUpdateProps {
   id: number | string;
   user?: user;
   type?: chatType;
-  content?: string | File;
+  content?: any | File;
   isReply?: boolean;
 }
 

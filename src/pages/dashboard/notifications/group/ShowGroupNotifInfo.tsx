@@ -19,7 +19,6 @@ const ShowGroupNotification = (props: Props) => {
     params: {id},
     enabled: true
   });
-  console.log(fetchNotification?.data);
 
   return (
     <Card loading={fetchNotification.isFetching}>

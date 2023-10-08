@@ -88,6 +88,8 @@ const MessageChat = ({
 
   if (message?.type === 'upload') return null;
 
+  const isText = !includes(['image', 'video', 'sound', 'audio', 'link', 'file', 'location', 'post'], message?.type);
+
   return (
     <>
       {(!before ||
@@ -205,18 +207,7 @@ const MessageChat = ({
               </div>
             </div>
           )}
-          {message?.type === 'prescription' && (
-            <div className="message__text">
-              <Space direction="horizontal">
-                <PrescriptionIcon />
-                <div className="message__text__content">
-                  <Title level={5}>{t('electronic_prescription')}</Title>
-                  <Text>{t('tracking_code', {code: data?.content?.electronic_prescription_visit?.head_id})}</Text>
-                </div>
-              </Space>
-            </div>
-          )}
-          {!includes(['image', 'video', 'sound', 'audio', 'link', 'file', 'location', 'post'], message?.type) && (
+          {isText && (
             <div className="message__text">
               <div className="message__text__content">
                 <Linkify options={{target: '_blank'}}>
@@ -234,7 +225,7 @@ const MessageChat = ({
             hasDelete={hasDelete}
             hasRead={hasRead}
             hasReply={hasReply}
-            hasUpdate={hasUpdate}
+            hasUpdate={isText && hasUpdate}
             actionLoading={actionLoading}
             visibleDelete={showDeleteModal}
             hasReject={hasReject}
