@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {Button, Card, Space, Tooltip, Badge, Avatar} from 'antd';
 import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
-import {EditOutlined} from '@ant-design/icons';
+import {EditOutlined, UserOutlined} from '@ant-design/icons';
 import {CustomTable} from 'components';
 import {getImageUrl} from 'utils';
 import toNumber from 'lodash/toNumber';
@@ -18,16 +18,34 @@ const SupportMessages: FC = () => {
       align: 'center',
       render: (friendProfilePictureId: string, friend: any) => (
         <Badge.Ribbon text={friend?.unreadMessageCount} placement="start" color="cyan">
-          <Badge color="green" dot={friend?.isOnline}>
-            <Avatar shape="square" size="large" draggable={false} src={getImageUrl(friendProfilePictureId)} />
+          <Badge color="green" dot={!!friend?.isOnline}>
+            <Avatar
+              shape="square"
+              size="large"
+              draggable={false}
+              className="bg-graydDark"
+              src={friendProfilePictureId ? getImageUrl(friendProfilePictureId) : <UserOutlined />}
+            />
           </Badge>
         </Badge.Ribbon>
       )
     },
     {
-      title: t('full_name'),
+      title: t('username'),
       dataIndex: 'friendUserName',
       key: 'friendUserName',
+      align: 'center'
+    },
+    {
+      title: t('name'),
+      dataIndex: 'friendName',
+      key: 'friendName',
+      align: 'center'
+    },
+    {
+      title: t('last_name'),
+      dataIndex: 'friendSurName',
+      key: 'friendSurName',
       align: 'center'
     },
     {

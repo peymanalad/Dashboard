@@ -42,7 +42,7 @@ const ShowList: FC = () => {
     },
     {
       title: t('created_at'),
-      dataIndex: ['commentLikes', 'likeTime'],
+      dataIndex: ['commentLike', 'likeTime'],
       key: 'created_at',
       align: 'center',
       responsive: ['md'],

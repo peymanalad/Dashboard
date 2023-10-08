@@ -1,4 +1,4 @@
-import React, {useRef, ElementRef, FC} from 'react';
+import React, {useRef, type ElementRef, type FC} from 'react';
 import {Button, Card, Image, Space, Tooltip} from 'antd';
 import {
   FormOutlined,
@@ -12,8 +12,9 @@ import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
 import {useDelete, usePost, useUser} from 'hooks';
-import {simplePermissionProps} from 'types/common';
+import type {simplePermissionProps} from 'types/common';
 import {getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
+import {DeedLogoImg} from 'assets';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
@@ -56,6 +57,7 @@ const ShowList: FC = () => {
             width={50}
             height={50}
             src={getImageUrl(imageId)}
+            fallback={DeedLogoImg}
           />
         ) : (
           '-'

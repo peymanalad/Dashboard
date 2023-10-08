@@ -560,6 +560,8 @@
     "en": "انگلیسی",
     "specifications": "مشخصات",
     "name": "نام",
+    "last_name": "نام خانوادگی",
+    "username": "نام کاربری",
     "detail": "جزئیات",
     "delete": "حذف",
     "gap": "فاصله",
