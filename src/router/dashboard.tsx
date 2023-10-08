@@ -1363,38 +1363,38 @@ const Dashboard: Array<dashboardRouteProps> = [
         hidden: true,
         permission: 'roles.update'
       },
-      {
-        route: '/setting/permission/list',
-        cmp: <Permissions />,
-        title: i18n.t('side_menu:show_permissions'),
-        permission: 'permissions.view',
-        extra: {
-          route: '/setting/permission/new',
-          title: i18n.t('side_menu:create_permission'),
-          permission: 'permissions.store'
-        }
-      },
-      {
-        route: '/setting/permission/new',
-        cmp: <EditPermissions />,
-        title: i18n.t('side_menu:show_permissions'),
-        hidden: true,
-        permission: 'permissions.store'
-      },
-      {
-        route: '/setting/permission/edit/:id',
-        cmp: <EditPermissions />,
-        title: i18n.t('side_menu:show_permissions'),
-        hidden: true,
-        permission: 'permissions.update'
-      },
-      {
-        route: '/setting/role/permission/edit/:id',
-        cmp: <EditPermissionOnRole />,
-        title: i18n.t('side_menu:show_permissions'),
-        hidden: true,
-        permission: 'roles.update'
-      },
+      // {
+      //   route: '/setting/permission/list',
+      //   cmp: <Permissions />,
+      //   title: i18n.t('side_menu:show_permissions'),
+      //   permission: 'permissions.view',
+      //   extra: {
+      //     route: '/setting/permission/new',
+      //     title: i18n.t('side_menu:create_permission'),
+      //     permission: 'permissions.store'
+      //   }
+      // },
+      // {
+      //   route: '/setting/permission/new',
+      //   cmp: <EditPermissions />,
+      //   title: i18n.t('side_menu:show_permissions'),
+      //   hidden: true,
+      //   permission: 'permissions.store'
+      // },
+      // {
+      //   route: '/setting/permission/edit/:id',
+      //   cmp: <EditPermissions />,
+      //   title: i18n.t('side_menu:show_permissions'),
+      //   hidden: true,
+      //   permission: 'permissions.update'
+      // },
+      // {
+      //   route: '/setting/role/permission/edit/:id',
+      //   cmp: <EditPermissionOnRole />,
+      //   title: i18n.t('side_menu:show_permissions'),
+      //   hidden: true,
+      //   permission: 'roles.update'
+      // },
       // {
       //   route: '/setting/config/list',
       //   cmp: <SettingShows />,

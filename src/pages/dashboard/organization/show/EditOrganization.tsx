@@ -107,12 +107,18 @@ const EditOrganization: FC = () => {
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8} className="flex justify-center align-center">
-            <Form.Item name="isGovernmental" valuePropName="checked">
+            <Form.Item
+              name="isGovernmental"
+              valuePropName="checked"
+              initialValue={fetchOrganization?.data?.organization?.isGovernmental}>
               <Checkbox style={{lineHeight: '32px'}}>{t('isGovernmental')}</Checkbox>
             </Form.Item>
           </Col>
           <Col span={24}>
-            <Form.Item name="comment" label={t('explain')} initialValue={fetchOrganization?.data?.comment}>
+            <Form.Item
+              name="comment"
+              label={t('explain')}
+              initialValue={fetchOrganization?.data?.organization?.comment}>
               <Input.TextArea rows={3} />
             </Form.Item>
           </Col>
