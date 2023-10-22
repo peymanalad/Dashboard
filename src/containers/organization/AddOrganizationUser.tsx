@@ -18,11 +18,12 @@ interface refProps {
 }
 
 interface props {
+  organizationId?: string;
   ref: RefObject<refProps>;
 }
 
 const AddOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
-  props: props,
+  {organizationId}: props,
   forwardedRef: ForwardedRef<refProps>
 ) => {
   const {t} = useTranslation('organization');
@@ -35,6 +36,7 @@ const AddOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
     removeQueries: [['GetAllUsersForLeaf', selectedOrganizationId]],
     form,
     onSuccess: () => {
+      form.resetFields();
       setSelectedOrganizationId(null);
     }
   });
@@ -50,7 +52,7 @@ const AddOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
 
   const onFinish = (values: any) => {
     sendOrganizationUser.post({
-      userId: +values?.organizationUser?.groupMember?.userId,
+      userId: +values?.organizationUser?.userId,
       organizationChartId: selectedOrganizationId ? +selectedOrganizationId : null
     });
   };
@@ -72,14 +74,15 @@ const AddOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
             <Form.Item label={t('user')} name="organizationUser">
               <MultiSelectPaginate
                 mode="single"
-                urlName="usersSearch"
+                urlName="GetAllNoOrganization"
                 url="services/app/GroupMembers/GetAllNoOrganization"
+                params={{organizationId}}
                 renderCustomLabel={(option) => {
-                  return `${option?.userName} - ${
-                    option?.groupMember?.memberPosition ? `${option?.groupMember?.memberPosition} -` : ''
-                  } ${option?.organizationGroupGroupName}`;
+                  return `${option?.name || ''} ${option?.surName || ''} - ${
+                    option?.memberPosition ? `${option?.memberPosition} -` : ''
+                  }  ${option?.organizationGroupName}`;
                 }}
-                keyValue="id"
+                keyValue="userId"
                 keyLabel="displayName"
                 placeholder={t('choose')}
                 showSearch={false}

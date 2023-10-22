@@ -1,52 +1,60 @@
 import React, {useRef, ElementRef, FC, useMemo, useEffect, useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import {useParams, useLocation} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
-import {useFetch} from 'hooks';
+import {useFetch, usePost} from 'hooks';
 import {Avatar, Card, Dropdown} from 'antd';
 // @ts-ignore
 import {Graph, GraphProps} from 'react-d3-graph';
-import {BankOutlined, RadarChartOutlined, HomeOutlined} from '@ant-design/icons';
+import {UserOutlined, UserAddOutlined, HomeOutlined, RadarChartOutlined} from '@ant-design/icons';
+import ShowOrganizationUserModal from 'containers/organization/ShowOrganizationUser';
+import AddOrganizationUserModal from 'containers/organization/AddOrganizationUser';
 import AddOrganizationModal from 'containers/organization/AddOrganization';
-import SetOrganizationModal from 'containers/organization/SetOrganization';
 import findIndex from 'lodash/findIndex';
-import {getImageUrl, getLangSearchParam} from 'utils';
-import {DeedLogoImg} from 'assets';
+import {getImageUrl} from 'utils';
 
-const ShowGraph: FC = () => {
+const ShowOrganizationGraph: FC = () => {
   const {t} = useTranslation('organization');
-  const history = useHistory();
   const CardRef = useRef<HTMLDivElement | null>(null);
+  const {id} = useParams<{id?: string}>();
+  const location = useLocation<any>();
   const [width, setWidth] = useState<number | null>(null);
+  const showOrganizationUserRef = useRef<ElementRef<typeof ShowOrganizationUserModal>>(null);
+  const addOrganizationUserRef = useRef<ElementRef<typeof AddOrganizationUserModal>>(null);
   const addOrganizationRef = useRef<ElementRef<typeof AddOrganizationModal>>(null);
-  const setOrganizationRef = useRef<ElementRef<typeof SetOrganizationModal>>(null);
 
   const fetchOrganizationChart = useFetch({
-    name: 'OrganizationCharts',
-    url: '/services/app/DeedCharts/GetAll',
+    name: ['OrganizationChart', id],
+    url: '/services/app/OrganizationCharts/GetAllForOrganization',
     query: {
+      organizationId: id,
       SkipCount: 0,
       MaxResultCount: 200
     },
     enabled: true
   });
 
+  const createOrganization = usePost({
+    url: 'services/app/OrganizationCharts/CreateOrEdit',
+    refetchQueries: [['OrganizationChart', id]]
+  });
+
   const data = useMemo(() => {
-    const nodes = fetchOrganizationChart?.data?.items?.map((organization: any) => ({
-      id: `${organization?.deedChart?.id}`,
-      leafPath: organization?.deedChart?.leafPath,
-      organizationId: organization?.deedChart?.organizationId,
-      logo: organization?.deedChart?.organizationLogo,
-      label: organization?.deedChart?.caption
+    const nodes = fetchOrganizationChart?.data?.map((organization: any) => ({
+      id: `${organization?.organizationChart?.id}`,
+      leafPath: organization?.organizationChart?.leafPath,
+      organizationId: organization?.organizationChart?.organizationId,
+      logo: organization?.organizationChart?.organizationLogo,
+      label: organization?.organizationChart?.caption
     }));
     const links: any[] = [];
-    fetchOrganizationChart?.data?.items?.forEach((organization: any) => {
-      const link = organization?.deedChart?.leafPath?.slice(0, -1)?.split('\\');
+    fetchOrganizationChart?.data?.forEach((organization: any) => {
+      const link = organization?.organizationChart?.leafPath?.slice(0, -1)?.split('\\');
       const source = link?.[link.length - 2];
       const target = link?.[link.length - 1];
       if (
         link.length > 1 &&
-        findIndex(fetchOrganizationChart?.data?.items, ['deedChart.id', +source]) > -1 &&
-        findIndex(fetchOrganizationChart?.data?.items, ['deedChart.id', +target]) > -1
+        findIndex(fetchOrganizationChart?.data, ['organizationChart.id', +source]) > -1 &&
+        findIndex(fetchOrganizationChart?.data, ['organizationChart.id', +target]) > -1
       )
         links.push({
           source,
@@ -56,25 +64,31 @@ const ShowGraph: FC = () => {
     return {nodes, links};
   }, [fetchOrganizationChart?.data]);
 
+  const mainOrganization = useMemo(() => fetchOrganizationChart?.data?.[0], [fetchOrganizationChart?.data]);
+
+  useEffect(() => {
+    if (!fetchOrganizationChart?.isFetching && !mainOrganization) {
+      createOrganization.post({caption: location?.state?.nodeLabel, organizationId: id});
+    }
+  }, [fetchOrganizationChart?.isFetching, mainOrganization]);
+
   const items = [
     {
-      label: t('addSubset'),
-      key: 'addSubset',
-      icon: <BankOutlined />
+      label: t('addOrganizationChart'),
+      key: 'addOrganizationChart',
+      icon: <RadarChartOutlined />
+    },
+    {
+      label: t('showUsers'),
+      key: 'showUsers',
+      icon: <UserOutlined />
+    },
+    {
+      label: t('addUser'),
+      key: 'addUser',
+      icon: <UserAddOutlined />
     }
   ];
-
-  const setOrganizationAction = {
-    label: t('setOrganization'),
-    key: 'setOrganization',
-    icon: <BankOutlined />
-  };
-
-  const showOrganizationChartAction = {
-    label: t('showOrganizationChart'),
-    key: 'showOrganizationChart',
-    icon: <RadarChartOutlined />
-  };
 
   useEffect(() => {
     const cardBodyWidth = CardRef.current?.querySelector('.ant-card-body')?.clientWidth;
@@ -89,14 +103,13 @@ const ShowGraph: FC = () => {
     focusZoom: 1,
     freezeAllDragEvents: false,
     height: 700,
-    highlightDegree: 0,
-    highlightOpacity: 0.6,
+    highlightDegree: 1,
+    highlightOpacity: 0.2,
     linkHighlightBehavior: true,
     initialZoom: 0.5,
     maxZoom: 12,
     minZoom: 0.05,
-    // nodeHighlightBehavior: true,
-    nodeHighlightBehavior: false,
+    nodeHighlightBehavior: true,
     panAndZoom: false,
     staticGraph: false,
     staticGraphWithDragAndDrop: false,
@@ -132,31 +145,23 @@ const ShowGraph: FC = () => {
       // svg: '',
       symbolType: 'circle',
       viewGenerator: (node: any) => {
-        const splitLayer = node?.leafPath?.slice(0, -1)?.split('\\');
-        const isSecondLayer = splitLayer?.length === 2;
-        const isFirstLayer = splitLayer?.length === 1;
         return (
           <div {...node} style={{...node.style, display: 'flex', justifyContent: 'center'}}>
             <Dropdown
               trigger={['click']}
               menu={{
-                items:
-                  isSecondLayer && !node?.organizationId
-                    ? [...items, setOrganizationAction]
-                    : [...items, showOrganizationChartAction],
+                items,
                 triggerSubMenuAction: 'click',
                 onClick: ({key}) => {
                   switch (key) {
-                    case 'showOrganizationChart':
-                      history.push(getLangSearchParam(`/organization/graph/show/${node?.organizationId}`), {
-                        nodeLabel: node?.label
-                      });
+                    case 'showUsers':
+                      if (showOrganizationUserRef.current) showOrganizationUserRef.current.open(node?.id);
                       break;
-                    case 'addSubset':
+                    case 'addOrganizationChart':
                       if (addOrganizationRef.current) addOrganizationRef.current.open(node?.id);
                       break;
-                    case 'setOrganization':
-                      if (setOrganizationRef.current) setOrganizationRef.current.open(node?.id);
+                    case 'addUser':
+                      if (addOrganizationUserRef.current) addOrganizationUserRef.current.open(node?.id);
                       break;
                     default:
                       return;
@@ -167,11 +172,9 @@ const ShowGraph: FC = () => {
               arrow>
               <Avatar
                 size={55}
-                className={`p-1 main-node ${!!node?.organizationId && 'bg-danger'} ${isFirstLayer && 'bg-primary'}`}
+                className={`p-1 main-node ${!!node?.organizationId && 'bg-danger'}`}
                 src={
-                  isFirstLayer ? (
-                    DeedLogoImg
-                  ) : node?.logo ? (
+                  mainOrganization?.id === node?.id ? (
                     getImageUrl(node?.logo)
                   ) : (
                     <HomeOutlined style={{fontSize: '1.7rem'}} />
@@ -208,16 +211,20 @@ const ShowGraph: FC = () => {
   };
 
   return (
-    <Card title={t('title')} loading={!data?.nodes?.length} ref={CardRef}>
+    <Card
+      title={t('organizationChatFor', {name: mainOrganization?.organizationChart?.caption})}
+      loading={!data?.nodes?.length}
+      ref={CardRef}>
       {!!width && (
         <>
           <Graph id="graph-id" className="w-full" data={data} config={myConfig} />
-          <AddOrganizationModal ref={addOrganizationRef} />
-          <SetOrganizationModal ref={setOrganizationRef} />
+          <ShowOrganizationUserModal ref={showOrganizationUserRef} />
+          <AddOrganizationUserModal ref={addOrganizationUserRef} organizationId={id} />
+          <AddOrganizationModal ref={addOrganizationRef} organizationId={id} />
         </>
       )}
     </Card>
   );
 };
 
-export default ShowGraph;
+export default ShowOrganizationGraph;

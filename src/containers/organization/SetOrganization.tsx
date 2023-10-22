@@ -31,10 +31,11 @@ const SetOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
   const [form] = Form.useForm();
 
   const sendOrganizationUser = usePost({
-    url: 'services/app/OrganizationCharts/SetOrganizationForChartLeaf',
+    url: 'services/app/DeedCharts/SetOrganizationForChartLeaf',
     refetchQueries: ['OrganizationCharts'],
     form,
     onSuccess: () => {
+      form.resetFields();
       setSelectedOrganizationId(null);
     }
   });

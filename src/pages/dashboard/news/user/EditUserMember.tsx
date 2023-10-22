@@ -83,6 +83,7 @@ const EditMemberShowList: FC = () => {
                 mode="single"
                 urlName="usersSearch"
                 url="services/app/GroupMembers/GetAllUserForLookupTable"
+                params={{organizationId: 8}}
                 keyValue="id"
                 keyLabel="displayName"
                 placeholder={t('choose')}

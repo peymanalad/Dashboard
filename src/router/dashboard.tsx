@@ -100,7 +100,8 @@ const OrganizationShowList = lazyWithRetry(() => import('pages/dashboard/organiz
 const EditOrganizationGroup = lazyWithRetry(() => import('pages/dashboard/organization/group/EditOrganizationGroup'));
 const OrganizationGroupShowList = lazyWithRetry(() => import('pages/dashboard/organization/group/ShowList'));
 
-const OrganizationShowGraph = lazyWithRetry(() => import('pages/dashboard/organization/graph/ShowGraph'));
+const OrganizationsShowGraph = lazyWithRetry(() => import('pages/dashboard/organization/graph/ShowGraph'));
+const OrganizationChartGraph = lazyWithRetry(() => import('pages/dashboard/organization/graph/ShowOrganizationGraph'));
 
 // user
 const EditUser = lazyWithRetry(() => import('pages/dashboard/user/show/EditUser'));
@@ -260,9 +261,17 @@ const Dashboard: Array<dashboardRouteProps> = [
       {
         key: 'organizationGraphList',
         route: '/organization/graph/list',
-        cmp: <OrganizationShowGraph />,
+        cmp: <OrganizationsShowGraph />,
         title: i18n.t('side_menu:graph'),
         permission: 'OrganizationUnits'
+      },
+      {
+        key: 'organizationGraphList',
+        route: '/organization/graph/show/:id',
+        cmp: <OrganizationChartGraph />,
+        title: i18n.t('side_menu:graph'),
+        permission: 'OrganizationUnits',
+        hidden: true
       }
     ]
   },
@@ -1520,7 +1529,7 @@ const Dashboard: Array<dashboardRouteProps> = [
         title: i18n.t('side_menu:show_faq_group'),
         permission: 'versions.update',
         hidden: true
-      },
+      }
       // {
       //   route: '/setting/faqGroup/list',
       //   cmp: <FaqGroupShowList />,
@@ -1553,31 +1562,31 @@ const Dashboard: Array<dashboardRouteProps> = [
       //   permission: 'faq_groups.update',
       //   hidden: true
       // },
-      {
-        route: '/setting/faq/list',
-        cmp: <FaqShowList />,
-        title: i18n.t('side_menu:show_faq'),
-        permission: 'faqs.view',
-        extra: {
-          route: '/setting/faq/create',
-          title: i18n.t('side_menu:create_faq'),
-          permission: 'faqs.store'
-        }
-      },
-      {
-        route: '/setting/faq/create',
-        cmp: <EditFaq />,
-        title: i18n.t('side_menu:show_faq'),
-        permission: 'faqs.store',
-        hidden: true
-      },
-      {
-        route: '/setting/faq/edit/:id',
-        cmp: <EditFaq />,
-        title: i18n.t('side_menu:show_faq'),
-        permission: 'faqs.update',
-        hidden: true
-      }
+      // {
+      //   route: '/setting/faq/list',
+      //   cmp: <FaqShowList />,
+      //   title: i18n.t('side_menu:show_faq'),
+      //   permission: 'faqs.view',
+      //   extra: {
+      //     route: '/setting/faq/create',
+      //     title: i18n.t('side_menu:create_faq'),
+      //     permission: 'faqs.store'
+      //   }
+      // },
+      // {
+      //   route: '/setting/faq/create',
+      //   cmp: <EditFaq />,
+      //   title: i18n.t('side_menu:show_faq'),
+      //   permission: 'faqs.store',
+      //   hidden: true
+      // },
+      // {
+      //   route: '/setting/faq/edit/:id',
+      //   cmp: <EditFaq />,
+      //   title: i18n.t('side_menu:show_faq'),
+      //   permission: 'faqs.update',
+      //   hidden: true
+      // }
     ]
   }
   // {

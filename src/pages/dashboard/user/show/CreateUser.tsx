@@ -58,7 +58,7 @@ const AccountInfo: FC = () => {
             <Form.Item
               name="roles"
               label={t('access_level')}
-              rules={[{required: true, message: t('messages.required')}]}>
+              rules={[{required: true, message: t('validation.required')}]}>
               <MultiSelectPaginate
                 mode="single"
                 urlName="roles"
@@ -121,7 +121,7 @@ const AccountInfo: FC = () => {
             <Form.Item
               name="emailAddress"
               rules={[
-                {required: true, message: t('messages.required')},
+                {required: true, message: t('validation.required')},
                 {type: 'email', message: t('validation.email')}
               ]}
               label={t('email')}>

@@ -105,7 +105,7 @@ const ShowOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
       }}
       footer={null}>
       <CustomTable
-        fetch="services/app/OrganizationUsers/GetAllUsersForLeaf"
+        fetch="services/app/OrganizationUsers/GetAllUsersInLeaf"
         query={{OrganizationChartId: selectedOrganizationId}}
         dataName={['GetAllUsersForLeaf', selectedOrganizationId]}
         columns={columns}

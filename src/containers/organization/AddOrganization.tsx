@@ -18,10 +18,11 @@ interface refProps {
 
 interface props {
   ref: RefObject<refProps>;
+  organizationId?: string;
 }
 
 const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
-  props: props,
+  {organizationId}: props,
   forwardedRef: ForwardedRef<refProps>
 ) => {
   const {t} = useTranslation('organization');
@@ -29,10 +30,11 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
   const [form] = Form.useForm();
 
   const sendOrganizationUser = usePost({
-    url: 'services/app/OrganizationCharts/CreateOrEdit',
-    refetchQueries: ['OrganizationCharts'],
+    url: `services/app/${!!organizationId ? 'OrganizationCharts' : 'DeedCharts'}/CreateOrEdit`,
+    refetchQueries: organizationId ? ['OrganizationChart', organizationId] : ['OrganizationCharts'],
     form,
     onSuccess: () => {
+      form.resetFields();
       setSelectedOrganizationId(null);
     }
   });
@@ -48,7 +50,7 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
 
   const onFinish = (values: any) => {
     if (!selectedOrganizationId) return;
-    sendOrganizationUser.post({...values, parentId: +selectedOrganizationId});
+    sendOrganizationUser.post({...values, parentId: +selectedOrganizationId, organizationId});
   };
 
   return (

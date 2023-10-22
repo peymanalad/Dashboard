@@ -74,7 +74,7 @@ const EditUser: FC = () => {
             <Form.Item
               name="roles"
               label={t('access_level')}
-              rules={[{required: true, message: t('messages.required')}]}
+              rules={[{required: true, message: t('validation.required')}]}
               initialValue={map(filter(fetchUser?.data?.roles, 'isAssigned'), 'roleId')}>
               <SimpleSelect
                 keys="roleId"

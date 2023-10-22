@@ -4,8 +4,7 @@ import {useDelete, usePost, useUser} from 'hooks';
 import {useTranslation} from 'react-i18next';
 import {Button, Card, Space, Tooltip} from 'antd';
 import {FormOutlined, FilterOutlined, EditOutlined, DeleteOutlined, FileExcelOutlined} from '@ant-design/icons';
-import {CustomTable} from 'components';
-import {SearchUsers} from 'containers';
+import {CustomTable, Search} from 'components';
 import {queryStringToObject} from 'utils/common';
 import {getTempFileUrl} from 'utils/file';
 import type {simplePermissionProps} from 'types/common';
@@ -13,7 +12,7 @@ import type {simplePermissionProps} from 'types/common';
 const UserMemberShowList: FC = () => {
   const {t} = useTranslation('news');
   const user = useUser();
-  const searchRef = useRef<ElementRef<typeof SearchUsers>>(null);
+  const searchRef = useRef<ElementRef<typeof Search>>(null);
   const tableRef = useRef<ElementRef<typeof CustomTable>>(null);
   const location = useLocation();
 
@@ -33,7 +32,19 @@ const UserMemberShowList: FC = () => {
 
   const columns = [
     {
-      title: t('name'),
+      title: t('firstName'),
+      dataIndex: 'firstName',
+      key: 'firstName',
+      align: 'center'
+    },
+    {
+      title: t('lastName'),
+      dataIndex: 'lastName',
+      key: 'lastName',
+      align: 'center'
+    },
+    {
+      title: t('userName'),
       dataIndex: 'userName',
       key: 'userName',
       align: 'center',
@@ -116,7 +127,7 @@ const UserMemberShowList: FC = () => {
       }
       className="my-6"
       title={t('news_member')}>
-      <SearchUsers ref={searchRef} />
+      <Search ref={searchRef} />
       <CustomTable
         fetch="services/app/GroupMembers/GetAll"
         dataName="groupMembers"
