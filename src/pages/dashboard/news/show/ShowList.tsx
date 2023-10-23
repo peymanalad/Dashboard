@@ -112,13 +112,34 @@ const ShowList: FC = () => {
       responsive: ['sm'],
       sorter: true,
       render: (isSpecial: boolean) => (
-        <Tooltip title={t(isSpecial ? 'special.true' : 'special.false')}>
-          {isSpecial ? (
-            <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
-          ) : (
-            <CloseCircleOutlined style={{color: '#F44336', fontSize: 16}} />
-          )}
-        </Tooltip>
+        <Space size={2}>
+          <Tooltip title={t(isSpecial ? 'special.true' : 'special.false')}>
+            {isSpecial ? (
+              <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
+            ) : (
+              <CloseCircleOutlined style={{color: '#F44336', fontSize: 16}} />
+            )}
+          </Tooltip>
+        </Space>
+      )
+    },
+    {
+      title: t('publish.title'),
+      dataIndex: ['post', 'isPublished'],
+      key: 'isPublished',
+      align: 'center',
+      responsive: ['sm'],
+      sorter: true,
+      render: (isSpecial: boolean) => (
+        <Space size={2}>
+          <Tooltip title={t(isSpecial ? 'special.true' : 'special.false')}>
+            {isSpecial ? (
+              <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
+            ) : (
+              <CloseCircleOutlined style={{color: '#F44336', fontSize: 16}} />
+            )}
+          </Tooltip>
+        </Space>
       )
     },
     {

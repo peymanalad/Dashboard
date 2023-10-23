@@ -67,6 +67,10 @@ const CropImageModal: ForwardRefRenderFunction<refProps, props> = (
               // eslint-disable-next-line no-promise-executor-return
               if (!shouldCrop) return reject();
             }
+            if (!file.type?.includes('image')) {
+              resolve(file);
+              return;
+            }
 
             fileRef.current = file;
             resolveRef.current = (newFile: any) => {

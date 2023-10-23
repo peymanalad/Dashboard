@@ -35,7 +35,12 @@ const EditApplication: FC = () => {
   });
 
   const onFinish = (values: any) => {
-    storeVersion.post({id, ...values, updateFileToken: values?.updateFileToken?.fileToken});
+    storeVersion.post({
+      id,
+      ...values,
+      updateFile: values?.updateFileToken?.updateFileToken,
+      updateFileToken: values?.updateFileToken?.fileToken || values?.updateFileToken?.updateFileToken
+    });
   };
 
   return (

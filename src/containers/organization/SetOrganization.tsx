@@ -14,7 +14,7 @@ import {FormOutlined, SaveOutlined} from '@ant-design/icons';
 import {Link} from 'react-router-dom';
 
 interface refProps {
-  open: (organizationId: number) => void;
+  open: (organizationId: number, organizationLabel?: string) => void;
   close: () => void;
 }
 
@@ -22,12 +22,17 @@ interface props {
   ref: RefObject<refProps>;
 }
 
+interface Organization {
+  id: number;
+  label?: string;
+}
+
 const SetOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
   props: props,
   forwardedRef: ForwardedRef<refProps>
 ) => {
   const {t} = useTranslation('organization');
-  const [selectedOrganizationId, setSelectedOrganizationId] = useState<number | null>(null);
+  const [selectedOrganization, setSelectedOrganization] = useState<Organization | null>(null);
   const [form] = Form.useForm();
 
   const sendOrganizationUser = usePost({
@@ -36,32 +41,35 @@ const SetOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
     form,
     onSuccess: () => {
       form.resetFields();
-      setSelectedOrganizationId(null);
+      setSelectedOrganization(null);
     }
   });
 
   useImperativeHandle(forwardedRef, () => ({
-    open(organizationId: number) {
-      setSelectedOrganizationId(organizationId);
+    open(id: number, label?: string) {
+      setSelectedOrganization({id, label});
     },
     close() {
-      setSelectedOrganizationId(null);
+      setSelectedOrganization(null);
     }
   }));
 
   const onFinish = (values: any) => {
-    if (!selectedOrganizationId) return;
-    sendOrganizationUser.post({organizationId: values?.organization?.id, organizationChartId: +selectedOrganizationId});
+    if (!setSelectedOrganization) return;
+    sendOrganizationUser.post({
+      organizationId: values?.organization?.id,
+      organizationChartId: Number(selectedOrganization?.id)
+    });
   };
 
   return (
     <Modal
-      open={!!selectedOrganizationId}
+      open={!!selectedOrganization}
       title={t('setOrganization')}
       closable
       centered
       onCancel={() => {
-        setSelectedOrganizationId(null);
+        setSelectedOrganization(null);
       }}
       footer={null}>
       <Form form={form} layout="vertical" name="news" requiredMark={false} onFinish={onFinish}>
@@ -84,14 +92,15 @@ const SetOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
           </Col>
         </Row>
         <Row gutter={[16, 8]} className="w-full my-5" justify="space-between">
-          <Link to="/organization/organization/create">
-            <Button
-              type="primary"
-              className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"
-              icon={<FormOutlined />}>
-              {t('add_organization')}
-            </Button>
-          </Link>
+          {/*<Link*/}
+          {/*  to={{*/}
+          {/*    pathname: '/organization/organization/create',*/}
+          {/*    state: {organization: selectedOrganization}*/}
+          {/*  }}>*/}
+          {/*  <Button type="primary" className="d-block ant-btn-warning" icon={<FormOutlined />}>*/}
+          {/*    {t('add_organization')}*/}
+          {/*  </Button>*/}
+          {/*</Link>*/}
           <Button
             className="sm:w-unset"
             type="primary"

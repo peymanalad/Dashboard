@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
-import {Card, Form, Row, Col, Input, Button, Checkbox} from 'antd';
+import {Card, Form, Row, Col, Input, Button, Checkbox, Divider} from 'antd';
 import {SaveOutlined} from '@ant-design/icons';
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {getImageUrl} from 'utils';
@@ -10,6 +10,7 @@ import {CustomUpload} from 'components';
 const EditOrganization: FC = () => {
   const {t} = useTranslation('organization');
   const history = useHistory();
+  const location = useLocation<any>();
   const {id} = useParams<{id?: string}>();
 
   const [form] = Form.useForm();
@@ -58,19 +59,27 @@ const EditOrganization: FC = () => {
                   url: getImageUrl(fetchOrganization?.data?.organization?.organizationLogo)
                 }
               }>
-              <CustomUpload type="postGroups" name="image" mode="single" typeFile="image" />
+              <CustomUpload
+                label={t('organizationLogo')}
+                type="postGroups"
+                name="image"
+                mode="single"
+                typeFile="image"
+              />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={8}>
+          <Col xs={24} md={12} lg={6}>
             <Form.Item
               name="organizationName"
-              label={t('name')}
+              label={t('organizationName')}
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchOrganization?.data?.organization?.organizationName}>
+              initialValue={
+                fetchOrganization?.data?.organization?.organizationName || location.state?.organization?.label
+              }>
               <Input />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={8}>
+          <Col xs={24} md={12} lg={6}>
             <Form.Item
               name="nationalId"
               label={t('organization_nationalId')}
@@ -79,39 +88,79 @@ const EditOrganization: FC = () => {
               <Input type="number" className="ltr-input" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="organizationPhone"
-              label={t('phone')}
-              rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchOrganization?.data?.organization?.organizationPhone}>
-              <Input inputMode="tel" minLength={3} maxLength={15} className="ltr-input" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="organizationContactPerson"
-              label={t('organization_ContactPerson')}
-              rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchOrganization?.data?.organization?.organizationContactPerson}>
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="organizationLocation"
-              label={t('location')}
-              rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchOrganization?.data?.organization?.organizationLocation}>
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8} className="flex justify-center align-center">
+          <Col xs={24} md={12} lg={4} className="flex justify-center align-center">
             <Form.Item
               name="isGovernmental"
               valuePropName="checked"
               initialValue={fetchOrganization?.data?.organization?.isGovernmental}>
               <Checkbox style={{lineHeight: '32px'}}>{t('isGovernmental')}</Checkbox>
+            </Form.Item>
+          </Col>
+          <Divider orientation="left">{t('organization_ContactPerson')}</Divider>
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item name="name" label={t('first_name')} initialValue={fetchOrganization?.data?.user?.name || ''}>
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item
+              name="surname"
+              label={t('last_name')}
+              initialValue={fetchOrganization?.data?.user?.surname || ''}>
+              <Input />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item name="nationalId" label={t('nationalId')}>
+              <Input inputMode="tel" minLength={10} maxLength={10} className="ltr-input" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item
+              name="organizationPhone"
+              label={t('username(phoneNumber)')}
+              rules={[{required: true, message: t('messages.required')}]}
+              initialValue={fetchOrganization?.data?.organization?.organizationPhone}>
+              <Input inputMode="tel" minLength={3} maxLength={15} className="ltr-input" />
+            </Form.Item>
+          </Col>
+          {/*<Col xs={24} md={12} lg={8}>*/}
+          {/*  <Form.Item*/}
+          {/*    name="organizationLocation"*/}
+          {/*    label={t('location')}*/}
+          {/*    rules={[{required: true, message: t('messages.required')}]}*/}
+          {/*    initialValue={fetchOrganization?.data?.organization?.organizationLocation}>*/}
+          {/*    <Input />*/}
+          {/*  </Form.Item>*/}
+          {/*</Col>*/}
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item
+              name="password"
+              label={t('password')}
+              rules={[
+                {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')},
+                {min: 6, message: t('validation.minSixCharacter')},
+                ({getFieldValue}) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error(t('messages.confirmPassword')));
+                  }
+                })
+              ]}>
+              <Input className="ltr-input" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item
+              name="confirmPassword"
+              label={t('confirmPassword')}
+              rules={[
+                {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')},
+                {min: 6, message: t('validation.minSixCharacter')}
+              ]}>
+              <Input className="ltr-input" />
             </Form.Item>
           </Col>
           <Col span={24}>

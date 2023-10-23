@@ -101,7 +101,7 @@ const EditOrganizationGroup = lazyWithRetry(() => import('pages/dashboard/organi
 const OrganizationGroupShowList = lazyWithRetry(() => import('pages/dashboard/organization/group/ShowList'));
 
 const OrganizationsShowGraph = lazyWithRetry(() => import('pages/dashboard/organization/graph/ShowGraph'));
-const OrganizationChartGraph = lazyWithRetry(() => import('pages/dashboard/organization/graph/ShowOrganizationGraph'));
+const OrganizationChartGraph = lazyWithRetry(() => import('pages/dashboard/organization/graph/ShowOrganizationGraph2'));
 
 // user
 const EditUser = lazyWithRetry(() => import('pages/dashboard/user/show/EditUser'));

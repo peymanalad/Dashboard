@@ -1,11 +1,11 @@
 import React, {useRef, ElementRef, FC, useMemo, useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
-import {useFetch} from 'hooks';
+import {useDelete, useFetch} from 'hooks';
 import {Avatar, Card, Dropdown} from 'antd';
 // @ts-ignore
 import {Graph, GraphProps} from 'react-d3-graph';
-import {BankOutlined, RadarChartOutlined, HomeOutlined} from '@ant-design/icons';
+import {BankOutlined, RadarChartOutlined, HomeOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
 import AddOrganizationModal from 'containers/organization/AddOrganization';
 import SetOrganizationModal from 'containers/organization/SetOrganization';
 import findIndex from 'lodash/findIndex';
@@ -30,11 +30,18 @@ const ShowGraph: FC = () => {
     enabled: true
   });
 
+  const deleteRequest = useDelete({
+    url: 'services/app/DeedCharts/Delete',
+    name: 'OrganizationCharts',
+    titleKey: 'label'
+  });
+
   const data = useMemo(() => {
     const nodes = fetchOrganizationChart?.data?.items?.map((organization: any) => ({
       id: `${organization?.deedChart?.id}`,
       leafPath: organization?.deedChart?.leafPath,
       organizationId: organization?.deedChart?.organizationId,
+      parentId: organization?.deedChart?.parentId,
       logo: organization?.deedChart?.organizationLogo,
       label: organization?.deedChart?.caption
     }));
@@ -58,23 +65,31 @@ const ShowGraph: FC = () => {
 
   const items = [
     {
-      label: t('addSubset'),
+      label: t('newOrganization'),
       key: 'addSubset',
       icon: <BankOutlined />
+    },
+    {
+      label: t('showOrganizationChart'),
+      key: 'showOrganizationChart',
+      icon: <RadarChartOutlined />
+    },
+    {
+      label: t('detailOrganizationChart'),
+      key: 'detailOrganizationChart',
+      icon: <RadarChartOutlined />
+    },
+    {
+      label: t('edit'),
+      key: 'edit',
+      icon: <EditOutlined />
+    },
+    {
+      label: t('delete'),
+      key: 'delete',
+      icon: <DeleteOutlined />
     }
   ];
-
-  const setOrganizationAction = {
-    label: t('setOrganization'),
-    key: 'setOrganization',
-    icon: <BankOutlined />
-  };
-
-  const showOrganizationChartAction = {
-    label: t('showOrganizationChart'),
-    key: 'showOrganizationChart',
-    icon: <RadarChartOutlined />
-  };
 
   useEffect(() => {
     const cardBodyWidth = CardRef.current?.querySelector('.ant-card-body')?.clientWidth;
@@ -92,7 +107,7 @@ const ShowGraph: FC = () => {
     highlightDegree: 0,
     highlightOpacity: 0.6,
     linkHighlightBehavior: true,
-    initialZoom: 0.5,
+    initialZoom: 0.65,
     maxZoom: 12,
     minZoom: 0.05,
     // nodeHighlightBehavior: true,
@@ -133,17 +148,13 @@ const ShowGraph: FC = () => {
       symbolType: 'circle',
       viewGenerator: (node: any) => {
         const splitLayer = node?.leafPath?.slice(0, -1)?.split('\\');
-        const isSecondLayer = splitLayer?.length === 2;
         const isFirstLayer = splitLayer?.length === 1;
         return (
           <div {...node} style={{...node.style, display: 'flex', justifyContent: 'center'}}>
             <Dropdown
               trigger={['click']}
               menu={{
-                items:
-                  isSecondLayer && !node?.organizationId
-                    ? [...items, setOrganizationAction]
-                    : [...items, showOrganizationChartAction],
+                items,
                 triggerSubMenuAction: 'click',
                 onClick: ({key}) => {
                   switch (key) {
@@ -153,10 +164,16 @@ const ShowGraph: FC = () => {
                       });
                       break;
                     case 'addSubset':
-                      if (addOrganizationRef.current) addOrganizationRef.current.open(node?.id);
+                      if (addOrganizationRef.current) addOrganizationRef.current.open(node);
                       break;
                     case 'setOrganization':
-                      if (setOrganizationRef.current) setOrganizationRef.current.open(node?.id);
+                      if (setOrganizationRef.current) setOrganizationRef.current.open(node?.id, node?.label);
+                      break;
+                    case 'edit':
+                      if (addOrganizationRef.current) addOrganizationRef.current.open(node);
+                      break;
+                    case 'delete':
+                      deleteRequest.show(node, {Id: node?.id});
                       break;
                     default:
                       return;

@@ -68,9 +68,9 @@ const SupportMessages: FC = () => {
   return (
     <Card title={t('support_messages')}>
       <CustomTable
-        fetch="services/app/Chat/GetUserChatFriendsWithSettings"
+        fetch="services/app/Chat/GetPagedUserChatFriendsWithSettings"
         dataName="chatFriends"
-        path="friends"
+        path="friends.items"
         columns={columns}
         rowClassName={(chat) => `bg-${toNumber(chat?.count) > 0 ? 'inactive' : 'active'}`}
       />

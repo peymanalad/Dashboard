@@ -41,8 +41,11 @@ const EditNews: FC = () => {
   const onFinish = (values: any) => {
     values.postGroupId = values.postGroupId?.id;
     values.groupMemberId = values.groupMemberId?.id;
+    values.postFile2 = values.postFileToken?.[1]?.fileToken;
     values.postFileToken2 = values.postFileToken?.[1]?.response?.fileToken;
+    values.postFile3 = values.postFileToken?.[2]?.fileToken;
     values.postFileToken3 = values.postFileToken?.[2]?.response?.fileToken;
+    values.postFile = values.postFileToken?.[0]?.fileToken;
     values.postFileToken = values.postFileToken?.[0]?.response?.fileToken;
     storeNews.post({id: id ? +id : undefined, ...values});
   };
@@ -121,16 +124,33 @@ const EditNews: FC = () => {
                       }
                     : null
                 ])}>
-                <CustomUpload type="posts" name={t('file')} mode="multiple" maxFile={3} typeFile="image,video" />
+                <CustomUpload
+                  type="posts"
+                  name={t('file')}
+                  mode="multiple"
+                  maxFile={3}
+                  typeFile="image,video"
+                  hasCrop
+                  aspect={1}
+                />
               </Form.Item>
             </Col>
-            <Col xs={24} md={8} className="flex align-center justify-center">
+            <Col xs={24} md={4} className="flex align-center justify-center">
               <Form.Item
                 name="isSpecial"
                 valuePropName="checked"
                 className="m-0"
-                initialValue={fetchNews?.data?.post?.isSpecial}>
+                initialValue={fetchNews?.data?.post?.isDraft}>
                 <Checkbox>{t('special.title')}</Checkbox>
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={4} className="flex align-center justify-center">
+              <Form.Item
+                name="isPublished"
+                valuePropName="checked"
+                className="m-0"
+                initialValue={fetchNews?.data?.post?.isPublished}>
+                <Checkbox>{t('publish.title')}</Checkbox>
               </Form.Item>
             </Col>
           </Row>

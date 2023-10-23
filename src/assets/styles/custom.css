@@ -611,11 +611,24 @@ span.ant-divider-inner-text {
   border-color: #ff4d4f;
 }
 
-.ant-modal.ant-modal-confirm.delete .ant-modal-confirm-btns {
+.ant-modal-root .ant-modal-confirm.delete .ant-modal-confirm-btns {
   width: 100%;
   display: flex;
   display: -ms-flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
+}
+
+.ant-modal-root .ant-modal-confirm.delete .ant-modal-confirm-title {
+  flex: 1;
+}
+
+.ant-modal-root .ant-modal-confirm.delete .ant-modal-confirm-body {
+  flex-direction: row-reverse;
+}
+
+.ant-modal-root .ant-modal-confirm.delete .ant-modal-confirm-content {
+  max-width: unset;
 }
 
 .ant-form-item-has-error .react-json-view:focus {

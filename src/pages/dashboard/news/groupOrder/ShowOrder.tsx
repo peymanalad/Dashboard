@@ -71,9 +71,8 @@ const SquareCard: FC<{
 const generateRow = (initialNews: PostGroupProps[], chunkNews: PostGroupProps[], setNews: any, index: number) => {
   switch (index % 4) {
     case 0:
-    case 2:
       return (
-        <Row gutter={[5, 5]} className={index % 4 === 2 ? 'mb-1/4' : 'flex-row-reverse mb-1/4'}>
+        <Row gutter={[5, 5]} className="flex-row-reverse mb-1/4">
           <Col span={8}>
             <Row gutter={[5, 5]}>
               {chunkNews?.[1] && (
@@ -91,6 +90,30 @@ const generateRow = (initialNews: PostGroupProps[], chunkNews: PostGroupProps[],
           {chunkNews?.[0] && (
             <Col span={16} style={{height: 140}}>
               <SquareCard initialNews={initialNews} news={chunkNews[0]} setNews={setNews} />
+            </Col>
+          )}
+        </Row>
+      );
+    case 2:
+      return (
+        <Row gutter={[5, 5]} className="mb-1/4">
+          <Col span={8}>
+            <Row gutter={[5, 5]}>
+              {chunkNews?.[0] && (
+                <Col span={24} className="h-full">
+                  <SquareCard initialNews={initialNews} news={chunkNews[0]} setNews={setNews} />
+                </Col>
+              )}
+              {chunkNews?.[2] && (
+                <Col span={24}>
+                  <SquareCard initialNews={initialNews} news={chunkNews[2]} setNews={setNews} />
+                </Col>
+              )}
+            </Row>
+          </Col>
+          {chunkNews?.[1] && (
+            <Col span={16} style={{height: 140}}>
+              <SquareCard initialNews={initialNews} news={chunkNews[1]} setNews={setNews} />
             </Col>
           )}
         </Row>

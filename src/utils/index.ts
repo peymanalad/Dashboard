@@ -8,5 +8,6 @@ export * from 'utils/number';
 export * from 'utils/file';
 export * from 'utils/cache';
 export * from 'utils/color';
+export * from 'utils/tree';
 
 export {default as CustomSelectData} from 'utils/tree';

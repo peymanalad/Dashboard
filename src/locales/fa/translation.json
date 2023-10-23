@@ -64,7 +64,7 @@
       "success": "عملیات موفقیت آمیز بود",
       "updated": "سایت با موفقیت بروز شد.",
       "delete": "آیا در مورد حذف \"{{name}}\" اطمینان خاطر دارید؟",
-      "deleteImage": "آیا در مورد حذف تصویر اطمینان خاطر دارید؟",
+      "deleteFile": "آیا در مورد حذف فایل اطمینان خاطر دارید؟",
       "updateAvailable": "نسخه جدید سایت موجود است آیا آپدیت میکنید؟",
       "error": "عملیات با خظا مواجه شد",
       "required": "نمیتواند خالی باشد",
@@ -2224,7 +2224,13 @@
     "organization_groups": "گروه های سازمان",
     "organization_group": "گروه سازمان",
     "organization_nationalId": "شناسه ملی سازمان",
-    "organization_ContactPerson": "مدیر مربوطه",
+    "organization_ContactPerson": "مدیر صفحه",
+    "nationalId": "کدملی مدیر",
+    "password": "رمزعبور مدیر",
+    "confirmPassword": "تکرار رمزعبور",
+    "email": "ایمیل",
+    "first_name": "نام",
+    "last_name": "نام خانوادگی",
     "location": "محل استقرار",
     "phone": "شماره تماس",
     "explain": "توضیحات",
@@ -2238,8 +2244,12 @@
     "description": "توضیحات",
     "show_description": "نمایش توضیحات",
     "setOrganization": "تبدیل به سازمان",
-    "showOrganizationChart": "نمایش چارت سازمان",
+    "showOrganizationChart": "ساختار سازمانی",
+    "detailOrganizationChart": "جزئیات سازمان",
+    "organizationName": "نام سازمان",
+    "organizationLogo": "لوگو سازمان",
     "organizationChatFor": "چارت سازمان {{name}}",
+    "username(phoneNumber)": "نام کاربری (شماره همراه)",
     "inactive": "غیرفعال",
     "choose": "انتخاب کنید",
     "active": "فعال",
@@ -2264,7 +2274,9 @@
     "addUser": "افزودن کاربر",
     "user": "کاربر",
     "addSubset": "افزودن سازمان",
+    "newOrganization": "سازمان جدید",
     "addOrganizationChart": "افزودن زیرمجموعه",
+    "edit": "ویرایش",
     "userId": "شناسه کاربر",
     "userName": "نام کاربری",
     "confirm": {
@@ -2276,7 +2288,13 @@
     "ok": "بله",
     "messages": {
       "delete": "آیا در مورد حذف {{id}} اطمینان خاطر دارید؟",
-      "required": "این فیلد الزامی است"
+      "required": "این فیلد الزامی است",
+      "mobile": "باید شامل ۱۱ عدد باشد",
+      "nationalCode": "باید شامل ۱۰ عدد باشد",
+      "minSixCharacter": "باید حداقل ۶ کاراکتر باشد",
+      "correctPassword": "پسورد باید از عدد یا حروف انگلیسی تشکیل شده باشد",
+      "confirmPassword": "تکرار رمزعبور باید با رمزعبور یکسان باشد",
+      "email": "لطفا ایمیل خود را به درستی وارد کنید"
     }
   },
   "news": {
@@ -2345,6 +2363,11 @@
       "title": "ویژه",
       "true": "ویژه",
       "false": "عادی"
+    },
+    "publish": {
+      "title": "انتشار",
+      "true": "منتشر شده",
+      "false": "پیش نویس"
     },
     "apply": "اعمال تغییرات",
     "ok": "بله",

@@ -12,7 +12,7 @@ import {useTranslation} from 'react-i18next';
 import {SaveOutlined} from '@ant-design/icons';
 
 interface refProps {
-  open: (organizationId: number) => void;
+  open: (node: any, isEdit?: boolean) => void;
   close: () => void;
 }
 
@@ -26,8 +26,10 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
   forwardedRef: ForwardedRef<refProps>
 ) => {
   const {t} = useTranslation('organization');
-  const [selectedOrganizationId, setSelectedOrganizationId] = useState<number | null>(null);
+  const [selectedOrganization, setSelectedOrganization] = useState<any | null>(null);
   const [form] = Form.useForm();
+
+  console.log(selectedOrganization);
 
   const sendOrganizationUser = usePost({
     url: `services/app/${!!organizationId ? 'OrganizationCharts' : 'DeedCharts'}/CreateOrEdit`,
@@ -35,38 +37,49 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
     form,
     onSuccess: () => {
       form.resetFields();
-      setSelectedOrganizationId(null);
+      setSelectedOrganization(null);
     }
   });
 
   useImperativeHandle(forwardedRef, () => ({
-    open(organizationId: number) {
-      setSelectedOrganizationId(organizationId);
+    open(node: any, isEdit: boolean = false) {
+      setSelectedOrganization({...node, isEdit});
     },
     close() {
-      setSelectedOrganizationId(null);
+      form.resetFields();
+      setSelectedOrganization(null);
     }
   }));
 
   const onFinish = (values: any) => {
-    if (!selectedOrganizationId) return;
-    sendOrganizationUser.post({...values, parentId: +selectedOrganizationId, organizationId});
+    if (!selectedOrganization) return;
+    if (selectedOrganization?.isEdit) {
+      values.id = selectedOrganization?.id;
+      values.parentId = +selectedOrganization?.parentId;
+    } else values.parentId = +selectedOrganization?.id;
+    values.organizationId = organizationId;
+    sendOrganizationUser.post(values);
   };
 
   return (
     <Modal
-      open={!!selectedOrganizationId}
-      title={t('addSubset')}
+      open={!!selectedOrganization}
+      title={t(!!organizationId ? 'addOrganizationChart' : 'addSubset')}
       closable
       centered
       onCancel={() => {
-        setSelectedOrganizationId(null);
+        form.resetFields();
+        setSelectedOrganization(null);
       }}
       footer={null}>
       <Form form={form} layout="vertical" name="news" requiredMark={false} onFinish={onFinish}>
         <Row gutter={[16, 8]} className="w-full">
           <Col span={24}>
-            <Form.Item name="caption" label={t('name')} rules={[{required: true, message: t('messages.required')}]}>
+            <Form.Item
+              name="caption"
+              label={t('name')}
+              initialValue={selectedOrganization?.label}
+              rules={[{required: true, message: t('messages.required')}]}>
               <Input />
             </Form.Item>
           </Col>

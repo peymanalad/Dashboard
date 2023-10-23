@@ -14,7 +14,11 @@ const AccountInfo: FC = () => {
 
   const sendPicture = usePost({
     url: 'services/app/Profile/UpdateProfilePicture',
-    method: 'PUT'
+    method: 'PUT',
+    onSuccess() {
+      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+      else history.replace(getLangSearchParam('/user/list'));
+    }
   });
 
   const sendUser = usePost({
@@ -22,8 +26,10 @@ const AccountInfo: FC = () => {
     method: 'POST',
     removeQueries: ['users'],
     form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+    onSuccess: (userId) => {
+      const fileToken = form.getFieldValue('updateFileToken')?.fileToken;
+      if (fileToken) sendPicture.post({userId: +userId, fileToken});
+      else if (history.length > 1 && document.URL !== document.referrer) history.goBack();
       else history.replace(getLangSearchParam('/user/list'));
     }
   });
@@ -45,9 +51,6 @@ const AccountInfo: FC = () => {
         updateFileToken: val?.updateFileToken?.fileToken
       }
     });
-    // if (val?.updateFileToken?.fileToken)
-    //   sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken});
-    // sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken});
   };
 
   return (
@@ -150,7 +153,7 @@ const AccountInfo: FC = () => {
               className="sm:w-unset mr-auto my-4"
               type="primary"
               htmlType="submit"
-              loading={sendUser.isLoading}
+              loading={sendUser.isLoading || sendPicture.isLoading}
               icon={<SaveOutlined />}>
               {t('save')}
             </Button>

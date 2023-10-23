@@ -84,4 +84,40 @@ export const convertPermissionsToTreeNode = (permissions: PermissionProps[]): Da
   return treeData;
 };
 
+export function convertSlashRootToNestedArray(data: any[]): any[] {
+  const treeMap = new Map<number, any>();
+
+  // Build a map of nodes using their IDs
+  for (const item of data) {
+    const {organizationChart, organizationChartCaption} = item;
+    treeMap.set(organizationChart.id, {
+      organizationChart,
+      organizationChartCaption,
+      children: []
+    });
+  }
+
+  const rootNodes: any[] = [];
+
+  // Connect children to their parent nodes
+  for (const item of data) {
+    const {organizationChart} = item;
+    const currentNode = treeMap.get(organizationChart.id);
+    const leafPathParts = organizationChart.leafPath.split('\\').filter(Boolean);
+
+    if (leafPathParts.length === 1) {
+      // This is a root node
+      rootNodes.push(currentNode);
+    } else {
+      const parentId = parseInt(leafPathParts[leafPathParts.length - 2], 10);
+      const parentNode = treeMap.get(parentId);
+      if (parentNode) {
+        parentNode.children.push(currentNode);
+      }
+    }
+  }
+
+  return rootNodes;
+}
+
 export default CustomSelectData;

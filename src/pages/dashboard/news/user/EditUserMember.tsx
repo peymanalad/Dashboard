@@ -68,32 +68,6 @@ const EditMemberShowList: FC = () => {
           </Col>
           <Col xs={24} md={12}>
             <Form.Item
-              label={t('user')}
-              name="organizationUser"
-              rules={[{required: true, message: t('messages.required')}]}
-              initialValue={
-                fetchNewsUserMember?.data?.groupMember?.userId
-                  ? {
-                      id: fetchNewsUserMember?.data?.groupMember?.userId,
-                      displayName: fetchNewsUserMember?.data?.userName
-                    }
-                  : undefined
-              }>
-              <MultiSelectPaginate
-                mode="single"
-                urlName="usersSearch"
-                url="services/app/GroupMembers/GetAllUserForLookupTable"
-                params={{organizationId: 8}}
-                keyValue="id"
-                keyLabel="displayName"
-                placeholder={t('choose')}
-                showSearch={false}
-                disabled={!!id}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12}>
-            <Form.Item
               label={t('organization')}
               name="organization"
               rules={[{required: true, message: t('messages.required')}]}
@@ -117,6 +91,38 @@ const EditMemberShowList: FC = () => {
               />
             </Form.Item>
           </Col>
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, nextValues) => prevValues.organization?.id !== nextValues.organization?.id}>
+            {(fields) => (
+              <Col xs={24} md={12}>
+                <Form.Item
+                  label={t('user')}
+                  name="organizationUser"
+                  rules={[{required: true, message: t('messages.required')}]}
+                  initialValue={
+                    fetchNewsUserMember?.data?.groupMember?.userId
+                      ? {
+                          id: fetchNewsUserMember?.data?.groupMember?.userId,
+                          displayName: fetchNewsUserMember?.data?.userName
+                        }
+                      : undefined
+                  }>
+                  <MultiSelectPaginate
+                    mode="single"
+                    urlName="usersSearch"
+                    url="services/app/GroupMembers/GetAllUserForLookupTable"
+                    params={{organizationId: fields.getFieldValue('organization')?.id}}
+                    keyValue="id"
+                    keyLabel="displayName"
+                    placeholder={t('choose')}
+                    showSearch={false}
+                    disabled={!!id || !fields.getFieldValue('organization')?.id}
+                  />
+                </Form.Item>
+              </Col>
+            )}
+          </Form.Item>
         </Row>
         <Row gutter={[16, 8]} className="w-full my-5">
           <Button

@@ -35,6 +35,7 @@ interface props {
   mode: FileModeProps;
   maxFile?: number;
   name?: string;
+  label?: string;
   aspect?: number;
   hasCrop?: boolean;
   notifyDelete?: boolean;
@@ -61,6 +62,7 @@ const CustomUpload = ({
   mode,
   maxFile = Infinity,
   name,
+  label,
   value,
   onChange,
   onUpload,
@@ -205,9 +207,9 @@ const CustomUpload = ({
       return new Promise<boolean>((resolve) => {
         Modal.error({
           title: t('delete'),
-          content: t('messages.deleteImage'),
+          content: t('messages.deleteFile'),
           okType: 'danger',
-          icon: <Avatar className="float-left" size={50} src={file?.url} />,
+          icon: <Avatar className="float-left" size={50} src={file?.thumbUrl} />,
           okText: t('delete'),
           className: 'delete',
           cancelText: t('cancel'),
@@ -325,7 +327,7 @@ const CustomUpload = ({
         style={{width: '95%', height: '95%'}}
         className={`bg-white flex-col flex-center border-1 border-dashed ${disabled ? 'border-gray' : 'border-black'}`}>
         {getIcon}
-        <Text className="m-0">{t('upload')}</Text>
+        <Text className="m-0">{label || t('upload')}</Text>
       </Button>
     );
   };
@@ -489,7 +491,7 @@ const CustomUpload = ({
               {...provided.droppableProps}
               style={getListStyle(snapshotContext.isDraggingOver)}
               className="ltr">
-              {typeFile === 'image' && hasCrop ? (
+              {typeFile?.includes('image') && hasCrop ? (
                 <CropImageModal aspect={aspect}>{Uploader(snapshotContext.isDraggingOver)}</CropImageModal>
               ) : (
                 Uploader(snapshotContext.isDraggingOver)
