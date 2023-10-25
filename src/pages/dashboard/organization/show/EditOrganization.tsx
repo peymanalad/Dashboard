@@ -4,7 +4,7 @@ import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {getImageUrl} from 'utils';
+import {convertNumbers2English, getImageUrl} from 'utils';
 import {CustomUpload} from 'components';
 
 const EditOrganization: FC = () => {
@@ -23,7 +23,7 @@ const EditOrganization: FC = () => {
   });
 
   const storeOrganization = usePost({
-    url: '/services/app/Organizations/CreateOrEdit',
+    url: '/services/app/User/CreateNode',
     method: 'POST',
     removeQueries: ['organizations', ['organization', id]],
     form,
@@ -35,9 +35,16 @@ const EditOrganization: FC = () => {
 
   const onFinish = (values: any) => {
     storeOrganization.post({
-      ...values,
-      organizationLogoToken: values?.organizationLogoToken?.fileToken,
-      id: fetchOrganization?.data?.organization?.id
+      organizationChartId: +location.state?.organization?.id,
+      user: {
+        ...values.user,
+        phoneNumber: convertNumbers2English(values?.user?.phoneNumber),
+        isActive: true
+      },
+      organization: {
+        ...values.organization,
+        organizationLogoToken: values?.organizationLogoToken?.fileToken
+      }
     });
   };
 
@@ -70,7 +77,7 @@ const EditOrganization: FC = () => {
           </Col>
           <Col xs={24} md={12} lg={6}>
             <Form.Item
-              name="organizationName"
+              name={['organization', 'name']}
               label={t('organizationName')}
               rules={[{required: true, message: t('messages.required')}]}
               initialValue={
@@ -81,7 +88,7 @@ const EditOrganization: FC = () => {
           </Col>
           <Col xs={24} md={12} lg={6}>
             <Form.Item
-              name="nationalId"
+              name={['organization', 'nationalId']}
               label={t('organization_nationalId')}
               rules={[{required: true, message: t('messages.required')}]}
               initialValue={fetchOrganization?.data?.organization?.nationalId}>
@@ -90,7 +97,7 @@ const EditOrganization: FC = () => {
           </Col>
           <Col xs={24} md={12} lg={4} className="flex justify-center align-center">
             <Form.Item
-              name="isGovernmental"
+              name={['organization', 'isGovernmental']}
               valuePropName="checked"
               initialValue={fetchOrganization?.data?.organization?.isGovernmental}>
               <Checkbox style={{lineHeight: '32px'}}>{t('isGovernmental')}</Checkbox>
@@ -98,30 +105,33 @@ const EditOrganization: FC = () => {
           </Col>
           <Divider orientation="left">{t('organization_ContactPerson')}</Divider>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="name" label={t('first_name')} initialValue={fetchOrganization?.data?.user?.name || ''}>
+            <Form.Item
+              name={['user', 'name']}
+              label={t('first_name')}
+              initialValue={fetchOrganization?.data?.user?.name || ''}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
             <Form.Item
-              name="surname"
+              name={['user', 'surname']}
               label={t('last_name')}
               initialValue={fetchOrganization?.data?.user?.surname || ''}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="nationalId" label={t('nationalId')}>
+            <Form.Item name="user.nationalId" label={t('nationalId')}>
               <Input inputMode="tel" minLength={10} maxLength={10} className="ltr-input" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
             <Form.Item
-              name="organizationPhone"
+              name={['user', 'phoneNumber']}
               label={t('username(phoneNumber)')}
               rules={[{required: true, message: t('messages.required')}]}
               initialValue={fetchOrganization?.data?.organization?.organizationPhone}>
-              <Input inputMode="tel" minLength={3} maxLength={15} className="ltr-input" />
+              <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
             </Form.Item>
           </Col>
           {/*<Col xs={24} md={12} lg={8}>*/}
@@ -135,19 +145,11 @@ const EditOrganization: FC = () => {
           {/*</Col>*/}
           <Col xs={24} md={12} lg={8}>
             <Form.Item
-              name="password"
+              name={['user', 'password']}
               label={t('password')}
               rules={[
-                {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')},
-                {min: 6, message: t('validation.minSixCharacter')},
-                ({getFieldValue}) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue('password') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(new Error(t('messages.confirmPassword')));
-                  }
-                })
+                {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('messages.correctPassword')},
+                {min: 6, message: t('messages.minSixCharacter')}
               ]}>
               <Input className="ltr-input" />
             </Form.Item>
@@ -157,15 +159,21 @@ const EditOrganization: FC = () => {
               name="confirmPassword"
               label={t('confirmPassword')}
               rules={[
-                {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')},
-                {min: 6, message: t('validation.minSixCharacter')}
+                ({getFieldValue}) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue(['user', 'password']) === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error(t('messages.confirmPassword')));
+                  }
+                })
               ]}>
               <Input className="ltr-input" />
             </Form.Item>
           </Col>
           <Col span={24}>
             <Form.Item
-              name="comment"
+              name="organization.comment"
               label={t('explain')}
               initialValue={fetchOrganization?.data?.organization?.comment}>
               <Input.TextArea rows={3} />

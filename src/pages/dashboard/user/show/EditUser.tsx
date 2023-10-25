@@ -52,6 +52,7 @@ const EditUser: FC = () => {
       setRandomPassword: val?.randomPassword,
       user: {
         ...val,
+        roles: [val?.roles],
         isLockoutEnabled: 1,
         isTwoFactorEnabled: false,
         password: val?.password || null,
@@ -75,14 +76,8 @@ const EditUser: FC = () => {
               name="roles"
               label={t('access_level')}
               rules={[{required: true, message: t('validation.required')}]}
-              initialValue={map(filter(fetchUser?.data?.roles, 'isAssigned'), 'roleId')}>
-              <SimpleSelect
-                keys="roleId"
-                label="roleName"
-                placeholder={t('choose')}
-                mode="multiple"
-                data={fetchUser?.data?.roles}
-              />
+              initialValue={map(filter(fetchUser?.data?.roles, 'isAssigned'), 'roleName')}>
+              <SimpleSelect keys="roleName" label="roleName" placeholder={t('choose')} data={fetchUser?.data?.roles} />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>

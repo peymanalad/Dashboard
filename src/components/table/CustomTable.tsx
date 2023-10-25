@@ -19,6 +19,7 @@ import get from 'lodash/get';
 import concat from 'lodash/concat';
 import isFunction from 'lodash/isFunction';
 import replace from 'lodash/replace';
+import SelectOrganization from 'containers/organization/SelectOrganization';
 
 interface refProps {
   refresh: () => void;
@@ -35,6 +36,8 @@ interface TableProps {
   query?: object;
   path?: string | string[];
   isRowSelection?: boolean;
+  hasOrganization?: boolean;
+  enabled?: boolean;
   onChange?: (selectedRows: any[]) => void;
   ref?: RefObject<refProps>;
   refreshTable?: boolean;
@@ -57,6 +60,8 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     expandable,
     path = 'items',
     isRowSelection,
+    hasOrganization = false,
+    enabled = true,
     onChange,
     showTableSizeChange = true
   },
@@ -67,18 +72,19 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
   const {t} = useTranslation('table');
 
   const queryObject = queryStringToObject(location.search);
+  const selectedOrganization = queryObject?.organization;
 
   const [searchPage, setSearchPage] = useState<number>(queryObject?.page ?? 1);
 
   const paginateData = usePaginate({
     url: fetch,
-    name: dataName,
+    name: hasOrganization ? [dataName, 'organization', selectedOrganization?.id]?.flat(1) : dataName,
     page: queryObject?.page,
     perPage: queryObject?.per_page,
-    query,
+    query: hasOrganization ? {...query, organizationId: selectedOrganization?.id} : query,
     search: {...search, Filter: queryObject?.search},
     params,
-    enabled: true
+    enabled: hasOrganization ? !!selectedOrganization?.id && enabled : enabled
   });
 
   useImperativeHandle(forwardedRef, () => ({
@@ -112,6 +118,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
 
   return (
     <>
+      {hasOrganization && <SelectOrganization />}
       <Table
         dataSource={isArray(get(paginateData?.data, path)) ? get(paginateData?.data, path) : []}
         columns={

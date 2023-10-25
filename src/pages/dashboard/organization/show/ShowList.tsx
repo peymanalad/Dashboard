@@ -86,16 +86,16 @@ const ShowList: FC = () => {
             }}>
             {t('excel')}
           </Button>
-          {!hasPermission('organizations.store') && (
-            <Link to="/organization/organization/create">
-              <Button
-                type="primary"
-                className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"
-                icon={<FormOutlined />}>
-                {t('add_organization')}
-              </Button>
-            </Link>
-          )}
+          {/*{!hasPermission('organizations.store') && (*/}
+          {/*  <Link to="/organization/organization/create">*/}
+          {/*    <Button*/}
+          {/*      type="primary"*/}
+          {/*      className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"*/}
+          {/*      icon={<FormOutlined />}>*/}
+          {/*      {t('add_organization')}*/}
+          {/*    </Button>*/}
+          {/*  </Link>*/}
+          {/*)}*/}
           <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
             {t('filter')}
           </Button>

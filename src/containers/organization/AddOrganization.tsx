@@ -36,7 +36,7 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
     refetchQueries: organizationId ? ['OrganizationChart', organizationId] : ['OrganizationCharts'],
     form,
     onSuccess: () => {
-      form.resetFields();
+      form.setFieldsValue({caption: ''});
       setSelectedOrganization(null);
     }
   });
@@ -44,9 +44,10 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
   useImperativeHandle(forwardedRef, () => ({
     open(node: any, isEdit: boolean = false) {
       setSelectedOrganization({...node, isEdit});
+      form.setFieldsValue({caption: isEdit ? node?.label || node?.caption : ''});
     },
     close() {
-      form.resetFields();
+      form.setFieldsValue({caption: ''});
       setSelectedOrganization(null);
     }
   }));
@@ -54,10 +55,10 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
   const onFinish = (values: any) => {
     if (!selectedOrganization) return;
     if (selectedOrganization?.isEdit) {
-      values.id = selectedOrganization?.id;
+      values.id = +selectedOrganization?.id;
       values.parentId = +selectedOrganization?.parentId;
     } else values.parentId = +selectedOrganization?.id;
-    values.organizationId = organizationId;
+    values.organizationId = Number(organizationId);
     sendOrganizationUser.post(values);
   };
 
@@ -65,10 +66,11 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
     <Modal
       open={!!selectedOrganization}
       title={t(!!organizationId ? 'addOrganizationChart' : 'addSubset')}
+      destroyOnClose
       closable
       centered
       onCancel={() => {
-        form.resetFields();
+        form.setFieldsValue({caption: ''});
         setSelectedOrganization(null);
       }}
       footer={null}>
@@ -78,7 +80,7 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
             <Form.Item
               name="caption"
               label={t('name')}
-              initialValue={selectedOrganization?.label}
+              initialValue={selectedOrganization?.label || selectedOrganization?.caption}
               rules={[{required: true, message: t('messages.required')}]}>
               <Input />
             </Form.Item>

@@ -1,16 +1,19 @@
 import React, {
+  ElementRef,
   ForwardedRef,
   forwardRef,
   ForwardRefRenderFunction,
   RefObject,
   useImperativeHandle,
+  useRef,
   useState
 } from 'react';
+import AddOrganizationGlobalUser from 'containers/organization/AddOrganizationGlobalUser';
 import {useDelete} from 'hooks';
 import {Button, Modal, Tooltip} from 'antd';
 import {CustomTable} from 'components';
 import {useTranslation} from 'react-i18next';
-import {DeleteOutlined} from '@ant-design/icons';
+import {DeleteOutlined, FormOutlined} from '@ant-design/icons';
 import type {simplePermissionProps} from 'types/common';
 
 interface refProps {
@@ -19,14 +22,16 @@ interface refProps {
 }
 
 interface props {
+  isGlobal?: boolean;
   ref: RefObject<refProps>;
 }
 
 const ShowOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
-  props: props,
+  {isGlobal}: props,
   forwardedRef: ForwardedRef<refProps>
 ) => {
   const {t} = useTranslation('organization');
+  const addOrganizationRef = useRef<ElementRef<typeof AddOrganizationGlobalUser>>(null);
   const [selectedOrganizationId, setSelectedOrganizationId] = useState<number | null>(null);
 
   const deleteRequest = useDelete({
@@ -84,7 +89,11 @@ const ShowOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
       render: (permissions: simplePermissionProps, organizationUser: any) => (
         <Tooltip title={t('do_delete')}>
           <Button
-            onClick={() => deleteRequest.show(organizationUser, {Id: organizationUser?.organizationUserId})}
+            onClick={() =>
+              deleteRequest.show(organizationUser, {
+                Id: isGlobal ? organizationUser?.userId : organizationUser?.organizationUserId
+              })
+            }
             type="text"
             icon={<DeleteOutlined className="text-red" />}
           />
@@ -93,24 +102,43 @@ const ShowOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
     }
   ];
 
+  const onAdd = () => {
+    if (addOrganizationRef.current && selectedOrganizationId) addOrganizationRef.current.open(selectedOrganizationId);
+  };
+
   return (
-    <Modal
-      open={!!selectedOrganizationId}
-      title={t('showUsers')}
-      width={700}
-      closable
-      centered
-      onCancel={() => {
-        setSelectedOrganizationId(null);
-      }}
-      footer={null}>
-      <CustomTable
-        fetch="services/app/OrganizationUsers/GetAllUsersInLeaf"
-        query={{OrganizationChartId: selectedOrganizationId}}
-        dataName={['GetAllUsersForLeaf', selectedOrganizationId]}
-        columns={columns}
-      />
-    </Modal>
+    <>
+      <Modal
+        open={!!selectedOrganizationId}
+        title={t(isGlobal ? 'show_globalUsers' : 'showUsers')}
+        width={700}
+        closable
+        centered
+        onCancel={() => {
+          setSelectedOrganizationId(null);
+        }}
+        footer={
+          isGlobal ? (
+            <Button type="primary" className="d-block ant-btn-warning" onClick={onAdd} icon={<FormOutlined />}>
+              {t('add_globalUser')}
+            </Button>
+          ) : null
+        }>
+        <CustomTable
+          fetch={
+            isGlobal
+              ? 'services/app/OrganizationUsers/GetGlobalUserLeaves'
+              : 'services/app/OrganizationUsers/GetAllUsersInLeaf'
+          }
+          query={{OrganizationChartId: selectedOrganizationId, OrganizationId: selectedOrganizationId}}
+          dataName={
+            isGlobal ? ['GetGlobalUserLeaves', selectedOrganizationId] : ['GetAllUsersForLeaf', selectedOrganizationId]
+          }
+          columns={columns}
+        />
+      </Modal>
+      <AddOrganizationGlobalUser ref={addOrganizationRef} />
+    </>
   );
 };
 export default forwardRef(ShowOrganizationUserModal);

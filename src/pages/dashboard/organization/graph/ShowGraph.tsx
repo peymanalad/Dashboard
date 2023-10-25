@@ -5,12 +5,20 @@ import {useDelete, useFetch} from 'hooks';
 import {Avatar, Card, Dropdown} from 'antd';
 // @ts-ignore
 import {Graph, GraphProps} from 'react-d3-graph';
-import {BankOutlined, RadarChartOutlined, HomeOutlined, EditOutlined, DeleteOutlined} from '@ant-design/icons';
+import {
+  BankOutlined,
+  RadarChartOutlined,
+  HomeOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  UserOutlined
+} from '@ant-design/icons';
 import AddOrganizationModal from 'containers/organization/AddOrganization';
 import SetOrganizationModal from 'containers/organization/SetOrganization';
 import findIndex from 'lodash/findIndex';
 import {getImageUrl, getLangSearchParam} from 'utils';
 import {DeedLogoImg} from 'assets';
+import ShowOrganizationUserModal from '../../../../containers/organization/ShowOrganizationUser';
 
 const ShowGraph: FC = () => {
   const {t} = useTranslation('organization');
@@ -19,6 +27,7 @@ const ShowGraph: FC = () => {
   const [width, setWidth] = useState<number | null>(null);
   const addOrganizationRef = useRef<ElementRef<typeof AddOrganizationModal>>(null);
   const setOrganizationRef = useRef<ElementRef<typeof SetOrganizationModal>>(null);
+  const showOrganizationUserRef = useRef<ElementRef<typeof ShowOrganizationUserModal>>(null);
 
   const fetchOrganizationChart = useFetch({
     name: 'OrganizationCharts',
@@ -68,16 +77,19 @@ const ShowGraph: FC = () => {
       label: t('newOrganization'),
       key: 'addSubset',
       icon: <BankOutlined />
-    },
-    {
-      label: t('showOrganizationChart'),
-      key: 'showOrganizationChart',
-      icon: <RadarChartOutlined />
-    },
+    }
+  ];
+
+  const anotherItems = [
     {
       label: t('detailOrganizationChart'),
       key: 'detailOrganizationChart',
-      icon: <RadarChartOutlined />
+      icon: <HomeOutlined />
+    },
+    {
+      label: t('showGlobalUsers'),
+      key: 'showGlobalUsers',
+      icon: <UserOutlined />
     },
     {
       label: t('edit'),
@@ -88,6 +100,14 @@ const ShowGraph: FC = () => {
       label: t('delete'),
       key: 'delete',
       icon: <DeleteOutlined />
+    }
+  ];
+
+  const organizationItem = [
+    {
+      label: t('showOrganizationChart'),
+      key: 'showOrganizationChart',
+      icon: <RadarChartOutlined />
     }
   ];
 
@@ -104,14 +124,14 @@ const ShowGraph: FC = () => {
     focusZoom: 1,
     freezeAllDragEvents: false,
     height: 700,
-    highlightDegree: 0,
+    highlightDegree: 1,
     highlightOpacity: 0.6,
     linkHighlightBehavior: true,
     initialZoom: 0.65,
     maxZoom: 12,
     minZoom: 0.05,
-    // nodeHighlightBehavior: true,
-    nodeHighlightBehavior: false,
+    nodeHighlightBehavior: true,
+    // nodeHighlightBehavior: false,
     panAndZoom: false,
     staticGraph: false,
     staticGraphWithDragAndDrop: false,
@@ -154,7 +174,11 @@ const ShowGraph: FC = () => {
             <Dropdown
               trigger={['click']}
               menu={{
-                items,
+                items: isFirstLayer
+                  ? items
+                  : !!node?.organizationId
+                  ? [...items, ...organizationItem, ...anotherItems]
+                  : [...items, ...anotherItems],
                 triggerSubMenuAction: 'click',
                 onClick: ({key}) => {
                   switch (key) {
@@ -163,6 +187,21 @@ const ShowGraph: FC = () => {
                         nodeLabel: node?.label
                       });
                       break;
+                    case 'detailOrganizationChart':
+                      history.push(
+                        getLangSearchParam(
+                          !!node?.organizationId
+                            ? `/organization/organization/edit/${node?.organizationId}`
+                            : '/organization/organization/create'
+                        ),
+                        {
+                          organization: {label: node?.label, id: node?.id}
+                        }
+                      );
+                      break;
+                    case 'showGlobalUsers':
+                      if (showOrganizationUserRef.current) showOrganizationUserRef.current.open(node?.organizationId);
+                      break;
                     case 'addSubset':
                       if (addOrganizationRef.current) addOrganizationRef.current.open(node);
                       break;
@@ -170,7 +209,7 @@ const ShowGraph: FC = () => {
                       if (setOrganizationRef.current) setOrganizationRef.current.open(node?.id, node?.label);
                       break;
                     case 'edit':
-                      if (addOrganizationRef.current) addOrganizationRef.current.open(node);
+                      if (addOrganizationRef.current) addOrganizationRef.current.open(node, true);
                       break;
                     case 'delete':
                       deleteRequest.show(node, {Id: node?.id});
@@ -231,6 +270,7 @@ const ShowGraph: FC = () => {
           <Graph id="graph-id" className="w-full" data={data} config={myConfig} />
           <AddOrganizationModal ref={addOrganizationRef} />
           <SetOrganizationModal ref={setOrganizationRef} />
+          <ShowOrganizationUserModal ref={showOrganizationUserRef} isGlobal />
         </>
       )}
     </Card>

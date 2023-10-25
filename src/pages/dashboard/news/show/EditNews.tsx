@@ -135,16 +135,16 @@ const EditNews: FC = () => {
                 />
               </Form.Item>
             </Col>
-            <Col xs={24} md={4} className="flex align-center justify-center">
+            <Col xs={12} md={4} className="flex align-center justify-center">
               <Form.Item
                 name="isSpecial"
                 valuePropName="checked"
                 className="m-0"
-                initialValue={fetchNews?.data?.post?.isDraft}>
+                initialValue={fetchNews?.data?.post?.isSpecial}>
                 <Checkbox>{t('special.title')}</Checkbox>
               </Form.Item>
             </Col>
-            <Col xs={24} md={4} className="flex align-center justify-center">
+            <Col xs={12} md={4} className="flex align-center justify-center">
               <Form.Item
                 name="isPublished"
                 valuePropName="checked"

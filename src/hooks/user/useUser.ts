@@ -19,6 +19,12 @@ function useUser() {
     return get(menu, ['data', 'permissions']);
   };
 
+  const getAllOrganizations = () => {
+    const menu: any = queryClient.getQueryData('profile');
+    if (menu?.data?.user?.isSuperUser) return null;
+    return get(menu, ['data', 'joinedOrganizations']);
+  };
+
   const getInfo = () => {
     const profile: any = queryClient.getQueryData('profile');
     return get(profile, ['data', 'user']);
@@ -36,6 +42,16 @@ function useUser() {
     return get(menu, ['data', 'user', 'id']) === toNumber(id);
   };
 
-  return {...user, setUser, isSuperUser, hasPermission, getAllPermissions, getInfo, isMySelf, getId};
+  return {
+    ...user,
+    setUser,
+    isSuperUser,
+    hasPermission,
+    getAllPermissions,
+    getInfo,
+    isMySelf,
+    getId,
+    getAllOrganizations
+  };
 }
 export default useUser;

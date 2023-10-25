@@ -92,15 +92,15 @@ const SetOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
           </Col>
         </Row>
         <Row gutter={[16, 8]} className="w-full my-5" justify="space-between">
-          {/*<Link*/}
-          {/*  to={{*/}
-          {/*    pathname: '/organization/organization/create',*/}
-          {/*    state: {organization: selectedOrganization}*/}
-          {/*  }}>*/}
-          {/*  <Button type="primary" className="d-block ant-btn-warning" icon={<FormOutlined />}>*/}
-          {/*    {t('add_organization')}*/}
-          {/*  </Button>*/}
-          {/*</Link>*/}
+          <Link
+            to={{
+              pathname: '/organization/organization/create',
+              state: {organization: selectedOrganization}
+            }}>
+            <Button type="primary" className="d-block ant-btn-warning" icon={<FormOutlined />}>
+              {t('add_organization')}
+            </Button>
+          </Link>
           <Button
             className="sm:w-unset"
             type="primary"

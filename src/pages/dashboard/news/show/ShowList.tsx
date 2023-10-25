@@ -1,4 +1,4 @@
-import React, {useRef, type ElementRef, type FC} from 'react';
+import React, {useRef, type ElementRef, type FC, useState} from 'react';
 import {Button, Card, Space, Tooltip, Image} from 'antd';
 import {
   FormOutlined,
@@ -201,7 +201,7 @@ const ShowList: FC = () => {
         </Space>
       }>
       <Search ref={searchRef} />
-      <CustomTable fetch="services/app/Posts/GetAll" dataName="news" columns={columns} hasIndexColumn />
+      <CustomTable fetch="services/app/Posts/GetAll" dataName="news" columns={columns} hasIndexColumn hasOrganization />
     </Card>
   );
 };

@@ -233,12 +233,12 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <OrganizationShowList />,
         title: i18n.t('side_menu:organizations'),
         permission: 'OrganizationUnits',
-        forSuperAdmin: true,
-        extra: {
-          route: '/organization/organization/create',
-          title: i18n.t('side_menu:addOrganization'),
-          permission: 'OrganizationUnits'
-        }
+        forSuperAdmin: true
+        // extra: {
+        //   route: '/organization/organization/create',
+        //   title: i18n.t('side_menu:addOrganization'),
+        //   permission: 'OrganizationUnits'
+        // }
       },
       {
         key: 'organizationCreate',
