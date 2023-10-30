@@ -120,7 +120,13 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     <>
       {hasOrganization && <SelectOrganization />}
       <Table
-        dataSource={isArray(get(paginateData?.data, path)) ? get(paginateData?.data, path) : []}
+        dataSource={
+          isArray(path?.length ? get(paginateData?.data, path) : paginateData?.data)
+            ? path?.length
+              ? get(paginateData?.data, path)
+              : paginateData?.data
+            : []
+        }
         columns={
           hasIndexColumn
             ? concat(

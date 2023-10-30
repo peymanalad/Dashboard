@@ -5,18 +5,21 @@ import {Stimulsoft, StiOptions} from 'stimulsoft-dashboards-js/Scripts/stimulsof
 import {useFetch, useUser} from 'hooks';
 import {dashboardImage} from 'assets';
 import isNil from 'lodash/isNil';
+import {useParams} from 'react-router-dom';
 
 const {Text} = Typography;
 
 const viewer = new Stimulsoft.Viewer.StiViewer(undefined, 'StiViewer', false);
 
-const Dashboard: FC = () => {
+const ShowReport: FC = () => {
   const {t} = useTranslation('dashboard');
   const user = useUser();
+  const {id} = useParams<{id?: string}>();
 
   const fetchDashboard = useFetch({
-    url: `${process.env.REACT_APP_BASE_URL}/Dashboard/Js`,
-    name: 'dashboard',
+    url: `${process.env.REACT_APP_BASE_URL}/Report/Design`,
+    name: ['report', id],
+    query: {reportId: id},
     responseType: 'text',
     staleTime: 10000,
     enabled: true
@@ -60,4 +63,4 @@ const Dashboard: FC = () => {
   return <div id="dashboard-viewer" className="ltr" />;
 };
 
-export default Dashboard;
+export default ShowReport;

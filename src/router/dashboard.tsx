@@ -207,6 +207,9 @@ const NotificationShowList = lazyWithRetry(() => import('pages/dashboard/notific
 const NotificationsShowList = lazyWithRetry(() => import('pages/dashboard/notifications/group/ShowList'));
 const ShowGroupNotification = lazyWithRetry(() => import('pages/dashboard/notifications/group/ShowGroupNotifInfo'));
 
+const ReportsShowList = lazyWithRetry(() => import('pages/dashboard/report/show/ShowList'));
+const EditReports = lazyWithRetry(() => import('pages/dashboard/report/show/ShowReport'));
+
 const Dashboard: Array<dashboardRouteProps> = [
   {
     title: i18n.t('side_menu:dashboard'),
@@ -1588,23 +1591,25 @@ const Dashboard: Array<dashboardRouteProps> = [
       //   hidden: true
       // }
     ]
+  },
+  {
+    title: i18n.t('side_menu:reports'),
+    icon: <SlidersOutlined />,
+    route: '/report/reports/list',
+    cmp: <ReportsShowList />,
+    permission: 'statistics.view',
+    key: 'report',
+    subs: [
+      {
+        key: 'newsGroupEdit',
+        route: '/report/reports/edit/:id',
+        cmp: <EditReports />,
+        title: i18n.t('side_menu:reports'),
+        permission: 'NewsMember',
+        hidden: true
+      }
+    ]
   }
-  // {
-  //   title: i18n.t('side_menu:report'),
-  //   icon: <SlidersOutlined />,
-  //   route: '/report',
-  //   cmp: <Reports />,
-  //   permission: 'statistics.view',
-  //   key: 'report',
-  //   subs: [
-  //     {
-  //       route: '/report/api',
-  //       cmp: <ReportTable />,
-  //       permission: 'statistics.view',
-  //       hidden: true
-  //     }
-  //   ]
-  // }
 ];
 
 export const getFilteredMenusList = (permissions: string[], isSuperUser?: boolean) =>

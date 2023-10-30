@@ -396,18 +396,23 @@
       "one_value": "یک گزینه وارد کنید",
       "required": "این فیلد الزامی است",
       "optionsValidation": "نام یا گزینه سوالات نمیتواند خالی باشد"
-    },
-    "report": {
-      "answer_report": "گزارش پاسخ ها",
-      "response_average_chart": "میانگین تعداد پاسخ دهی سوالات پس از ایجاد",
-      "count_chart": "نمودار تعداد پاسخ ها",
-      "most_tracked_diseases": "نمودار بیماریهای پیگیری شده ",
-      "response_average": "درصد پاسخ دهی سوالات",
-      "diseases_without_questions": "بیماری های بدون سوال",
-      "disease_question": "بیماری های همراه با سوال",
-      "frequent_group_chart": "گروه سوالات پرتکرار",
-      "frequent_disease_chart": "لیست بیماری هایی که بیشترین تعداد سوالات را دارند"
     }
+  },
+  "report": {
+    "reports": "گزارشات",
+    "title": "عنوان",
+    "actions": "عملیات",
+    "update": "به‌روز رسانی",
+    "do_delete": "حذف کردن",
+    "answer_report": "گزارش پاسخ ها",
+    "response_average_chart": "میانگین تعداد پاسخ دهی سوالات پس از ایجاد",
+    "count_chart": "نمودار تعداد پاسخ ها",
+    "most_tracked_diseases": "نمودار بیماریهای پیگیری شده ",
+    "response_average": "درصد پاسخ دهی سوالات",
+    "diseases_without_questions": "بیماری های بدون سوال",
+    "disease_question": "بیماری های همراه با سوال",
+    "frequent_group_chart": "گروه سوالات پرتکرار",
+    "frequent_disease_chart": "لیست بیماری هایی که بیشترین تعداد سوالات را دارند"
   },
   "comments": {
     "recommendation_id": "شناسه توصیه",
@@ -2378,35 +2383,6 @@
     "messages": {
       "delete": "آیا در مورد حذف {{id}} اطمینان خاطر دارید؟",
       "required": "این فیلد الزامی است"
-    }
-  },
-  "nutritional": {
-    "nutritional_value": "ارزش غذایی",
-    "name": "نام",
-    "filter": "فیلتر",
-    "search": "جستجو",
-    "delete": "حذف",
-    "empty": "خالی",
-    "active": "فعال",
-    "inactive": "غیرفعال",
-    "update": "به‌روز رسانی",
-    "do_delete": "حذف کردن",
-    "specifications": "مشخصات",
-    "add_nutritional_value": "اضافه کردن ارزش غذایی",
-    "actions": "عملیات",
-    "status": "وضعیت",
-    "size_weight": "وزن ماده(گرم)",
-    "weight": "وزن(گرم)",
-    "size": "سایز",
-    "save": "ذخیره",
-    "meta": "اطلاعات",
-    "fa": "فارسی",
-    "en": "انگلیسی",
-    "state": {
-      "title": "حالت",
-      "solid": "جامد",
-      "liquid": "مایع",
-      "gas": "گاز"
     }
   },
   "setting": {
