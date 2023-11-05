@@ -18,7 +18,7 @@ const LandingPage: FC = () => {
           <Col span={24}>
             <Button
               type="link"
-              href={`${process.env.REACT_APP_BASE_URL}/File/LatestBuild`}
+              href="https://d.yasnasystem.ir/wl/?id=yhFzogsWCCbzLDHvuQ7atLB4ADomH0GY&fmode=download"
               className="w-full flex-center"
               style={{color: '#8FBC46'}}
               size="large"
