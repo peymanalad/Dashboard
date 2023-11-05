@@ -102,17 +102,18 @@ export function convertSlashRootToNestedArray(data: any[]): any[] {
   // Connect children to their parent nodes
   for (const item of data) {
     const {organizationChart} = item;
-    const currentNode = treeMap.get(organizationChart.id);
-    const leafPathParts = organizationChart.leafPath.split('\\').filter(Boolean);
+    const currentNode = treeMap?.get(organizationChart.id);
+    const leafPath = organizationChart?.leafPath || `${organizationChart.id}\\\\`;
+    const leafPathParts = leafPath?.split('\\')?.filter(Boolean);
 
-    if (leafPathParts.length === 1) {
+    if (leafPathParts?.length === 1) {
       // This is a root node
-      rootNodes.push(currentNode);
+      rootNodes?.push(currentNode);
     } else {
-      const parentId = parseInt(leafPathParts[leafPathParts.length - 2], 10);
-      const parentNode = treeMap.get(parentId);
+      const parentId = parseInt(leafPathParts?.[leafPathParts?.length - 2], 10);
+      const parentNode = treeMap?.get(parentId);
       if (parentNode) {
-        parentNode.children.push(currentNode);
+        parentNode?.children?.push(currentNode);
       }
     }
   }

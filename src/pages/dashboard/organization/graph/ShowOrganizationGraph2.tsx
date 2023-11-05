@@ -9,7 +9,6 @@ import {UserOutlined, UserAddOutlined, RadarChartOutlined, DeleteOutlined, EditO
 import ShowOrganizationUserModal from 'containers/organization/ShowOrganizationUser';
 import AddOrganizationUserModal from 'containers/organization/AddOrganizationUser';
 import AddOrganizationModal from 'containers/organization/AddOrganization';
-import findIndex from 'lodash/findIndex';
 import {convertSlashRootToNestedArray} from 'utils';
 
 const ShowOrganizationGraph: FC = () => {
@@ -43,32 +42,6 @@ const ShowOrganizationGraph: FC = () => {
     name: ['OrganizationChart', id],
     titleKey: 'caption'
   });
-
-  const data = useMemo(() => {
-    const nodes = fetchOrganizationChart?.data?.map((organization: any) => ({
-      id: `${organization?.organizationChart?.id}`,
-      leafPath: organization?.organizationChart?.leafPath,
-      organizationId: organization?.organizationChart?.organizationId,
-      logo: organization?.organizationChart?.organizationLogo,
-      label: organization?.organizationChart?.caption
-    }));
-    const links: any[] = [];
-    fetchOrganizationChart?.data?.forEach((organization: any) => {
-      const link = organization?.organizationChart?.leafPath?.slice(0, -1)?.split('\\');
-      const source = link?.[link.length - 2];
-      const target = link?.[link.length - 1];
-      if (
-        link.length > 1 &&
-        findIndex(fetchOrganizationChart?.data, ['organizationChart.id', +source]) > -1 &&
-        findIndex(fetchOrganizationChart?.data, ['organizationChart.id', +target]) > -1
-      )
-        links.push({
-          source,
-          target
-        });
-    });
-    return {nodes, links};
-  }, [fetchOrganizationChart?.data]);
 
   const mainOrganization = useMemo(() => fetchOrganizationChart?.data?.[0], [fetchOrganizationChart?.data]);
 
@@ -161,10 +134,12 @@ const ShowOrganizationGraph: FC = () => {
     ));
   };
 
+  console.log(fetchOrganizationChart?.data);
+
   return (
     <Card
       title={t('organizationChatFor', {name: mainOrganization?.organizationChart?.caption})}
-      loading={!data?.nodes?.length}
+      loading={!nestedArrayData?.length}
       ref={CardRef}>
       {!!width && (
         <div style={{direction: 'ltr'}}>

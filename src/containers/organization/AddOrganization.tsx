@@ -56,9 +56,9 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
     if (!selectedOrganization) return;
     if (selectedOrganization?.isEdit) {
       values.id = +selectedOrganization?.id;
-      values.parentId = +selectedOrganization?.parentId;
+      values.parentId = selectedOrganization?.parentId ? +selectedOrganization?.parentId : null;
       values.leafPath = selectedOrganization?.leafPath;
-    } else values.parentId = +selectedOrganization?.id;
+    } else values.parentId = selectedOrganization?.id ? +selectedOrganization?.id : null;
     values.organizationId = Number(organizationId);
     sendOrganizationUser.post(values);
   };

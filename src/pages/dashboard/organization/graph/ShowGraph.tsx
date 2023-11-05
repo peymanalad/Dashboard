@@ -96,11 +96,6 @@ const ShowGraph: FC = () => {
       icon: <HomeOutlined />
     },
     {
-      label: t('showGlobalUsers'),
-      key: 'showGlobalUsers',
-      icon: <UserOutlined />
-    },
-    {
       label: t('edit'),
       key: 'edit',
       icon: <EditOutlined />
@@ -113,6 +108,11 @@ const ShowGraph: FC = () => {
   ];
 
   const organizationItem = [
+    {
+      label: t('showGlobalUsers'),
+      key: 'showGlobalUsers',
+      icon: <UserOutlined />
+    },
     {
       label: t('showOrganizationChart'),
       key: 'showOrganizationChart',
