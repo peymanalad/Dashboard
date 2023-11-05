@@ -92,7 +92,7 @@ const ShowList: FC = () => {
         </Space>
       }>
       <Search ref={searchRef} />
-      <CustomTable fetch="services/app/PostLikes/GetAll" dataName="newsLikes" columns={columns} />
+      <CustomTable fetch="services/app/PostLikes/GetAll" dataName="newsLikes" columns={columns} hasOrganization />
     </Card>
   );
 };

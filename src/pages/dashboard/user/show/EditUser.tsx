@@ -46,13 +46,13 @@ const EditUser: FC = () => {
 
   const onFinish = (val: any) => {
     sendUser.post({
-      assignedRoleNames: [],
+      assignedRoleNames: val?.roles,
       organizationUnits: [1],
       sendActivationEmail: false,
       setRandomPassword: val?.randomPassword,
       user: {
         ...val,
-        roles: [val?.roles],
+        roles: val?.roles,
         isLockoutEnabled: 1,
         isTwoFactorEnabled: false,
         password: val?.password || null,

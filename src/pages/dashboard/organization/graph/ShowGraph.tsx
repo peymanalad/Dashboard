@@ -16,7 +16,7 @@ import {
 import AddOrganizationModal from 'containers/organization/AddOrganization';
 import SetOrganizationModal from 'containers/organization/SetOrganization';
 import findIndex from 'lodash/findIndex';
-import {getImageUrl, getLangSearchParam} from 'utils';
+import {generateUniqueColorCodeById, getImageUrl, getLangSearchParam} from 'utils';
 import {DeedLogoImg} from 'assets';
 import ShowOrganizationUserModal from '../../../../containers/organization/ShowOrganizationUser';
 
@@ -46,16 +46,24 @@ const ShowGraph: FC = () => {
   });
 
   const data = useMemo(() => {
-    const nodes = fetchOrganizationChart?.data?.items?.map((organization: any) => ({
-      id: `${organization?.deedChart?.id}`,
-      leafPath: organization?.deedChart?.leafPath,
-      organizationId: organization?.deedChart?.organizationId,
-      parentId: organization?.deedChart?.parentId,
-      logo: organization?.deedChart?.organizationLogo,
-      label: organization?.deedChart?.caption
-    }));
+    const filtredNodes = fetchOrganizationChart?.data?.items?.filter(
+      (organization: any) => !!organization?.deedChart?.leafPath
+    );
+    const nodes = filtredNodes?.map((organization: any) => {
+      const link = organization?.deedChart?.leafPath?.slice(0, -1)?.split('\\');
+      return {
+        id: `${organization?.deedChart?.id}`,
+        leafPath: organization?.deedChart?.leafPath,
+        organizationId: organization?.deedChart?.organizationId,
+        parentId: organization?.deedChart?.parentId,
+        logo: organization?.deedChart?.organizationLogo,
+        label: organization?.deedChart?.caption,
+        color:
+          !!link?.[1] && !!organization?.deedChart?.organizationId ? generateUniqueColorCodeById(link?.[1]) : undefined
+      };
+    });
     const links: any[] = [];
-    fetchOrganizationChart?.data?.items?.forEach((organization: any) => {
+    filtredNodes?.forEach((organization: any) => {
       const link = organization?.deedChart?.leafPath?.slice(0, -1)?.split('\\');
       const source = link?.[link.length - 2];
       const target = link?.[link.length - 1];
@@ -66,7 +74,8 @@ const ShowGraph: FC = () => {
       )
         links.push({
           source,
-          target
+          target,
+          color: !!link?.[1] ? generateUniqueColorCodeById(link?.[1], 50) : undefined
         });
     });
     return {nodes, links};
@@ -130,8 +139,8 @@ const ShowGraph: FC = () => {
     initialZoom: 0.65,
     maxZoom: 12,
     minZoom: 0.05,
-    nodeHighlightBehavior: true,
-    // nodeHighlightBehavior: false,
+    // nodeHighlightBehavior: true,
+    nodeHighlightBehavior: false,
     panAndZoom: false,
     staticGraph: false,
     staticGraphWithDragAndDrop: false,
@@ -223,7 +232,7 @@ const ShowGraph: FC = () => {
               arrow>
               <Avatar
                 size={55}
-                className={`p-1 main-node ${!!node?.organizationId && 'bg-danger'} ${isFirstLayer && 'bg-primary'}`}
+                className={`p-1 main-node ${isFirstLayer && 'bg-danger'}`}
                 src={
                   isFirstLayer ? (
                     DeedLogoImg
@@ -233,7 +242,7 @@ const ShowGraph: FC = () => {
                     <HomeOutlined style={{fontSize: '1.7rem'}} />
                   )
                 }
-                style={{background: node?.fill}}
+                style={{background: node?.fill || node?.color}}
               />
             </Dropdown>
           </div>

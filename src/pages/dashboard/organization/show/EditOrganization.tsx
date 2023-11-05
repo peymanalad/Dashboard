@@ -4,7 +4,7 @@ import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {convertNumbers2English, getImageUrl} from 'utils';
+import {convertNumbers2English, getImageUrl, getLangSearchParam} from 'utils';
 import {CustomUpload} from 'components';
 
 const EditOrganization: FC = () => {
@@ -22,6 +22,13 @@ const EditOrganization: FC = () => {
     enabled: !!id
   });
 
+  const fetchOrganizationAdmin = useFetch({
+    name: ['organization', 'admin', id],
+    url: 'services/app/GroupMembers/GetAdminInformationByOrganization',
+    query: {organizationId: id},
+    enabled: !!id
+  });
+
   const storeOrganization = usePost({
     url: '/services/app/User/CreateNode',
     method: 'POST',
@@ -33,18 +40,68 @@ const EditOrganization: FC = () => {
     }
   });
 
+  const updateOrganization = usePost({
+    url: '/services/app/Organizations/CreateOrEdit',
+    method: 'POST',
+    removeQueries: ['organizations', ['organization', id]],
+    form,
+    onSuccess: () => {
+      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+      else history.replace('/organization/organization/list');
+    }
+  });
+
+  const updateUser = usePost({
+    url: 'services/app/User/CreateOrUpdateUser',
+    method: 'POST',
+    removeQueries: ['users', ['user', id]],
+    form,
+    onSuccess: () => {
+      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+      else history.replace(getLangSearchParam('/user/list'));
+    }
+  });
+
   const onFinish = (values: any) => {
-    storeOrganization.post({
-      organizationChartId: +location.state?.organization?.id,
+    if (!id) {
+      return storeOrganization.post({
+        organizationChartId: +location.state?.organization?.id,
+        user: {
+          ...values.user,
+          phoneNumber: convertNumbers2English(values?.user?.phoneNumber),
+          isActive: true
+        },
+        organization: {
+          ...values.organization,
+          organizationLogoToken: values?.organizationLogoToken?.fileToken
+        }
+      });
+    }
+    updateUser.post({
+      assignedRoleNames: ['Admin'],
+      organizationUnits: [1],
+      sendActivationEmail: false,
+      setRandomPassword: false,
       user: {
         ...values.user,
+        emailAddress: fetchOrganizationAdmin?.data?.emailAddress,
+        username: convertNumbers2English(values?.user?.phoneNumber),
         phoneNumber: convertNumbers2English(values?.user?.phoneNumber),
-        isActive: true
-      },
-      organization: {
-        ...values.organization,
-        organizationLogoToken: values?.organizationLogoToken?.fileToken
+        roles: ['Admin'],
+        isLockoutEnabled: 1,
+        isTwoFactorEnabled: false,
+        password: values.user?.password || null,
+        id: +fetchOrganizationAdmin?.data?.userId
       }
+    });
+    updateOrganization.post({
+      id: fetchOrganization?.data?.organization?.id,
+      organizationName: values?.organization?.name,
+      isGovernmental: values?.organization?.isGovernmental,
+      nationalId: values?.organization?.nationalId,
+      organizationContactPerson: values?.user?.phoneNumber,
+      organizationPhone: values?.user?.phoneNumber,
+      organizationLogoToken: values?.organizationLogoToken?.fileToken
     });
   };
 
@@ -52,7 +109,7 @@ const EditOrganization: FC = () => {
     <Card
       title={t('title')}
       bordered={false}
-      loading={(id && !fetchOrganization?.data) || fetchOrganization.isFetching}
+      loading={(id && !fetchOrganization?.data) || fetchOrganization.isFetching || fetchOrganizationAdmin?.isFetching}
       className="w-full">
       <Form form={form} layout="vertical" name="organization" requiredMark={false} onFinish={onFinish}>
         <Row gutter={[16, 8]} className="w-full">
@@ -108,7 +165,7 @@ const EditOrganization: FC = () => {
             <Form.Item
               name={['user', 'name']}
               label={t('first_name')}
-              initialValue={fetchOrganization?.data?.user?.name || ''}>
+              initialValue={fetchOrganizationAdmin?.data?.name || ''}>
               <Input />
             </Form.Item>
           </Col>
@@ -116,12 +173,15 @@ const EditOrganization: FC = () => {
             <Form.Item
               name={['user', 'surname']}
               label={t('last_name')}
-              initialValue={fetchOrganization?.data?.user?.surname || ''}>
+              initialValue={fetchOrganizationAdmin?.data?.surName || ''}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="user.nationalId" label={t('nationalId')}>
+            <Form.Item
+              name={['user', 'nationalId']}
+              label={t('nationalId')}
+              initialValue={fetchOrganizationAdmin?.data?.nationalId}>
               <Input inputMode="tel" minLength={10} maxLength={10} className="ltr-input" />
             </Form.Item>
           </Col>
@@ -130,7 +190,7 @@ const EditOrganization: FC = () => {
               name={['user', 'phoneNumber']}
               label={t('username(phoneNumber)')}
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchOrganization?.data?.organization?.organizationPhone}>
+              initialValue={fetchOrganizationAdmin?.data?.userName}>
               <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
             </Form.Item>
           </Col>
@@ -151,7 +211,7 @@ const EditOrganization: FC = () => {
                 {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('messages.correctPassword')},
                 {min: 6, message: t('messages.minSixCharacter')}
               ]}>
-              <Input className="ltr-input" />
+              <Input className="ltr-input" type="password" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -168,7 +228,7 @@ const EditOrganization: FC = () => {
                   }
                 })
               ]}>
-              <Input className="ltr-input" />
+              <Input className="ltr-input" type="password" />
             </Form.Item>
           </Col>
           <Col span={24}>

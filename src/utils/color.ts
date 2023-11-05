@@ -1,38 +1,39 @@
-export const generateUniqueColorCodeById = (id: string): string => {
-  const colorPalette = [
-    '#ff000035', // Red
-    '#00ff0035', // Green
-    '#0000ff35', // Blue
-    '#ffff0035', // Yellow
-    '#ff00ff35', // Magenta
-    '#00ffff35', // Cyan
-    '#80000035', // Maroon
-    '#00800035', // Dark Green
-    '#00008035', // Navy
-    '#80800035', // Olive
-    '#80008035', // Purple
-    '#00808035', // Teal
-    '#ff800035', // Orange
-    '#ff008035', // Pink
-    '#80ff0035', // Lime
-    '#00ff8035', // Sea Green
-    '#8000ff35', // Indigo
-    '#ff80ff35', // Lavender
-    '#80ffff35', // Light Cyan
-    '#80808035' // Gray
-  ];
+const colorPalette = [
+  '#ff0000', // Red
+  '#00ff00', // Green
+  '#0000ff', // Blue
+  '#ffff00', // Yellow
+  '#ff00ff', // Magenta
+  '#00ffff', // Cyan
+  '#800000', // Maroon
+  '#008000', // Dark Green
+  '#000080', // Navy
+  '#808000', // Olive
+  '#800080', // Purple
+  '#008080', // Teal
+  '#ff8000', // Orange
+  '#ff0080', // Pink
+  '#80ff00', // Lime
+  '#00ff80', // Sea Green
+  '#8000ff', // Indigo
+  '#ff80ff', // Lavender
+  '#80ffff', // Light Cyan
+  '#808080' // Gray
+];
 
-  // Simple hash function to generate a unique number based on the id
-  function hashString(str: string): number {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash += char;
-    }
-    return hash;
+// Simple hash function to generate a unique number based on the id
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash += char;
   }
+  return hash;
+}
 
+export const generateUniqueColorCodeById = (id: string, transparenty?: number): string => {
   const hash = hashString(`${id}`);
   const index = Math.abs(hash) % colorPalette.length;
+  if (transparenty) return colorPalette[index] + transparenty;
   return colorPalette[index];
 };

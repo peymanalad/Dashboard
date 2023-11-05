@@ -35,9 +35,11 @@ const ShowList: FC = () => {
       render: (permissions: simplePermissionProps, report: any) => (
         <Space size={2}>
           <Tooltip title={t('update')}>
-            <Link to={`/report/reports/edit/${report.reportId}`}>
-              <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
-            </Link>
+            <Button
+              href={`/report/reports/edit/${report.reportId}`}
+              type="text"
+              icon={<EditOutlined className="text-blueDark" />}
+            />
           </Tooltip>
           {/*<Tooltip title={t('do_delete')}>*/}
           {/*  <Button*/}

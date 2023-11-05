@@ -45,6 +45,20 @@ const EditNews: FC = () => {
     values.postFileToken2 = values.postFileToken?.[1]?.response?.fileToken;
     values.postFile3 = values.postFileToken?.[2]?.fileToken;
     values.postFileToken3 = values.postFileToken?.[2]?.response?.fileToken;
+    values.postFile4 = values.postFileToken?.[3]?.fileToken;
+    values.postFileToken4 = values.postFileToken?.[3]?.response?.fileToken;
+    values.postFile5 = values.postFileToken?.[4]?.fileToken;
+    values.postFileToken5 = values.postFileToken?.[4]?.response?.fileToken;
+    values.postFile6 = values.postFileToken?.[5]?.fileToken;
+    values.postFileToken6 = values.postFileToken?.[5]?.response?.fileToken;
+    values.postFile7 = values.postFileToken?.[6]?.fileToken;
+    values.postFileToken7 = values.postFileToken?.[6]?.response?.fileToken;
+    values.postFile8 = values.postFileToken?.[7]?.fileToken;
+    values.postFileToken8 = values.postFileToken?.[7]?.response?.fileToken;
+    values.postFile9 = values.postFileToken?.[8]?.fileToken;
+    values.postFileToken9 = values.postFileToken?.[8]?.response?.fileToken;
+    values.postFile10 = values.postFileToken?.[9]?.fileToken;
+    values.postFileToken10 = values.postFileToken?.[9]?.response?.fileToken;
     values.postFile = values.postFileToken?.[0]?.fileToken;
     values.postFileToken = values.postFileToken?.[0]?.response?.fileToken;
     storeNews.post({id: id ? +id : undefined, ...values});
@@ -100,27 +114,79 @@ const EditNews: FC = () => {
             </Col>
           </Row>
           <Row gutter={[16, 8]} className="w-full">
-            <Col xs={24} md={16}>
+            <Col xs={24}>
               <Form.Item
                 name="postFileToken"
                 noStyle
                 initialValue={compact([
                   fetchNews?.data?.post?.postFile
                     ? {
+                        fileName: fetchNews?.data?.postFileFileName,
                         fileToken: fetchNews?.data?.post?.postFile,
                         url: getImageUrl(fetchNews?.data?.post?.postFile)
                       }
                     : null,
                   fetchNews?.data?.post?.postFile2
                     ? {
+                        fileName: fetchNews?.data?.postFile2FileName,
                         fileToken: fetchNews?.data?.post?.postFile2,
                         url: getImageUrl(fetchNews?.data?.post?.postFile2)
                       }
                     : null,
                   fetchNews?.data?.post?.postFile3
                     ? {
+                        fileName: fetchNews?.data?.postFile3FileName,
                         fileToken: fetchNews?.data?.post?.postFile3,
                         url: getImageUrl(fetchNews?.data?.post?.postFile3)
+                      }
+                    : null,
+                  fetchNews?.data?.post?.postFile4
+                    ? {
+                        fileName: fetchNews?.data?.postFile4FileName,
+                        fileToken: fetchNews?.data?.post?.postFile4,
+                        url: getImageUrl(fetchNews?.data?.post?.postFile4)
+                      }
+                    : null,
+                  fetchNews?.data?.post?.postFile5
+                    ? {
+                        fileName: fetchNews?.data?.postFile5FileName,
+                        fileToken: fetchNews?.data?.post?.postFile5,
+                        url: getImageUrl(fetchNews?.data?.post?.postFile5)
+                      }
+                    : null,
+                  fetchNews?.data?.post?.postFile6
+                    ? {
+                        fileName: fetchNews?.data?.postFile6FileName,
+                        fileToken: fetchNews?.data?.post?.postFile6,
+                        url: getImageUrl(fetchNews?.data?.post?.postFile6)
+                      }
+                    : null,
+                  fetchNews?.data?.post?.postFile7
+                    ? {
+                        fileName: fetchNews?.data?.postFile7FileName,
+                        fileToken: fetchNews?.data?.post?.postFile7,
+                        url: getImageUrl(fetchNews?.data?.post?.postFile7)
+                      }
+                    : null,
+                  fetchNews?.data?.post?.postFile8
+                    ? {
+                        fileName: fetchNews?.data?.postFile8FileName,
+                        fileToken: fetchNews?.data?.post?.postFile8,
+                        url: getImageUrl(fetchNews?.data?.post?.postFile8)
+                      }
+                    : null,
+                  fetchNews?.data?.post?.postFile9
+                    ? {
+                        fileName: fetchNews?.data?.postFile9FileName,
+                        fileToken: fetchNews?.data?.post?.postFile9,
+                        url: getImageUrl(fetchNews?.data?.post?.postFile9)
+                      }
+                    : null,
+                  fetchNews?.data?.post?.postFile10
+                    ? {
+                        fileName: fetchNews?.data?.postFile10FileName,
+                        fileToken: fetchNews?.data?.post?.postFile10,
+                        url: getImageUrl(fetchNews?.data?.post?.postFile10)
                       }
                     : null
                 ])}>
@@ -128,29 +194,11 @@ const EditNews: FC = () => {
                   type="posts"
                   name={t('file')}
                   mode="multiple"
-                  maxFile={3}
+                  maxFile={10}
                   typeFile="image,video"
                   hasCrop
                   aspect={1}
                 />
-              </Form.Item>
-            </Col>
-            <Col xs={12} md={4} className="flex align-center justify-center">
-              <Form.Item
-                name="isSpecial"
-                valuePropName="checked"
-                className="m-0"
-                initialValue={fetchNews?.data?.post?.isSpecial}>
-                <Checkbox>{t('special.title')}</Checkbox>
-              </Form.Item>
-            </Col>
-            <Col xs={12} md={4} className="flex align-center justify-center">
-              <Form.Item
-                name="isPublished"
-                valuePropName="checked"
-                className="m-0"
-                initialValue={fetchNews?.data?.post?.isPublished}>
-                <Checkbox>{t('publish.title')}</Checkbox>
               </Form.Item>
             </Col>
           </Row>
@@ -215,6 +263,26 @@ const EditNews: FC = () => {
                   )}
                 </Form.Item>
               </Input.Group>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12} className="flex align-center justify-center">
+              <Form.Item
+                name="isSpecial"
+                valuePropName="checked"
+                className="m-0"
+                initialValue={fetchNews?.data?.post?.isSpecial}>
+                <Checkbox>{t('special.title')}</Checkbox>
+              </Form.Item>
+            </Col>
+            <Col xs={12} className="flex align-center justify-center">
+              <Form.Item
+                name="isPublished"
+                valuePropName="checked"
+                className="m-0"
+                initialValue={fetchNews?.data?.post?.isPublished}>
+                <Checkbox>{t('publish.title')}</Checkbox>
+              </Form.Item>
             </Col>
           </Row>
           <Row gutter={[16, 8]} className="my-5">

@@ -17,7 +17,7 @@ const ShowReport: FC = () => {
   const {id} = useParams<{id?: string}>();
 
   const fetchDashboard = useFetch({
-    url: `${process.env.REACT_APP_BASE_URL}/Report/Design`,
+    url: `${process.env.REACT_APP_BASE_URL}/Report/Js`,
     name: ['report', id],
     query: {reportId: id},
     responseType: 'text',
@@ -39,7 +39,7 @@ const ShowReport: FC = () => {
       viewer.report = report;
       //Stimulsoft.Base.StiFontCollection.addOpentypeFontFile('../assets/fonts/ttf/IRANSans.ttf');
       //Stimulsoft.Base.StiFontCollection.addOpentypeFontFile('../assets/fonts/ttf/IRANSans(FaNum)_Medium.ttf');
-      viewer.renderHtml('dashboard-viewer');
+      viewer.renderHtml('dashboard-edit-viewer');
     }
   }, [fetchDashboard?.data]);
 
@@ -60,7 +60,7 @@ const ShowReport: FC = () => {
       </Row>
     );
 
-  return <div id="dashboard-viewer" className="ltr" />;
+  return <div id="dashboard-edit-viewer" className="ltr" />;
 };
 
 export default ShowReport;

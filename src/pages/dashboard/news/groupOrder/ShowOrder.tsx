@@ -151,7 +151,7 @@ const NewsGroupOrder: FC = () => {
       initialNews.current = orderBy(
         data?.data?.items?.map((postGroup: any, index: number) => ({
           ...postGroup?.postGroup,
-          color: generateUniqueColorCodeById(postGroup?.postGroup?.id),
+          color: generateUniqueColorCodeById(postGroup?.postGroup?.id, 35),
           ordering: postGroup ? postGroup?.postGroup?.ordering || index + 1 : null
         })),
         'ordering'

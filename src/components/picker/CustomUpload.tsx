@@ -11,7 +11,7 @@ import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import {CropImageModal} from 'components';
 import axios from 'axios';
 import {useTranslation} from 'react-i18next';
-import {filterObject, flatObject, reorderList, ResponseErrorHandler} from 'utils';
+import {filterObject, flatObject, getMimeTypeFromFileName, reorderList, ResponseErrorHandler} from 'utils';
 import filter from 'lodash/filter';
 import toString from 'lodash/toString';
 import findIndex from 'lodash/findIndex';
@@ -350,7 +350,7 @@ const CustomUpload = ({
           path: file?.path || file?.picture,
           url: file?.path_url || file?.picture_url,
           ...file,
-          type: getAccess?.includes(',') ? '*/*' : getAccess
+          type: getAccess?.includes(',') ? getMimeTypeFromFileName(file?.fileName) || '*/*' : getAccess
         };
       });
     if (isString(value || valueState))

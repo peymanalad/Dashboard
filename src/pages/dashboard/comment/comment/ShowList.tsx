@@ -98,7 +98,7 @@ const ShowList: FC = () => {
         </Space>
       }>
       <Search ref={searchRef} />
-      <CustomTable fetch="services/app/Comments/GetAll" dataName="comments" columns={columns} />
+      <CustomTable fetch="services/app/Comments/GetAll" dataName="comments" columns={columns} hasOrganization />
     </Card>
   );
 };

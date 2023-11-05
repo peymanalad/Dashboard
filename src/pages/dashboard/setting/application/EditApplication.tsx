@@ -8,6 +8,7 @@ import {CustomUpload, SimpleSelect} from 'components';
 import {OSType} from 'assets';
 import {getImageUrl, getLangSearchParam} from 'utils';
 import map from 'lodash/map';
+import {v4 as uuidv4} from 'uuid';
 
 const EditApplication: FC = () => {
   const {t} = useTranslation('setting');
@@ -39,7 +40,11 @@ const EditApplication: FC = () => {
       id,
       ...values,
       updateFile: values?.updateFileToken?.updateFileToken,
-      updateFileToken: values?.updateFileToken?.fileToken || values?.updateFileToken?.updateFileToken
+      updateFileToken: values?.updateFileToken?.response?.fileToken
+        ? values?.updateFileToken?.response?.fileToken
+        : values?.updateFileToken?.updateFileToken
+        ? null
+        : uuidv4()
     });
   };
 
