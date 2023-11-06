@@ -134,7 +134,7 @@ const ShowOrganizationGraph: FC = () => {
     ));
   };
 
-  console.log(fetchOrganizationChart?.data);
+  console.log(nestedArrayData);
 
   return (
     <Card

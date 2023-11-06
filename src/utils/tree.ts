@@ -90,7 +90,10 @@ export function convertSlashRootToNestedArray(data: any[]): any[] {
   // Build a map of nodes using their IDs
   for (const item of data) {
     const {organizationChart, organizationChartCaption} = item;
-    treeMap.set(organizationChart.id, {
+    const leafPath = organizationChart?.leafPath || `${organizationChart.id}\\\\`;
+    const leafPathParts = leafPath?.split('\\')?.filter(Boolean);
+    const lastLeafPathPart = leafPathParts?.[leafPathParts.length - 1];
+    treeMap.set(lastLeafPathPart, {
       organizationChart,
       organizationChartCaption,
       children: []
@@ -102,15 +105,15 @@ export function convertSlashRootToNestedArray(data: any[]): any[] {
   // Connect children to their parent nodes
   for (const item of data) {
     const {organizationChart} = item;
-    const currentNode = treeMap?.get(organizationChart.id);
     const leafPath = organizationChart?.leafPath || `${organizationChart.id}\\\\`;
     const leafPathParts = leafPath?.split('\\')?.filter(Boolean);
-
+    const lastLeafPathPart = leafPathParts?.[leafPathParts.length - 1];
+    const currentNode = treeMap?.get(lastLeafPathPart);
     if (leafPathParts?.length === 1) {
       // This is a root node
       rootNodes?.push(currentNode);
     } else {
-      const parentId = parseInt(leafPathParts?.[leafPathParts?.length - 2], 10);
+      const parentId = leafPathParts?.[leafPathParts?.length - 2];
       const parentNode = treeMap?.get(parentId);
       if (parentNode) {
         parentNode?.children?.push(currentNode);
