@@ -53,7 +53,7 @@ const SelectOrganization: FC<props> = (props) => {
     <SimpleSelect
       keys="id"
       label="name"
-      className="w-full max-w-12"
+      className="w-full"
       placeholder={t('pleaseSelectOrganization')}
       loading={fetchOrganizaion?.isFetching}
       onChange={(val: any, i: any) => {

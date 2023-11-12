@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import {Card, Form, Row, Col, Input, Button} from 'antd';
-import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 import {getImageUrl} from 'utils';
+import SelectOrganization from 'containers/organization/SelectOrganization';
 
 const EditOrganizationGroup: FC = () => {
   const {t} = useTranslation('organization');
@@ -39,7 +39,7 @@ const EditOrganizationGroup: FC = () => {
       id,
       groupFileToken: values?.groupFileToken?.fileToken,
       postGroupDescription: values?.postGroupDescription,
-      organizationId: values?.organization?.id
+      organizationId: values?.organization?.id || values?.organization
     });
   };
 
@@ -81,15 +81,7 @@ const EditOrganizationGroup: FC = () => {
                 id: fetchNewsGroup?.data?.postGroup?.organizationId,
                 displayName: fetchNewsGroup?.data?.organizationGroupGroupName
               }}>
-              <MultiSelectPaginate
-                mode="single"
-                urlName="organizationGroupsSearch"
-                url="services/app/GroupMembers/GetAllOrganizationGroupForLookupTable"
-                keyValue="id"
-                keyLabel="displayName"
-                placeholder={t('choose')}
-                showSearch={false}
-              />
+              <SelectOrganization />
             </Form.Item>
           </Col>
           <Col span={24}>
