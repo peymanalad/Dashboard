@@ -131,6 +131,7 @@ const UserMemberShowList: FC = () => {
         columns={columns}
         ref={tableRef}
         hasIndexColumn
+        hasOrganization
       />
     </Card>
   );

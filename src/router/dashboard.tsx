@@ -108,6 +108,7 @@ const EditUser = lazyWithRetry(() => import('pages/dashboard/user/show/EditUser'
 const CreateUser = lazyWithRetry(() => import('pages/dashboard/user/show/CreateUser'));
 const UserShowList = lazyWithRetry(() => import('pages/dashboard/user/show/ShowList'));
 const UserShow = lazyWithRetry(() => import('pages/dashboard/user/show/ShowUser'));
+const OrganizationUserShowList = lazyWithRetry(() => import('pages/dashboard/user/organization/ShowList'));
 const UserSpecialization = lazyWithRetry(() => import('pages/dashboard/user/specialization/ShowList'));
 const EditSpecializations = lazyWithRetry(() => import('pages/dashboard/user/specialization/EditSpecialization'));
 const UserDrReport = lazyWithRetry(() => import('pages/dashboard/user/DrReport'));
@@ -294,6 +295,14 @@ const Dashboard: Array<dashboardRouteProps> = [
           title: i18n.t('side_menu:add_user'),
           permission: 'users.store'
         }
+      },
+      {
+        key: 'userList',
+        route: '/user/show/:id/organizations',
+        cmp: <OrganizationUserShowList />,
+        title: i18n.t('side_menu:users'),
+        hidden: true,
+        permission: 'users.view'
       },
       {
         key: 'userShow',

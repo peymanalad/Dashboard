@@ -8,7 +8,7 @@ import qs from 'qs';
 
 interface props {}
 
-const SelectOrganization: FC<props> = () => {
+const SelectOrganization: FC<props> = (props) => {
   const {t} = useTranslation('organization');
   const location = useLocation();
   const history = useHistory();
@@ -61,6 +61,7 @@ const SelectOrganization: FC<props> = () => {
       }}
       value={!organizations?.length ? selectedOrganization?.name : +selectedOrganization?.id}
       data={organizations}
+      {...props}
     />
   );
 };

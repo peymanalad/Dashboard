@@ -5,9 +5,11 @@ import {useHistory, useParams} from 'react-router-dom';
 import {useFetch, useLogOut, usePost, useUser} from 'hooks';
 import {getImageUrl, getLangSearchParam} from 'utils';
 import {Card, Form, Checkbox, Button, Input, Row, Col} from 'antd';
-import {SaveOutlined, LogoutOutlined} from '@ant-design/icons';
+import {LogoutOutlined} from '@ant-design/icons';
 import map from 'lodash/map';
 import filter from 'lodash/filter';
+import isArray from 'lodash/isArray';
+import {v4 as uuidv4} from 'uuid';
 
 const EditUser: FC = () => {
   const {t} = useTranslation('user_create');
@@ -47,8 +49,9 @@ const EditUser: FC = () => {
   });
 
   const onFinish = (val: any) => {
+    const uniqueId = uuidv4();
     sendUser.post({
-      assignedRoleNames: val?.roles,
+      assignedRoleNames: isArray(val?.roles) ? val?.roles : [val?.roles],
       organizationUnits: [1],
       sendActivationEmail: false,
       setRandomPassword: val?.randomPassword,
@@ -62,7 +65,8 @@ const EditUser: FC = () => {
         id: +id
       }
     });
-    if (val?.updateFileToken?.fileToken) sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken});
+    console.log(val?.updateFileToken?.fileToken, uniqueId);
+    sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken || uniqueId});
   };
 
   return (

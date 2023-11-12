@@ -29,8 +29,6 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
   const [selectedOrganization, setSelectedOrganization] = useState<any | null>(null);
   const [form] = Form.useForm();
 
-  console.log(selectedOrganization);
-
   const sendOrganizationUser = usePost({
     url: `services/app/${!!organizationId ? 'OrganizationCharts' : 'DeedCharts'}/CreateOrEdit`,
     refetchQueries: organizationId ? ['OrganizationChart', organizationId] : ['OrganizationCharts'],

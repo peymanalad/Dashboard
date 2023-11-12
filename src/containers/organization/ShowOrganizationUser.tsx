@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import AddOrganizationGlobalUser from 'containers/organization/AddOrganizationGlobalUser';
 import {useDelete} from 'hooks';
+import {useParams} from 'react-router-dom';
 import {Button, Modal, Tooltip} from 'antd';
 import {CustomTable} from 'components';
 import {useTranslation} from 'react-i18next';
@@ -33,6 +34,7 @@ const ShowOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
   const {t} = useTranslation('organization');
   const addOrganizationRef = useRef<ElementRef<typeof AddOrganizationGlobalUser>>(null);
   const [selectedOrganizationId, setSelectedOrganizationId] = useState<number | null>(null);
+  const {id} = useParams<{id?: string}>();
 
   const deleteRequest = useDelete({
     url: '/services/app/OrganizationUsers/Delete',
@@ -130,7 +132,7 @@ const ShowOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
               ? 'services/app/OrganizationUsers/GetGlobalUserLeaves'
               : 'services/app/OrganizationUsers/GetAllUsersInLeaf'
           }
-          query={{OrganizationChartId: selectedOrganizationId, OrganizationId: selectedOrganizationId}}
+          query={{OrganizationChartId: selectedOrganizationId, OrganizationId: id || selectedOrganizationId}}
           dataName={
             isGlobal ? ['GetGlobalUserLeaves', selectedOrganizationId] : ['GetAllUsersForLeaf', selectedOrganizationId]
           }

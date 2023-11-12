@@ -4,7 +4,7 @@ import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {convertNumbers2English, getImageUrl, getLangSearchParam} from 'utils';
-import {CustomUpload, FormActions} from 'components';
+import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 
 const EditOrganization: FC = () => {
   const {t} = useTranslation('organization');
@@ -19,6 +19,15 @@ const EditOrganization: FC = () => {
     url: 'services/app/Organizations/GetOrganizationForEdit',
     query: {Id: id},
     enabled: !!id
+  });
+
+  const sendOrganization = usePost({
+    url: 'services/app/DeedCharts/CreateOrEdit',
+    refetchQueries: ['OrganizationCharts'],
+    form,
+    onSuccess: (data) => {
+      onFinish(form.getFieldsValue(), data);
+    }
   });
 
   const fetchOrganizationAdmin = useFetch({
@@ -63,10 +72,15 @@ const EditOrganization: FC = () => {
     onSuccess: onBack
   });
 
-  const onFinish = (values: any) => {
+  const onFinish = (values: any, organizationChartId?: number) => {
+    if (!!values?.organization?.parent?.deedChart?.id && !organizationChartId)
+      return sendOrganization.post({
+        parentId: values?.organization?.parent?.deedChart?.id,
+        caption: values?.organization?.name
+      });
     if (!id) {
       return storeOrganization.post({
-        organizationChartId: +location.state?.organization?.id,
+        organizationChartId: organizationChartId || +location.state?.organization?.id,
         user: {
           ...values.user,
           phoneNumber: convertNumbers2English(values?.user?.phoneNumber),
@@ -161,6 +175,25 @@ const EditOrganization: FC = () => {
               <Checkbox style={{lineHeight: '32px'}}>{t('isGovernmental')}</Checkbox>
             </Form.Item>
           </Col>
+          {!location.state?.organization?.id && !id && (
+            <Col xs={24}>
+              <Form.Item
+                label={t('organization_group')}
+                name={['organization', 'parent']}
+                rules={[{required: true, message: t('messages.required')}]}>
+                <MultiSelectPaginate
+                  mode="single"
+                  urlName="OrganizationCharts"
+                  url="services/app/DeedCharts/GetAll"
+                  keyPath={['deedChart']}
+                  keyValue="id"
+                  keyLabel="caption"
+                  placeholder={t('choose')}
+                  showSearch={false}
+                />
+              </Form.Item>
+            </Col>
+          )}
           <Divider orientation="left">{t('organization_ContactPerson')}</Divider>
           <Col xs={24} md={12} lg={8}>
             <Form.Item

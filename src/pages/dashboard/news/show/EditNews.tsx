@@ -1,10 +1,11 @@
 import React, {FC, useState} from 'react';
 import {Card, Form, Row, Col, Input, Button, Checkbox, Tag, Modal} from 'antd';
-import {SaveOutlined, SearchOutlined, SmileOutlined} from '@ant-design/icons';
+import {SearchOutlined, SmileOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
+import SelectOrganization from 'containers/organization/SelectOrganization';
 import {getImageUrl, wordCounter} from 'utils';
 import compact from 'lodash/compact';
 import {Picker} from 'emoji-mart';
@@ -86,7 +87,7 @@ const EditNews: FC = () => {
         className="w-full">
         <Form form={form} layout="vertical" name="product" requiredMark={false} onFinish={onFinish}>
           <Row gutter={[16, 8]} className="w-full">
-            <Col xs={24} md={16}>
+            <Col xs={24} md={8}>
               <Form.Item
                 name="postTitle"
                 label={t('title')}
@@ -97,23 +98,39 @@ const EditNews: FC = () => {
             </Col>
             <Col xs={24} md={8}>
               <Form.Item
-                label={t('news_group')}
-                name="postGroupId"
-                initialValue={{
-                  id: fetchNews?.data?.post?.postGroupId,
-                  displayName: fetchNews?.data?.postGroupPostGroupDescription
-                }}>
-                <MultiSelectPaginate
-                  mode="single"
-                  urlName="newsGroupSearch"
-                  url="services/app/Posts/GetAllPostGroupForLookupTable"
-                  keyValue="id"
-                  keyLabel="displayName"
-                  placeholder={t('choose')}
-                  showSearch={false}
-                />
+                name="organization"
+                label={t('organization')}
+                rules={[{required: true, message: t('messages.required')}]}>
+                <SelectOrganization />
               </Form.Item>
             </Col>
+            <Form.Item
+              noStyle
+              shouldUpdate={(prevValues, nextValues) => prevValues.organization !== nextValues.organization}>
+              {(fields) => (
+                <Col xs={24} md={8}>
+                  <Form.Item
+                    label={t('news_group')}
+                    name="postGroupId"
+                    initialValue={{
+                      id: fetchNews?.data?.post?.postGroupId,
+                      displayName: fetchNews?.data?.postGroupPostGroupDescription
+                    }}>
+                    <MultiSelectPaginate
+                      mode="single"
+                      urlName={['newsGroupSearch', fields.getFieldValue('organization')]}
+                      url="services/app/Posts/GetAllPostGroupForLookupTable"
+                      params={{organizationId: fields.getFieldValue('organization')}}
+                      disabled={!fields.getFieldValue('organization')}
+                      keyValue="id"
+                      keyLabel="displayName"
+                      placeholder={t('choose')}
+                      showSearch={false}
+                    />
+                  </Form.Item>
+                </Col>
+              )}
+            </Form.Item>
           </Row>
           <Row gutter={[16, 8]} className="w-full">
             <Col xs={24}>

@@ -82,7 +82,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     page: queryObject?.page,
     perPage: queryObject?.per_page,
     query: hasOrganization ? {...query, organizationId: selectedOrganization?.id} : query,
-    search: {...search, Filter: queryObject?.search},
+    search: {...search, Filter: queryObject?.search, FromDate: queryObject?.FromDate, ToDate: queryObject?.ToDate},
     params,
     enabled: hasOrganization ? !!selectedOrganization?.id && enabled : enabled
   });

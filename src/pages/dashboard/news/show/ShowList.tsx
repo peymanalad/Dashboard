@@ -1,5 +1,5 @@
 import React, {useRef, type ElementRef, type FC} from 'react';
-import {Button, Card, Space, Tooltip, Image} from 'antd';
+import {Button, Card, Space, Tooltip, Image, Form} from 'antd';
 import {
   FormOutlined,
   EditOutlined,
@@ -11,9 +11,9 @@ import {
 } from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
-import {CustomTable, Search, SearchButton} from 'components';
+import {CustomTable, DateTimePicker, Search, SearchButton} from 'components';
 import {useDelete, usePost, useUser} from 'hooks';
-import {convertUtcTimeToLocal, getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
+import {convertTimeToUTC, convertUtcTimeToLocal, getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
 import {DeedLogoImg} from 'assets';
 import type {simplePermissionProps} from 'types/common';
 
@@ -92,6 +92,7 @@ const ShowList: FC = () => {
       align: 'center',
       responsive: ['md'],
       sorter: true,
+      defaultSortOrder: 'descend',
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
     {
@@ -194,10 +195,42 @@ const ShowList: FC = () => {
               </Button>
             </Link>
           )}
-          <SearchButton />
+          <SearchButton
+            onSearch={(value) => {
+              console.log(value);
+              value.FromDate = value.FromDate ? convertTimeToUTC(value.FromDate, 'YYYY-MM-DD') : undefined;
+              value.ToDate = value.ToDate ? convertTimeToUTC(value.ToDate, 'YYYY-MM-DD') : undefined;
+              return value;
+            }}>
+            {(queryObject) => (
+              <>
+                <Form.Item
+                  name="FromDate"
+                  label={t('from_date')}
+                  className="mb-1/2 label-p-0"
+                  initialValue={queryObject?.FromDate}>
+                  <DateTimePicker />
+                </Form.Item>
+                <Form.Item
+                  name="ToDate"
+                  label={t('to_date')}
+                  className="mb-1/2 label-p-0"
+                  initialValue={queryObject?.ToDate}>
+                  <DateTimePicker />
+                </Form.Item>
+              </>
+            )}
+          </SearchButton>
         </Space>
       }>
-      <CustomTable fetch="services/app/Posts/GetAll" dataName="news" columns={columns} hasIndexColumn hasOrganization />
+      <CustomTable
+        fetch="services/app/Posts/GetAll"
+        dataName="news"
+        query={{Sorting: 'creationTime desc'}}
+        columns={columns}
+        hasIndexColumn
+        hasOrganization
+      />
     </Card>
   );
 };

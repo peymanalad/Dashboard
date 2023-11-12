@@ -11,6 +11,7 @@ import {
   DeleteOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
+  BankOutlined,
   FileExcelOutlined
 } from '@ant-design/icons';
 import {CustomTable, Search} from 'components';
@@ -49,7 +50,7 @@ const UserShowList: FC = () => {
     {
       title: t('mobile'),
       dataIndex: 'phoneNumber',
-      key: 'mobile',
+      key: 'phoneNumber',
       align: 'center',
       sorter: true
     },
@@ -72,7 +73,7 @@ const UserShowList: FC = () => {
       dataIndex: ['roles', 0, 'roleName'],
       key: 'roles',
       align: 'center',
-      sorter: true
+      sorter: false
     },
     {
       title: t('active'),
@@ -124,6 +125,11 @@ const UserShowList: FC = () => {
       align: 'center',
       render: (permissions: simplePermissionProps, user: any) => (
         <Space size={2}>
+          <Tooltip title={t('showOrganizationUsers')}>
+            <Link to={`/user/show/${user?.id}/organizations`}>
+              <Button type="text" icon={<BankOutlined className="text-red" />} />
+            </Link>
+          </Tooltip>
           <Tooltip title={t('send_message')}>
             <Link to={`/message/friend/${user?.id}`}>
               <Button type="text" icon={<MailOutlined className="text-orange" />} />

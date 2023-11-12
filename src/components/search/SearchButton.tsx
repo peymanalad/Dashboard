@@ -1,4 +1,4 @@
-import React, {type FC, useState} from 'react';
+import React, {type FC, ReactNode, useState} from 'react';
 import {Button, Row, Form, Col, Input, Drawer} from 'antd';
 import {SearchOutlined, CloseOutlined, FilterOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
@@ -8,9 +8,11 @@ import qs from 'qs';
 
 interface props {
   name?: string;
+  onSearch?(values: any): any;
+  children?: (queryObject: any) => ReactNode;
 }
 
-const SearchButton: FC<props> = ({name = 'search'}) => {
+const SearchButton: FC<props> = ({name = 'search', onSearch, children}) => {
   const {t} = useTranslation('general');
   const history = useHistory();
   const queryObject = queryStringToObject(useLocation().search);
@@ -18,13 +20,16 @@ const SearchButton: FC<props> = ({name = 'search'}) => {
   const [visible, setVisible] = useState(false);
 
   const onFinish = (values: any) => {
+    if (values[name]?.length) values[name] = convertNumbers2English(values?.[name]);
+    if (onSearch) values = onSearch(values);
     history.replace({
-      search: qs.stringify({[name]: convertNumbers2English(values?.[name])})
+      search: qs.stringify(values)
     });
   };
 
   const showSearch = () => setVisible(true);
   const searchValue = queryObject?.[name];
+  const hasSearch: boolean = !!searchValue || queryObject?.ToDate || queryObject?.FromDate;
 
   return (
     <>
@@ -44,6 +49,7 @@ const SearchButton: FC<props> = ({name = 'search'}) => {
             <Form.Item name={name} label={t('advancedSearch')} className="mb-1/2 label-p-0" initialValue={searchValue}>
               <Input placeholder={t('searchOnAllParameters')} className="w-full" />
             </Form.Item>
+            {children ? children(queryObject) : null}
           </Row>
           <Row
             gutter={24}
@@ -68,7 +74,7 @@ const SearchButton: FC<props> = ({name = 'search'}) => {
           </Row>
         </Form>
       </Drawer>
-      {!!searchValue && (
+      {hasSearch && (
         <Button
           className="d-text-none md:d-text-unset ant-btn-secondary ml-2"
           type="primary"

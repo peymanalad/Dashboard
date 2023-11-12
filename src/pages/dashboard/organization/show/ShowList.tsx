@@ -1,6 +1,6 @@
 import React, {useRef, type ElementRef, type FC} from 'react';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {EditOutlined, DeleteOutlined, FileExcelOutlined} from '@ant-design/icons';
+import {EditOutlined, DeleteOutlined, FileExcelOutlined, FormOutlined, UserOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search, SearchButton} from 'components';
@@ -8,6 +8,7 @@ import {useDelete, usePost, useUser} from 'hooks';
 import {getTempFileUrl} from 'utils/file';
 import {queryStringToObject} from 'utils';
 import type {simplePermissionProps} from 'types/common';
+import qs from 'qs';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('organization');
@@ -40,9 +41,16 @@ const ShowList: FC = () => {
     {
       title: t('name'),
       dataIndex: ['organization', 'organizationName'],
-      key: 'name',
+      key: 'organizationName',
       align: 'center',
       sorter: true
+    },
+    {
+      title: t('parentOrganization'),
+      dataIndex: 'deedChartParentCaption',
+      key: 'deedChartParentCaption',
+      align: 'center',
+      sorter: false
     },
     {
       title: t('actions'),
@@ -51,6 +59,17 @@ const ShowList: FC = () => {
       align: 'center',
       render: (permissions: simplePermissionProps, organization: any) => (
         <Space size={2}>
+          <Tooltip title={t('organizationUsers')}>
+            <Link
+              to={{
+                pathname: '/news/member/list',
+                search: qs.stringify({
+                  organization: {id: organization?.organization?.id, name: organization?.organization?.organizationName}
+                })
+              }}>
+              <Button type="text" icon={<UserOutlined className="text-orange" />} />
+            </Link>
+          </Tooltip>
           <Tooltip title={t('update')}>
             <Link to={`/organization/organization/edit/${organization.organization?.id}`}>
               <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
@@ -87,16 +106,16 @@ const ShowList: FC = () => {
             }}>
             {t('excel')}
           </Button>
-          {/*{!hasPermission('organizations.store') && (*/}
-          {/*  <Link to="/organization/organization/create">*/}
-          {/*    <Button*/}
-          {/*      type="primary"*/}
-          {/*      className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"*/}
-          {/*      icon={<FormOutlined />}>*/}
-          {/*      {t('add_organization')}*/}
-          {/*    </Button>*/}
-          {/*  </Link>*/}
-          {/*)}*/}
+          {!hasPermission('organizations.store') && (
+            <Link to="/organization/organization/create">
+              <Button
+                type="primary"
+                className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"
+                icon={<FormOutlined />}>
+                {t('add_organization')}
+              </Button>
+            </Link>
+          )}
           <SearchButton />
         </Space>
       }>
