@@ -1,10 +1,9 @@
-import React, {useRef, type ElementRef, type FC, useState} from 'react';
+import React, {useRef, type ElementRef, type FC} from 'react';
 import {Button, Card, Space, Tooltip, Image} from 'antd';
 import {
   FormOutlined,
   EditOutlined,
   DeleteOutlined,
-  FilterOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
   EyeOutlined,
@@ -12,7 +11,7 @@ import {
 } from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
-import {CustomTable, Search} from 'components';
+import {CustomTable, Search, SearchButton} from 'components';
 import {useDelete, usePost, useUser} from 'hooks';
 import {convertUtcTimeToLocal, getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
 import {DeedLogoImg} from 'assets';
@@ -195,12 +194,9 @@ const ShowList: FC = () => {
               </Button>
             </Link>
           )}
-          <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
-            {t('filter')}
-          </Button>
+          <SearchButton />
         </Space>
       }>
-      <Search ref={searchRef} />
       <CustomTable fetch="services/app/Posts/GetAll" dataName="news" columns={columns} hasIndexColumn hasOrganization />
     </Card>
   );

@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {useTranslation} from 'react-i18next';
-import {CustomUpload, SimpleSelect} from 'components';
+import {CustomUpload, FormActions, SimpleSelect} from 'components';
 import {useHistory, useParams} from 'react-router-dom';
 import {useFetch, useLogOut, usePost, useUser} from 'hooks';
 import {getImageUrl, getLangSearchParam} from 'utils';
@@ -21,6 +21,11 @@ const EditUser: FC = () => {
 
   const [form] = Form.useForm();
 
+  const onBack = () => {
+    if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+    else history.replace(getLangSearchParam('/user/list'));
+  };
+
   const fetchUser = useFetch({
     url: 'services/app/User/GetUserForEdit',
     name: ['user', id],
@@ -38,10 +43,7 @@ const EditUser: FC = () => {
     method: 'POST',
     removeQueries: ['users', ['user', id]],
     form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace(getLangSearchParam('/user/list'));
-    }
+    onSuccess: onBack
   });
 
   const onFinish = (val: any) => {
@@ -69,6 +71,22 @@ const EditUser: FC = () => {
         title={t('edit_user')}
         bordered={false}
         className="w-full"
+        extra={
+          <>
+            {userInstance.isMySelf(id) && (
+              <Button
+                type="primary"
+                htmlType="button"
+                className="ml-auto sm:w-unset"
+                loading={logOut.isLoading}
+                icon={<LogoutOutlined />}
+                onClick={logOut.logOut}
+                danger>
+                {t('logout')}
+              </Button>
+            )}
+          </>
+        }
         loading={(id && !fetchUser?.data) || fetchUser.isFetching}>
         <Row gutter={[16, 8]} className="w-full">
           <Col xs={24} md={12} lg={8}>
@@ -168,30 +186,7 @@ const EditUser: FC = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={[16, 8]} className="my-5">
-          <Col span={24} className="flex flex-col sm:flex-row items-center justify-between">
-            {userInstance.isMySelf(id) && (
-              <Button
-                type="primary"
-                htmlType="button"
-                className="ml-auto sm:w-unset"
-                loading={logOut.isLoading}
-                icon={<LogoutOutlined />}
-                onClick={logOut.logOut}
-                danger>
-                {t('logout')}
-              </Button>
-            )}
-            <Button
-              className="sm:w-unset mr-auto my-4"
-              type="primary"
-              htmlType="submit"
-              loading={sendUser.isLoading}
-              icon={<SaveOutlined />}>
-              {t('save')}
-            </Button>
-          </Col>
-        </Row>
+        <FormActions isLoading={sendUser.isLoading} onBack={onBack} />
       </Card>
     </Form>
   );

@@ -1,9 +1,9 @@
 import React, {useRef, ElementRef, FC} from 'react';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {DeleteOutlined, FileExcelOutlined, FilterOutlined} from '@ant-design/icons';
+import {DeleteOutlined, FileExcelOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {useLocation} from 'react-router-dom';
-import {CustomTable, Search} from 'components';
+import {CustomTable, Search, SearchButton} from 'components';
 import {useDelete, usePost} from 'hooks';
 import {convertUtcTimeToLocal, getTempFileUrl, queryStringToObject} from 'utils';
 import {simplePermissionProps} from 'types/common';
@@ -92,12 +92,9 @@ const ShowList: FC = () => {
             }}>
             {t('excel')}
           </Button>
-          <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
-            {t('filter')}
-          </Button>
+          <SearchButton />
         </Space>
       }>
-      <Search ref={searchRef} />
       <CustomTable fetch="services/app/Comments/GetAll" dataName="comments" columns={columns} hasOrganization />
     </Card>
   );

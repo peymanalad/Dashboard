@@ -4,7 +4,7 @@ import {SaveOutlined, SearchOutlined, SmileOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {CustomUpload, MultiSelectPaginate} from 'components';
+import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 import {getImageUrl, wordCounter} from 'utils';
 import compact from 'lodash/compact';
 import {Picker} from 'emoji-mart';
@@ -20,6 +20,11 @@ const EditNews: FC = () => {
 
   const [form] = Form.useForm();
 
+  const onBack = () => {
+    if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+    else history.replace('/news/news/list');
+  };
+
   const fetchNews = useFetch({
     name: ['news', id],
     url: 'services/app/Posts/GetPostForEdit',
@@ -32,10 +37,7 @@ const EditNews: FC = () => {
     method: 'POST',
     removeQueries: ['news'],
     form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace('/news/news/list');
-    }
+    onSuccess: onBack
   });
 
   const onFinish = (values: any) => {
@@ -285,16 +287,7 @@ const EditNews: FC = () => {
               </Form.Item>
             </Col>
           </Row>
-          <Row gutter={[16, 8]} className="my-5">
-            <Button
-              className="sm:w-unset mr-auto my-4"
-              type="primary"
-              htmlType="submit"
-              loading={storeNews.isLoading}
-              icon={<SaveOutlined />}>
-              {t('save')}
-            </Button>
-          </Row>
+          <FormActions isLoading={storeNews.isLoading} onBack={onBack} />
         </Form>
       </Card>
       <Modal

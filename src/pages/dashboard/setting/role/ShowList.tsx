@@ -1,16 +1,9 @@
 import React, {useRef, type ElementRef, type FC} from 'react';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {
-  FormOutlined,
-  FilterOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  EditOutlined,
-  DeleteOutlined
-} from '@ant-design/icons';
+import {FormOutlined, CheckCircleOutlined, CloseCircleOutlined, EditOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
-import {CustomTable, Search} from 'components';
+import {CustomTable, Search, SearchButton} from 'components';
 import {useUser} from 'hooks';
 import {convertUtcTimeToLocal} from 'utils';
 import type {simplePermissionProps} from 'types/common';
@@ -107,12 +100,9 @@ const ShowList: FC = () => {
               </Button>
             </Link>
           )}
-          <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
-            {t('filter')}
-          </Button>
+          <SearchButton />
         </Space>
       }>
-      <Search ref={searchRef} />
       <CustomTable fetch="services/app/Role/GetListOfRoles" dataName="roles" columns={columns} hasIndexColumn />
     </Card>
   );

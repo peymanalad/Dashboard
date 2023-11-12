@@ -30,6 +30,8 @@
     "action": "عملیات",
     "okText": "بروزرسانی",
     "delete": "حذف",
+    "save": "ذخیره",
+    "deleteFilter": "حذف فیلتر",
     "cancel": "انصراف",
     "delete_title": "درخواست حذف",
     "description": "توضیحات",

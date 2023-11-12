@@ -1,11 +1,10 @@
 import React, {FC} from 'react';
-import {Card, Form, Row, Col, Input, Button, Checkbox, Divider} from 'antd';
-import {SaveOutlined} from '@ant-design/icons';
+import {Card, Form, Row, Col, Input, Checkbox, Divider} from 'antd';
 import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {convertNumbers2English, getImageUrl, getLangSearchParam} from 'utils';
-import {CustomUpload} from 'components';
+import {CustomUpload, FormActions} from 'components';
 
 const EditOrganization: FC = () => {
   const {t} = useTranslation('organization');
@@ -51,15 +50,17 @@ const EditOrganization: FC = () => {
     }
   });
 
+  const onBack = () => {
+    if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+    else history.replace(getLangSearchParam('/user/list'));
+  };
+
   const updateUser = usePost({
     url: 'services/app/User/CreateOrUpdateUser',
     method: 'POST',
     removeQueries: ['users', ['user', id]],
     form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace(getLangSearchParam('/user/list'));
-    }
+    onSuccess: onBack
   });
 
   const onFinish = (values: any) => {
@@ -240,16 +241,7 @@ const EditOrganization: FC = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={[16, 8]} className="w-full my-5">
-          <Button
-            className="sm:w-unset mr-auto"
-            type="primary"
-            htmlType="submit"
-            loading={storeOrganization.isLoading}
-            icon={<SaveOutlined />}>
-            {t('save')}
-          </Button>
-        </Row>
+        <FormActions isLoading={storeOrganization.isLoading} onBack={onBack} />
       </Form>
     </Card>
   );

@@ -4,7 +4,7 @@ import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {CustomUpload, SimpleSelect} from 'components';
+import {CustomUpload, FormActions, SimpleSelect} from 'components';
 import {OSType} from 'assets';
 import {getImageUrl, getLangSearchParam} from 'utils';
 import map from 'lodash/map';
@@ -16,6 +16,11 @@ const EditApplication: FC = () => {
   const {id} = useParams<{id?: string}>();
 
   const [form] = Form.useForm();
+
+  const onBack = () => {
+    if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+    else history.replace(getLangSearchParam('/setting/application/list'));
+  };
 
   const fetchVersion = useFetch({
     name: ['softwareUpdates', id],
@@ -29,10 +34,7 @@ const EditApplication: FC = () => {
     method: 'POST',
     removeQueries: ['softwareUpdates'],
     form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace(getLangSearchParam('/setting/application/list'));
-    }
+    onSuccess: onBack
   });
 
   const onFinish = (values: any) => {
@@ -119,16 +121,7 @@ const EditApplication: FC = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={[16, 8]} className="w-full my-5">
-          <Button
-            className="sm:w-unset mr-auto my-4"
-            type="primary"
-            htmlType="submit"
-            loading={storeVersion.isLoading}
-            icon={<SaveOutlined />}>
-            {t('save')}
-          </Button>
-        </Row>
+        <FormActions isLoading={storeVersion.isLoading} onBack={onBack} />
       </Form>
     </Card>
   );

@@ -20,6 +20,7 @@ export {default as DateTimePicker} from 'components/picker/DateTimePicker';
 
 // button
 export {default as ServerError} from 'components/button/ServerError';
+export {default as FormActions} from 'components/button/FormActions';
 
 // selects
 export {default as DropDown} from 'components/select/DropDown';
@@ -73,6 +74,7 @@ export {default as TagSelect} from 'components/tag/TagSelect';
 
 // search
 export {default as Search} from 'components/search/Search';
+export {default as SearchButton} from 'components/search/SearchButton';
 
 // chart
 export {default as Pie} from 'components/chart/EPie';

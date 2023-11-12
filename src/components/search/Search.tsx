@@ -87,7 +87,7 @@ const Search: ForwardRefRenderFunction<refProps, props> = (
                 setVisible(false);
               }}
               icon={<CloseOutlined />}>
-              {t('delete')}
+              {t('deleteFilter')}
             </Button>
           </Col>
         </Row>

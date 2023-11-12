@@ -883,6 +883,10 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
     font-size: 13px;
   }
 
+  button.ant-btn.d-text-none > span:first-child {
+    margin: 0!important;
+  }
+
   button.ant-btn.xs\:d-text-none > span:last-child {
     display: none;
   }

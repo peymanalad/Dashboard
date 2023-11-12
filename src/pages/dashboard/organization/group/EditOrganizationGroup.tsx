@@ -4,7 +4,7 @@ import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {CustomUpload, MultiSelectPaginate} from 'components';
+import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 import {getImageUrl} from 'utils';
 
 const EditOrganizationGroup: FC = () => {
@@ -13,6 +13,11 @@ const EditOrganizationGroup: FC = () => {
   const {id} = useParams<{id?: string}>();
 
   const [form] = Form.useForm();
+
+  const onBack = () => {
+    if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+    else history.replace('/organization/group/list');
+  };
 
   const fetchNewsGroup = useFetch({
     name: ['postGroups', id],
@@ -26,10 +31,7 @@ const EditOrganizationGroup: FC = () => {
     method: 'POST',
     removeQueries: ['postGroups', ['postGroups', id]],
     form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace('/organization/group/list');
-    }
+    onSuccess: onBack
   });
 
   const onFinish = (values: any) => {
@@ -110,16 +112,7 @@ const EditOrganizationGroup: FC = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={[16, 8]} className="w-full my-5">
-          <Button
-            className="sm:w-unset mr-auto"
-            type="primary"
-            htmlType="submit"
-            loading={storeNewsGroup.isLoading}
-            icon={<SaveOutlined />}>
-            {t('save')}
-          </Button>
-        </Row>
+        <FormActions isLoading={storeNewsGroup.isLoading} onBack={onBack} />
       </Form>
     </Card>
   );

@@ -34,6 +34,7 @@ const useDelete = ({name, titleKey = 'name', url, onSuccess, onError}: IPostConf
       title: t('delete'),
       content: t('messages.delete', {name: renderLabel(params, titleKey)}),
       okType: 'danger',
+      centered: true,
       okText: t('delete'),
       className: 'delete',
       cancelText: t('cancel'),

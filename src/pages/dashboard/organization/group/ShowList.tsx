@@ -1,16 +1,9 @@
-import React, {useRef, type ElementRef, type FC} from 'react';
+import React, {type FC} from 'react';
 import {Button, Card, Image, Space, Tooltip} from 'antd';
-import {
-  FormOutlined,
-  EditOutlined,
-  DeleteOutlined,
-  FilterOutlined,
-  EyeOutlined,
-  FileExcelOutlined
-} from '@ant-design/icons';
+import {FormOutlined, EditOutlined, DeleteOutlined, EyeOutlined, FileExcelOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
-import {CustomTable, Search} from 'components';
+import {CustomTable, SearchButton} from 'components';
 import {useDelete, usePost, useUser} from 'hooks';
 import type {simplePermissionProps} from 'types/common';
 import {getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
@@ -18,7 +11,6 @@ import {DeedLogoImg} from 'assets';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
-  const searchRef = useRef<ElementRef<typeof Search>>(null);
   const {hasPermission} = useUser();
   const location = useLocation();
 
@@ -99,10 +91,6 @@ const ShowList: FC = () => {
     }
   ];
 
-  const showSearch = () => {
-    if (searchRef.current) searchRef.current.open();
-  };
-
   return (
     <Card
       title={t('news_groups')}
@@ -128,12 +116,9 @@ const ShowList: FC = () => {
               </Button>
             </Link>
           )}
-          <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
-            {t('filter')}
-          </Button>
+          <SearchButton />
         </Space>
       }>
-      <Search ref={searchRef} />
       <CustomTable fetch="services/app/PostGroups/GetAll" dataName="postGroups" columns={columns} hasIndexColumn />
     </Card>
   );

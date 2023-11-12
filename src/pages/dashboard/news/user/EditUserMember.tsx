@@ -4,7 +4,7 @@ import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
-import {MultiSelectPaginate} from 'components';
+import {FormActions, MultiSelectPaginate} from 'components';
 
 const EditMemberShowList: FC = () => {
   const {t} = useTranslation('news');
@@ -12,6 +12,11 @@ const EditMemberShowList: FC = () => {
   const {id} = useParams<{id?: string}>();
 
   const [form] = Form.useForm();
+
+  const onBack = () => {
+    if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+    else history.replace('/news/member/list');
+  };
 
   const fetchNewsUserMember = useFetch({
     name: ['groupMembers', id],
@@ -25,10 +30,7 @@ const EditMemberShowList: FC = () => {
     method: 'POST',
     removeQueries: ['groupMembers', ['groupMembers', id]],
     form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace('/news/member/list');
-    }
+    onSuccess: onBack
   });
 
   const onFinish = (values: any) => {
@@ -43,7 +45,7 @@ const EditMemberShowList: FC = () => {
 
   return (
     <Card
-      title={t('news_groups')}
+      title={t('news_member')}
       bordered={false}
       loading={(id && !fetchNewsUserMember?.data) || fetchNewsUserMember.isFetching}
       className="w-full">
@@ -124,16 +126,7 @@ const EditMemberShowList: FC = () => {
             )}
           </Form.Item>
         </Row>
-        <Row gutter={[16, 8]} className="w-full my-5">
-          <Button
-            className="sm:w-unset mr-auto"
-            type="primary"
-            htmlType="submit"
-            loading={storeNewsUserMember.isLoading}
-            icon={<SaveOutlined />}>
-            {t('save')}
-          </Button>
-        </Row>
+        <FormActions isLoading={storeNewsUserMember.isLoading} onBack={onBack} />
       </Form>
     </Card>
   );

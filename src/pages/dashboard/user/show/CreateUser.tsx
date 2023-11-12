@@ -1,8 +1,7 @@
 import React, {type FC} from 'react';
-import {Card, Form, Checkbox, Button, Input, Row, Col} from 'antd';
-import {SaveOutlined} from '@ant-design/icons';
+import {Card, Form, Checkbox, Input, Row, Col} from 'antd';
 import {useTranslation} from 'react-i18next';
-import {CustomUpload, MultiSelectPaginate} from 'components';
+import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 import {useHistory} from 'react-router-dom';
 import {usePost} from 'hooks';
 import {getLangSearchParam, convertNumbers2English} from 'utils';
@@ -12,13 +11,15 @@ const AccountInfo: FC = () => {
   const history = useHistory();
   const [form] = Form.useForm();
 
+  const onBack = () => {
+    if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+    else history.replace(getLangSearchParam('/user/list'));
+  };
+
   const sendPicture = usePost({
     url: 'services/app/Profile/UpdateProfilePicture',
     method: 'PUT',
-    onSuccess() {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace(getLangSearchParam('/user/list'));
-    }
+    onSuccess: onBack
   });
 
   const sendUser = usePost({
@@ -147,18 +148,7 @@ const AccountInfo: FC = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={[16, 8]} className="my-5">
-          <Col span={24} className="flex flex-col sm:flex-row items-center justify-between">
-            <Button
-              className="sm:w-unset mr-auto my-4"
-              type="primary"
-              htmlType="submit"
-              loading={sendUser.isLoading || sendPicture.isLoading}
-              icon={<SaveOutlined />}>
-              {t('save')}
-            </Button>
-          </Col>
-        </Row>
+        <FormActions isLoading={sendUser.isLoading || sendPicture.isLoading} onBack={onBack} />
       </Card>
     </Form>
   );

@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Card, Form, Row, Col, Input, Button, Checkbox} from 'antd';
-import {TreeSelect} from 'components';
+import {FormActions, TreeSelect} from 'components';
 import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
@@ -13,6 +13,11 @@ const EditRole: FC = () => {
   const {id} = useParams<{id?: string}>();
 
   const [form] = Form.useForm();
+
+  const onBack = () => {
+    if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+    else history.replace('/setting/role/list');
+  };
 
   const fetchRole = useFetch({
     name: ['role', id],
@@ -32,10 +37,7 @@ const EditRole: FC = () => {
     method: 'POST',
     removeQueries: ['roles'],
     form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace('/setting/role/list');
-    }
+    onSuccess: onBack
   });
 
   const onFinish = (values: any) => {
@@ -82,16 +84,7 @@ const EditRole: FC = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={[16, 8]} className="w-full my-5">
-          <Button
-            className="sm:w-unset mr-auto"
-            type="primary"
-            htmlType="submit"
-            loading={storeRole.isLoading}
-            icon={<SaveOutlined />}>
-            {t('save')}
-          </Button>
-        </Row>
+        <FormActions isLoading={storeRole.isLoading} onBack={onBack} />
       </Form>
     </Card>
   );
