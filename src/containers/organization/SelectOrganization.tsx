@@ -6,9 +6,11 @@ import {useHistory, useLocation} from 'react-router-dom';
 import {queryStringToObject} from 'utils';
 import qs from 'qs';
 
-interface props {}
+interface props {
+  hasAll?: boolean;
+}
 
-const SelectOrganization: FC<props> = (props) => {
+const SelectOrganization: FC<props> = ({hasAll}) => {
   const {t} = useTranslation('organization');
   const location = useLocation();
   const history = useHistory();
@@ -33,10 +35,16 @@ const SelectOrganization: FC<props> = (props) => {
         id: userOrganization?.organizationId,
         name: userOrganization?.organizationName
       }));
-    return fetchOrganizaion?.data?.items?.map((organization: any) => ({
+    const organizations = fetchOrganizaion?.data?.items?.map((organization: any) => ({
       id: organization?.organization?.id,
       name: organization?.organization?.organizationName
     }));
+    if (hasAll)
+      organizations?.unshift({
+        id: '-1',
+        name: t('allOrganizations')
+      });
+    return organizations;
   }, [userOrganizations, fetchOrganizaion?.data?.items]);
 
   const onChange = (organization: any) => {
@@ -61,7 +69,6 @@ const SelectOrganization: FC<props> = (props) => {
       }}
       value={!organizations?.length ? selectedOrganization?.name : +selectedOrganization?.id}
       data={organizations}
-      {...props}
     />
   );
 };

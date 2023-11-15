@@ -20,7 +20,7 @@ import type {simplePermissionProps} from 'types/common';
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
   const searchRef = useRef<ElementRef<typeof Search>>(null);
-  const {hasPermission} = useUser();
+  const {hasPermission, isSuperUser} = useUser();
   const location = useLocation();
 
   const fetchExcel = usePost({
@@ -41,7 +41,7 @@ const ShowList: FC = () => {
     {
       title: t('image'),
       dataIndex: ['post', 'postFile'],
-      key: 'image',
+      key: 'postFile',
       className: 'pt-2 pb-0',
       align: 'center',
       render: (imageId: string) =>
@@ -81,7 +81,7 @@ const ShowList: FC = () => {
     {
       title: t('context'),
       dataIndex: ['post', 'postCaption'],
-      key: 'name',
+      key: 'postCaption',
       align: 'center',
       render: (text: string) => `${text.substring(0, 30)} ...`
     },
@@ -197,7 +197,6 @@ const ShowList: FC = () => {
           )}
           <SearchButton
             onSearch={(value) => {
-              console.log(value);
               value.FromDate = value.FromDate ? convertTimeToUTC(value.FromDate, 'YYYY-MM-DD') : undefined;
               value.ToDate = value.ToDate ? convertTimeToUTC(value.ToDate, 'YYYY-MM-DD') : undefined;
               return value;
@@ -230,6 +229,7 @@ const ShowList: FC = () => {
         columns={columns}
         hasIndexColumn
         hasOrganization
+        selectOrganizationProps={{hasAll: isSuperUser()}}
       />
     </Card>
   );

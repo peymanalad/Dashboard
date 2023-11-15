@@ -32,18 +32,21 @@ const ShowList: FC = () => {
       title: t('comment'),
       dataIndex: 'commentCommentCaption',
       key: 'commentCommentCaption',
+      sorter: true,
       align: 'center'
     },
     {
       title: t('user'),
       dataIndex: 'userName',
       key: 'userName',
+      sorter: true,
       align: 'center'
     },
     {
       title: t('created_at'),
       dataIndex: ['commentLike', 'likeTime'],
-      key: 'created_at',
+      key: 'likeTime',
+      sorter: true,
       align: 'center',
       responsive: ['md'],
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')

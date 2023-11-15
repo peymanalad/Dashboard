@@ -2,7 +2,7 @@ import React, {type FC, useRef, type ElementRef} from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import {useDelete, usePost, useUser} from 'hooks';
 import {useTranslation} from 'react-i18next';
-import {Button, Card, Space, Tooltip} from 'antd';
+import {Button, Card, Form, Image, Space, Tooltip} from 'antd';
 import {
   FormOutlined,
   FilterOutlined,
@@ -12,17 +12,19 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
   BankOutlined,
-  FileExcelOutlined
+  FileExcelOutlined,
+  EyeOutlined
 } from '@ant-design/icons';
-import {CustomTable, Search} from 'components';
-import {convertUtcTimeToLocal, queryStringToObject, getTempFileUrl} from 'utils';
+import {CustomTable, DateTimePicker, Search, SearchButton} from 'components';
+import {convertUtcTimeToLocal, queryStringToObject, getTempFileUrl, convertTimeToUTC, getImageUrl} from 'utils';
 import type {simplePermissionProps} from 'types/common';
+import {DeedLogoImg} from 'assets';
 
 const UserShowList: FC = () => {
   const {t} = useTranslation('user-show');
   const searchRef = useRef<ElementRef<typeof Search>>(null);
   const tableRef = useRef<ElementRef<typeof CustomTable>>(null);
-  const {hasPermission} = useUser();
+  const {hasPermission, isSuperUser} = useUser();
   const location = useLocation();
 
   const fetchExcel = usePost({
@@ -40,6 +42,32 @@ const UserShowList: FC = () => {
   });
 
   const columns = [
+    {
+      title: t('profile'),
+      dataIndex: 'profilePictureId',
+      key: 'profilePictureId',
+      className: 'pt-2 pb-0',
+      align: 'center',
+      render: (imageId: string) =>
+        imageId ? (
+          <Image
+            preview={{
+              className: 'custom-operation',
+              mask: (
+                <div className="w-full h-full bg-black opacity-75 flex flex-center">
+                  <EyeOutlined className="text-yellow" />
+                </div>
+              )
+            }}
+            width={50}
+            height={50}
+            src={getImageUrl(imageId)}
+            fallback={DeedLogoImg}
+          />
+        ) : (
+          '-'
+        )
+    },
     {
       title: t('username'),
       dataIndex: 'userName',
@@ -73,7 +101,8 @@ const UserShowList: FC = () => {
       dataIndex: ['roles', 0, 'roleName'],
       key: 'roles',
       align: 'center',
-      sorter: false
+      sorter: false,
+      render: (role?: string) => t(role || 'User')
     },
     {
       title: t('active'),
@@ -113,6 +142,15 @@ const UserShowList: FC = () => {
       title: t('created_at'),
       dataIndex: 'creationTime',
       key: 'creationTime',
+      align: 'center',
+      responsive: ['md'],
+      sorter: true,
+      render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
+    },
+    {
+      title: t('lastLogin'),
+      dataIndex: 'lastLoginTime',
+      key: 'lastLoginTime',
       align: 'center',
       responsive: ['md'],
       sorter: true,
@@ -180,14 +218,59 @@ const UserShowList: FC = () => {
               </Button>
             </Link>
           )}
-          <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
-            {t('filter')}
-          </Button>
+          <SearchButton
+            onSearch={(value) => {
+              value.FromCreationDate = value.FromCreationDate
+                ? convertTimeToUTC(value.FromCreationDate, 'YYYY-MM-DD')
+                : undefined;
+              value.ToCreationDate = value.ToCreationDate
+                ? convertTimeToUTC(value.ToCreationDate, 'YYYY-MM-DD')
+                : undefined;
+              value.FromLastLoginDate = value.FromLastLoginDate
+                ? convertTimeToUTC(value.FromLastLoginDate, 'YYYY-MM-DD')
+                : undefined;
+              value.ToLastLoginDate = value.ToLastLoginDate
+                ? convertTimeToUTC(value.ToLastLoginDate, 'YYYY-MM-DD')
+                : undefined;
+              return value;
+            }}>
+            {(queryObject) => (
+              <>
+                <Form.Item
+                  name="FromCreationDate"
+                  label={t('from_creation_date')}
+                  className="mb-1/2 label-p-0"
+                  initialValue={queryObject?.FromCreationDate}>
+                  <DateTimePicker />
+                </Form.Item>
+                <Form.Item
+                  name="ToCreationDate"
+                  label={t('to_creation_date')}
+                  className="mb-1/2 label-p-0"
+                  initialValue={queryObject?.ToCreationDate}>
+                  <DateTimePicker />
+                </Form.Item>
+                <Form.Item
+                  name="FromLastLoginDate"
+                  label={t('from_last_login_date')}
+                  className="mb-1/2 label-p-0"
+                  initialValue={queryObject?.FromLastLoginDate}>
+                  <DateTimePicker />
+                </Form.Item>
+                <Form.Item
+                  name="ToLastLoginDate"
+                  label={t('to_last_login_date')}
+                  className="mb-1/2 label-p-0"
+                  initialValue={queryObject?.ToLastLoginDate}>
+                  <DateTimePicker />
+                </Form.Item>
+              </>
+            )}
+          </SearchButton>
         </Space>
       }
       className="my-6"
       title={t('title')}>
-      <Search ref={searchRef} />
       <CustomTable
         fetch="/services/app/User/GetListOfUsers"
         dataName="users"
@@ -195,6 +278,7 @@ const UserShowList: FC = () => {
         ref={tableRef}
         hasIndexColumn
         hasOrganization
+        selectOrganizationProps={{hasAll: isSuperUser()}}
       />
     </Card>
   );

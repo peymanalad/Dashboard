@@ -11,7 +11,7 @@ import {DeedLogoImg} from 'assets';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
-  const {hasPermission} = useUser();
+  const {hasPermission, isSuperUser} = useUser();
   const location = useLocation();
 
   const fetchExcel = usePost({
@@ -119,7 +119,14 @@ const ShowList: FC = () => {
           <SearchButton />
         </Space>
       }>
-      <CustomTable fetch="services/app/PostGroups/GetAll" dataName="postGroups" columns={columns} hasIndexColumn />
+      <CustomTable
+        fetch="services/app/PostGroups/GetAll"
+        dataName="postGroups"
+        columns={columns}
+        hasIndexColumn
+        hasOrganization
+        selectOrganizationProps={{hasAll: isSuperUser()}}
+      />
     </Card>
   );
 };

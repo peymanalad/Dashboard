@@ -1,8 +1,8 @@
 import React, {useRef, ElementRef, FC} from 'react';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {DeleteOutlined, FileExcelOutlined} from '@ant-design/icons';
+import {DeleteOutlined, EditOutlined, FileExcelOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
-import {useLocation} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search, SearchButton} from 'components';
 import {useDelete, usePost} from 'hooks';
 import {convertUtcTimeToLocal, getTempFileUrl, queryStringToObject} from 'utils';
@@ -32,19 +32,22 @@ const ShowList: FC = () => {
       title: t('the_news'),
       dataIndex: 'postPostTitle',
       key: 'postPostTitle',
+      sorter: true,
       align: 'center'
     },
     {
       title: t('user'),
       dataIndex: 'userName',
       key: 'userName',
+      sorter: true,
       align: 'center'
     },
     {
       title: t('created_at'),
       dataIndex: ['postLike', 'likeTime'],
-      key: 'created_at',
+      key: 'likeTime',
       align: 'center',
+      sorter: true,
       responsive: ['md'],
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
@@ -55,6 +58,11 @@ const ShowList: FC = () => {
       align: 'center',
       render: (permissions: simplePermissionProps, postLike: any) => (
         <Space size={2}>
+          <Tooltip title={t('update')}>
+            <Link to={`/news/news/edit/${postLike.postPostId}`}>
+              <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
+            </Link>
+          </Tooltip>
           <Tooltip title={t('do_delete')}>
             <Button
               onClick={() => deleteRequest.show(postLike, {Id: postLike.postLike?.id})}

@@ -1,14 +1,22 @@
 import React, {useRef, type ElementRef, type FC} from 'react';
-import {Button, Card, Space, Tooltip} from 'antd';
-import {EditOutlined, DeleteOutlined, FileExcelOutlined, FormOutlined, UserOutlined} from '@ant-design/icons';
+import {Button, Card, Image, Space, Tooltip} from 'antd';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  FileExcelOutlined,
+  FormOutlined,
+  UserOutlined,
+  EyeOutlined
+} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search, SearchButton} from 'components';
 import {useDelete, usePost, useUser} from 'hooks';
 import {getTempFileUrl} from 'utils/file';
-import {queryStringToObject} from 'utils';
+import {getImageUrl, queryStringToObject} from 'utils';
 import type {simplePermissionProps} from 'types/common';
 import qs from 'qs';
+import {DeedLogoImg} from '../../../../assets';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('organization');
@@ -39,6 +47,32 @@ const ShowList: FC = () => {
       responsive: ['md']
     },
     {
+      title: t('image'),
+      dataIndex: ['organization', 'organizationLogo'],
+      key: 'image',
+      className: 'pt-2 pb-0',
+      align: 'center',
+      render: (imageId: string) =>
+        imageId ? (
+          <Image
+            preview={{
+              className: 'custom-operation',
+              mask: (
+                <div className="w-full h-full bg-black opacity-75 flex flex-center">
+                  <EyeOutlined className="text-yellow" />
+                </div>
+              )
+            }}
+            width={50}
+            height={50}
+            src={getImageUrl(imageId)}
+            fallback={DeedLogoImg}
+          />
+        ) : (
+          '-'
+        )
+    },
+    {
       title: t('name'),
       dataIndex: ['organization', 'organizationName'],
       key: 'organizationName',
@@ -50,7 +84,7 @@ const ShowList: FC = () => {
       dataIndex: 'deedChartParentCaption',
       key: 'deedChartParentCaption',
       align: 'center',
-      sorter: false
+      sorter: true
     },
     {
       title: t('actions'),

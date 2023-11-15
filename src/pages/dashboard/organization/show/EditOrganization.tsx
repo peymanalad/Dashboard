@@ -14,6 +14,11 @@ const EditOrganization: FC = () => {
 
   const [form] = Form.useForm();
 
+  const onBack = () => {
+    if (history.length > 1 && document.URL !== document.referrer) history.goBack();
+    else history.replace(getLangSearchParam('/organization/organization/list'));
+  };
+
   const fetchOrganization = useFetch({
     name: ['organization', id],
     url: 'services/app/Organizations/GetOrganizationForEdit',
@@ -42,10 +47,7 @@ const EditOrganization: FC = () => {
     method: 'POST',
     removeQueries: ['organizations', ['organization', id]],
     form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace('/organization/organization/list');
-    }
+    onSuccess: onBack
   });
 
   const updateOrganization = usePost({
@@ -53,23 +55,15 @@ const EditOrganization: FC = () => {
     method: 'POST',
     removeQueries: ['organizations', ['organization', id]],
     form,
-    onSuccess: () => {
-      if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace('/organization/organization/list');
-    }
+    onSuccess: onBack
   });
-
-  const onBack = () => {
-    if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-    else history.replace(getLangSearchParam('/user/list'));
-  };
 
   const updateUser = usePost({
     url: 'services/app/User/CreateOrUpdateUser',
     method: 'POST',
     removeQueries: ['users', ['user', id]],
-    form,
-    onSuccess: onBack
+    form
+    // onSuccess: onBack
   });
 
   const onFinish = (values: any, organizationChartId?: number) => {

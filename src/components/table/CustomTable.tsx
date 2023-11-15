@@ -37,6 +37,7 @@ interface TableProps {
   path?: string | string[];
   isRowSelection?: boolean;
   hasOrganization?: boolean;
+  selectOrganizationProps?: object;
   enabled?: boolean;
   onChange?: (selectedRows: any[]) => void;
   ref?: RefObject<refProps>;
@@ -61,6 +62,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     path = 'items',
     isRowSelection,
     hasOrganization = false,
+    selectOrganizationProps,
     enabled = true,
     onChange,
     showTableSizeChange = true
@@ -118,7 +120,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
 
   return (
     <>
-      {hasOrganization && <SelectOrganization />}
+      {hasOrganization && <SelectOrganization {...selectOrganizationProps} />}
       <Table
         dataSource={
           isArray(path?.length ? get(paginateData?.data, path) : paginateData?.data)
