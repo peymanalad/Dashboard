@@ -95,6 +95,7 @@ const WarningShowList = lazyWithRetry(() => import('pages/dashboard/education/wa
 
 // organization
 const EditOrganization = lazyWithRetry(() => import('pages/dashboard/organization/show/EditOrganization'));
+const ShowOrganization = lazyWithRetry(() => import('pages/dashboard/organization/show/ShowOrganization'));
 const OrganizationShowList = lazyWithRetry(() => import('pages/dashboard/organization/show/ShowList'));
 
 const EditOrganizationGroup = lazyWithRetry(() => import('pages/dashboard/organization/group/EditOrganizationGroup'));
@@ -258,6 +259,15 @@ const Dashboard: Array<dashboardRouteProps> = [
         route: '/organization/organization/edit/:id',
         cmp: <EditOrganization />,
         title: i18n.t('side_menu:editOrganization'),
+        permission: 'OrganizationUnits',
+        forSuperAdmin: true,
+        hidden: true
+      },
+      {
+        key: 'organizationShow',
+        route: '/organization/organization/show/:id',
+        cmp: <ShowOrganization />,
+        title: i18n.t('side_menu:showOrganization'),
         permission: 'OrganizationUnits',
         forSuperAdmin: true,
         hidden: true

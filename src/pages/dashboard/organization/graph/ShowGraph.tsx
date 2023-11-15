@@ -2,7 +2,7 @@ import React, {useRef, ElementRef, FC, useMemo, useEffect, useState} from 'react
 import {useHistory} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {useDelete, useFetch} from 'hooks';
-import {Avatar, Card, Dropdown} from 'antd';
+import {Avatar, Button, Card, Dropdown, Space} from 'antd';
 // @ts-ignore
 import {Graph, GraphProps} from 'react-d3-graph';
 import {
@@ -11,14 +11,16 @@ import {
   HomeOutlined,
   EditOutlined,
   DeleteOutlined,
-  UserOutlined
+  UserOutlined,
+  EyeOutlined,
+  ReloadOutlined
 } from '@ant-design/icons';
 import AddOrganizationModal from 'containers/organization/AddOrganization';
 import SetOrganizationModal from 'containers/organization/SetOrganization';
+import ShowOrganizationUserModal from 'containers/organization/ShowOrganizationUser';
 import findIndex from 'lodash/findIndex';
 import {generateUniqueColorCodeById, getImageUrl, getLangSearchParam} from 'utils';
 import {DeedLogoImg} from 'assets';
-import ShowOrganizationUserModal from '../../../../containers/organization/ShowOrganizationUser';
 
 const ShowGraph: FC = () => {
   const {t} = useTranslation('organization');
@@ -117,12 +119,21 @@ const ShowGraph: FC = () => {
       label: t('showOrganizationChart'),
       key: 'showOrganizationChart',
       icon: <RadarChartOutlined />
+    },
+    {
+      label: t('organizationProfile'),
+      key: 'organizationProfile',
+      icon: <EyeOutlined />
     }
   ];
 
-  useEffect(() => {
+  const calculateWidth = () => {
     const cardBodyWidth = CardRef.current?.querySelector('.ant-card-body')?.clientWidth;
     if (!!cardBodyWidth) setWidth(cardBodyWidth - 50 || 800);
+  };
+
+  useEffect(() => {
+    calculateWidth();
   }, [CardRef.current]);
 
   const myConfig: GraphProps<any, any>['config'] | any = {
@@ -208,6 +219,9 @@ const ShowGraph: FC = () => {
                         }
                       );
                       break;
+                    case 'organizationProfile':
+                      history.push(getLangSearchParam(`/organization/organization/show/${node?.organizationId}`));
+                      break;
                     case 'showGlobalUsers':
                       if (showOrganizationUserRef.current) showOrganizationUserRef.current.open(node?.organizationId);
                       break;
@@ -272,8 +286,23 @@ const ShowGraph: FC = () => {
     }
   };
 
+  const onReOrder = () => {
+    setWidth(0);
+    setTimeout(calculateWidth, 300);
+  };
+
   return (
-    <Card title={t('title')} loading={!data?.nodes?.length} ref={CardRef}>
+    <Card
+      title={t('title')}
+      loading={!data?.nodes?.length}
+      ref={CardRef}
+      extra={
+        <Space size="small">
+          <Button className="sm:w-unset mr-auto bg-orange" type="primary" onClick={onReOrder} icon={<ReloadOutlined />}>
+            {t('reOrder')}
+          </Button>
+        </Space>
+      }>
       {!!width && (
         <>
           <Graph id="graph-id" className="w-full" data={data} config={myConfig} />

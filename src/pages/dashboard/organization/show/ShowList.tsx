@@ -16,7 +16,7 @@ import {getTempFileUrl} from 'utils/file';
 import {getImageUrl, queryStringToObject} from 'utils';
 import type {simplePermissionProps} from 'types/common';
 import qs from 'qs';
-import {DeedLogoImg} from '../../../../assets';
+import {DeedLogoImg} from 'assets';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('organization');
@@ -101,7 +101,12 @@ const ShowList: FC = () => {
                   organization: {id: organization?.organization?.id, name: organization?.organization?.organizationName}
                 })
               }}>
-              <Button type="text" icon={<UserOutlined className="text-orange" />} />
+              <Button type="text" icon={<UserOutlined className="text-green" />} />
+            </Link>
+          </Tooltip>
+          <Tooltip title={t('organizationProfile')}>
+            <Link to={`/organization/organization/show/${organization.organization?.id}`}>
+              <Button type="text" icon={<EyeOutlined className="text-orange" />} />
             </Link>
           </Tooltip>
           <Tooltip title={t('update')}>
