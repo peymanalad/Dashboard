@@ -1,14 +1,15 @@
 import React, {useRef, type ElementRef, type FC} from 'react';
-import {Button, Card, Space} from 'antd';
-import {FormOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation, useParams} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
-import {useDelete, usePost, useUser} from 'hooks';
+import {useDelete, useUser} from 'hooks';
 
-const ShowList: FC = () => {
+interface Props {
+  id?: string;
+}
+
+const ShowUserOrganizations: FC<Props> = ({id}) => {
   const {t} = useTranslation('organization');
-  const {id} = useParams<{id?: string}>();
   const searchRef = useRef<ElementRef<typeof Search>>(null);
   const {hasPermission} = useUser();
   const location = useLocation();
@@ -47,26 +48,14 @@ const ShowList: FC = () => {
   };
 
   return (
-    <Card
-      title={t('showOrganizationUsers')}
-      extra={
-        <Space size="small">
-          <Link to="/news/member/create">
-            <Button className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset" icon={<FormOutlined />}>
-              {t('addOrganization')}
-            </Button>
-          </Link>
-        </Space>
-      }>
-      <CustomTable
-        fetch="services/app/User/GetListOfOrganizations"
-        query={{userId: id}}
-        path=""
-        dataName={['users', 'organizations', id]}
-        columns={columns}
-      />
-    </Card>
+    <CustomTable
+      fetch="services/app/User/GetListOfOrganizations"
+      query={{userId: id}}
+      path=""
+      dataName={['users', 'organizations', id]}
+      columns={columns}
+    />
   );
 };
 
-export default ShowList;
+export default ShowUserOrganizations;

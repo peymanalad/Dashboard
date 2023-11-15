@@ -65,7 +65,6 @@ const EditUser: FC = () => {
         id: +id
       }
     });
-    console.log(val?.updateFileToken?.fileToken, uniqueId);
     sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken || uniqueId});
   };
 

@@ -178,6 +178,11 @@ const UserShowList: FC = () => {
               <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
             </Link>
           </Tooltip>
+          <Tooltip title={t('profile')}>
+            <Link to={`/user/show/${user?.id}`}>
+              <Button type="text" icon={<EyeOutlined className="text-orange" />} />
+            </Link>
+          </Tooltip>
           <Tooltip title={t('do_delete')}>
             <Button
               onClick={() => deleteRequest.show(user, {Id: user?.id})}
