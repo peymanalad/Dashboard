@@ -48,6 +48,7 @@ const SelectOrganization: FC<props> = ({hasAll, ...props}) => {
   }, [userOrganizations, fetchOrganizaion?.data?.items]);
 
   const onChange = (organization: any) => {
+    if (!!Object?.keys(props)?.length) return;
     history.replace({
       search: qs.stringify({...queryObject, organization})
     });

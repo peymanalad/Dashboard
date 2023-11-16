@@ -90,7 +90,16 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
             !!selectedOrganization?.id && selectedOrganization?.id !== '0' ? selectedOrganization?.id : undefined
         }
       : query,
-    search: {...search, Filter: queryObject?.search, ...queryObject, organization: null},
+    search: {
+      ...search,
+      Filter:
+        queryObject?.search || queryObject?.structSearch
+          ? Object.values(queryObject?.structSearch || {}).join(' ')
+          : null,
+      ...queryObject,
+      organization: null,
+      structSearch: null
+    },
     params,
     enabled: hasOrganization ? !!selectedOrganization?.id && enabled : enabled
   });

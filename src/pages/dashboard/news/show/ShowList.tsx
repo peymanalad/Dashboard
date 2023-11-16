@@ -1,5 +1,5 @@
 import React, {useRef, type ElementRef, type FC} from 'react';
-import {Button, Card, Space, Tooltip, Image, Form} from 'antd';
+import {Button, Card, Space, Tooltip, Image} from 'antd';
 import {
   FormOutlined,
   EditOutlined,
@@ -11,7 +11,8 @@ import {
 } from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
-import {CustomTable, DateTimePicker, Search, SearchButton} from 'components';
+import {CustomTable, Search} from 'components';
+import SearchNews from 'containers/news/news/SearchNews';
 import {useDelete, usePost, useUser} from 'hooks';
 import {convertTimeToUTC, convertUtcTimeToLocal, getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
 import {DeedLogoImg} from 'assets';
@@ -195,31 +196,7 @@ const ShowList: FC = () => {
               </Button>
             </Link>
           )}
-          <SearchButton
-            onSearch={(value) => {
-              value.FromDate = value.FromDate ? convertTimeToUTC(value.FromDate, 'YYYY-MM-DD') : undefined;
-              value.ToDate = value.ToDate ? convertTimeToUTC(value.ToDate, 'YYYY-MM-DD') : undefined;
-              return value;
-            }}>
-            {(queryObject) => (
-              <>
-                <Form.Item
-                  name="FromDate"
-                  label={t('from_date')}
-                  className="mb-1/2 label-p-0"
-                  initialValue={queryObject?.FromDate}>
-                  <DateTimePicker />
-                </Form.Item>
-                <Form.Item
-                  name="ToDate"
-                  label={t('to_date')}
-                  className="mb-1/2 label-p-0"
-                  initialValue={queryObject?.ToDate}>
-                  <DateTimePicker />
-                </Form.Item>
-              </>
-            )}
-          </SearchButton>
+          <SearchNews />
         </Space>
       }>
       <CustomTable

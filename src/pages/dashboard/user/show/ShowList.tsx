@@ -2,7 +2,7 @@ import React, {type FC, useRef, type ElementRef} from 'react';
 import {Link, useLocation} from 'react-router-dom';
 import {useDelete, usePost, useUser} from 'hooks';
 import {useTranslation} from 'react-i18next';
-import {Button, Card, Form, Image, Space, Tooltip} from 'antd';
+import {Button, Card, Image, Space, Tooltip} from 'antd';
 import {
   FormOutlined,
   EditOutlined,
@@ -14,8 +14,9 @@ import {
   FileExcelOutlined,
   EyeOutlined
 } from '@ant-design/icons';
-import {CustomTable, DateTimePicker, Search, SearchButton} from 'components';
-import {convertUtcTimeToLocal, queryStringToObject, getTempFileUrl, convertTimeToUTC, getImageUrl} from 'utils';
+import {CustomTable, Search} from 'components';
+import SearchUsers from 'containers/users/show/SearchUsers';
+import {convertUtcTimeToLocal, queryStringToObject, getTempFileUrl, getImageUrl} from 'utils';
 import type {simplePermissionProps} from 'types/common';
 import {DeedLogoImg} from 'assets';
 
@@ -222,55 +223,7 @@ const UserShowList: FC = () => {
               </Button>
             </Link>
           )}
-          <SearchButton
-            onSearch={(value) => {
-              value.FromCreationDate = value.FromCreationDate
-                ? convertTimeToUTC(value.FromCreationDate, 'YYYY-MM-DD')
-                : undefined;
-              value.ToCreationDate = value.ToCreationDate
-                ? convertTimeToUTC(value.ToCreationDate, 'YYYY-MM-DD')
-                : undefined;
-              value.FromLastLoginDate = value.FromLastLoginDate
-                ? convertTimeToUTC(value.FromLastLoginDate, 'YYYY-MM-DD')
-                : undefined;
-              value.ToLastLoginDate = value.ToLastLoginDate
-                ? convertTimeToUTC(value.ToLastLoginDate, 'YYYY-MM-DD')
-                : undefined;
-              return value;
-            }}>
-            {(queryObject) => (
-              <>
-                <Form.Item
-                  name="FromCreationDate"
-                  label={t('from_creation_date')}
-                  className="mb-1/2 label-p-0"
-                  initialValue={queryObject?.FromCreationDate}>
-                  <DateTimePicker />
-                </Form.Item>
-                <Form.Item
-                  name="ToCreationDate"
-                  label={t('to_creation_date')}
-                  className="mb-1/2 label-p-0"
-                  initialValue={queryObject?.ToCreationDate}>
-                  <DateTimePicker />
-                </Form.Item>
-                <Form.Item
-                  name="FromLastLoginDate"
-                  label={t('from_last_login_date')}
-                  className="mb-1/2 label-p-0"
-                  initialValue={queryObject?.FromLastLoginDate}>
-                  <DateTimePicker />
-                </Form.Item>
-                <Form.Item
-                  name="ToLastLoginDate"
-                  label={t('to_last_login_date')}
-                  className="mb-1/2 label-p-0"
-                  initialValue={queryObject?.ToLastLoginDate}>
-                  <DateTimePicker />
-                </Form.Item>
-              </>
-            )}
-          </SearchButton>
+          <SearchUsers />
         </Space>
       }
       className="my-6"

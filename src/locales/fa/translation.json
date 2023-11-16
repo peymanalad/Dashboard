@@ -659,6 +659,8 @@
       "not_checked": "بررسی نشده : {{count}}"
     },
     "excel": "اکسل",
+    "deleteFilter": "حذف فیلتر",
+    "access_level": "سطح دسترسی",
     "created_from": "ایجاد شده از",
     "created_to": "ایجاد شده تا",
     "do_delete": "حذف کردن",
@@ -2349,6 +2351,7 @@
     "goto_link": "رفتن به لینک",
     "excel": "اکسل",
     "organization": "سازمان",
+    "deleteFilter": "حذف فیلتر",
     "news_groups": "گروه های خبری",
     "organization_position": "رتبه سازمانی",
     "organization_situation": "سمت سازمانی",

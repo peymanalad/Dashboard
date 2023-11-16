@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Card, Form, Row, Col, Input, Button} from 'antd';
+import {Card, Form, Row, Col, Input} from 'antd';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
@@ -77,32 +77,40 @@ const EditOrganizationGroup: FC = () => {
             <Form.Item
               label={t('organization_group')}
               name="organization"
-              initialValue={{
-                id: fetchNewsGroup?.data?.postGroup?.organizationId,
-                displayName: fetchNewsGroup?.data?.organizationGroupGroupName
-              }}>
+              initialValue={fetchNewsGroup?.data?.postGroup?.organizationId}>
               <SelectOrganization />
             </Form.Item>
           </Col>
-          <Col span={24}>
-            <Form.Item label={t('users')} name="users">
-              <MultiSelectPaginate
-                mode="multiple"
-                urlName="usersSearch"
-                url="services/app/GroupMembers/GetAll"
-                renderCustomLabel={(option) => {
-                  return `${option?.userName} ${
-                    option?.groupMember?.memberPosition ? `- ${option?.groupMember?.memberPosition}` : ''
-                  }`;
-                }}
-                keyPath={['groupMember']}
-                keyValue="id"
-                keyLabel="memberPosition"
-                placeholder={t('choose')}
-                showSearch={false}
-              />
-            </Form.Item>
-          </Col>
+          <Form.Item
+            noStyle
+            shouldUpdate={(prevValues, nextValues) => prevValues.organization !== nextValues.organization}>
+            {(fields) => {
+              const organization = fields.getFieldValue('organization');
+              return (
+                <Col xs={24} md={12} lg={24}>
+                  <Form.Item label={t('users')} name="users">
+                    <MultiSelectPaginate
+                      mode="multiple"
+                      urlName={['organization', 'groupMembers', id]}
+                      url="services/app/GroupMembers/GetAll"
+                      params={{organizationId: organization}}
+                      renderCustomLabel={(option) => {
+                        return `${option?.userName} ${
+                          option?.groupMember?.memberPosition ? `- ${option?.groupMember?.memberPosition}` : ''
+                        }`;
+                      }}
+                      disabled={!organization}
+                      keyPath={['groupMember']}
+                      keyValue="id"
+                      keyLabel="memberPosition"
+                      placeholder={t('choose')}
+                      showSearch={false}
+                    />
+                  </Form.Item>
+                </Col>
+              );
+            }}
+          </Form.Item>
         </Row>
         <FormActions isLoading={storeNewsGroup.isLoading} onBack={onBack} />
       </Form>
