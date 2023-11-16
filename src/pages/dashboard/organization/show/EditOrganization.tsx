@@ -172,7 +172,7 @@ const EditOrganization: FC = () => {
           {!location.state?.organization?.id && !id && (
             <Col xs={24}>
               <Form.Item
-                label={t('organization_group')}
+                label={t('parentOrganization')}
                 name={['organization', 'parent']}
                 rules={[{required: true, message: t('messages.required')}]}>
                 <MultiSelectPaginate

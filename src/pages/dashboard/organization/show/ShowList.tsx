@@ -81,8 +81,8 @@ const ShowList: FC = () => {
     },
     {
       title: t('parentOrganization'),
-      dataIndex: 'deedChartParentCaption',
-      key: 'deedChartParentCaption',
+      dataIndex: 'leafCationPath',
+      key: 'leafCationPath',
       align: 'center',
       sorter: true
     },

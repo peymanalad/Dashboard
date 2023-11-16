@@ -10,7 +10,7 @@ interface props {
   hasAll?: boolean;
 }
 
-const SelectOrganization: FC<props> = ({hasAll}) => {
+const SelectOrganization: FC<props> = ({hasAll, ...props}) => {
   const {t} = useTranslation('organization');
   const location = useLocation();
   const history = useHistory();
@@ -37,18 +37,18 @@ const SelectOrganization: FC<props> = ({hasAll}) => {
       }));
     const organizations = fetchOrganizaion?.data?.items?.map((organization: any) => ({
       id: organization?.organization?.id,
-      name: organization?.organization?.organizationName
+      name: organization?.leafCationPath || organization?.organization?.organizationName
     }));
     if (hasAll)
       organizations?.unshift({
-        id: '-1',
+        id: 0,
         name: t('allOrganizations')
       });
     return organizations;
   }, [userOrganizations, fetchOrganizaion?.data?.items]);
 
   const onChange = (organization: any) => {
-    history.push({
+    history.replace({
       search: qs.stringify({...queryObject, organization})
     });
   };
@@ -69,6 +69,7 @@ const SelectOrganization: FC<props> = ({hasAll}) => {
       }}
       value={!organizations?.length ? selectedOrganization?.name : +selectedOrganization?.id}
       data={organizations}
+      {...props}
     />
   );
 };

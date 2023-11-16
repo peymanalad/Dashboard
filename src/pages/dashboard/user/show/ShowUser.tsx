@@ -5,6 +5,11 @@ import {useParams} from 'react-router-dom';
 import {useFetch} from 'hooks';
 import ShowUserOrganizations from 'containers/users/show/ShowUserOrganizations';
 import ShowUserLikedNews from 'containers/users/show/ShowUserLikedNews';
+import ShowUserLoginAttempts from 'containers/users/show/ShowUserLoginAttempts';
+import ShowUserSeenNews from 'containers/users/show/ShowUserSeenNews';
+import ShowUserComments from 'containers/users/show/ShowUserComments';
+import ShowUserCommentLikes from 'containers/users/show/ShowUserCommentLikes';
+import ShowUserNews from 'containers/users/show/ShowUserNews';
 import {getImageUrl} from 'utils';
 
 const {TabPane} = Tabs;
@@ -71,11 +76,26 @@ function UserCreate() {
         </Col>
       </Row>
       <Tabs type="line" size="small" className="overflow-visible">
+        <TabPane tab={t('logins')} key="logins">
+          <ShowUserLoginAttempts id={id} />
+        </TabPane>
         <TabPane tab={t('organizations')} key="users">
           <ShowUserOrganizations id={id} />
         </TabPane>
-        <TabPane tab={t('likedNews')} key="news">
+        <TabPane tab={t('likedNews')} key="likedNews">
           <ShowUserLikedNews id={id} />
+        </TabPane>
+        <TabPane tab={t('seenNews')} key="seenNews">
+          <ShowUserSeenNews id={id} />
+        </TabPane>
+        <TabPane tab={t('comments')} key="comments">
+          <ShowUserComments id={id} />
+        </TabPane>
+        <TabPane tab={t('commentLikes')} key="commentLikes">
+          <ShowUserCommentLikes id={id} />
+        </TabPane>
+        <TabPane tab={t('news')} key="news">
+          <ShowUserNews id={id} />
         </TabPane>
       </Tabs>
     </Card>

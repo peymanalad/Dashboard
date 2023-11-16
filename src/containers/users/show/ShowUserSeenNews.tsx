@@ -12,7 +12,7 @@ interface Props {
   id?: string;
 }
 
-const ShowUserLikedNews: FC<Props> = ({id}) => {
+const ShowUserSeenNews: FC<Props> = ({id}) => {
   const {t} = useTranslation('news');
 
   const columns: any = [
@@ -59,9 +59,9 @@ const ShowUserLikedNews: FC<Props> = ({id}) => {
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
     {
-      title: t('liked_at'),
-      dataIndex: 'likeTime',
-      key: 'likeTime',
+      title: t('seen_at'),
+      dataIndex: 'seenTime',
+      key: 'seenTime',
       align: 'center',
       sorter: true,
       responsive: ['md'],
@@ -86,12 +86,12 @@ const ShowUserLikedNews: FC<Props> = ({id}) => {
 
   return (
     <CustomTable
-      fetch="services/app/User/GetUserPostLikes"
-      dataName={['newsLikes', 'user', id]}
+      fetch="services/app/User/GetUserSeenPosts"
+      dataName={['newsSeen', 'user', id]}
       columns={columns}
       query={{UserId: id}}
     />
   );
 };
 
-export default ShowUserLikedNews;
+export default ShowUserSeenNews;

@@ -5,7 +5,6 @@ import {useTranslation} from 'react-i18next';
 import {Button, Card, Form, Image, Space, Tooltip} from 'antd';
 import {
   FormOutlined,
-  FilterOutlined,
   EditOutlined,
   MailOutlined,
   DeleteOutlined,
@@ -149,8 +148,8 @@ const UserShowList: FC = () => {
     },
     {
       title: t('lastLogin'),
-      dataIndex: 'lastLoginTime',
-      key: 'lastLoginTime',
+      dataIndex: 'lastLoginAttemptTime',
+      key: 'lastLoginAttemptTime',
       align: 'center',
       responsive: ['md'],
       sorter: true,

@@ -107,29 +107,32 @@ const EditNews: FC = () => {
             <Form.Item
               noStyle
               shouldUpdate={(prevValues, nextValues) => prevValues.organization !== nextValues.organization}>
-              {(fields) => (
-                <Col xs={24} md={8}>
-                  <Form.Item
-                    label={t('news_group')}
-                    name="postGroupId"
-                    initialValue={{
-                      id: fetchNews?.data?.post?.postGroupId,
-                      displayName: fetchNews?.data?.postGroupPostGroupDescription
-                    }}>
-                    <MultiSelectPaginate
-                      mode="single"
-                      urlName={['newsGroupSearch', fields.getFieldValue('organization')]}
-                      url="services/app/Posts/GetAllPostGroupForLookupTable"
-                      params={{organizationId: fields.getFieldValue('organization')}}
-                      disabled={!fields.getFieldValue('organization')}
-                      keyValue="id"
-                      keyLabel="displayName"
-                      placeholder={t('choose')}
-                      showSearch={false}
-                    />
-                  </Form.Item>
-                </Col>
-              )}
+              {(fields) => {
+                const organization = fields.getFieldValue('organization');
+                return (
+                  <Col xs={24} md={8}>
+                    <Form.Item
+                      label={t('news_group')}
+                      name="postGroupId"
+                      initialValue={{
+                        id: fetchNews?.data?.post?.postGroupId,
+                        displayName: fetchNews?.data?.postGroupPostGroupDescription
+                      }}>
+                      <MultiSelectPaginate
+                        mode="single"
+                        urlName={['newsGroupSearch', organization]}
+                        url="services/app/Posts/GetAllPostGroupForLookupTable"
+                        params={{organizationId: organization}}
+                        disabled={!organization}
+                        keyValue="id"
+                        keyLabel="displayName"
+                        placeholder={t('choose')}
+                        showSearch={false}
+                      />
+                    </Form.Item>
+                  </Col>
+                );
+              }}
             </Form.Item>
           </Row>
           <Row gutter={[16, 8]} className="w-full">
