@@ -15,7 +15,7 @@ import {getImageUrl} from 'utils';
 const {TabPane} = Tabs;
 const {Text, Title} = Typography;
 
-function UserCreate() {
+function ShowUser() {
   const {t} = useTranslation('user_create');
   const {id} = useParams<{id?: string}>();
 
@@ -29,12 +29,12 @@ function UserCreate() {
   return (
     <Card title={t('profile')} bordered={false} className="w-full" loading={fetchUser?.isFetching}>
       <Row gutter={[16, 8]} className="w-full">
-        <Col xs={24} sm={12} md={8} order={1}>
+        <Col xs={24} sm={12} md={8}>
           <div className="flex flex-col justify-center align-center">
             <Avatar size={80} src={getImageUrl(fetchUser?.data?.profilePictureId)} />
           </div>
         </Col>
-        <Col xs={24} sm={12} md={8} order={2}>
+        <Col xs={24} sm={12} md={8}>
           <div className="flex flex-col justify-center align-center">
             <Title level={5}>{t('username')}</Title>
             <Text keyboard className="mb-2 w-full text-center">
@@ -42,7 +42,7 @@ function UserCreate() {
             </Text>
           </div>
         </Col>
-        <Col xs={24} sm={12} md={8} order={2}>
+        <Col xs={24} sm={12} md={8}>
           <div className="flex flex-col justify-center align-center">
             <Title level={5}>{t('mobile')}</Title>
             <Text keyboard className="mb-2 w-full text-center">
@@ -50,7 +50,7 @@ function UserCreate() {
             </Text>
           </div>
         </Col>
-        <Col xs={24} sm={12} md={8} order={2}>
+        <Col xs={24} sm={12} md={8}>
           <div className="flex flex-col justify-center align-center">
             <Title level={5}>{t('first_name')}</Title>
             <Text keyboard className="mb-2 w-full text-center">
@@ -58,7 +58,7 @@ function UserCreate() {
             </Text>
           </div>
         </Col>
-        <Col xs={24} sm={12} md={8} order={2}>
+        <Col xs={24} sm={12} md={8}>
           <div className="flex flex-col justify-center align-center">
             <Title level={5}>{t('last_name')}</Title>
             <Text keyboard className="mb-2 w-full text-center">
@@ -66,7 +66,7 @@ function UserCreate() {
             </Text>
           </div>
         </Col>
-        <Col xs={24} sm={12} md={8} order={2}>
+        <Col xs={24} sm={12} md={8}>
           <div className="flex flex-col justify-center align-center">
             <Title level={5}>{t('nationalId')}</Title>
             <Text keyboard className="mb-2 w-full text-center">
@@ -102,4 +102,4 @@ function UserCreate() {
   );
 }
 
-export default UserCreate;
+export default ShowUser;

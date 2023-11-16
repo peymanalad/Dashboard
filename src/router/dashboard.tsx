@@ -123,6 +123,7 @@ const ShowEmergency = lazyWithRetry(() => import('pages/dashboard/user/emergency
 
 // news
 const EditNews = lazyWithRetry(() => import('pages/dashboard/news/show/EditNews'));
+const ShowNews = lazyWithRetry(() => import('pages/dashboard/news/show/ShowNews'));
 const NewsShowList = lazyWithRetry(() => import('pages/dashboard/news/show/ShowList'));
 
 const NewsGroupOrder = lazyWithRetry(() => import('pages/dashboard/news/groupOrder/ShowOrder'));
@@ -480,6 +481,14 @@ const Dashboard: Array<dashboardRouteProps> = [
         key: 'newsEdit',
         route: '/news/news/edit/:id',
         cmp: <EditNews />,
+        title: i18n.t('side_menu:editNews'),
+        permission: 'NewsUnits',
+        hidden: true
+      },
+      {
+        key: 'newsShow',
+        route: '/news/news/show/:id',
+        cmp: <ShowNews />,
         title: i18n.t('side_menu:editNews'),
         permission: 'NewsUnits',
         hidden: true
