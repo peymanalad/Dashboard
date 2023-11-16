@@ -150,6 +150,11 @@ const ShowList: FC = () => {
       align: 'center',
       render: (permissions: simplePermissionProps, news: any) => (
         <Space size={2}>
+          <Tooltip title={t('newsProfile')}>
+            <Link to={`/news/news/show/${news.post?.id}`}>
+              <Button type="text" icon={<EyeOutlined className="text-orange" />} />
+            </Link>
+          </Tooltip>
           <Tooltip title={t('update')}>
             <Link to={`/news/news/edit/${news.post?.id}`}>
               <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
