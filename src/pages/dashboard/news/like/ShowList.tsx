@@ -59,7 +59,7 @@ const ShowList: FC = () => {
       render: (permissions: simplePermissionProps, postLike: any) => (
         <Space size={2}>
           <Tooltip title={t('update')}>
-            <Link to={`/news/news/edit/${postLike.postPostId}`}>
+            <Link to={`/news/news/edit/${postLike?.postLike?.postId}`}>
               <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
             </Link>
           </Tooltip>

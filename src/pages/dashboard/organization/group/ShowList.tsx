@@ -58,13 +58,15 @@ const ShowList: FC = () => {
     {
       title: t('name'),
       dataIndex: ['postGroup', 'postGroupDescription'],
-      key: 'name',
+      key: 'postGroupDescription',
+      sorter: true,
       align: 'center'
     },
     {
       title: t('organization'),
       dataIndex: 'organizationGroupGroupName',
-      key: 'group',
+      key: 'organizationGroupGroupName',
+      sorter: false,
       align: 'center'
     },
     {

@@ -527,9 +527,6 @@
 .pt-1 {
   padding-top: 0.25rem;
 }
-.pb-1 {
-  padding-bottom: 0.25rem;
-}
 .pt-2 {
   padding-top: 0.5rem;
 }
@@ -566,7 +563,16 @@
 .pt-20 {
   padding-top: 5rem;
 }
-.pl- {
+.pb-1 {
+  padding-bottom: 0.25rem;
+}
+.pt-20 {
+  padding-bottom: 5rem;
+}
+.pb-24 {
+  padding-bottom: 6rem;
+}
+.pl-0 {
   padding-left: 0;
 }
 .pl-16 {

@@ -99,7 +99,7 @@ const UserShowList: FC = () => {
     {
       title: t('role'),
       dataIndex: ['roles', 0, 'roleName'],
-      key: 'roles',
+      key: 'roleName',
       align: 'center',
       sorter: false,
       render: (role?: string) => t(role || 'User')
@@ -153,7 +153,7 @@ const UserShowList: FC = () => {
       key: 'lastLoginAttemptTime',
       align: 'center',
       responsive: ['md'],
-      sorter: true,
+      sorter: false,
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
     {

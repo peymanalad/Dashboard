@@ -12,7 +12,7 @@ import {
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
-import SearchNews from 'containers/news/news/SearchNews';
+import SearchNews from 'containers/news/show/SearchNews';
 import {useDelete, usePost, useUser} from 'hooks';
 import {convertTimeToUTC, convertUtcTimeToLocal, getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
 import {DeedLogoImg} from 'assets';
@@ -77,13 +77,14 @@ const ShowList: FC = () => {
       dataIndex: 'postGroupPostGroupDescription',
       key: 'postGroupPostGroupDescription',
       align: 'center',
-      sorter: true
+      sorter: false
     },
     {
       title: t('context'),
       dataIndex: ['post', 'postCaption'],
       key: 'postCaption',
       align: 'center',
+      sorter: true,
       render: (text: string) => `${text.substring(0, 30)} ...`
     },
     {
@@ -142,6 +143,20 @@ const ShowList: FC = () => {
           </Tooltip>
         </Space>
       )
+    },
+    {
+      title: t('likeCount'),
+      dataIndex: 'totalLikes',
+      key: 'totalLikes',
+      align: 'center',
+      sorter: false
+    },
+    {
+      title: t('visitCount'),
+      dataIndex: 'totalVisits',
+      key: 'totalVisits',
+      align: 'center',
+      sorter: false
     },
     {
       title: t('actions'),

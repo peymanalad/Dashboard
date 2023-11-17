@@ -9,17 +9,17 @@ export const Complexities = [
 ];
 
 export const UserStatues = [
-  {id: 'new', name: i18n.t('user-show:statuses.new')},
-  {id: 'login', name: i18n.t('user-show:statuses.login')},
-  {id: 'profile', name: i18n.t('user-show:statuses.profile')},
-  {id: 'service', name: i18n.t('user-show:statuses.service')},
-  {id: 'prepare', name: i18n.t('user-show:statuses.prepare')},
-  {id: 'loyal', name: i18n.t('user-show:statuses.loyal')},
-  {id: 'active', name: i18n.t('user-show:statuses.active')},
-  {id: 'inactive', name: i18n.t('user-show:statuses.inactive')},
-  {id: 'engaged', name: i18n.t('user-show:statuses.engaged')},
-  {id: 'null', name: i18n.t('user-show:statuses.null')},
-  {id: 'block', name: i18n.t('user-show:statuses.block')}
+  // {id: 'new', name: i18n.t('user-show:statuses.new')},
+  // {id: 'login', name: i18n.t('user-show:statuses.login')},
+  // {id: 'profile', name: i18n.t('user-show:statuses.profile')},
+  // {id: 'service', name: i18n.t('user-show:statuses.service')},
+  // {id: 'prepare', name: i18n.t('user-show:statuses.prepare')},
+  // {id: 'loyal', name: i18n.t('user-show:statuses.loyal')},
+  {id: 'true', name: i18n.t('user-show:statuses.active')},
+  {id: 'false', name: i18n.t('user-show:statuses.inactive')}
+  // {id: 'engaged', name: i18n.t('user-show:statuses.engaged')},
+  // {id: 'null', name: i18n.t('user-show:statuses.null')},
+  // {id: 'block', name: i18n.t('user-show:statuses.block')}
 ];
 
 export const PermissionStatus = [

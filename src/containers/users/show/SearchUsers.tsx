@@ -1,11 +1,12 @@
 import React, {type FC, useState} from 'react';
 import {Button, Row, Form, Col, Input, Drawer} from 'antd';
 import {SearchOutlined, CloseOutlined, FilterOutlined} from '@ant-design/icons';
-import {DateTimePicker, MultiSelectPaginate} from 'components';
+import {DateTimePicker, MultiSelectPaginate, SimpleSelect} from 'components';
 import {useTranslation} from 'react-i18next';
 import {convertNumbers2English, convertTimeToUTC, queryStringToObject} from 'utils';
 import {useHistory, useLocation} from 'react-router-dom';
 import qs from 'qs';
+import {UserStatues} from 'assets';
 
 const SearchUsers: FC = () => {
   const {t} = useTranslation('user-show');
@@ -15,7 +16,9 @@ const SearchUsers: FC = () => {
   const [visible, setVisible] = useState(false);
 
   const onFinish = (values: any) => {
-    // if (values?.search?.length) values[name] = convertNumbers2English(values?.[name]);
+    if (values?.NationalIdFilter?.length) values.NationalIdFilter = convertNumbers2English(values?.NationalIdFilter);
+    if (values?.UserNameFilter?.length) values.UserNameFilter = convertNumbers2English(values?.UserNameFilter);
+    if (values?.PhoneNumberFilter?.length) values.PhoneNumberFilter = convertNumbers2English(values?.PhoneNumberFilter);
     values.FromCreationDate = values.FromCreationDate
       ? convertTimeToUTC(values.FromCreationDate, 'YYYY-MM-DD')
       : undefined;
@@ -56,17 +59,17 @@ const SearchUsers: FC = () => {
         <Form layout="vertical" className="h-full relative" onFinish={onFinish}>
           <Row className="d-block h-full overflow-auto px-4 pb-24">
             <Form.Item
-              name={['structSearch', 'name']}
+              name="NameFilter"
               label={t('name')}
               className="mb-1/2 label-p-0"
-              initialValue={queryObject?.structSearch?.name}>
+              initialValue={queryObject?.NameFilter}>
               <Input placeholder={t('empty')} className="w-full" />
             </Form.Item>
             <Form.Item
-              name={['structSearch', 'surname']}
+              name="SurNameFilter"
               label={t('last_name')}
               className="mb-1/2 label-p-0"
-              initialValue={queryObject?.structSearch?.surname}>
+              initialValue={queryObject?.SurNameFilter}>
               <Input placeholder={t('empty')} className="w-full" />
             </Form.Item>
             <Form.Item
@@ -80,24 +83,39 @@ const SearchUsers: FC = () => {
                 url="services/app/Role/GetListOfRoles"
                 keyValue="id"
                 keyLabel="displayName"
+                renderCustomLabel={(option) => t(option?.displayName)}
                 placeholder={t('choose')}
                 showSearch={false}
                 allowClear
               />
             </Form.Item>
             <Form.Item
-              name={['structSearch', 'mobile']}
+              name="PhoneNumberFilter"
               label={t('mobile')}
               className="mb-1/2 label-p-0"
-              initialValue={queryObject?.structSearch?.mobile}>
-              <Input placeholder={t('empty')} className="w-full" />
+              initialValue={queryObject?.PhoneNumberFilter}>
+              <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
             </Form.Item>
             <Form.Item
-              name={['structSearch', 'username']}
+              name="NationalIdFilter"
+              label={t('nationalId')}
+              className="mb-1/2 label-p-0"
+              initialValue={queryObject?.NationalIdFilter}>
+              <Input inputMode="tel" minLength={10} maxLength={10} className="ltr-input" />
+            </Form.Item>
+            <Form.Item
+              name="UserNameFilter"
               label={t('username')}
               className="mb-1/2 label-p-0"
-              initialValue={queryObject?.structSearch?.username}>
+              initialValue={queryObject?.UserNameFilter}>
               <Input type="single" className="w-full" placeholder={t('empty')} />
+            </Form.Item>
+            <Form.Item
+              name="IsActiveFilter"
+              className="mb-1/2 label-p-0"
+              label={t('status')}
+              initialValue={queryObject?.IsActiveFilter}>
+              <SimpleSelect keys="id" label="name" placeholder={t('choose')} data={UserStatues} allowClear />
             </Form.Item>
             <Form.Item
               name="FromCreationDate"
