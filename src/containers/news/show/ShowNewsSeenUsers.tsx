@@ -1,7 +1,7 @@
 import React, {type FC} from 'react';
 import {Link} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
-import {Button, Card, Image, Space, Tooltip} from 'antd';
+import {Button, Image, Space, Tooltip} from 'antd';
 import {EditOutlined, MailOutlined, BankOutlined, EyeOutlined} from '@ant-design/icons';
 import {CustomTable} from 'components';
 import {convertUtcTimeToLocal, getImageUrl} from 'utils';
@@ -127,15 +127,13 @@ const ShowNewsSeenUsers: FC<Props> = ({id}) => {
   ];
 
   return (
-    <Card className="my-6" title={t('title')}>
-      <CustomTable
-        fetch="/services/app/Posts/GetSeenUsers"
-        dataName={['news', id, 'SeenUsers']}
-        query={{PostId: id}}
-        columns={columns}
-        hasIndexColumn
-      />
-    </Card>
+    <CustomTable
+      fetch="/services/app/Posts/GetSeenUsers"
+      dataName={['news', id, 'SeenUsers']}
+      query={{PostId: id}}
+      columns={columns}
+      hasIndexColumn
+    />
   );
 };
 
