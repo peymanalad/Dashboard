@@ -28,7 +28,7 @@ const EditOrganization: FC = () => {
 
   const sendOrganization = usePost({
     url: 'services/app/DeedCharts/CreateOrEdit',
-    refetchQueries: ['OrganizationCharts'],
+    removeQueries: ['organizations', ['organization', id], 'OrganizationCharts'],
     form,
     onSuccess: (data) => {
       onFinish(form.getFieldsValue(), data);
@@ -45,7 +45,7 @@ const EditOrganization: FC = () => {
   const storeOrganization = usePost({
     url: '/services/app/User/CreateNode',
     method: 'POST',
-    removeQueries: ['organizations', ['organization', id]],
+    removeQueries: ['organizations', ['organization', id], 'OrganizationCharts'],
     form,
     onSuccess: onBack
   });
@@ -53,7 +53,7 @@ const EditOrganization: FC = () => {
   const updateOrganization = usePost({
     url: '/services/app/Organizations/CreateOrEdit',
     method: 'POST',
-    removeQueries: ['organizations', ['organization', id]],
+    removeQueries: ['organizations', ['organization', id], 'OrganizationCharts'],
     form,
     onSuccess: onBack
   });
@@ -86,23 +86,25 @@ const EditOrganization: FC = () => {
         }
       });
     }
-    updateUser.post({
-      assignedRoleNames: ['Admin'],
-      organizationUnits: [1],
-      sendActivationEmail: false,
-      setRandomPassword: false,
-      user: {
-        ...values.user,
-        emailAddress: fetchOrganizationAdmin?.data?.emailAddress,
-        username: convertNumbers2English(values?.user?.phoneNumber),
-        phoneNumber: convertNumbers2English(values?.user?.phoneNumber),
-        roles: ['Admin'],
-        isLockoutEnabled: 1,
-        isTwoFactorEnabled: false,
-        password: values.user?.password || null,
-        id: +fetchOrganizationAdmin?.data?.userId
-      }
-    });
+    if (!!fetchOrganizationAdmin?.data?.userId) {
+      updateUser.post({
+        assignedRoleNames: ['Admin'],
+        organizationUnits: [1],
+        sendActivationEmail: false,
+        setRandomPassword: false,
+        user: {
+          ...values.user,
+          emailAddress: fetchOrganizationAdmin?.data?.emailAddress,
+          username: convertNumbers2English(values?.user?.phoneNumber),
+          phoneNumber: convertNumbers2English(values?.user?.phoneNumber),
+          roles: ['Admin'],
+          isLockoutEnabled: 1,
+          isTwoFactorEnabled: false,
+          password: values.user?.password || null,
+          id: +fetchOrganizationAdmin?.data?.userId
+        }
+      });
+    }
     updateOrganization.post({
       id: fetchOrganization?.data?.organization?.id,
       organizationName: values?.organization?.name,

@@ -149,14 +149,14 @@ const ShowList: FC = () => {
       dataIndex: 'totalLikes',
       key: 'totalLikes',
       align: 'center',
-      sorter: false
+      sorter: true
     },
     {
       title: t('visitCount'),
       dataIndex: 'totalVisits',
       key: 'totalVisits',
       align: 'center',
-      sorter: false
+      sorter: true
     },
     {
       title: t('actions'),

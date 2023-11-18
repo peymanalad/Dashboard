@@ -15,7 +15,7 @@ const SearchNews: FC = () => {
   const [visible, setVisible] = useState(false);
 
   const onFinish = (values: any) => {
-    // if (values[name]?.length) values[name] = convertNumbers2English(values?.[name]);
+    if (values?.search?.length) values.search = convertNumbers2English(values?.search);
     values.FromDate = values.FromDate ? convertTimeToUTC(values.FromDate, 'YYYY-MM-DD') : undefined;
     values.ToDate = values.ToDate ? convertTimeToUTC(values.ToDate, 'YYYY-MM-DD') : undefined;
     values.PostGroupPostGroupDescriptionFilter = values?.postGroup?.displayName;
@@ -26,7 +26,12 @@ const SearchNews: FC = () => {
 
   const showSearch = () => setVisible(true);
   const hasSearch: boolean =
-    queryObject?.FromDate || queryObject?.ToDate || !!queryObject?.structSearch?.values?.length;
+    queryObject?.FromDate ||
+    queryObject?.ToDate ||
+    queryObject?.search ||
+    queryObject?.PostGroupPostGroupDescriptionFilter ||
+    queryObject?.PostTitleFilter ||
+    queryObject?.PostCaptionFilter;
 
   return (
     <>
@@ -43,6 +48,13 @@ const SearchNews: FC = () => {
         visible={visible}>
         <Form layout="vertical" className="h-full relative" onFinish={onFinish}>
           <Row className="d-block h-full overflow-auto px-4 pb-24">
+            <Form.Item
+              name="search"
+              label={t('advancedSearch')}
+              className="mb-1/2 label-p-0"
+              initialValue={queryObject?.search}>
+              <Input placeholder={t('searchOnAllParameters')} className="w-full" />
+            </Form.Item>
             <Form.Item
               name="PostTitleFilter"
               label={t('name')}

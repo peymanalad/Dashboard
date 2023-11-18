@@ -18,7 +18,7 @@ const LandingPage: FC = () => {
           <Col span={24}>
             <Button
               type="link"
-              href="https://d.yasnasystem.ir/wl/?id=yhFzogsWCCbzLDHvuQ7atLB4ADomH0GY&fmode=download"
+              href="https://api.ideed.ir/api/services/app/SoftwareUpdates/LatestAndroid"
               className="w-full flex-center"
               style={{color: '#8FBC46'}}
               size="large"

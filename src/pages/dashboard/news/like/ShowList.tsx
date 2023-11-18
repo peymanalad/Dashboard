@@ -1,10 +1,10 @@
 import React, {useRef, ElementRef, FC} from 'react';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {DeleteOutlined, EditOutlined, FileExcelOutlined} from '@ant-design/icons';
+import {DeleteOutlined, EyeOutlined, FileExcelOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search, SearchButton} from 'components';
-import {useDelete, usePost} from 'hooks';
+import {useDelete, usePost, useUser} from 'hooks';
 import {convertUtcTimeToLocal, getTempFileUrl, queryStringToObject} from 'utils';
 import {simplePermissionProps} from 'types/common';
 
@@ -12,6 +12,7 @@ const ShowList: FC = () => {
   const {t} = useTranslation('news');
   const searchRef = useRef<ElementRef<typeof Search>>(null);
   const location = useLocation();
+  const {isSuperUser} = useUser();
 
   const fetchExcel = usePost({
     url: 'services/app/PostLikes/GetPostLikesToExcel',
@@ -58,9 +59,9 @@ const ShowList: FC = () => {
       align: 'center',
       render: (permissions: simplePermissionProps, postLike: any) => (
         <Space size={2}>
-          <Tooltip title={t('update')}>
-            <Link to={`/news/news/edit/${postLike?.postLike?.postId}`}>
-              <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
+          <Tooltip title={t('newsProfile')}>
+            <Link to={`/news/news/show/${postLike?.postLike?.postId}`}>
+              <Button type="text" icon={<EyeOutlined className="text-orange" />} />
             </Link>
           </Tooltip>
           <Tooltip title={t('do_delete')}>
@@ -97,7 +98,13 @@ const ShowList: FC = () => {
           <SearchButton />
         </Space>
       }>
-      <CustomTable fetch="services/app/PostLikes/GetAll" dataName="newsLikes" columns={columns} hasOrganization />
+      <CustomTable
+        fetch="services/app/PostLikes/GetAll"
+        dataName="newsLikes"
+        columns={columns}
+        hasOrganization
+        selectOrganizationProps={{hasAll: isSuperUser()}}
+      />
     </Card>
   );
 };

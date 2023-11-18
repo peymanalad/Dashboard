@@ -670,6 +670,8 @@
       "inactive": "غیرفعال",
       "null": "خالی"
     },
+    "advancedSearch": "جستجوی پیشرفته",
+    "searchOnAllParameters": "جستجوی روی همه موارد",
     "excel": "اکسل",
     "nationalId": "کدملی",
     "deleteFilter": "حذف فیلتر",
@@ -2360,6 +2362,8 @@
     "newsProfile": "پروفایل خبر",
     "news_likes": "لایک های اخبار",
     "visitCount": "تعداد بازدید",
+    "advancedSearch": "جستجوی پیشرفته",
+    "searchOnAllParameters": "جستجوی روی همه موارد",
     "likeCount": "تعداد لایک",
     "position_user": "جایگاه کاربر",
     "context": "متن",

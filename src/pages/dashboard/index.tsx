@@ -43,7 +43,7 @@ const Dashboard: FC = () => {
 
   // only for check validation access token
   useFetch({
-    name: 'OrganizationCharts',
+    name: ['profile', 'OrganizationCharts'],
     url: '/services/app/DeedCharts/GetAll',
     query: {
       SkipCount: 0,

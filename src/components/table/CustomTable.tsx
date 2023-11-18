@@ -93,10 +93,10 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     search: {
       ...search,
       Filter:
-        queryObject?.search || queryObject?.structSearch
-          ? Object.values(queryObject?.structSearch || {}).join(' ')
-          : null,
+        queryObject?.search ||
+        (queryObject?.structSearch ? Object.values(queryObject?.structSearch || {}).join(' ') : null),
       ...queryObject,
+      search: null,
       organization: null,
       structSearch: null
     },

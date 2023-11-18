@@ -16,6 +16,7 @@ const SearchUsers: FC = () => {
   const [visible, setVisible] = useState(false);
 
   const onFinish = (values: any) => {
+    if (values?.search?.length) values.search = convertNumbers2English(values?.search);
     if (values?.NationalIdFilter?.length) values.NationalIdFilter = convertNumbers2English(values?.NationalIdFilter);
     if (values?.UserNameFilter?.length) values.UserNameFilter = convertNumbers2English(values?.UserNameFilter);
     if (values?.PhoneNumberFilter?.length) values.PhoneNumberFilter = convertNumbers2English(values?.PhoneNumberFilter);
@@ -37,11 +38,21 @@ const SearchUsers: FC = () => {
 
   const showSearch = () => setVisible(true);
   const hasSearch: boolean =
+    queryObject?.search ||
     queryObject?.FromCreationDate ||
     queryObject?.ToCreationDate ||
     queryObject?.FromLastLoginDate ||
     queryObject?.ToLastLoginDate ||
-    !!queryObject?.structSearch?.values?.length;
+    queryObject?.NationalIdFilter ||
+    queryObject?.UserNameFilter ||
+    queryObject?.PhoneNumberFilter ||
+    queryObject?.NameFilter ||
+    queryObject?.SurNameFilter ||
+    queryObject?.PhoneNumberFilter ||
+    queryObject?.NationalIdFilter ||
+    queryObject?.UserNameFilter ||
+    queryObject?.IsActiveFilter ||
+    queryObject?.role;
 
   return (
     <>
@@ -58,6 +69,13 @@ const SearchUsers: FC = () => {
         visible={visible}>
         <Form layout="vertical" className="h-full relative" onFinish={onFinish}>
           <Row className="d-block h-full overflow-auto px-4 pb-24">
+            <Form.Item
+              name="search"
+              label={t('advancedSearch')}
+              className="mb-1/2 label-p-0"
+              initialValue={queryObject?.search}>
+              <Input placeholder={t('searchOnAllParameters')} className="w-full" />
+            </Form.Item>
             <Form.Item
               name="NameFilter"
               label={t('name')}

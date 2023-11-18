@@ -37,7 +37,8 @@ const EditUser: FC = () => {
 
   const sendPicture = usePost({
     url: 'services/app/Profile/UpdateProfilePicture',
-    method: 'PUT'
+    method: 'PUT',
+    showError: false
   });
 
   const sendUser = usePost({

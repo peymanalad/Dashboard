@@ -1,6 +1,5 @@
 import React, {type FC} from 'react';
-import {Card, Form, Row, Col, Input, Button} from 'antd';
-import {SaveOutlined} from '@ant-design/icons';
+import {Card, Form, Row, Col, Input} from 'antd';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
@@ -88,7 +87,7 @@ const EditMemberShowList: FC = () => {
                 keyValue="id"
                 keyLabel="displayName"
                 placeholder={t('choose')}
-                showSearch={false}
+                showSearch
                 disabled={!!id}
               />
             </Form.Item>
@@ -118,7 +117,7 @@ const EditMemberShowList: FC = () => {
                     keyValue="id"
                     keyLabel="displayName"
                     placeholder={t('choose')}
-                    showSearch={false}
+                    showSearch
                     disabled={!!id || !fields.getFieldValue('organization')?.id}
                   />
                 </Form.Item>

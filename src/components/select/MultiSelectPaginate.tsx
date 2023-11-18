@@ -91,7 +91,7 @@ const MultiSelectPaginate: FC<props> = ({
     url,
     name: urlName,
     query: params,
-    search: !isEmpty(search) ? {[searchKey || 'search']: search} : undefined
+    search: !isEmpty(search) ? {[searchKey || 'Filter']: search} : undefined
   });
 
   const debouncedSearch = useRef(

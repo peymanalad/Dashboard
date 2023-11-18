@@ -153,7 +153,7 @@ const UserShowList: FC = () => {
       key: 'lastLoginAttemptTime',
       align: 'center',
       responsive: ['md'],
-      sorter: false,
+      sorter: true,
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
     {

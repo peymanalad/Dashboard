@@ -4,14 +4,15 @@ import {DeleteOutlined, FileExcelOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {useLocation} from 'react-router-dom';
 import {CustomTable, Search, SearchButton} from 'components';
-import {useDelete, usePost} from 'hooks';
+import {useDelete, usePost, useUser} from 'hooks';
 import {convertUtcTimeToLocal, getTempFileUrl, queryStringToObject} from 'utils';
-import {simplePermissionProps} from 'types/common';
+import type {simplePermissionProps} from 'types/common';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('comments');
   const searchRef = useRef<ElementRef<typeof Search>>(null);
   const location = useLocation();
+  const {isSuperUser} = useUser();
 
   const fetchExcel = usePost({
     url: 'services/app/CommentLikes/GetCommentLikesToExcel',
@@ -92,7 +93,13 @@ const ShowList: FC = () => {
           <SearchButton />
         </Space>
       }>
-      <CustomTable fetch="services/app/CommentLikes/GetAll" dataName="commentLikes" columns={columns} hasOrganization />
+      <CustomTable
+        fetch="services/app/CommentLikes/GetAll"
+        dataName="commentLikes"
+        columns={columns}
+        hasOrganization
+        selectOrganizationProps={{hasAll: isSuperUser()}}
+      />
     </Card>
   );
 };
