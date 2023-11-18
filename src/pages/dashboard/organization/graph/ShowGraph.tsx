@@ -36,7 +36,7 @@ const ShowGraph: FC = () => {
     url: '/services/app/DeedCharts/GetAll',
     query: {
       SkipCount: 0,
-      MaxResultCount: 200
+      MaxResultCount: 500
     },
     enabled: true
   });

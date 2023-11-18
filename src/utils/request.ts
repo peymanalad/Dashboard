@@ -27,7 +27,9 @@ export const ResponseErrorHandler = (error: AxiosError): Promise<AxiosError> => 
   const status: number | undefined = error?.response?.status;
   let message: string = '';
   if (status === 422) message = values(response?.data).join('\n');
-  else if (status === 404 || status === 419 || status === 429 || status === 403 || status === 401)
+  else if (status === 404) message = i18n.t('error:notFound');
+  else if (status === 403 || status === 401) message = i18n.t('error:unauthorized');
+  else if (status === 419 || status === 429)
     message = i18n.t(`error:${response?.error?.message?.replaceAll(' ', '_')}`);
   else if (error.code === 'ECONNABORTED') message = i18n.t('error:serverBusy');
   else if (!onlineManager.isOnline()) message = i18n.t('error:connection');

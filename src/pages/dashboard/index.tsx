@@ -41,6 +41,17 @@ const Dashboard: FC = () => {
     enabled: true
   });
 
+  // only for check validation access token
+  useFetch({
+    name: 'OrganizationCharts',
+    url: '/services/app/DeedCharts/GetAll',
+    query: {
+      SkipCount: 0,
+      MaxResultCount: 500
+    },
+    enabled: true
+  });
+
   return (
     <Layout className={`w-screen h-screen ${isDashboard ? 'bg-grayDark' : ''}`}>
       <SideMenu ref={sideMenuRef} />

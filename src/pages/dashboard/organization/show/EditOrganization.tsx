@@ -180,6 +180,7 @@ const EditOrganization: FC = () => {
                   urlName="OrganizationCharts"
                   url="services/app/DeedCharts/GetAll"
                   keyPath={['deedChart']}
+                  renderCustomLabel={(option) => option?.deedChart?.leafCationPath || option?.deedChart?.caption}
                   keyValue="id"
                   keyLabel="caption"
                   placeholder={t('choose')}

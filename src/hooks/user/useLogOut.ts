@@ -12,16 +12,14 @@ function useLogOut() {
   const logOutRequest = usePost({
     url: 'TokenAuth/LogOut',
     isGeneral: true,
-    method: 'GET',
-    onSuccess: () => {
-      setUser({is_logged_in: false});
-      history.replace('/');
-      queryClient.removeQueries();
-    }
+    method: 'GET'
   });
 
   const logOut = () => {
     logOutRequest.post();
+    setUser({is_logged_in: false});
+    history.replace('/');
+    queryClient.removeQueries();
   };
 
   return {logOut, isLoading: logOutRequest.isLoading};
