@@ -34,6 +34,7 @@ export const ResponseErrorHandler = (error: AxiosError): Promise<AxiosError> => 
   else if (error.code === 'ECONNABORTED') message = i18n.t('error:serverBusy');
   else if (!onlineManager.isOnline()) message = i18n.t('error:connection');
   else if (status === 500) message = i18n.t('error:500');
+  if (/[a-zA-Z]/.test(message)) message = i18n.t('error:500');
   if (!isEmpty(message) && !error?.config?.headers?.silent) {
     notification.error({
       duration: 2,
