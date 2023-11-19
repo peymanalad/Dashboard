@@ -19,7 +19,7 @@ const UserMemberShowList: FC = () => {
   const deleteRequest = useDelete({
     url: 'services/app/GroupMembers/Delete',
     name: 'groupMembers',
-    titleKey: 'id'
+    titleKey: 'firstName'
   });
 
   const fetchExcel = usePost({
@@ -85,7 +85,7 @@ const UserMemberShowList: FC = () => {
           </Tooltip>
           <Tooltip title={t('do_delete')}>
             <Button
-              onClick={() => deleteRequest.show(groupMember.groupMember, {Id: groupMember.groupMember?.id})}
+              onClick={() => deleteRequest.show(groupMember, {Id: groupMember.groupMember?.id})}
               type="text"
               icon={<DeleteOutlined className="text-red" />}
             />
@@ -132,6 +132,7 @@ const UserMemberShowList: FC = () => {
         ref={tableRef}
         hasIndexColumn
         hasOrganization
+        selectOrganizationProps={{hasAll: user.isSuperUser()}}
       />
     </Card>
   );

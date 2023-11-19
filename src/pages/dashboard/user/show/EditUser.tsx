@@ -6,7 +6,6 @@ import {useFetch, useLogOut, usePost, useUser} from 'hooks';
 import {getImageUrl, getLangSearchParam} from 'utils';
 import {Card, Form, Checkbox, Button, Input, Row, Col} from 'antd';
 import {LogoutOutlined} from '@ant-design/icons';
-import map from 'lodash/map';
 import filter from 'lodash/filter';
 import isArray from 'lodash/isArray';
 import {v4 as uuidv4} from 'uuid';
@@ -46,11 +45,15 @@ const EditUser: FC = () => {
     method: 'POST',
     removeQueries: ['users', ['user', id]],
     form,
-    onSuccess: onBack
+    onSuccess: () => {
+      onBack();
+      const uniqueId = uuidv4();
+      const val = form.getFieldsValue();
+      sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken || uniqueId});
+    }
   });
 
   const onFinish = (val: any) => {
-    const uniqueId = uuidv4();
     sendUser.post({
       assignedRoleNames: isArray(val?.roles) ? val?.roles : [val?.roles],
       organizationUnits: [1],
@@ -66,7 +69,6 @@ const EditUser: FC = () => {
         id: +id
       }
     });
-    sendPicture.post({userId: +id, fileToken: val?.updateFileToken?.fileToken || uniqueId});
   };
 
   return (
@@ -98,8 +100,14 @@ const EditUser: FC = () => {
               name="roles"
               label={t('access_level')}
               rules={[{required: true, message: t('validation.required')}]}
-              initialValue={map(filter(fetchUser?.data?.roles, 'isAssigned'), 'roleName')}>
-              <SimpleSelect keys="roleName" label="roleName" placeholder={t('choose')} data={fetchUser?.data?.roles} />
+              initialValue={filter(fetchUser?.data?.roles, 'isAssigned')?.[0]?.roleName || 'User'}>
+              <SimpleSelect
+                keys="roleName"
+                label="roleName"
+                placeholder={t('choose')}
+                data={fetchUser?.data?.roles}
+                disabled={userInstance.isMySelf(id)}
+              />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>

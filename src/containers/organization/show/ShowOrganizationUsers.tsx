@@ -18,7 +18,7 @@ const ShowOrganizationUsers: FC<Props> = ({id}) => {
   const deleteRequest = useDelete({
     url: 'services/app/GroupMembers/Delete',
     name: 'groupMembers',
-    titleKey: 'id'
+    titleKey: 'firstName'
   });
 
   const columns = [
@@ -76,7 +76,7 @@ const ShowOrganizationUsers: FC<Props> = ({id}) => {
           </Tooltip>
           <Tooltip title={t('do_delete')}>
             <Button
-              onClick={() => deleteRequest.show(groupMember.groupMember, {Id: groupMember.groupMember?.id})}
+              onClick={() => deleteRequest.show(groupMember, {Id: groupMember.groupMember?.id})}
               type="text"
               icon={<DeleteOutlined className="text-red" />}
             />

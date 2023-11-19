@@ -144,14 +144,15 @@ const ShowGraph: FC = () => {
     focusZoom: 1,
     freezeAllDragEvents: false,
     height: 700,
-    highlightDegree: 1,
-    highlightOpacity: 0.6,
+    highlightDegree: 0,
+    // highlightDegree: 1,
+    highlightOpacity: 1,
     linkHighlightBehavior: true,
-    initialZoom: 0.65,
+    initialZoom: 0.75,
     maxZoom: 12,
     minZoom: 0.05,
-    // nodeHighlightBehavior: true,
-    nodeHighlightBehavior: false,
+    nodeHighlightBehavior: true,
+    // nodeHighlightBehavior: false,
     panAndZoom: false,
     staticGraph: false,
     staticGraphWithDragAndDrop: false,
@@ -198,7 +199,7 @@ const ShowGraph: FC = () => {
                   ? items
                   : !!node?.organizationId
                   ? [...items, ...organizationItem, ...anotherItems]
-                  : [...items, ...anotherItems],
+                  : anotherItems,
                 triggerSubMenuAction: 'click',
                 onClick: ({key}) => {
                   switch (key) {
@@ -277,7 +278,7 @@ const ShowGraph: FC = () => {
       opacity: 1,
       renderLabel: false,
       semanticStrokeWidth: true,
-      strokeWidth: 3,
+      strokeWidth: 5,
       markerHeight: 6,
       markerWidth: 6,
       strokeDasharray: 1,

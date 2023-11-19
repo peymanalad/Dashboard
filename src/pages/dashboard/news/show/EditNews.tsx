@@ -126,6 +126,9 @@ const EditNews: FC = () => {
                         disabled={!organization}
                         keyValue="id"
                         keyLabel="displayName"
+                        renderCustomLabel={(option) =>
+                          !!option?.displayName ? `${option?.displayName} - ${option?.organizationName}` : ''
+                        }
                         placeholder={t('choose')}
                         showSearch={false}
                       />
