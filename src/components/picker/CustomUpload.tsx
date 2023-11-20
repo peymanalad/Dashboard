@@ -215,15 +215,17 @@ const CustomUpload = ({
           cancelText: t('cancel'),
           okCancel: true,
           onOk: () => {
-            axios(options)
-              .then(() => {
-                message.success(t('file_delete_successfully'));
-                resolve(true);
-              })
-              .catch(() => {
-                message.error(t('file_delete_failed'));
-                resolve(true);
-              });
+            resolve(true);
+            message.success(t('file_delete_successfully_save'), 5);
+            // axios(options)
+            //   .then(() => {
+            //     message.success(t('file_delete_successfully'));
+            //     resolve(true);
+            //   })
+            //   .catch(() => {
+            //     message.error(t('file_delete_failed'));
+            //     resolve(true);
+            //   });
           }
         });
       });

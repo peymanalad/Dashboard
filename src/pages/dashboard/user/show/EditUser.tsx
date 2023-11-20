@@ -19,6 +19,7 @@ const EditUser: FC = () => {
   const user = useUser();
 
   const id = idUser || user.getId();
+  const isMySelf = userInstance.isMySelf(id);
 
   const [form] = Form.useForm();
 
@@ -37,13 +38,14 @@ const EditUser: FC = () => {
   const sendPicture = usePost({
     url: 'services/app/Profile/UpdateProfilePicture',
     method: 'PUT',
-    showError: false
+    showError: false,
+    refetchQueries: isMySelf ? ['profile'] : undefined
   });
 
   const sendUser = usePost({
     url: 'services/app/User/CreateOrUpdateUser',
     method: 'POST',
-    removeQueries: ['users', ['user', id]],
+    removeQueries: !isMySelf ? ['users', ['user', id]] : undefined,
     form,
     onSuccess: () => {
       onBack();
@@ -79,7 +81,7 @@ const EditUser: FC = () => {
         className="w-full"
         extra={
           <>
-            {userInstance.isMySelf(id) && (
+            {isMySelf && (
               <Button
                 type="primary"
                 htmlType="button"
@@ -106,7 +108,7 @@ const EditUser: FC = () => {
                 label="roleName"
                 placeholder={t('choose')}
                 data={fetchUser?.data?.roles}
-                disabled={userInstance.isMySelf(id)}
+                disabled={isMySelf}
               />
             </Form.Item>
           </Col>

@@ -23,6 +23,7 @@
     "fileSizeError": "لطفا فایل با حداکثر حجم {{max}} کیلوبایت انتخاب کنید",
     "file_delete_continue": "فایل حذف می شود.ادامه می دهید؟",
     "file_delete_successfully": "فایل با موفقیت حذف شد",
+    "file_delete_successfully_save": "فایل با موفقیت حذف شد، برای ثبت لطفا آن را ذخیره کنید.",
     "file_delete_failed": "حذف فایل با خطا مواجه شد.",
     "yes": "بله",
     "no": "خیر",

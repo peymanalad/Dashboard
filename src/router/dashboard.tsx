@@ -253,7 +253,6 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <EditOrganization />,
         title: i18n.t('side_menu:addOrganization'),
         hidden: true,
-        forSuperAdmin: true,
         permission: 'OrganizationUnits'
       },
       {
@@ -262,7 +261,6 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <EditOrganization />,
         title: i18n.t('side_menu:editOrganization'),
         permission: 'OrganizationUnits',
-        forSuperAdmin: true,
         hidden: true
       },
       {
@@ -271,7 +269,6 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <ShowOrganization />,
         title: i18n.t('side_menu:showOrganization'),
         permission: 'OrganizationUnits',
-        forSuperAdmin: true,
         hidden: true
       },
       {

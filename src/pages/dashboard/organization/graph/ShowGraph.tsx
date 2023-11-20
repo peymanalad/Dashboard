@@ -80,7 +80,23 @@ const ShowGraph: FC = () => {
           color: !!link?.[1] ? generateUniqueColorCodeById(link?.[1], 50) : undefined
         });
     });
-    return {nodes, links};
+    let source = null;
+    if (nodes) {
+      const targetNodes = new Set<string>();
+      // Collect all target nodes from links
+      links.forEach((link) => {
+        targetNodes.add(link.target);
+      });
+
+      // Find the first node that is not a target at all
+      for (const node of nodes) {
+        if (!targetNodes.has(node.id)) {
+          source = node;
+          break;
+        }
+      }
+    }
+    return {nodes, links, source};
   }, [fetchOrganizationChart?.data]);
 
   const items = [
@@ -101,7 +117,10 @@ const ShowGraph: FC = () => {
       label: t('edit'),
       key: 'edit',
       icon: <EditOutlined />
-    },
+    }
+  ];
+
+  const notSourceItems = [
     {
       label: t('delete'),
       key: 'delete',
@@ -198,8 +217,10 @@ const ShowGraph: FC = () => {
                 items: isFirstLayer
                   ? items
                   : !!node?.organizationId
-                  ? [...items, ...organizationItem, ...anotherItems]
-                  : anotherItems,
+                  ? data?.source?.id === node?.id
+                    ? [...items, ...organizationItem, ...anotherItems]
+                    : [...items, ...organizationItem, ...anotherItems, ...notSourceItems]
+                  : [...anotherItems, ...notSourceItems],
                 triggerSubMenuAction: 'click',
                 onClick: ({key}) => {
                   switch (key) {
