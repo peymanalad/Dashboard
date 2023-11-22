@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useRef} from 'react';
 import {Card, Form, Row, Col, Input, Checkbox, Divider} from 'antd';
 import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
@@ -7,6 +7,7 @@ import {convertNumbers2English, getImageUrl, getLangSearchParam} from 'utils';
 import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 
 const EditOrganization: FC = () => {
+  const deedChartId = useRef(0);
   const {t} = useTranslation('organization');
   const history = useHistory();
   const location = useLocation<any>();
@@ -26,11 +27,19 @@ const EditOrganization: FC = () => {
     enabled: !!id
   });
 
+  const deleteDeedChart = usePost({
+    url: 'services/app/DeedCharts/Delete',
+    method: 'DELETE',
+    showError: false
+  });
+
   const sendOrganization = usePost({
     url: 'services/app/DeedCharts/CreateOrEdit',
     removeQueries: ['organizations', ['organization', id], 'OrganizationCharts'],
     form,
+    showError: false,
     onSuccess: (data) => {
+      deedChartId.current = data;
       onFinish(form.getFieldsValue(), data);
     }
   });
@@ -47,7 +56,12 @@ const EditOrganization: FC = () => {
     method: 'POST',
     removeQueries: ['organizations', ['organization', id], 'OrganizationCharts'],
     form,
-    onSuccess: onBack
+    onSuccess: onBack,
+    onError() {
+      if (!!deedChartId.current) {
+        deleteDeedChart.post({}, {Id: deedChartId.current});
+      }
+    }
   });
 
   const updateOrganization = usePost({
