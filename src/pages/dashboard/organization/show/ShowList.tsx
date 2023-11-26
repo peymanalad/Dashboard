@@ -6,6 +6,7 @@ import {
   FileExcelOutlined,
   FormOutlined,
   UserOutlined,
+  RadarChartOutlined,
   EyeOutlined
 } from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
@@ -39,13 +40,6 @@ const ShowList: FC = () => {
   });
 
   const columns: any = [
-    {
-      title: '#',
-      dataIndex: ['organization', 'id'],
-      key: 'id',
-      align: 'center',
-      responsive: ['md']
-    },
     {
       title: t('image'),
       dataIndex: ['organization', 'organizationLogo'],
@@ -109,6 +103,11 @@ const ShowList: FC = () => {
               <Button type="text" icon={<EyeOutlined className="text-orange" />} />
             </Link>
           </Tooltip>
+          <Tooltip title={t('showOrganizationChart')}>
+            <Link to={`/organization/graph/show/${organization.organization?.id}`}>
+              <Button type="text" icon={<RadarChartOutlined className="text-purple" />} />
+            </Link>
+          </Tooltip>
           <Tooltip title={t('update')}>
             <Link to={`/organization/organization/edit/${organization.organization?.id}`}>
               <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
@@ -158,7 +157,12 @@ const ShowList: FC = () => {
           <SearchButton />
         </Space>
       }>
-      <CustomTable fetch="services/app/Organizations/GetAll" dataName="organizations" columns={columns} />
+      <CustomTable
+        fetch="services/app/Organizations/GetAll"
+        dataName="organizations"
+        columns={columns}
+        hasIndexColumn
+      />
     </Card>
   );
 };

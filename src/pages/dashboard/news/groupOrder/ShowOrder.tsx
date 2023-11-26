@@ -1,18 +1,21 @@
 import React, {useRef, useState, type FC, type Dispatch, type SetStateAction, CSSProperties} from 'react';
-import {Row, Col, Card, Space, Button} from 'antd';
+import {useLocation} from 'react-router-dom';
+import {Row, Col, Card, Space, Button, Typography} from 'antd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {DndProvider, useDrag, useDrop, DropTargetMonitor} from 'react-dnd';
 import IPhone8FrameView from 'components/view/Iphone8FrameView';
+import SelectOrganization from 'containers/organization/SelectOrganization';
 import {SaveOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import chunk from 'lodash/chunk';
 import sortBy from 'lodash/sortBy';
 import {useFetch, usePost} from 'hooks';
-import {generateUniqueColorCodeById} from 'utils';
+import {generateUniqueColorCodeById, queryStringToObject} from 'utils';
 import orderBy from 'lodash/orderBy';
 import type {PostGroupProps} from 'types/news';
 
 const {Meta} = Card;
+const {Text} = Typography;
 
 const SquareCard: FC<{
   initialNews: PostGroupProps[];
@@ -137,15 +140,20 @@ const generateRow = (initialNews: PostGroupProps[], chunkNews: PostGroupProps[],
 const NewsGroupOrder: FC = () => {
   const {t} = useTranslation('news');
   const initialNews = useRef<PostGroupProps[]>([]);
+  const location = useLocation();
+
+  const queryObject = queryStringToObject(location.search);
   const [news, setNews] = useState<PostGroupProps[]>([]);
+  const selectedOrganization = queryObject?.organization;
 
   const fetchNewsGroup = useFetch({
     name: 'postGroups',
     url: '/services/app/PostGroups/GetAll',
     query: {
-      MaxResultCount: 50
+      organizationId:
+        !!selectedOrganization?.id && selectedOrganization?.id !== '0' ? selectedOrganization?.id : undefined,
+      MaxResultCount: 500
     },
-    enabled: true,
     staleTime: 100,
     onSuccess(data) {
       initialNews.current = orderBy(
@@ -157,7 +165,8 @@ const NewsGroupOrder: FC = () => {
         'ordering'
       );
       setNews(initialNews.current);
-    }
+    },
+    enabled: !!selectedOrganization?.id
   });
 
   const storePostGroupOrder = usePost({
@@ -178,7 +187,6 @@ const NewsGroupOrder: FC = () => {
     <Card
       title={t('news_groups_order')}
       loading={fetchNewsGroup?.isFetching}
-      bodyStyle={{direction: 'ltr', maxWidth: !fetchNewsGroup?.isFetching ? '450px' : undefined, margin: 'auto'}}
       extra={
         <Space size="small">
           <Button
@@ -192,13 +200,30 @@ const NewsGroupOrder: FC = () => {
           </Button>
         </Space>
       }>
-      <IPhone8FrameView>
-        <DndProvider backend={HTML5Backend}>
-          {chunk(news, 3)?.map((chunkNews: PostGroupProps[], index: number) =>
-            generateRow(initialNews.current, chunkNews, setNews, index)
-          )}
-        </DndProvider>
-      </IPhone8FrameView>
+      <SelectOrganization />
+      <div
+        style={{
+          direction: 'ltr',
+          maxWidth: !fetchNewsGroup?.isFetching ? '450px' : undefined,
+          margin: 'auto',
+          marginTop: 30
+        }}>
+        <IPhone8FrameView>
+          <DndProvider backend={HTML5Backend}>
+            {news?.length ? (
+              chunk(news, 3)?.map((chunkNews: PostGroupProps[], index: number) =>
+                generateRow(initialNews.current, chunkNews, setNews, index)
+              )
+            ) : (
+              <div className="flex-center h-full">
+                <Text type="warning" className="text-md">
+                  {t('notFoundNewsGroup')}
+                </Text>
+              </div>
+            )}
+          </DndProvider>
+        </IPhone8FrameView>
+      </div>
     </Card>
   );
 };

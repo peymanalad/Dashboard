@@ -57,14 +57,13 @@ const Dashboard: FC = () => {
       <SideMenu ref={sideMenuRef} />
       <Scrollbars id="MainContent" style={{width: '0'}}>
         <Layout className={`${isChatSection ? 'h-full md:h-unset' : ''}`}>
-          {!isDashboard && (
-            <TopHeader
-              allowFetchDashboard={fetchMenu.isSuccess}
-              onMenuClick={() => {
-                if (sideMenuRef.current) sideMenuRef.current.collapseMenu();
-              }}
-            />
-          )}
+          <TopHeader
+            allowFetchDashboard={fetchMenu.isSuccess}
+            backgroundColor={isDashboard ? '#333333' : undefined}
+            onMenuClick={() => {
+              if (sideMenuRef.current) sideMenuRef.current.collapseMenu();
+            }}
+          />
           <Content
             className={`mt-4 w-full h-full m-0 min-h-75vh px-0 ${!isDashboard ? 'md:px-6' : ''}  ${
               !isChatSection ? (isDashboard ? '' : 'py-6') : 'py-0 md:py-6'

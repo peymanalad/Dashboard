@@ -11,13 +11,14 @@ import {getImageUrl} from 'utils/image';
 
 interface Props {
   allowFetchDashboard: boolean;
+  backgroundColor?: string;
   onMenuClick(): void;
 }
 
 const {Header} = Layout;
 const {Text} = Typography;
 
-const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
+const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick, backgroundColor}) => {
   const history = useHistory();
   const user = useUser();
   const userInfo = user?.getInfo();
@@ -52,7 +53,7 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
   const collapseMenu = () => setCollapsed((prevState: boolean) => !prevState);
 
   return (
-    <Header className="w-full px-4 bg-white flex justify-center items-center">
+    <Header className="w-full px-4 bg-white flex justify-center items-center" style={{backgroundColor}}>
       <Row className="d-flex md:d-none flex-row flex-no-wrap items-center justify-between w-full">
         <Button type="text" onClick={onMenuClick} icon={<MenuOutlined className="text-grayDarker text-lg" />} />
         <Button
@@ -65,10 +66,13 @@ const TopHeader: FC<Props> = ({allowFetchDashboard, onMenuClick}) => {
       </Row>
       <Row className="d-none md:d-flex flex-row flex-no-wrap items-center justify-between w-full">
         <HeaderDetail data={headerData} />
-        <Button className="cursor-pointer bg-transparent items-center h-full border-0" onClick={navigateToProfile}>
+        <Button
+          className="cursor-pointer bg-transparent items-center h-full border-0"
+          onClick={navigateToProfile}
+          style={{backgroundColor}}>
           <Space>
             <Avatar size={40} icon={<UserOutlined />} src={getImageUrl(userInfo?.profilePictureId)} />
-            <Text className="text-sm" strong>
+            <Text className="text-sm" strong style={{color: !!backgroundColor ? 'white' : undefined}}>
               {`${userInfo?.name || ''} ${userInfo?.surname || ''}`}
             </Text>
           </Space>

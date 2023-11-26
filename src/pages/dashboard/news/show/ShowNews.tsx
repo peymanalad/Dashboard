@@ -5,6 +5,7 @@ import {useParams} from 'react-router-dom';
 import {useFetch} from 'hooks';
 import ShowNewsLikedUsers from 'containers/news/show/ShowNewsLikedUsers';
 import ShowNewsSeenUsers from 'containers/news/show/ShowNewsSeenUsers';
+import ShowNewsComments from 'containers/news/show/ShowNewsComments';
 import {getImageUrl} from 'utils';
 
 const {TabPane} = Tabs;
@@ -60,6 +61,9 @@ function ShowNews() {
         </TabPane>
         <TabPane tab={t('seenUsers')} key="seenUsers">
           <ShowNewsSeenUsers id={id} />
+        </TabPane>
+        <TabPane tab={t('comments')} key="comments">
+          <ShowNewsComments id={id} />
         </TabPane>
       </Tabs>
     </Card>

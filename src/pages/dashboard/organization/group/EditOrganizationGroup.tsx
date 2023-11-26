@@ -88,7 +88,7 @@ const EditOrganizationGroup: FC = () => {
               const organization = fields.getFieldValue('organization');
               return (
                 <Col xs={24} md={12} lg={24}>
-                  <Form.Item label={t('users')} name="users">
+                  <Form.Item label={t('usersThatShowNewsGroup')} name="users">
                     <MultiSelectPaginate
                       mode="multiple"
                       urlName={['organization', 'groupMembers', id]}

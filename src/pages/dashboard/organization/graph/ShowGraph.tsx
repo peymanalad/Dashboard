@@ -51,19 +51,6 @@ const ShowGraph: FC = () => {
     const filtredNodes = fetchOrganizationChart?.data?.items?.filter(
       (organization: any) => !!organization?.deedChart?.leafPath
     );
-    const nodes = filtredNodes?.map((organization: any) => {
-      const link = organization?.deedChart?.leafPath?.slice(0, -1)?.split('\\');
-      return {
-        id: `${organization?.deedChart?.id}`,
-        leafPath: organization?.deedChart?.leafPath,
-        organizationId: organization?.deedChart?.organizationId,
-        parentId: organization?.deedChart?.parentId,
-        logo: organization?.deedChart?.organizationLogo,
-        label: organization?.deedChart?.caption,
-        color:
-          !!link?.[1] && !!organization?.deedChart?.organizationId ? generateUniqueColorCodeById(link?.[1]) : undefined
-      };
-    });
     const links: any[] = [];
     filtredNodes?.forEach((organization: any) => {
       const link = organization?.deedChart?.leafPath?.slice(0, -1)?.split('\\');
@@ -80,6 +67,23 @@ const ShowGraph: FC = () => {
           color: !!link?.[1] ? generateUniqueColorCodeById(link?.[1], 50) : undefined
         });
     });
+    const nodes = filtredNodes?.map((organization: any) => {
+      const link = organization?.deedChart?.leafPath?.slice(0, -1)?.split('\\');
+      const hasChildren = links?.some((link: any) => +link.source === +organization?.deedChart?.id);
+
+      return {
+        id: `${organization?.deedChart?.id}`,
+        leafPath: organization?.deedChart?.leafPath,
+        organizationId: organization?.deedChart?.organizationId,
+        parentId: organization?.deedChart?.parentId,
+        logo: organization?.deedChart?.organizationLogo,
+        label: organization?.deedChart?.caption,
+        hasChildren,
+        color:
+          !!link?.[1] && !!organization?.deedChart?.organizationId ? generateUniqueColorCodeById(link?.[1]) : undefined
+      };
+    });
+
     let source = null;
     if (nodes) {
       const targetNodes = new Set<string>();
@@ -120,7 +124,7 @@ const ShowGraph: FC = () => {
     }
   ];
 
-  const notSourceItems = [
+  const deleteItem = [
     {
       label: t('delete'),
       key: 'delete',
@@ -217,10 +221,12 @@ const ShowGraph: FC = () => {
                 items: isFirstLayer
                   ? items
                   : !!node?.organizationId
-                  ? data?.source?.id === node?.id
+                  ? data?.source?.id === node?.id || node?.hasChildren
                     ? [...items, ...organizationItem, ...anotherItems]
-                    : [...items, ...organizationItem, ...anotherItems, ...notSourceItems]
-                  : [...anotherItems, ...notSourceItems],
+                    : [...items, ...organizationItem, ...anotherItems, ...deleteItem]
+                  : node?.hasChildren
+                  ? anotherItems
+                  : [...anotherItems, ...deleteItem],
                 triggerSubMenuAction: 'click',
                 onClick: ({key}) => {
                   switch (key) {
