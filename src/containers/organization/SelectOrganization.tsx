@@ -50,7 +50,7 @@ const SelectOrganization: FC<props> = ({hasAll, ...props}) => {
   const onChange = (organization: any) => {
     if (!!Object?.keys(props)?.length) return;
     history.replace({
-      search: qs.stringify({...queryObject, organization})
+      search: qs.stringify({...queryObject, organization, page: 1})
     });
   };
 

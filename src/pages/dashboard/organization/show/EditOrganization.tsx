@@ -27,22 +27,11 @@ const EditOrganization: FC = () => {
     enabled: !!id
   });
 
-  const deleteDeedChart = usePost({
-    url: 'services/app/DeedCharts/Delete',
-    method: 'DELETE',
-    showError: false
-  });
-
-  const sendOrganization = usePost({
-    url: 'services/app/DeedCharts/CreateOrEdit',
-    removeQueries: ['organizations', ['organization', id], 'OrganizationCharts'],
-    form,
-    showError: false,
-    onSuccess: (data) => {
-      deedChartId.current = data;
-      onFinish(form.getFieldsValue(), data);
-    }
-  });
+  // const deleteDeedChart = usePost({
+  //   url: 'services/app/DeedCharts/Delete',
+  //   method: 'DELETE',
+  //   showError: false
+  // });
 
   const fetchOrganizationAdmin = useFetch({
     name: ['organization', 'admin', id],
@@ -51,17 +40,19 @@ const EditOrganization: FC = () => {
     enabled: !!id
   });
 
+  const sendOrganizationFullNode = usePost({
+    url: 'services/app/User/CreateFullNode',
+    removeQueries: ['organizations', ['organization', id], 'OrganizationCharts'],
+    form,
+    onSuccess: onBack
+  });
+
   const storeOrganization = usePost({
     url: '/services/app/User/CreateNode',
     method: 'POST',
     removeQueries: ['organizations', ['organization', id], 'OrganizationCharts'],
     form,
-    onSuccess: onBack,
-    onError() {
-      if (!!deedChartId.current) {
-        deleteDeedChart.post({}, {Id: deedChartId.current});
-      }
-    }
+    onSuccess: onBack
   });
 
   const updateOrganization = usePost({
@@ -82,9 +73,19 @@ const EditOrganization: FC = () => {
 
   const onFinish = (values: any, organizationChartId?: number) => {
     if (!!values?.organization?.parent?.deedChart?.id && !organizationChartId)
-      return sendOrganization.post({
-        parentId: values?.organization?.parent?.deedChart?.id,
-        caption: values?.organization?.name
+      return sendOrganizationFullNode.post({
+        organizationChartId: organizationChartId || +location.state?.organization?.id,
+        user: {
+          ...values.user,
+          phoneNumber: convertNumbers2English(values?.user?.phoneNumber),
+          isActive: true
+        },
+        organization: {
+          ...values.organization,
+          organizationLogoToken: values?.organizationLogoToken?.fileToken
+        },
+        deedChartParentId: values?.organization?.parent?.deedChart?.id,
+        deedChartCaption: values?.organization?.name
       });
     if (!id) {
       return storeOrganization.post({
@@ -285,7 +286,7 @@ const EditOrganization: FC = () => {
             </Form.Item>
           </Col>
         </Row>
-        <FormActions isLoading={storeOrganization.isLoading} onBack={onBack} />
+        <FormActions isLoading={storeOrganization.isLoading || sendOrganizationFullNode.isLoading} onBack={onBack} />
       </Form>
     </Card>
   );

@@ -9,6 +9,8 @@ import values from 'lodash/values';
 import isEmpty from 'lodash/isEmpty';
 import toNumber from 'lodash/toNumber';
 
+const usernameTakenPattern = /Username '(\d+)' is already taken/;
+
 export const urlGenerator = (url: string): string => (isURL(url) ? url : replace(`/${url}`, '//', '/'));
 
 export const getLangSearchParam = (url: string): string => {
@@ -34,7 +36,11 @@ export const ResponseErrorHandler = (error: AxiosError): Promise<AxiosError> => 
   else if (error.code === 'ECONNABORTED') message = i18n.t('error:serverBusy');
   else if (!onlineManager.isOnline()) message = i18n.t('error:connection');
   else if (status === 500) message = response?.message || response?.error?.message || i18n.t('error:500');
-  if (/[a-zA-Z]/.test(message)) message = i18n.t('error:500');
+  if (usernameTakenPattern.test(message)) {
+    const numbers = message.matchAll(/(\d+)/g);
+    message = i18n.t('error:usernameTaken', {username: numbers?.next()?.value?.[1]});
+  } else if (/[a-zA-Z]/.test(message)) message = i18n.t('error:500');
+
   if (!isEmpty(message) && !error?.config?.headers?.silent) {
     notification.error({
       duration: 2,
