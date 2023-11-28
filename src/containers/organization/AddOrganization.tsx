@@ -57,7 +57,7 @@ const AddOrganizationModal: ForwardRefRenderFunction<refProps, props> = (
       values.parentId = selectedOrganization?.parentId ? +selectedOrganization?.parentId : null;
       values.leafPath = selectedOrganization?.leafPath;
     } else values.parentId = selectedOrganization?.id ? +selectedOrganization?.id : null;
-    if (selectedOrganization?.isEdit) {
+    if (selectedOrganization?.isEdit || organizationId) {
       values.organizationId =
         organizationId || selectedOrganization?.organizationId
           ? Number(organizationId || selectedOrganization?.organizationId)

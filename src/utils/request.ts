@@ -9,7 +9,10 @@ import values from 'lodash/values';
 import isEmpty from 'lodash/isEmpty';
 import toNumber from 'lodash/toNumber';
 
+const quotesRegex = /'([^']+)'/g;
 const usernameTakenPattern = /Username '(\d+)' is already taken/;
+const emailTakenPattern = /Email '([^']+)' is already taken/;
+const wordRegex = /[a-zA-Z]/;
 
 export const urlGenerator = (url: string): string => (isURL(url) ? url : replace(`/${url}`, '//', '/'));
 
@@ -37,9 +40,14 @@ export const ResponseErrorHandler = (error: AxiosError): Promise<AxiosError> => 
   else if (!onlineManager.isOnline()) message = i18n.t('error:connection');
   else if (status === 500) message = response?.message || response?.error?.message || i18n.t('error:500');
   if (usernameTakenPattern.test(message)) {
-    const numbers = message.matchAll(/(\d+)/g);
-    message = i18n.t('error:usernameTaken', {username: numbers?.next()?.value?.[1]});
-  } else if (/[a-zA-Z]/.test(message)) message = i18n.t('error:500');
+    const input = message.matchAll(/(\d+)/g);
+    message = i18n.t('error:usernameTaken', {username: input?.next()?.value?.[1]});
+  } else if (emailTakenPattern.test(message)) {
+    const input = message.matchAll(quotesRegex);
+    message = i18n.t('error:emailTaken', {email: input?.next()?.value?.[1]});
+  } else if (wordRegex.test(message)) {
+    message = i18n.t('error:500');
+  }
 
   if (!isEmpty(message) && !error?.config?.headers?.silent) {
     notification.error({

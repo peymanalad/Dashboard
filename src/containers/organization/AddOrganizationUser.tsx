@@ -60,7 +60,7 @@ const AddOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
   return (
     <Modal
       open={!!selectedOrganizationId}
-      title={t('addUser')}
+      title={t('addOfficeUser')}
       closable
       centered
       destroyOnClose

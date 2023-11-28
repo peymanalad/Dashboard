@@ -112,7 +112,7 @@ const ShowOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
     <>
       <Modal
         open={!!selectedOrganizationId}
-        title={t(isGlobal ? 'show_globalUsers' : 'showUsers')}
+        title={t(isGlobal ? 'show_globalUsers' : 'showOfficeUsers')}
         width={700}
         closable
         centered

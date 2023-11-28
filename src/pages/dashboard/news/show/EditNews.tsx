@@ -100,7 +100,8 @@ const EditNews: FC = () => {
               <Form.Item
                 name="organization"
                 label={t('organization')}
-                rules={[{required: true, message: t('messages.required')}]}>
+                rules={[{required: true, message: t('messages.required')}]}
+                initialValue={fetchNews?.data?.organizationId}>
                 <SelectOrganization />
               </Form.Item>
             </Col>
@@ -116,7 +117,8 @@ const EditNews: FC = () => {
                       name="postGroupId"
                       initialValue={{
                         id: fetchNews?.data?.post?.postGroupId,
-                        displayName: fetchNews?.data?.postGroupPostGroupDescription
+                        displayName: fetchNews?.data?.postGroupPostGroupDescription,
+                        organizationName: fetchNews?.data?.organizationName || ''
                       }}>
                       <MultiSelectPaginate
                         mode="single"
@@ -305,7 +307,7 @@ const EditNews: FC = () => {
                 name="isPublished"
                 valuePropName="checked"
                 className="m-0"
-                initialValue={fetchNews?.data?.post?.isPublished}>
+                initialValue={id ? fetchNews?.data?.post?.isPublished : true}>
                 <Checkbox>{t('publish.title')}</Checkbox>
               </Form.Item>
             </Col>

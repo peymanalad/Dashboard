@@ -85,22 +85,37 @@ const AccountInfo: FC = () => {
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="name" label={t('first_name')}>
+            <Form.Item
+              name="name"
+              label={t('first_name')}
+              rules={[{required: true, message: t('validation.required')}]}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="surname" label={t('last_name')}>
+            <Form.Item
+              name="surname"
+              label={t('last_name')}
+              rules={[{required: true, message: t('validation.required')}]}>
               <Input />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="phoneNumber" label={t('mobile')}>
+            <Form.Item
+              name="phoneNumber"
+              label={t('mobile')}
+              rules={[
+                {required: true, message: t('validation.required')},
+                {pattern: /^\d{11}$/, message: t('validation.mobile')}
+              ]}>
               <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="nationalId" label={t('nationalId')}>
+            <Form.Item
+              name="nationalId"
+              label={t('nationalId')}
+              rules={[{pattern: /^\d{10}$/, message: t('validation.nationalCode')}]}>
               <Input inputMode="tel" minLength={10} maxLength={10} className="ltr-input" />
             </Form.Item>
           </Col>
@@ -113,6 +128,7 @@ const AccountInfo: FC = () => {
                   name="password"
                   label={t('password')}
                   rules={[
+                    {required: true, message: t('validation.required')},
                     {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')},
                     {min: 6, message: t('validation.minSixCharacter')}
                   ]}>
@@ -143,7 +159,7 @@ const AccountInfo: FC = () => {
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8} className="flex-center">
-            <Form.Item name="isActive" valuePropName="checked" className="m-0">
+            <Form.Item name="isActive" valuePropName="checked" className="m-0" initialValue>
               <Checkbox>{t('active')}</Checkbox>
             </Form.Item>
           </Col>

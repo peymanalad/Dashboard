@@ -63,12 +63,12 @@ const ShowOrganizationGraph: FC = () => {
       icon: <RadarChartOutlined />
     },
     {
-      label: t('showUsers'),
+      label: t('showOfficeUsers'),
       key: 'showUsers',
       icon: <UserOutlined />
     },
     {
-      label: t('addUser'),
+      label: t('addOfficeUser'),
       key: 'addUser',
       icon: <UserAddOutlined />
     },

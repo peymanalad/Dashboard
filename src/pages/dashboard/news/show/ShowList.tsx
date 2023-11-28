@@ -14,7 +14,7 @@ import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search} from 'components';
 import SearchNews from 'containers/news/show/SearchNews';
 import {useDelete, usePost, useUser} from 'hooks';
-import {convertTimeToUTC, convertUtcTimeToLocal, getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
+import {convertUtcTimeToLocal, getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
 import {DeedLogoImg} from 'assets';
 import type {simplePermissionProps} from 'types/common';
 
@@ -70,7 +70,8 @@ const ShowList: FC = () => {
       dataIndex: ['post', 'postTitle'],
       key: 'postTitle',
       align: 'center',
-      sorter: true
+      sorter: true,
+      render: (text: string) => `${text.substring(0, 30)}${text?.length > 30 ? ' ...' : ''}`
     },
     {
       title: t('group'),

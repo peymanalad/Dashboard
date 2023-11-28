@@ -141,12 +141,20 @@ const EditUser: FC = () => {
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="phoneNumber" label={t('mobile')} initialValue={fetchUser?.data?.user?.phoneNumber}>
+            <Form.Item
+              name="phoneNumber"
+              label={t('mobile')}
+              initialValue={fetchUser?.data?.user?.phoneNumber}
+              rules={[{required: true, message: t('validation.required')}]}>
               <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <Form.Item name="nationalId" label={t('nationalId')} initialValue={fetchUser?.data?.user?.nationalId}>
+            <Form.Item
+              name="nationalId"
+              label={t('nationalId')}
+              initialValue={fetchUser?.data?.user?.nationalId}
+              rules={[{pattern: /^\d{10}$/, message: t('validation.nationalCode')}]}>
               <Input inputMode="tel" minLength={10} maxLength={10} className="ltr-input" />
             </Form.Item>
           </Col>
