@@ -55,14 +55,16 @@ const UserMemberShowList: FC = () => {
       dataIndex: ['groupMember', 'memberPos'],
       key: 'memberPos',
       align: 'center',
-      sorter: true
+      sorter: true,
+      render: (memberPosition: number) => memberPosition || 0
     },
     {
       title: t('organization_situation'),
       dataIndex: ['groupMember', 'memberPosition'],
       key: 'memberPosition',
       align: 'center',
-      sorter: true
+      sorter: true,
+      render: (memberPosition: string) => memberPosition || t('undefined')
     },
     {
       title: t('organization'),

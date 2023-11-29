@@ -18,7 +18,7 @@ import {getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
   const searchRef = useRef<ElementRef<typeof Search>>(null);
-  const {hasPermission} = useUser();
+  const {hasPermission, isSuperUser} = useUser();
   const location = useLocation();
 
   const fetchExcel = usePost({
@@ -132,7 +132,13 @@ const ShowList: FC = () => {
         </Space>
       }>
       <Search ref={searchRef} />
-      <CustomTable fetch="services/app/PostGroups/GetAll" dataName="postGroups" columns={columns} hasIndexColumn />
+      <CustomTable
+        fetch="services/app/PostGroups/GetAll"
+        dataName="postGroups"
+        columns={columns}
+        hasIndexColumn
+        selectOrganizationProps={{hasAll: isSuperUser()}}
+      />
     </Card>
   );
 };

@@ -32,7 +32,7 @@ const SearchUsers: FC = () => {
       : undefined;
     values.role = values?.roles?.id;
     history.replace({
-      search: qs.stringify({...queryObject, ...values})
+      search: qs.stringify({...queryObject, ...values, page: 1})
     });
   };
 

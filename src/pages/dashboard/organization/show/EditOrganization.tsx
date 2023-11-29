@@ -1,4 +1,4 @@
-import React, {FC, useRef} from 'react';
+import React, {FC} from 'react';
 import {Card, Form, Row, Col, Input, Checkbox, Divider} from 'antd';
 import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
@@ -7,7 +7,6 @@ import {convertNumbers2English, getImageUrl, getLangSearchParam} from 'utils';
 import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 
 const EditOrganization: FC = () => {
-  const deedChartId = useRef(0);
   const {t} = useTranslation('organization');
   const history = useHistory();
   const location = useLocation<any>();

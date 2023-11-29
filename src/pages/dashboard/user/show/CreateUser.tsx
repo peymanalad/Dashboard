@@ -1,15 +1,35 @@
 import React, {type FC} from 'react';
-import {Card, Form, Checkbox, Input, Row, Col} from 'antd';
+import {Card, Form, Checkbox, Input, Row, Col, Modal} from 'antd';
 import {useTranslation} from 'react-i18next';
 import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 import {useHistory} from 'react-router-dom';
-import {usePost} from 'hooks';
+import {usePost, useUser} from 'hooks';
 import {getLangSearchParam, convertNumbers2English} from 'utils';
 
 const AccountInfo: FC = () => {
   const {t} = useTranslation('user_create');
   const history = useHistory();
+  const {isSuperUser} = useUser();
   const [form] = Form.useForm();
+
+  const checkSetOrganization = (id: number) => {
+    const formValues = form.getFieldsValue();
+    Modal.success({
+      title: t('chooseOrganization'),
+      content: t('areYouSetOrganizationForUser'),
+      okType: 'primary',
+      centered: true,
+      okText: t('yes'),
+      className: 'delete',
+      cancelText: t('no'),
+      okCancel: true,
+      onCancel: onBack,
+      onOk: () =>
+        history.replace(getLangSearchParam('/news/member/create'), {
+          user: {displayName: `${formValues?.name} ${formValues?.surname}`, id}
+        })
+    });
+  };
 
   const onBack = () => {
     if (history.length > 1 && document.URL !== document.referrer) history.goBack();
@@ -30,8 +50,8 @@ const AccountInfo: FC = () => {
     onSuccess: (userId) => {
       const fileToken = form.getFieldValue('updateFileToken')?.fileToken;
       if (fileToken) sendPicture.post({userId: +userId, fileToken});
-      else if (history.length > 1 && document.URL !== document.referrer) history.goBack();
-      else history.replace(getLangSearchParam('/user/list'));
+      if (isSuperUser()) checkSetOrganization(+userId);
+      else onBack();
     }
   });
 

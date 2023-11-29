@@ -20,7 +20,7 @@ const SearchNews: FC = () => {
     values.ToDate = values.ToDate ? convertTimeToUTC(values.ToDate, 'YYYY-MM-DD') : undefined;
     values.PostGroupPostGroupDescriptionFilter = values?.postGroup?.displayName;
     history.replace({
-      search: qs.stringify({...queryObject, ...values})
+      search: qs.stringify({...queryObject, ...values, page: 1})
     });
   };
 

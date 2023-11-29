@@ -74,12 +74,17 @@ const EditNewsGroup: FC = () => {
             <Form.Item
               label={t('organization_group')}
               name="organizationGroup"
-              initialValue={{
-                organizationGroup: {
-                  id: fetchNewsGroup?.data?.postGroup?.organizationGroupId,
-                  groupName: fetchNewsGroup?.data?.organizationGroupGroupName
-                }
-              }}>
+              initialValue={
+                fetchNewsGroup?.data?.postGroup?.organizationGroupId
+                  ? {
+                      organizationGroup: {
+                        id: fetchNewsGroup?.data?.postGroup?.organizationGroupId,
+                        groupName: fetchNewsGroup?.data?.organizationGroupGroupName
+                      }
+                    }
+                  : undefined
+              }
+              rules={[{required: true, message: t('messages.required')}]}>
               <MultiSelectPaginate
                 mode="single"
                 urlName="organizationGroups"

@@ -23,7 +23,7 @@ const SearchButton: FC<props> = ({name = 'search', onSearch, children}) => {
     if (values[name]?.length) values[name] = convertNumbers2English(values?.[name]);
     if (onSearch) values = onSearch(values);
     history.replace({
-      search: qs.stringify(values)
+      search: qs.stringify({...queryObject, ...values, page: 1})
     });
   };
 

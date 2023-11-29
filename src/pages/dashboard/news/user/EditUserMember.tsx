@@ -1,6 +1,6 @@
 import React, {type FC} from 'react';
 import {Card, Form, Row, Col, Input} from 'antd';
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {FormActions, MultiSelectPaginate} from 'components';
@@ -8,6 +8,8 @@ import {FormActions, MultiSelectPaginate} from 'components';
 const EditMemberShowList: FC = () => {
   const {t} = useTranslation('news');
   const history = useHistory();
+  const location = useLocation<any>();
+  const user = location.state?.user;
   const {id} = useParams<{id?: string}>();
 
   const [form] = Form.useForm();
@@ -63,7 +65,7 @@ const EditMemberShowList: FC = () => {
               name="memberPosition"
               label={t('organization_situation')}
               rules={[{required: true, message: t('messages.required')}]}
-              initialValue={fetchNewsUserMember?.data?.groupMember?.memberPosition}>
+              initialValue={fetchNewsUserMember?.data?.groupMember?.memberPosition || t('undefined')}>
               <Input />
             </Form.Item>
           </Col>
@@ -107,7 +109,7 @@ const EditMemberShowList: FC = () => {
                           id: fetchNewsUserMember?.data?.groupMember?.userId,
                           displayName: fetchNewsUserMember?.data?.userName
                         }
-                      : undefined
+                      : user
                   }>
                   <MultiSelectPaginate
                     mode="single"

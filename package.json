@@ -1,6 +1,6 @@
 {
   "name": "deed-dashboard",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "private": true,
   "author": "deed Company",
   "description": "admin panel for deed apps",
@@ -25,7 +25,7 @@
       "last 1 safari version"
     ]
   },
-  "buildDate": 1701193529559,
+  "buildDate": 1701296155897,
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"

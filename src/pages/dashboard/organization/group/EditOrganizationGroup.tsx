@@ -77,7 +77,8 @@ const EditOrganizationGroup: FC = () => {
             <Form.Item
               label={t('organization_group')}
               name="organization"
-              initialValue={fetchNewsGroup?.data?.postGroup?.organizationId}>
+              initialValue={fetchNewsGroup?.data?.postGroup?.organizationId}
+              rules={[{required: true, message: t('messages.required')}]}>
               <SelectOrganization />
             </Form.Item>
           </Col>
