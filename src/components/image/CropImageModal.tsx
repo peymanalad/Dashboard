@@ -12,6 +12,7 @@ interface refProps {
 
 export interface props {
   ref?: RefObject<refProps>;
+  hasChangeCrop?: boolean;
   aspect?: number;
   onModalOk?: any;
   children: any;
@@ -21,7 +22,7 @@ export interface props {
 }
 
 const CropImageModal: ForwardRefRenderFunction<refProps, props> = (
-  {onModalOk, onModalCancel, beforeCrop, onUploadFail, aspect, children}: props,
+  {onModalOk, onModalCancel, beforeCrop, onUploadFail, aspect, children, hasChangeCrop = false}: props,
   forwardedRef: ForwardedRef<refProps>
 ) => {
   const beforeUploadRef = useRef<UploadProps['beforeUpload']>();
@@ -110,6 +111,9 @@ const CropImageModal: ForwardRefRenderFunction<refProps, props> = (
 
   const onReduceZoom = () => onZoom(zoom - 1);
   const onIncreaseZoom = () => onZoom(zoom + 1);
+  const onReset = () => {
+    if (aspect) cropper?.setAspectRatio(aspect);
+  };
 
   return (
     <>
@@ -135,7 +139,7 @@ const CropImageModal: ForwardRefRenderFunction<refProps, props> = (
           autoCropArea={1}
           checkOrientation={false}
           initialAspectRatio={aspect}
-          cropBoxResizable={!aspect}
+          cropBoxResizable={hasChangeCrop}
           onInitialized={setCropper}
           guides={false}
         />
@@ -150,6 +154,11 @@ const CropImageModal: ForwardRefRenderFunction<refProps, props> = (
             <Slider min={0} max={3} step={0.3} value={zoom} onChange={onZoom} className="flex-1 mx-4" />
             <Button onClick={onIncreaseZoom}>+</Button>
           </Col>
+          {hasChangeCrop && (
+            <Col span={24} className="flex flex-center">
+              <Button onClick={onReset}>{t('resetAspectRatio')}</Button>
+            </Col>
+          )}
         </Row>
       </Modal>
     </>

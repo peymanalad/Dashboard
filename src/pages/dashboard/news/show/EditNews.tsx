@@ -224,6 +224,7 @@ const EditNews: FC = () => {
                   maxFile={10}
                   typeFile="image,video"
                   hasCrop
+                  hasChangeCrop
                   aspect={1}
                 />
               </Form.Item>

@@ -38,6 +38,7 @@ interface props {
   label?: string;
   aspect?: number;
   hasCrop?: boolean;
+  hasChangeCrop?: boolean;
   notifyDelete?: boolean;
   typeFile: FileTypeProps;
   uploadButton?: (isLoading: boolean, disabled?: boolean) => ReactNode;
@@ -76,6 +77,7 @@ const CustomUpload = ({
   sortable = false,
   outPutKeys,
   hasCrop,
+  hasChangeCrop,
   notifyDelete = true,
   showUploadList = true,
   imageHint,
@@ -494,7 +496,9 @@ const CustomUpload = ({
               style={getListStyle(snapshotContext.isDraggingOver)}
               className="ltr">
               {typeFile?.includes('image') && hasCrop ? (
-                <CropImageModal aspect={aspect}>{Uploader(snapshotContext.isDraggingOver)}</CropImageModal>
+                <CropImageModal aspect={aspect} hasChangeCrop={hasChangeCrop}>
+                  {Uploader(snapshotContext.isDraggingOver)}
+                </CropImageModal>
               ) : (
                 Uploader(snapshotContext.isDraggingOver)
               )}
