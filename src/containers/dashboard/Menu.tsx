@@ -1,4 +1,4 @@
-import React, {FC, useMemo} from 'react';
+import React, {type FC, useMemo} from 'react';
 import {Menu, Tooltip} from 'antd';
 import {PlusOutlined} from '@ant-design/icons';
 import {getFilteredMenusList} from 'router/dashboard';
@@ -9,7 +9,7 @@ import compact from 'lodash/compact';
 import join from 'lodash/join';
 import split from 'lodash/split';
 import {useUser} from 'hooks';
-import {dashboardRouteProps, subDashboardRouteProps} from 'types/dashboard';
+import type {dashboardRouteProps, subDashboardRouteProps} from 'types/dashboard';
 
 interface Props {
   onChangeRoute?: () => void;
@@ -71,7 +71,8 @@ const SideMenu: FC<Props> = ({onChangeRoute}) => {
             )}
           </Item>
         ) : (
-          !isEmpty(item?.subs) && (
+          !isEmpty(item?.subs) &&
+          !item?.hidden && (
             <SubMenu key={item.key} title={item.title} icon={item.icon}>
               {createSubs(item?.key, item?.subs)}
             </SubMenu>

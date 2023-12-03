@@ -1633,6 +1633,7 @@ const Dashboard: Array<dashboardRouteProps> = [
     cmp: <ReportsShowList />,
     permission: 'statistics.view',
     key: 'report',
+    hidden: true,
     subs: [
       {
         key: 'newsGroupEdit',

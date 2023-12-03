@@ -1,4 +1,4 @@
-import React, {useRef, useState, type FC, type Dispatch, type SetStateAction, CSSProperties} from 'react';
+import React, {useRef, useState, type FC, type Dispatch, type SetStateAction, CSSProperties, useEffect} from 'react';
 import {useLocation} from 'react-router-dom';
 import {Row, Col, Card, Space, Button, Typography} from 'antd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
@@ -41,7 +41,7 @@ const SquareCard: FC<{
       if (draggedOrder === targetOrder) return;
 
       const updatedSquares = sortBy(
-        initialNews.map((sq) => {
+        initialNews?.map((sq) => {
           if (sq.ordering === draggedOrder) return {...sq, ordering: targetOrder};
           if (sq.ordering === targetOrder) return {...sq, ordering: draggedOrder};
           return sq;
@@ -65,7 +65,7 @@ const SquareCard: FC<{
           backgroundColor: news?.color,
           borderRadius: 8
         }}>
-        <Meta title={news?.postGroupDescription || '-'} />
+        <Meta title={news?.postGroupDescription || '-'} className="text-xs" />
       </Card>
     </div>
   );
@@ -145,6 +145,15 @@ const NewsGroupOrder: FC = () => {
   const queryObject = queryStringToObject(location.search);
   const [news, setNews] = useState<PostGroupProps[]>([]);
   const selectedOrganization = queryObject?.organization;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      initialNews.current = news;
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [news]);
 
   const fetchNewsGroup = useFetch({
     name: 'postGroups',

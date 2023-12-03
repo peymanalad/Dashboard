@@ -876,6 +876,11 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
   scrollbar-width: none; /* Firefox */
 }
 
+
+.ant-card-meta.text-xs .ant-card-meta-title {
+  font-size: 0.9rem;
+}
+
 /*--------------------medias */
 
 @media only screen and (max-width: 575px) {
