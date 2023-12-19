@@ -1,16 +1,15 @@
-import React, {useRef, ElementRef, FC} from 'react';
+import React, {FC} from 'react';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {DeleteOutlined, FileExcelOutlined} from '@ant-design/icons';
+import {DeleteOutlined, EyeOutlined, FileExcelOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
-import {useLocation} from 'react-router-dom';
-import {CustomTable, Search, SearchButton} from 'components';
+import {Link, useLocation} from 'react-router-dom';
+import {CustomTable, SearchButton} from 'components';
 import {useDelete, usePost, useUser} from 'hooks';
 import {convertUtcTimeToLocal, getTempFileUrl, queryStringToObject} from 'utils';
 import type {simplePermissionProps} from 'types/common';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('comments');
-  const searchRef = useRef<ElementRef<typeof Search>>(null);
   const location = useLocation();
   const {isSuperUser} = useUser();
 
@@ -59,6 +58,11 @@ const ShowList: FC = () => {
       align: 'center',
       render: (permissions: simplePermissionProps, commentLikes: any) => (
         <Space size={2}>
+          <Tooltip title={t('newsProfile')}>
+            <Link to={`/news/news/show/${commentLikes?.postId}`}>
+              <Button type="text" icon={<EyeOutlined className="text-orange" />} />
+            </Link>
+          </Tooltip>
           <Tooltip title={t('do_delete')}>
             <Button
               onClick={() => deleteRequest.show(commentLikes.commentLike, {Id: commentLikes.commentLike?.id})}
@@ -70,10 +74,6 @@ const ShowList: FC = () => {
       )
     }
   ];
-
-  const showSearch = () => {
-    if (searchRef.current) searchRef.current.open();
-  };
 
   return (
     <Card

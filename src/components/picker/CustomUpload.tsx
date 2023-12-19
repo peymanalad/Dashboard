@@ -122,8 +122,25 @@ const CustomUpload = ({
     return min([maxSizePerFile, maxSizePerType]) || Infinity;
   };
 
+  function isFileTypeAllowed(fileType: string): boolean {
+    const acceptedTypeArray = getAccess.split(',');
+
+    for (const acceptedType of acceptedTypeArray) {
+      const pattern = new RegExp(`^${acceptedType.trim().replace(/\*/g, '.*').replace('/', '\\/')}$`);
+
+      if (pattern.test(fileType)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   const checkConditionForSendFile = (files: any) =>
     new Promise<string | null>((resolve, reject) => {
+      if (!isFileTypeAllowed(files.file?.type)) {
+        reject(t('fileTypeError'));
+      }
       if (imageHint && maxHeight && maxWidth) {
         getWidthHeightImage(files.file)
           .then((detailImage) => {

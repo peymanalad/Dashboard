@@ -1,17 +1,17 @@
-import React, {useRef, ElementRef, FC} from 'react';
+import React, {type FC} from 'react';
 import {Button, Card, Space, Tooltip} from 'antd';
-import {DeleteOutlined, FileExcelOutlined} from '@ant-design/icons';
+import {DeleteOutlined, EyeOutlined, FileExcelOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
-import {useLocation} from 'react-router-dom';
-import {CustomTable, Search, SearchButton} from 'components';
-import {useDelete, usePost} from 'hooks';
+import {Link, useLocation} from 'react-router-dom';
+import {CustomTable, SearchButton} from 'components';
+import {useDelete, usePost, useUser} from 'hooks';
 import {convertUtcTimeToLocal, getTempFileUrl, queryStringToObject} from 'utils';
-import {simplePermissionProps} from 'types/common';
+import type {simplePermissionProps} from 'types/common';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('comments');
-  const searchRef = useRef<ElementRef<typeof Search>>(null);
   const location = useLocation();
+  const {isSuperUser} = useUser();
 
   const fetchExcel = usePost({
     url: 'services/app/Comments/GetCommentsToExcel',
@@ -65,6 +65,11 @@ const ShowList: FC = () => {
       align: 'center',
       render: (permissions: simplePermissionProps, comment: any) => (
         <Space size={2}>
+          <Tooltip title={t('newsProfile')}>
+            <Link to={`/news/news/show/${comment?.postId}`}>
+              <Button type="text" icon={<EyeOutlined className="text-orange" />} />
+            </Link>
+          </Tooltip>
           <Tooltip title={t('do_delete')}>
             <Button
               onClick={() => deleteRequest.show(comment.comment, {Id: comment.comment?.id})}
@@ -76,10 +81,6 @@ const ShowList: FC = () => {
       )
     }
   ];
-
-  const showSearch = () => {
-    if (searchRef.current) searchRef.current.open();
-  };
 
   return (
     <Card
@@ -99,7 +100,13 @@ const ShowList: FC = () => {
           <SearchButton />
         </Space>
       }>
-      <CustomTable fetch="services/app/Comments/GetAll" dataName="comments" columns={columns} hasOrganization />
+      <CustomTable
+        fetch="services/app/Comments/GetAll"
+        dataName="comments"
+        columns={columns}
+        hasOrganization
+        selectOrganizationProps={{hasAll: isSuperUser()}}
+      />
     </Card>
   );
 };
