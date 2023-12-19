@@ -211,7 +211,7 @@ const EditOrganization: FC = () => {
               name={['user', 'name']}
               label={t('first_name')}
               initialValue={fetchOrganizationAdmin?.data?.name || ''}>
-              <Input />
+              <Input autoComplete="off" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -219,7 +219,7 @@ const EditOrganization: FC = () => {
               name={['user', 'surname']}
               label={t('last_name')}
               initialValue={fetchOrganizationAdmin?.data?.surName || ''}>
-              <Input />
+              <Input autoComplete="off" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -236,7 +236,7 @@ const EditOrganization: FC = () => {
               label={t('username(phoneNumber)')}
               rules={[{required: true, message: t('messages.required')}]}
               initialValue={fetchOrganizationAdmin?.data?.userName}>
-              <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
+              <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" autoComplete="off" />
             </Form.Item>
           </Col>
           {/*<Col xs={24} md={12} lg={8}>*/}
@@ -256,7 +256,7 @@ const EditOrganization: FC = () => {
                 {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('messages.correctPassword')},
                 {min: 6, message: t('messages.minSixCharacter')}
               ]}>
-              <Input className="ltr-input" type="password" />
+              <Input className="ltr-input" type="password" autoComplete="off" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -273,7 +273,7 @@ const EditOrganization: FC = () => {
                   }
                 })
               ]}>
-              <Input className="ltr-input" type="password" />
+              <Input className="ltr-input" type="password" autoComplete="off" />
             </Form.Item>
           </Col>
           <Col span={24}>

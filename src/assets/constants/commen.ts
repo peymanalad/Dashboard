@@ -1,3 +1,5 @@
+import {uploadType} from 'types/file';
+
 export const colors = [
   '#ffe0b2',
   '#c5cae9',
@@ -85,3 +87,54 @@ export const pieChartColors = [
   {id: 8, color: '#BFC9CA'},
   {id: 9, color: '#E59866'}
 ];
+
+export const maxSizeType: Record<uploadType, number | null> = {
+  users: null,
+  applications: null,
+  messages: null,
+  posts: null,
+  postGroups: null,
+  visits: null,
+  banks: null,
+  recommendations: null,
+  diseases: null,
+  sources: null,
+  configs: null,
+  products: null
+};
+
+export const maxSizeExtension: Record<string, number> = {
+  png: 10000,
+  jfif: 10000,
+  pjpeg: 10000,
+  pjp: 10000,
+  jpeg: 10000,
+  gif: 10000,
+  jpg: 10000,
+  opus: 10000,
+  flac: 10000,
+  weba: 2000,
+  wav: 10000,
+  ogg: 10000,
+  m4a: 10000,
+  oga: 10000,
+  mid: 10000,
+  amr: 10000,
+  aiff: 10000,
+  wma: 10000,
+  au: 10000,
+  acc: 10000,
+  ogm: 100000,
+  webm: 100000,
+  wmv: 100000,
+  mpg: 100000,
+  ogv: 100000,
+  mov: 100000,
+  asx: 100000,
+  mpeg: 100000,
+  mp4: 100000,
+  m4v: 100000,
+  avi: 100000,
+  mp3: 10000,
+  pdf: 3000
+};

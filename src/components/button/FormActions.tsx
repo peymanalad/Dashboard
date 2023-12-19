@@ -5,10 +5,11 @@ import {useTranslation} from 'react-i18next';
 
 interface props {
   isLoading?: boolean;
+  disabled?: boolean;
   onBack(): void;
 }
 
-const FormActions: FC<props> = ({isLoading, onBack}) => {
+const FormActions: FC<props> = ({isLoading, disabled, onBack}) => {
   const {t} = useTranslation('general');
   return (
     <Row gutter={[16, 8]} className="w-full my-5" justify="space-between">
@@ -20,7 +21,13 @@ const FormActions: FC<props> = ({isLoading, onBack}) => {
         icon={<CloseCircleOutlined />}>
         {t('cancel')}
       </Button>
-      <Button className="sm:w-unset" type="primary" htmlType="submit" loading={isLoading} icon={<SaveOutlined />}>
+      <Button
+        className="sm:w-unset"
+        type="primary"
+        htmlType="submit"
+        loading={isLoading}
+        disabled={disabled}
+        icon={<SaveOutlined />}>
         {t('save')}
       </Button>
     </Row>

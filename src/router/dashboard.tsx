@@ -867,7 +867,7 @@ const Dashboard: Array<dashboardRouteProps> = [
       {
         route: '/comment/like/list',
         cmp: <CommentLikeShowList />,
-        title: i18n.t('side_menu:likes'),
+        title: i18n.t('side_menu:comment_likes'),
         permission: 'comments.view'
       }
       // {

@@ -16,6 +16,7 @@ const EditNews: FC = () => {
   const {t} = useTranslation('news');
   const history = useHistory();
   const {id} = useParams<{id?: string}>();
+  const [isUploading, setIsUploading] = useState<boolean>();
   const [showEmoji, setShowEmoji] = useState<boolean>();
   const [contentPos, setContentPos] = useState<number>(0);
 
@@ -226,6 +227,7 @@ const EditNews: FC = () => {
                   hasCrop
                   hasChangeCrop
                   aspect={1}
+                  onUploading={setIsUploading}
                 />
               </Form.Item>
             </Col>
@@ -313,7 +315,7 @@ const EditNews: FC = () => {
               </Form.Item>
             </Col>
           </Row>
-          <FormActions isLoading={storeNews.isLoading} onBack={onBack} />
+          <FormActions isLoading={storeNews.isLoading} disabled={isUploading} onBack={onBack} />
         </Form>
       </Card>
       <Modal

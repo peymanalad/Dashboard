@@ -109,7 +109,7 @@ const AccountInfo: FC = () => {
               name="name"
               label={t('first_name')}
               rules={[{required: true, message: t('validation.required')}]}>
-              <Input />
+              <Input autoComplete="off" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -117,7 +117,7 @@ const AccountInfo: FC = () => {
               name="surname"
               label={t('last_name')}
               rules={[{required: true, message: t('validation.required')}]}>
-              <Input />
+              <Input autoComplete="off" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -152,7 +152,7 @@ const AccountInfo: FC = () => {
                     {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')},
                     {min: 6, message: t('validation.minSixCharacter')}
                   ]}>
-                  <Input className="ltr-input" disabled={fields.getFieldValue('randomPassword')} />
+                  <Input className="ltr-input" disabled={fields.getFieldValue('randomPassword')} autoComplete="off" />
                 </Form.Item>
               </Col>
             )}

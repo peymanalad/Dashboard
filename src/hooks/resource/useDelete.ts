@@ -23,7 +23,7 @@ const useDelete = ({name, titleKey = 'name', url, onSuccess, onError}: IPostConf
     url,
     method: 'DELETE',
     onSuccess: () => {
-      queryClient.refetchQueries(name);
+      queryClient.removeQueries(name);
       if (isFunction(onSuccess)) onSuccess();
     },
     onError

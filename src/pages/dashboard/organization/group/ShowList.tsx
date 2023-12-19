@@ -24,8 +24,8 @@ const ShowList: FC = () => {
 
   const deleteRequest = useDelete({
     url: '/services/app/PostGroups/Delete',
-    name: 'newsGroups',
-    titleKey: 'newsName'
+    name: 'postGroups',
+    titleKey: 'postGroupDescription'
   });
 
   const columns: any = [

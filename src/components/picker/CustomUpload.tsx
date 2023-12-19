@@ -1,4 +1,4 @@
-import React, {useState, ReactNode, memo, useMemo, useRef, ElementRef} from 'react';
+import React, {useState, ReactNode, memo, useMemo, useRef, ElementRef, useEffect} from 'react';
 import {Upload, Modal, message, Image, Button, Typography, Row, Col, Avatar} from 'antd';
 import {
   PictureOutlined,
@@ -24,10 +24,11 @@ import first from 'lodash/first';
 import split from 'lodash/split';
 import last from 'lodash/last';
 import min from 'lodash/min';
-import {useFetch, useUser} from 'hooks';
+import {useUser} from 'hooks';
 import cloneWith from 'lodash/cloneWith';
 import isFunction from 'lodash/isFunction';
 import {v4 as uuidv4} from 'uuid';
+import {maxSizeType, maxSizeExtension} from 'assets';
 import type {UploadProps} from 'antd/lib/upload/interface';
 import type {FileTypeProps, FileModeProps, uploadType} from 'types/file';
 
@@ -48,6 +49,7 @@ interface props {
   outPutKeys?: string | string[];
   onChange?: (files: any) => void;
   onUpload?: (files: any) => void;
+  onUploading?: (isUploading: boolean) => void;
   className?: string;
   disabled?: boolean;
   sortable?: boolean;
@@ -67,6 +69,7 @@ const CustomUpload = ({
   value,
   onChange,
   onUpload,
+  onUploading,
   typeFile,
   type,
   aspect,
@@ -98,25 +101,7 @@ const CustomUpload = ({
   const [isDraggingMode, setIsDraggingMode] = useState<boolean>(false);
   const [valueState, setValueState] = useState<any | undefined>();
 
-  const fetchMaxSizeType = useFetch({
-    url: 'configs/fetch',
-    name: 'fileMaxSizePerType',
-    query: {
-      key: 'file_max_size_per_type'
-    },
-    showError: false,
-    enabled: false
-  });
-
-  const fetchMaxSizeExtension = useFetch({
-    url: 'configs/fetch',
-    name: 'fileMaxSizePerExtension',
-    query: {
-      key: 'file_max_size_per_extension'
-    },
-    showError: false,
-    enabled: false
-  });
+  useEffect(() => onUploading && onUploading(isLoading), [isLoading]);
 
   const getWidthHeightImage = (file: File) => {
     return new Promise<{width: number; height: number}>((resolve, reject) => {
@@ -132,8 +117,8 @@ const CustomUpload = ({
   };
 
   const getMaxSize = (typeFile: string | undefined): number => {
-    const maxSizePerType = get(fetchMaxSizeType?.data, type);
-    const maxSizePerFile = typeFile ? get(fetchMaxSizeExtension?.data, typeFile) : undefined;
+    const maxSizePerType = get(maxSizeType, type);
+    const maxSizePerFile = typeFile ? get(maxSizeExtension, typeFile) : undefined;
     return min([maxSizePerFile, maxSizePerType]) || Infinity;
   };
 
@@ -151,7 +136,7 @@ const CustomUpload = ({
           });
       }
       if (getMaxSize(last(split(files?.file?.name, '.'))) < files?.file?.size / 1000) {
-        reject(`${t('fileSizeError', {max: getMaxSize(last(split(files?.file?.name, '.')))})}`);
+        reject(`${t('fileSizeError', {max: getMaxSize(last(split(files?.file?.name, '.'))) / 1000})}`);
       }
       resolve(null);
     });

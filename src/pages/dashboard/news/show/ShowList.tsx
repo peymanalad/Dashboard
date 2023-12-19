@@ -1,4 +1,4 @@
-import React, {useRef, type ElementRef, type FC} from 'react';
+import React, {type FC} from 'react';
 import {Button, Card, Space, Tooltip, Image} from 'antd';
 import {
   FormOutlined,
@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
-import {CustomTable, Search} from 'components';
+import {CustomTable} from 'components';
 import SearchNews from 'containers/news/show/SearchNews';
 import {useDelete, usePost, useUser} from 'hooks';
 import {convertUtcTimeToLocal, getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
@@ -20,7 +20,6 @@ import type {simplePermissionProps} from 'types/common';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
-  const searchRef = useRef<ElementRef<typeof Search>>(null);
   const {hasPermission, isSuperUser} = useUser();
   const location = useLocation();
 
@@ -71,7 +70,11 @@ const ShowList: FC = () => {
       key: 'postTitle',
       align: 'center',
       sorter: true,
-      render: (text: string) => `${text.substring(0, 30)}${text?.length > 30 ? ' ...' : ''}`
+      render: (text: string, news: any) => (
+        <Link to={`/news/news/show/${news.post?.id}`}>
+          {`${text.substring(0, 30)}${text?.length > 30 ? ' ...' : ''}`}
+        </Link>
+      )
     },
     {
       title: t('group'),
@@ -187,10 +190,6 @@ const ShowList: FC = () => {
       )
     }
   ];
-
-  const showSearch = () => {
-    if (searchRef.current) searchRef.current.open();
-  };
 
   return (
     <Card
