@@ -616,6 +616,7 @@
       "delete_message": "آیا در مورد حذف پیام اطمینان خاطر دارید؟",
       "ticket_card_header": "گفتگوی  {{patient}} با {{doctor}}",
       "broadcast": "به {{count}} کاربر ارسال شد",
+      "maxLength": "طول پیام حداکثر ۲۵۶ حرف باشد",
       "no_chat": "چت وجود ندارد",
       "no_messages": "پیامی وجود ندارد",
       "sameParentGroup": "سوال پدر نمی‌تواند خود گروه سوال باشد",

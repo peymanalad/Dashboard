@@ -1346,38 +1346,39 @@ const Dashboard: Array<dashboardRouteProps> = [
   //     }
   //   ]
   // },
-  // {
-  //   title: i18n.t('side_menu:notifications'),
-  //   icon: <BellOutlined />,
-  //   key: 'notifications',
-  //   subs: [
-  //     {
-  //       route: '/notifications/list',
-  //       cmp: <NotificationShowList />,
-  //       permission: 'notifications.broadcast',
-  //       title: i18n.t('side_menu:notifications_view')
-  //     },
-  //     {
-  //       route: '/notifications/group/list',
-  //       cmp: <NotificationsShowList />,
-  //       permission: 'notifications.broadcast',
-  //       title: i18n.t('side_menu:group_notifications_view')
-  //     },
-  //     {
-  //       route: '/notifications/group/:id',
-  //       cmp: <ShowGroupNotification />,
-  //       permission: 'notifications.broadcast',
-  //       hidden: true
-  //       // title: i18n.t('side_menu:group_notifications_view')
-  //     },
-  //     {
-  //       route: '/notifications/broadcast',
-  //       cmp: <BroadcastNotification />,
-  //       title: i18n.t('side_menu:notification_send'),
-  //       permission: 'notifications.broadcast'
-  //     }
-  //   ]
-  // },
+  {
+    title: i18n.t('side_menu:notifications'),
+    icon: <BellOutlined />,
+    forSuperAdmin: true,
+    key: 'notifications',
+    subs: [
+      // {
+      //   route: '/notifications/list',
+      //   cmp: <NotificationShowList />,
+      //   permission: 'notifications.broadcast',
+      //   title: i18n.t('side_menu:notifications_view')
+      // },
+      // {
+      //   route: '/notifications/group/list',
+      //   cmp: <NotificationsShowList />,
+      //   permission: 'notifications.broadcast',
+      //   title: i18n.t('side_menu:group_notifications_view')
+      // },
+      {
+        route: '/notifications/group/:id',
+        cmp: <ShowGroupNotification />,
+        permission: 'notifications.broadcast',
+        hidden: true
+        // title: i18n.t('side_menu:group_notifications_view')
+      },
+      {
+        route: '/notifications/broadcast',
+        cmp: <BroadcastNotification />,
+        title: i18n.t('side_menu:notification_send'),
+        permission: 'notifications.broadcast'
+      }
+    ]
+  },
   {
     title: i18n.t('side_menu:setting'),
     icon: <SettingOutlined />,
