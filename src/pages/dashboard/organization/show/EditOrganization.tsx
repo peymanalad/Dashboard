@@ -5,6 +5,7 @@ import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {convertNumbers2English, getImageUrl, getLangSearchParam} from 'utils';
 import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
+import {passwordRegex} from 'assets';
 
 const EditOrganization: FC = () => {
   const {t} = useTranslation('organization');
@@ -253,7 +254,7 @@ const EditOrganization: FC = () => {
               name={['user', 'password']}
               label={t('password')}
               rules={[
-                {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('messages.correctPassword')},
+                {pattern: passwordRegex, message: t('messages.correctPassword')},
                 {min: 6, message: t('messages.minSixCharacter')}
               ]}>
               <Input className="ltr-input" type="password" autoComplete="off" />

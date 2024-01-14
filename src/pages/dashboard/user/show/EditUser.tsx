@@ -9,6 +9,7 @@ import {LogoutOutlined} from '@ant-design/icons';
 import filter from 'lodash/filter';
 import isArray from 'lodash/isArray';
 import {v4 as uuidv4} from 'uuid';
+import {passwordRegex} from 'assets';
 
 const EditUser: FC = () => {
   const {t} = useTranslation('user_create');
@@ -167,7 +168,7 @@ const EditUser: FC = () => {
                   name="password"
                   label={t('password')}
                   rules={[
-                    {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')},
+                    {pattern: passwordRegex, message: t('validation.correctPassword')},
                     {min: 6, message: t('validation.minSixCharacter')}
                   ]}>
                   <Input className="ltr-input" disabled={fields.getFieldValue('randomPassword')} />

@@ -5,6 +5,7 @@ import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 import {useHistory} from 'react-router-dom';
 import {usePost, useUser} from 'hooks';
 import {getLangSearchParam, convertNumbers2English} from 'utils';
+import {passwordRegex} from 'assets';
 
 const AccountInfo: FC = () => {
   const {t} = useTranslation('user_create');
@@ -149,7 +150,10 @@ const AccountInfo: FC = () => {
                   label={t('password')}
                   rules={[
                     {required: true, message: t('validation.required')},
-                    {pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')},
+                    {
+                      pattern: passwordRegex,
+                      message: t('validation.correctPassword')
+                    },
                     {min: 6, message: t('validation.minSixCharacter')}
                   ]}>
                   <Input className="ltr-input" disabled={fields.getFieldValue('randomPassword')} autoComplete="off" />

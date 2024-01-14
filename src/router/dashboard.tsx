@@ -3,12 +3,7 @@ import {
   FileTextOutlined,
   MailOutlined,
   UserOutlined,
-  FileOutlined,
-  DropboxOutlined,
-  ReconciliationOutlined,
   MessageOutlined,
-  BulbOutlined,
-  QuestionOutlined,
   SettingOutlined,
   HomeOutlined,
   SlidersOutlined,
@@ -24,74 +19,74 @@ import {lazyWithRetry} from 'utils';
 import {dashboardRouteProps} from 'types/dashboard';
 
 const DashboardCmp = lazyWithRetry(() => import('pages/dashboard/Dashboard'));
-const Reports = lazyWithRetry(() => import('pages/dashboard/report/Reports'));
-const ReportTable = lazyWithRetry(() => import('pages/dashboard/report/TableReport'));
+// const Reports = lazyWithRetry(() => import('pages/dashboard/report/Reports'));
+// const ReportTable = lazyWithRetry(() => import('pages/dashboard/report/TableReport'));
 // prescription
-const MedicineShowList = lazyWithRetry(() => import('pages/dashboard/prescription/medicine/ShowList'));
-const EditMedicine = lazyWithRetry(() => import('pages/dashboard/prescription/medicine/EditMedicine'));
-const UnitsShowList = lazyWithRetry(() => import('pages/dashboard/prescription/unit/ShowList'));
-const UnitsEdit = lazyWithRetry(() => import('pages/dashboard/prescription/unit/EditUnit'));
-const UsageShowList = lazyWithRetry(() => import('pages/dashboard/prescription/usage/ShowList'));
-const UsageEdit = lazyWithRetry(() => import('pages/dashboard/prescription/usage/EditUsage'));
-const TimesShowList = lazyWithRetry(() => import('pages/dashboard/prescription/times/ShowList'));
-const TimesEdit = lazyWithRetry(() => import('pages/dashboard/prescription/times/EditTimes'));
-const AmountsShowList = lazyWithRetry(() => import('pages/dashboard/prescription/amount/ShowList'));
-const AmountsEdit = lazyWithRetry(() => import('pages/dashboard/prescription/amount/EditAmounts'));
-const PrescriptionReport = lazyWithRetry(() => import('pages/dashboard/prescription/PrescriptionReport'));
+// const MedicineShowList = lazyWithRetry(() => import('pages/dashboard/prescription/medicine/ShowList'));
+// const EditMedicine = lazyWithRetry(() => import('pages/dashboard/prescription/medicine/EditMedicine'));
+// const UnitsShowList = lazyWithRetry(() => import('pages/dashboard/prescription/unit/ShowList'));
+// const UnitsEdit = lazyWithRetry(() => import('pages/dashboard/prescription/unit/EditUnit'));
+// const UsageShowList = lazyWithRetry(() => import('pages/dashboard/prescription/usage/ShowList'));
+// const UsageEdit = lazyWithRetry(() => import('pages/dashboard/prescription/usage/EditUsage'));
+// const TimesShowList = lazyWithRetry(() => import('pages/dashboard/prescription/times/ShowList'));
+// const TimesEdit = lazyWithRetry(() => import('pages/dashboard/prescription/times/EditTimes'));
+// const AmountsShowList = lazyWithRetry(() => import('pages/dashboard/prescription/amount/ShowList'));
+// const AmountsEdit = lazyWithRetry(() => import('pages/dashboard/prescription/amount/EditAmounts'));
+// const PrescriptionReport = lazyWithRetry(() => import('pages/dashboard/prescription/PrescriptionReport'));
 
 // visit
-const FileView = lazyWithRetry(() => import('pages/dashboard/visit/ShowList'));
-const ShowVisit = lazyWithRetry(() => import('pages/dashboard/visit/ShowVisit'));
-const EditCreate = lazyWithRetry(() => import('pages/dashboard/visit/EditVisit'));
-const CreateVisit = lazyWithRetry(() => import('pages/dashboard/visit/CreateVisit'));
-const VisitReport = lazyWithRetry(() => import('pages/dashboard/visit/VisitReport'));
+// const FileView = lazyWithRetry(() => import('pages/dashboard/visit/ShowList'));
+// const ShowVisit = lazyWithRetry(() => import('pages/dashboard/visit/ShowVisit'));
+// const EditCreate = lazyWithRetry(() => import('pages/dashboard/visit/EditVisit'));
+// const CreateVisit = lazyWithRetry(() => import('pages/dashboard/visit/CreateVisit'));
+// const VisitReport = lazyWithRetry(() => import('pages/dashboard/visit/VisitReport'));
 // education
-const CreateRecommendation = lazyWithRetry(() => import('pages/dashboard/education/recommendation/EditRecommendation'));
-const EditRecommendation = lazyWithRetry(() => import('pages/dashboard/education/recommendation/EditRecommendation'));
-const EducationReportRcmnd = lazyWithRetry(() => import('pages/dashboard/education/recommendation/Report'));
-const EducationCommentRcmnd = lazyWithRetry(() => import('pages/dashboard/education/recommendation/Comment'));
-const DoctorCommentRcmnd = lazyWithRetry(() => import('pages/dashboard/comment/doctor/ShowList'));
-const PatientCommentRcmnd = lazyWithRetry(() => import('pages/dashboard/comment/patient/ShowList'));
-const PatientComment = lazyWithRetry(() => import('pages/dashboard/comment/patient/Comment'));
-const DoctorComment = lazyWithRetry(() => import('pages/dashboard/comment/doctor/Comment'));
-const EducationViewCare = lazyWithRetry(() => import('pages/dashboard/education/care/ShowList'));
-const EducationCareView = lazyWithRetry(() => import('pages/dashboard/education/care/ViewCare'));
-const EducationEditCare = lazyWithRetry(() => import('pages/dashboard/education/care/EditCare'));
-const EducationCareTree = lazyWithRetry(() => import('pages/dashboard/education/careTree/ShowTree'));
-const EducationViewRcmnd = lazyWithRetry(() => import('pages/dashboard/education/recommendation/ShowList'));
-const EducationViewSource = lazyWithRetry(() => import('pages/dashboard/education/source/ShowList'));
-
-const EducationRecommendationLogAll = lazyWithRetry(
-  () => import('pages/dashboard/education/recommendationLog/ShowList')
-);
-const EducationRecommendationLogDisease = lazyWithRetry(
-  () => import('pages/dashboard/education/recommendationLog/disease/ShowList')
-);
-const EducationRecommendationLogDoctor = lazyWithRetry(
-  () => import('pages/dashboard/education/recommendationLog/doctor/ShowList')
-);
-const EducationRecommendationLogDoctorDisease = lazyWithRetry(
-  () => import('pages/dashboard/education/recommendationLog/doctor/disease/ShowList')
-);
-
-const EducationEditSource = lazyWithRetry(() => import('pages/dashboard/education/source/EditSource'));
-const EducationViewTag = lazyWithRetry(() => import('pages/dashboard/education/tag/ShowList'));
-
-const ReferenceShowList = lazyWithRetry(() => import('pages/dashboard/education/reference/ShowList'));
-const EditReference = lazyWithRetry(() => import('pages/dashboard/education/reference/EditReference'));
-
-const CategoryShowList = lazyWithRetry(() => import('pages/dashboard/education/category/ShowList'));
-const EditCategory = lazyWithRetry(() => import('pages/dashboard/education/category/EditCategory'));
-
-const SubjectShowList = lazyWithRetry(() => import('pages/dashboard/education/subject/ShowList'));
-const EditSubject = lazyWithRetry(() => import('pages/dashboard/education/subject/EditSubject'));
-
-const NutritionalShowList = lazyWithRetry(() => import('pages/dashboard/education/nutritional/ShowList'));
-const EditNutritional = lazyWithRetry(() => import('pages/dashboard/education/nutritional/EditNutritional'));
-
-const EducationEditTag = lazyWithRetry(() => import('pages/dashboard/education/tag/EditTag'));
-
-const WarningShowList = lazyWithRetry(() => import('pages/dashboard/education/warning/ShowList'));
+// const CreateRecommendation = lazyWithRetry(() => import('pages/dashboard/education/recommendation/EditRecommendation'));
+// const EditRecommendation = lazyWithRetry(() => import('pages/dashboard/education/recommendation/EditRecommendation'));
+// const EducationReportRcmnd = lazyWithRetry(() => import('pages/dashboard/education/recommendation/Report'));
+// const EducationCommentRcmnd = lazyWithRetry(() => import('pages/dashboard/education/recommendation/Comment'));
+// const DoctorCommentRcmnd = lazyWithRetry(() => import('pages/dashboard/comment/doctor/ShowList'));
+// const PatientCommentRcmnd = lazyWithRetry(() => import('pages/dashboard/comment/patient/ShowList'));
+// const PatientComment = lazyWithRetry(() => import('pages/dashboard/comment/patient/Comment'));
+// const DoctorComment = lazyWithRetry(() => import('pages/dashboard/comment/doctor/Comment'));
+// const EducationViewCare = lazyWithRetry(() => import('pages/dashboard/education/care/ShowList'));
+// const EducationCareView = lazyWithRetry(() => import('pages/dashboard/education/care/ViewCare'));
+// const EducationEditCare = lazyWithRetry(() => import('pages/dashboard/education/care/EditCare'));
+// const EducationCareTree = lazyWithRetry(() => import('pages/dashboard/education/careTree/ShowTree'));
+// const EducationViewRcmnd = lazyWithRetry(() => import('pages/dashboard/education/recommendation/ShowList'));
+// const EducationViewSource = lazyWithRetry(() => import('pages/dashboard/education/source/ShowList'));
+//
+// const EducationRecommendationLogAll = lazyWithRetry(
+//   () => import('pages/dashboard/education/recommendationLog/ShowList')
+// );
+// const EducationRecommendationLogDisease = lazyWithRetry(
+//   () => import('pages/dashboard/education/recommendationLog/disease/ShowList')
+// );
+// const EducationRecommendationLogDoctor = lazyWithRetry(
+//   () => import('pages/dashboard/education/recommendationLog/doctor/ShowList')
+// );
+// const EducationRecommendationLogDoctorDisease = lazyWithRetry(
+//   () => import('pages/dashboard/education/recommendationLog/doctor/disease/ShowList')
+// );
+//
+// const EducationEditSource = lazyWithRetry(() => import('pages/dashboard/education/source/EditSource'));
+// const EducationViewTag = lazyWithRetry(() => import('pages/dashboard/education/tag/ShowList'));
+//
+// const ReferenceShowList = lazyWithRetry(() => import('pages/dashboard/education/reference/ShowList'));
+// const EditReference = lazyWithRetry(() => import('pages/dashboard/education/reference/EditReference'));
+//
+// const CategoryShowList = lazyWithRetry(() => import('pages/dashboard/education/category/ShowList'));
+// const EditCategory = lazyWithRetry(() => import('pages/dashboard/education/category/EditCategory'));
+//
+// const SubjectShowList = lazyWithRetry(() => import('pages/dashboard/education/subject/ShowList'));
+// const EditSubject = lazyWithRetry(() => import('pages/dashboard/education/subject/EditSubject'));
+//
+// const NutritionalShowList = lazyWithRetry(() => import('pages/dashboard/education/nutritional/ShowList'));
+// const EditNutritional = lazyWithRetry(() => import('pages/dashboard/education/nutritional/EditNutritional'));
+//
+// const EducationEditTag = lazyWithRetry(() => import('pages/dashboard/education/tag/EditTag'));
+//
+// const WarningShowList = lazyWithRetry(() => import('pages/dashboard/education/warning/ShowList'));
 
 // organization
 const EditOrganization = lazyWithRetry(() => import('pages/dashboard/organization/show/EditOrganization'));
@@ -111,15 +106,15 @@ const CreateUser = lazyWithRetry(() => import('pages/dashboard/user/show/CreateU
 const UserShowList = lazyWithRetry(() => import('pages/dashboard/user/show/ShowList'));
 const UserShow = lazyWithRetry(() => import('pages/dashboard/user/show/ShowUser'));
 const OrganizationUserShowList = lazyWithRetry(() => import('pages/dashboard/user/organization/ShowList'));
-const UserSpecialization = lazyWithRetry(() => import('pages/dashboard/user/specialization/ShowList'));
-const EditSpecializations = lazyWithRetry(() => import('pages/dashboard/user/specialization/EditSpecialization'));
-const UserDrReport = lazyWithRetry(() => import('pages/dashboard/user/DrReport'));
-const UserTmpRegister = lazyWithRetry(() => import('pages/dashboard/user/temporary/ShowList'));
+// const UserSpecialization = lazyWithRetry(() => import('pages/dashboard/user/specialization/ShowList'));
+// const EditSpecializations = lazyWithRetry(() => import('pages/dashboard/user/specialization/EditSpecialization'));
+// const UserDrReport = lazyWithRetry(() => import('pages/dashboard/user/DrReport'));
+// const UserTmpRegister = lazyWithRetry(() => import('pages/dashboard/user/temporary/ShowList'));
 const EditPermissionUser = lazyWithRetry(() => import('pages/dashboard/user/show/EditPermissionUser'));
-const UserReport = lazyWithRetry(() => import('pages/dashboard/user/UserReport'));
-const UserReportTable = lazyWithRetry(() => import('pages/dashboard/user/UserReportTable'));
-const ShowListEmergency = lazyWithRetry(() => import('pages/dashboard/user/emergency/ShowList'));
-const ShowEmergency = lazyWithRetry(() => import('pages/dashboard/user/emergency/ShowEmergency'));
+// const UserReport = lazyWithRetry(() => import('pages/dashboard/user/UserReport'));
+// const UserReportTable = lazyWithRetry(() => import('pages/dashboard/user/UserReportTable'));
+// const ShowListEmergency = lazyWithRetry(() => import('pages/dashboard/user/emergency/ShowList'));
+// const ShowEmergency = lazyWithRetry(() => import('pages/dashboard/user/emergency/ShowEmergency'));
 
 // news
 const EditNews = lazyWithRetry(() => import('pages/dashboard/news/show/EditNews'));
@@ -137,78 +132,78 @@ const CommentShowList = lazyWithRetry(() => import('pages/dashboard/comment/comm
 const CommentLikeShowList = lazyWithRetry(() => import('pages/dashboard/comment/like/ShowList'));
 
 // order
-const ServiceShowList = lazyWithRetry(() => import('pages/dashboard/order/service/ShowList'));
-const EditService = lazyWithRetry(() => import('pages/dashboard/order/service/EditService'));
-const CouponShowList = lazyWithRetry(() => import('pages/dashboard/order/coupon/ShowList'));
-const EditCoupon = lazyWithRetry(() => import('pages/dashboard/order/coupon/EditCoupon'));
-const CouponGroupShowList = lazyWithRetry(() => import('pages/dashboard/order/couponGroup/ShowList'));
-const EditCouponGroup = lazyWithRetry(() => import('pages/dashboard/order/couponGroup/EditCouponGroup'));
-const FactorShowList = lazyWithRetry(() => import('pages/dashboard/order/factor/ShowList'));
-const ShowFactor = lazyWithRetry(() => import('pages/dashboard/order/factor/ShowFactor'));
-const CreateFactor = lazyWithRetry(() => import('pages/dashboard/order/factor/CreateFactor'));
-const TaxShowList = lazyWithRetry(() => import('pages/dashboard/order/tax/ShowList'));
-const OrderReport = lazyWithRetry(() => import('pages/dashboard/order/Report'));
+// const ServiceShowList = lazyWithRetry(() => import('pages/dashboard/order/service/ShowList'));
+// const EditService = lazyWithRetry(() => import('pages/dashboard/order/service/EditService'));
+// const CouponShowList = lazyWithRetry(() => import('pages/dashboard/order/coupon/ShowList'));
+// const EditCoupon = lazyWithRetry(() => import('pages/dashboard/order/coupon/EditCoupon'));
+// const CouponGroupShowList = lazyWithRetry(() => import('pages/dashboard/order/couponGroup/ShowList'));
+// const EditCouponGroup = lazyWithRetry(() => import('pages/dashboard/order/couponGroup/EditCouponGroup'));
+// const FactorShowList = lazyWithRetry(() => import('pages/dashboard/order/factor/ShowList'));
+// const ShowFactor = lazyWithRetry(() => import('pages/dashboard/order/factor/ShowFactor'));
+// const CreateFactor = lazyWithRetry(() => import('pages/dashboard/order/factor/CreateFactor'));
+// const TaxShowList = lazyWithRetry(() => import('pages/dashboard/order/tax/ShowList'));
+// const OrderReport = lazyWithRetry(() => import('pages/dashboard/order/Report'));
 
 // product
-const ProductShowList = lazyWithRetry(() => import('pages/dashboard/product/product/ShowList'));
-const EditProduct = lazyWithRetry(() => import('pages/dashboard/product/product/EditProduct'));
-// productGroup
-const ProductGroupShowList = lazyWithRetry(() => import('pages/dashboard/product/group/ShowList'));
-const EditProductGroup = lazyWithRetry(() => import('pages/dashboard/product/group/EditGroup'));
-// productReport
-const ShowReport = lazyWithRetry(() => import('pages/dashboard/product/ShowReport'));
-
+// const ProductShowList = lazyWithRetry(() => import('pages/dashboard/product/product/ShowList'));
+// const EditProduct = lazyWithRetry(() => import('pages/dashboard/product/product/EditProduct'));
+// // productGroup
+// const ProductGroupShowList = lazyWithRetry(() => import('pages/dashboard/product/group/ShowList'));
+// const EditProductGroup = lazyWithRetry(() => import('pages/dashboard/product/group/EditGroup'));
+// // productReport
+// const ShowReport = lazyWithRetry(() => import('pages/dashboard/product/ShowReport'));
+//
 // question
-const QuestionShowList = lazyWithRetry(() => import('pages/dashboard/question/question/ShowList'));
-const EditQuestion = lazyWithRetry(() => import('pages/dashboard/question/question/EditQuestion'));
-const AnswerShowList = lazyWithRetry(() => import('pages/dashboard/question/answer/ShowList'));
-const AnswerDetailShowList = lazyWithRetry(() => import('pages/dashboard/question/answer_detail/ShowList'));
-const ShowAnswer = lazyWithRetry(() => import('pages/dashboard/question/answer_detail/ShowAnswer'));
-const ShowTree = lazyWithRetry(() => import('pages/dashboard/question/tree/ShowTree'));
-const AnswerReport = lazyWithRetry(() => import('pages/dashboard/question/AnswerReport'));
-// questionGroup
-const QuestionGroupShowList = lazyWithRetry(() => import('pages/dashboard/question/group/ShowList'));
-const EditQuestionGroup = lazyWithRetry(() => import('pages/dashboard/question/group/EditGroup'));
-
+// const QuestionShowList = lazyWithRetry(() => import('pages/dashboard/question/question/ShowList'));
+// const EditQuestion = lazyWithRetry(() => import('pages/dashboard/question/question/EditQuestion'));
+// const AnswerShowList = lazyWithRetry(() => import('pages/dashboard/question/answer/ShowList'));
+// const AnswerDetailShowList = lazyWithRetry(() => import('pages/dashboard/question/answer_detail/ShowList'));
+// const ShowAnswer = lazyWithRetry(() => import('pages/dashboard/question/answer_detail/ShowAnswer'));
+// const ShowTree = lazyWithRetry(() => import('pages/dashboard/question/tree/ShowTree'));
+// const AnswerReport = lazyWithRetry(() => import('pages/dashboard/question/AnswerReport'));
+// // questionGroup
+// const QuestionGroupShowList = lazyWithRetry(() => import('pages/dashboard/question/group/ShowList'));
+// const EditQuestionGroup = lazyWithRetry(() => import('pages/dashboard/question/group/EditGroup'));
+//
 // message
-const DefaultMessageShowList = lazyWithRetry(() => import('pages/dashboard/message/default/ShowList'));
-const EditDefaultMessage = lazyWithRetry(() => import('pages/dashboard/message/default/EditDefault'));
-// const BroadcastNotification = lazyWithRetry(() => import('pages/dashboard/message/notification/BroadcastNotification'));
-const SupportChatList = lazyWithRetry(() => import('pages/dashboard/message/support/ShowList'));
-const SupportChat = lazyWithRetry(() => import('pages/dashboard/message/support/Chat'));
-const TicketList = lazyWithRetry(() => import('pages/dashboard/message/ticket/ShowList'));
-const ShowTicket = lazyWithRetry(() => import('pages/dashboard/message/ticket/ShowTicket'));
+// const DefaultMessageShowList = lazyWithRetry(() => import('pages/dashboard/message/default/ShowList'));
+// const EditDefaultMessage = lazyWithRetry(() => import('pages/dashboard/message/default/EditDefault'));
+// // const BroadcastNotification = lazyWithRetry(() => import('pages/dashboard/message/notification/BroadcastNotification'));
+// const SupportChatList = lazyWithRetry(() => import('pages/dashboard/message/support/ShowList'));
+// const SupportChat = lazyWithRetry(() => import('pages/dashboard/message/support/Chat'));
+// const TicketList = lazyWithRetry(() => import('pages/dashboard/message/ticket/ShowList'));
+// const ShowTicket = lazyWithRetry(() => import('pages/dashboard/message/ticket/ShowTicket'));
 const FriendChatList = lazyWithRetry(() => import('pages/dashboard/message/friend/ShowList'));
 const FriendChat = lazyWithRetry(() => import('pages/dashboard/message/friend/Chat'));
 
 // permission
 const PermissionRole = lazyWithRetry(() => import('pages/dashboard/setting/role/ShowList'));
-const Permissions = lazyWithRetry(() => import('pages/dashboard/setting/permission/ShowList'));
-const EditPermissions = lazyWithRetry(() => import('pages/dashboard/setting/permission/EditPermissions'));
+// const Permissions = lazyWithRetry(() => import('pages/dashboard/setting/permission/ShowList'));
+// const EditPermissions = lazyWithRetry(() => import('pages/dashboard/setting/permission/EditPermissions'));
 const EditRoles = lazyWithRetry(() => import('pages/dashboard/setting/role/EditRoles'));
-const EditPermissionOnRole = lazyWithRetry(() => import('pages/dashboard/setting/role/EditPermissionOnRole'));
-// setting
-const LanguageShowList = lazyWithRetry(() => import('pages/dashboard/setting/Language/ShowList'));
-const EditLanguage = lazyWithRetry(() => import('pages/dashboard/setting/Language/EditLanguage'));
-const BehaviorShowList = lazyWithRetry(() => import('pages/dashboard/setting/behavior/ShowList'));
-const EditBehavior = lazyWithRetry(() => import('pages/dashboard/setting/behavior/EditBehavior'));
-const SettingShows = lazyWithRetry(() => import('pages/dashboard/setting/config/ShowList'));
-const SettingEditShows = lazyWithRetry(() => import('pages/dashboard/setting/config/EditConfig'));
-const SettingNewShows = lazyWithRetry(() => import('pages/dashboard/setting/config/EditConfig'));
-const LocationShowList = lazyWithRetry(() => import('pages/dashboard/setting/location/ShowList'));
-const EditLocation = lazyWithRetry(() => import('pages/dashboard/setting/location/EditLocation'));
+// const EditPermissionOnRole = lazyWithRetry(() => import('pages/dashboard/setting/role/EditPermissionOnRole'));
+// // setting
+// const LanguageShowList = lazyWithRetry(() => import('pages/dashboard/setting/Language/ShowList'));
+// const EditLanguage = lazyWithRetry(() => import('pages/dashboard/setting/Language/EditLanguage'));
+// const BehaviorShowList = lazyWithRetry(() => import('pages/dashboard/setting/behavior/ShowList'));
+// const EditBehavior = lazyWithRetry(() => import('pages/dashboard/setting/behavior/EditBehavior'));
+// const SettingShows = lazyWithRetry(() => import('pages/dashboard/setting/config/ShowList'));
+// const SettingEditShows = lazyWithRetry(() => import('pages/dashboard/setting/config/EditConfig'));
+// const SettingNewShows = lazyWithRetry(() => import('pages/dashboard/setting/config/EditConfig'));
+// const LocationShowList = lazyWithRetry(() => import('pages/dashboard/setting/location/ShowList'));
+// const EditLocation = lazyWithRetry(() => import('pages/dashboard/setting/location/EditLocation'));
 const ApplicationShowList = lazyWithRetry(() => import('pages/dashboard/setting/application/ShowList'));
 const EditApplication = lazyWithRetry(() => import('pages/dashboard/setting/application/EditApplication'));
-const FaqGroupShowList = lazyWithRetry(() => import('pages/dashboard/setting/faqGroup/ShowList'));
-const EditFaqGroup = lazyWithRetry(() => import('pages/dashboard/setting/faqGroup/EditFaqGroup'));
-const SortFaqGroup = lazyWithRetry(() => import('pages/dashboard/setting/faqGroup/ShowSort'));
-const FaqShowList = lazyWithRetry(() => import('pages/dashboard/setting/faq/ShowList'));
-const EditFaq = lazyWithRetry(() => import('pages/dashboard/setting/faq/EditFaq'));
+// const FaqGroupShowList = lazyWithRetry(() => import('pages/dashboard/setting/faqGroup/ShowList'));
+// const EditFaqGroup = lazyWithRetry(() => import('pages/dashboard/setting/faqGroup/EditFaqGroup'));
+// const SortFaqGroup = lazyWithRetry(() => import('pages/dashboard/setting/faqGroup/ShowSort'));
+// const FaqShowList = lazyWithRetry(() => import('pages/dashboard/setting/faq/ShowList'));
+// const EditFaq = lazyWithRetry(() => import('pages/dashboard/setting/faq/EditFaq'));
 
 // notifications
 const BroadcastNotification = lazyWithRetry(() => import('pages/dashboard/notifications/BroadcastNotification'));
-const NotificationShowList = lazyWithRetry(() => import('pages/dashboard/notifications/ShowList'));
-const NotificationsShowList = lazyWithRetry(() => import('pages/dashboard/notifications/group/ShowList'));
+// const NotificationShowList = lazyWithRetry(() => import('pages/dashboard/notifications/ShowList'));
+// const NotificationsShowList = lazyWithRetry(() => import('pages/dashboard/notifications/group/ShowList'));
 const ShowGroupNotification = lazyWithRetry(() => import('pages/dashboard/notifications/group/ShowGroupNotifInfo'));
 
 const ReportsShowList = lazyWithRetry(() => import('pages/dashboard/report/show/ShowList'));

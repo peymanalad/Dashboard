@@ -5,10 +5,11 @@ import qs from 'qs';
 import {useHistory, Link} from 'react-router-dom';
 import {useFetch, useLogOut, usePost, useUser} from 'hooks';
 import {convertTimeToUTC, getLangSearchParam} from 'utils';
-import {Card, Form, Checkbox, Button, Input, Radio, Row, Col, Typography, InputNumber} from 'antd';
+import {Card, Form, Button, Input, Radio, Row, Col, Typography, InputNumber} from 'antd';
 import {FormOutlined, SaveOutlined, LogoutOutlined} from '@ant-design/icons';
 import get from 'lodash/get';
 import forEach from 'lodash/forEach';
+import {passwordRegex} from 'assets';
 
 interface Props {
   id: number | string;
@@ -232,7 +233,7 @@ const AccountInfo: FC<Props> = ({id}) => {
               <Form.Item
                 name="password"
                 label={t('account_info.password')}
-                rules={[{pattern: /^[A-Za-z0-9][A-Za-z0-9]*$/, message: t('validation.correctPassword')}]}>
+                rules={[{pattern: passwordRegex, message: t('validation.correctPassword')}]}>
                 <Input className="ltr-input" disabled={!fetchUser?.data?.permissions?.password} />
               </Form.Item>
             </Col>

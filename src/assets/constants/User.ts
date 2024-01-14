@@ -1,5 +1,7 @@
 import {i18n} from 'libs';
 
+export const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~\\\-=`|"'";]*$/;
+
 export const Complexities = [
   {id: 'all', name: 'همه'},
   {id: '0', name: '0'},

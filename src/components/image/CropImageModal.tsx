@@ -124,6 +124,7 @@ const CropImageModal: ForwardRefRenderFunction<refProps, props> = (
         destroyOnClose
         title={t('cropImage')}
         onOk={onCropImage}
+        maskClosable={false}
         onCancel={() => {
           setImage(undefined);
         }}>
