@@ -39,6 +39,7 @@ interface props {
   label?: string;
   aspect?: number;
   hasCrop?: boolean;
+  multiple?: boolean;
   hasChangeCrop?: boolean;
   notifyDelete?: boolean;
   typeFile: FileTypeProps;
@@ -68,6 +69,7 @@ const CustomUpload = ({
   label,
   value,
   onChange,
+  multiple,
   onUpload,
   onUploading,
   typeFile,
@@ -178,7 +180,11 @@ const CustomUpload = ({
           const res = await axios.post(files.action, formData, config);
           if (res?.status === 200) {
             message.success(t('file_uploaded_successfully'));
-            if (files?.onSuccess) files.onSuccess(res?.data?.result || {fileToken: uniqueId});
+            if (files?.onSuccess) {
+              let thumbUrl;
+              if (files.file.type?.startsWith('image/')) thumbUrl = await getBase64(files.file);
+              files.onSuccess({...res?.data?.result, thumbUrl} || {fileToken: uniqueId});
+            }
           } else {
             message.error(t('file_upload_failed'));
             if (files?.onError) files.onError();
@@ -199,15 +205,15 @@ const CustomUpload = ({
       const formData = new URLSearchParams();
       formData.append('path', file?.fileToken || file?.url);
       formData.append('type', type);
-      const options: any = {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${user?.access_token}`,
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        data: formData,
-        url: 'https://a.deed.com/general/v1/files/delete'
-      };
+      // const options: any = {
+      //   method: 'DELETE',
+      //   headers: {
+      //     Authorization: `Bearer ${user?.access_token}`,
+      //     'content-type': 'application/x-www-form-urlencoded'
+      //   },
+      //   data: formData,
+      //   url: 'https://a.deed.com/general/v1/files/delete'
+      // };
       return new Promise<boolean>((resolve) => {
         Modal.error({
           title: t('delete'),
@@ -436,6 +442,7 @@ const CustomUpload = ({
         disabled={isLoading || disabled}
         action={getAction}
         headers={headers}
+        multiple={multiple}
         method="POST"
         customRequest={customRequest}
         onRemove={onRemove}
@@ -447,11 +454,35 @@ const CustomUpload = ({
   };
 
   const sendFileOnPaste = (files: FileList) => {
-    //@ts-ignore
-    if (antdUploadRef?.current?.upload?.uploader?.uploadFiles) {
-      //@ts-ignore
-      antdUploadRef.current.upload.uploader.uploadFiles(files);
-    }
+    checkConditionForSendFile(files)
+      .then(() => {
+        const file = files[0];
+        customRequest({
+          file,
+          action: getAction,
+          headers,
+          onError: () => {
+            if (onChange) onChange(value);
+            else setValueState(valueState);
+          },
+          onSuccess: (response: any) => {
+            if (isString(response)) response = {path: response};
+            const newImage = {
+              originFileObj: files[0],
+              status: 'done',
+              type: 'image/jpeg',
+              ...response
+            };
+            if (onChange) onChange(value ? [...value, newImage] : [newImage]);
+            else setValueState(valueState ? [...valueState, newImage] : [newImage]);
+          },
+          status: 'done',
+          ...file
+        });
+      })
+      .catch((error) => {
+        message.error(error);
+      });
   };
   return (
     <Row
@@ -470,7 +501,7 @@ const CustomUpload = ({
             onClick={() => {
               setIsDraggingMode((prevState: boolean) => !prevState);
             }}>
-            {t('sort_images')}
+            {!isDraggingMode ? t('sort_images') : t('apply')}
           </Button>
         </Col>
       )}
@@ -498,7 +529,7 @@ const CustomUpload = ({
               style={getListStyle(snapshotContext.isDraggingOver)}
               className="ltr">
               {typeFile?.includes('image') && hasCrop ? (
-                <CropImageModal aspect={aspect} hasChangeCrop={hasChangeCrop}>
+                <CropImageModal aspect={aspect} hasChangeCrop={hasChangeCrop} multiple={multiple}>
                   {Uploader(snapshotContext.isDraggingOver)}
                 </CropImageModal>
               ) : (

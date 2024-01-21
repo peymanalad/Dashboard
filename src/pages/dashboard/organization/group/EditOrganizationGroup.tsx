@@ -84,7 +84,15 @@ const EditOrganizationGroup: FC = () => {
           </Col>
           <Form.Item
             noStyle
-            shouldUpdate={(prevValues, nextValues) => prevValues.organization !== nextValues.organization}>
+            shouldUpdate={(prevValues, nextValues) => {
+              if (prevValues.organization !== nextValues.organization) {
+                form.setFieldsValue({
+                  users: null
+                });
+                return true;
+              }
+              return false;
+            }}>
             {(fields) => {
               const organization = fields.getFieldValue('organization');
               return (

@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useMemo, useState} from 'react';
 import {Card, Form, Row, Col, Input, Button, Checkbox, Tag, Modal} from 'antd';
 import {SearchOutlined, SmileOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
@@ -9,6 +9,7 @@ import SelectOrganization from 'containers/organization/SelectOrganization';
 import {getImageUrl, wordCounter} from 'utils';
 import compact from 'lodash/compact';
 import {Picker} from 'emoji-mart';
+import {v4 as uuidv4} from 'uuid';
 
 const {TextArea} = Input;
 
@@ -19,6 +20,8 @@ const EditNews: FC = () => {
   const [isUploading, setIsUploading] = useState<boolean>();
   const [showEmoji, setShowEmoji] = useState<boolean>();
   const [contentPos, setContentPos] = useState<number>(0);
+
+  const postKey = useMemo(() => uuidv4(), []);
 
   const [form] = Form.useForm();
 
@@ -43,6 +46,7 @@ const EditNews: FC = () => {
   });
 
   const onFinish = (values: any) => {
+    values.postKey = postKey;
     values.postGroupId = values.postGroupId?.id;
     values.groupMemberId = values.groupMemberId?.id;
     values.postFile2 = values.postFileToken?.[1]?.fileToken;
@@ -108,7 +112,15 @@ const EditNews: FC = () => {
             </Col>
             <Form.Item
               noStyle
-              shouldUpdate={(prevValues, nextValues) => prevValues.organization !== nextValues.organization}>
+              shouldUpdate={(prevValues, nextValues) => {
+                if (prevValues.organization !== nextValues.organization) {
+                  form.setFieldsValue({
+                    postGroupId: null
+                  });
+                  return true;
+                }
+                return false;
+              }}>
               {(fields) => {
                 const organization = fields.getFieldValue('organization');
                 return (
@@ -225,6 +237,8 @@ const EditNews: FC = () => {
                   maxFile={10}
                   typeFile="image,video"
                   hasCrop
+                  sortable
+                  multiple
                   hasChangeCrop
                   aspect={1}
                   onUploading={setIsUploading}

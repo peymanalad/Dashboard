@@ -96,7 +96,15 @@ const EditMemberShowList: FC = () => {
           </Col>
           <Form.Item
             noStyle
-            shouldUpdate={(prevValues, nextValues) => prevValues.organization?.id !== nextValues.organization?.id}>
+            shouldUpdate={(prevValues, nextValues) => {
+              if (prevValues.organization?.id !== nextValues.organization?.id) {
+                form.setFieldsValue({
+                  organizationUser: null
+                });
+                return true;
+              }
+              return false;
+            }}>
             {(fields) => (
               <Col xs={24} md={12}>
                 <Form.Item

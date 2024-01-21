@@ -13,6 +13,7 @@ interface refProps {
 export interface props {
   ref?: RefObject<refProps>;
   hasChangeCrop?: boolean;
+  multiple?: boolean;
   aspect?: number;
   onModalOk?: any;
   children: any;
@@ -22,7 +23,7 @@ export interface props {
 }
 
 const CropImageModal: ForwardRefRenderFunction<refProps, props> = (
-  {onModalOk, onModalCancel, beforeCrop, onUploadFail, aspect, children, hasChangeCrop = false}: props,
+  {onModalOk, onModalCancel, beforeCrop, onUploadFail, aspect, children, hasChangeCrop = false, multiple}: props,
   forwardedRef: ForwardedRef<refProps>
 ) => {
   const beforeUploadRef = useRef<UploadProps['beforeUpload']>();
@@ -68,8 +69,9 @@ const CropImageModal: ForwardRefRenderFunction<refProps, props> = (
               // eslint-disable-next-line no-promise-executor-return
               if (!shouldCrop) return reject();
             }
-            if (!file.type?.includes('image')) {
-              resolve(file);
+            if (!file.type?.includes('image') || (fileList?.length > 1 && multiple)) {
+              // @ts-ignore
+              resolve(file, fileList);
               return;
             }
 
