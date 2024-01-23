@@ -11,6 +11,7 @@ const SearchNews: FC = () => {
   const {t} = useTranslation('news');
   const history = useHistory();
   const queryObject = queryStringToObject(useLocation().search);
+  const organizationId = queryObject?.organizationId || queryObject?.organization?.id;
 
   const [visible, setVisible] = useState(false);
 
@@ -76,9 +77,9 @@ const SearchNews: FC = () => {
               initialValue={queryObject?.postGroup}>
               <MultiSelectPaginate
                 mode="single"
-                urlName={['newsGroupSearch', queryObject?.organizationId || 'all']}
+                urlName={['newsGroupSearch', organizationId || 'all']}
                 url="services/app/Posts/GetAllPostGroupForLookupTable"
-                params={{organizationId: queryObject?.organizationId}}
+                params={{organizationId}}
                 keyValue="id"
                 keyLabel="displayName"
                 placeholder={t('choose')}
