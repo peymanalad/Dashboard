@@ -44,7 +44,7 @@ const usePost = ({
   const errorHandler = useError({form});
 
   const requestConfig: AxiosRequestConfig = {
-    timeout: timeout || 15000,
+    timeout: timeout || 60000,
     headers: {
       Authorization: `Bearer ${user?.access_token}`,
       'Content-type': isMultipart

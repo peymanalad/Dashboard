@@ -6,7 +6,7 @@ import {i18n} from 'libs';
 
 const instance = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL}/api`,
-  timeout: 200000
+  timeout: 60000
 });
 instance.interceptors.response.use(
   (response: AxiosResponse): ResponseProps => {
