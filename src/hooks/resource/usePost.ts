@@ -18,6 +18,7 @@ interface IPostConfig {
   isGeneral?: boolean;
   isMultipart?: boolean;
   showError?: boolean;
+  retry?: boolean | number;
   onSuccess?(response: any, request?: any, params?: any): void;
   onError?(error: any, request?: any, params?: any): void;
   isUrlencoded?: boolean;
@@ -33,6 +34,7 @@ const usePost = ({
   showError = true,
   removeQueries,
   isUrlencoded = false,
+  retry = false,
   refetchQueries,
   onSuccess,
   onError,
@@ -69,7 +71,8 @@ const usePost = ({
   };
 
   const mutationData = useMutation(createRequest, {
-    retry: false,
+    retry,
+    retryDelay: 0,
     onSuccess: (data, variables) => {
       forEach(removeQueries, (removeQuery: Array<string | number | undefined | null> | string) =>
         queryClient.removeQueries(removeQuery)

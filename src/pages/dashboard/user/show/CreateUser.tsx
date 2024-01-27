@@ -6,6 +6,7 @@ import {useHistory} from 'react-router-dom';
 import {usePost, useUser} from 'hooks';
 import {getLangSearchParam, convertNumbers2English} from 'utils';
 import {passwordRegex} from 'assets';
+import {generateRandomEmail} from '../../../../utils/email';
 
 const AccountInfo: FC = () => {
   const {t} = useTranslation('user_create');
@@ -168,7 +169,8 @@ const AccountInfo: FC = () => {
                 {required: true, message: t('validation.required')},
                 {type: 'email', message: t('validation.email')}
               ]}
-              label={t('email')}>
+              label={t('email')}
+              initialValue={generateRandomEmail()}>
               <Input type="email" className="ltr-input" />
             </Form.Item>
           </Col>

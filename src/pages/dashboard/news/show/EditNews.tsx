@@ -41,8 +41,11 @@ const EditNews: FC = () => {
     url: '/services/app/Posts/CreateOrEdit',
     method: 'POST',
     removeQueries: ['news'],
+    showError: false,
     form,
-    onSuccess: onBack
+    retry: 3,
+    onSuccess: onBack,
+    onError: onBack
   });
 
   const onFinish = (values: any) => {
