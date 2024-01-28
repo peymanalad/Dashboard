@@ -76,19 +76,6 @@ const EditApplication: FC = () => {
               <Input type="number" className="w-full ltr-input" />
             </Form.Item>
           </Col>
-          <Col xs={24} md={12} lg={8} className="flex upload-center">
-            <Form.Item
-              name="updateFileToken"
-              noStyle
-              initialValue={
-                fetchVersion?.data?.softwareUpdate?.updateFile && {
-                  updateFileToken: fetchVersion?.data?.softwareUpdate?.updateFile,
-                  url: getImageUrl(fetchVersion?.data?.softwareUpdate?.updateFile)
-                }
-              }>
-              <CustomUpload type="applications" name="apk" mode="single" typeFile="application" />
-            </Form.Item>
-          </Col>
           <Col xs={24} md={12} lg={8}>
             <Form.Item
               name="platform"
@@ -109,6 +96,15 @@ const EditApplication: FC = () => {
               className="m-0"
               initialValue={!!fetchVersion?.data?.softwareUpdate?.forceUpdate}>
               <Checkbox>{t('required')}</Checkbox>
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={16}>
+            <Form.Item
+              name="downloadLink"
+              label={t('application_link')}
+              rules={[{type: 'url', message: t('messages.url')}]}
+              initialValue={fetchVersion?.data?.softwareUpdate?.downloadLink}>
+              <Input className="ltr-input" dir="ltr" />
             </Form.Item>
           </Col>
           <Col span={24}>

@@ -39,7 +39,9 @@ export const ResponseErrorHandler = (error: AxiosError): Promise<AxiosError> => 
   else if (error.code === 'ECONNABORTED') message = i18n.t('error:serverBusy');
   else if (!onlineManager.isOnline()) message = i18n.t('error:connection');
   else if (status === 500) message = response?.message || response?.error?.message || i18n.t('error:500');
-  if (usernameTakenPattern.test(message)) {
+  if (message.startsWith('There is no such file with the token')) {
+    message = i18n.t('error:fileNotTaken');
+  } else if (usernameTakenPattern.test(message)) {
     const input = message.matchAll(/(\d+)/g);
     message = i18n.t('error:usernameTaken', {username: input?.next()?.value?.[1]});
   } else if (emailTakenPattern.test(message)) {
