@@ -36,8 +36,8 @@ const useFetch = ({
   onError,
   responseType,
   enabled = false,
-  staleTime = 180000,
-  cacheTime = 600000
+  staleTime = 1800000,
+  cacheTime = 6000000
 }: IGetConfig) => {
   const prettyName = isString(name) ? name : compact(name);
   if (prettyName === 'notLongTimeAvailable') {
