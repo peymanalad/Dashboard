@@ -58,6 +58,7 @@ interface props {
   imageHint?: boolean;
   maxWidth?: number;
   maxHeight?: number;
+  'aria-invalid'?: string;
 }
 
 const {Text} = Typography;
@@ -87,7 +88,8 @@ const CustomUpload = ({
   showUploadList = true,
   imageHint,
   maxWidth,
-  maxHeight
+  maxHeight,
+  ...props
 }: props) => {
   const {t} = useTranslation('general');
   const antdUploadRef = useRef<ElementRef<typeof Upload>>(null);
@@ -337,7 +339,9 @@ const CustomUpload = ({
       <Button
         loading={isLoading}
         style={{width: '95%', height: '95%'}}
-        className={`bg-white flex-col flex-center border-1 border-dashed ${disabled ? 'border-gray' : 'border-black'}`}>
+        className={`bg-white flex-col flex-center border-1 border-dashed ${
+          disabled ? 'border-gray' : props?.['aria-invalid'] ? 'border-error' : 'border-black'
+        }`}>
         {getIcon}
         <Text className="m-0">{label || t('upload')}</Text>
       </Button>

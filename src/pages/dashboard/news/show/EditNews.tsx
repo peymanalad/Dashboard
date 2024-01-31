@@ -160,7 +160,7 @@ const EditNews: FC = () => {
             <Col xs={24}>
               <Form.Item
                 name="postFileToken"
-                noStyle
+                rules={[{required: true, message: t('messages.requiredFile')}]}
                 initialValue={compact([
                   fetchNews?.data?.post?.postFile
                     ? {

@@ -21,6 +21,7 @@ const LoginPage: FC = () => {
   const userToDashboard = (user: userAccessProps) => {
     setUser({...user});
     query?.redirect ? history.push(query?.redirect) : history.push('/');
+    window.location.reload();
   };
 
   const loginRequest = usePost({

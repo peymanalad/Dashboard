@@ -1032,6 +1032,10 @@
   border-style: solid;
 }
 
+.border-error{
+  border-color: var(--color-redDark);
+}
+
 .border-gray {
   border-color: var(--color-gray);
 }
