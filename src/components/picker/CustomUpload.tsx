@@ -94,6 +94,7 @@ const CustomUpload = ({
   const {t} = useTranslation('general');
   const antdUploadRef = useRef<ElementRef<typeof Upload>>(null);
   const user = useUser();
+  const valueCache = useRef(value);
 
   const headers = {
     Authorization: `Bearer ${user?.access_token}`,
@@ -106,6 +107,21 @@ const CustomUpload = ({
   const [valueState, setValueState] = useState<any | undefined>();
 
   useEffect(() => onUploading && onUploading(isLoading), [isLoading]);
+
+  useEffect(() => {
+    valueCache.current = value;
+  }, [value]);
+
+  useEffect(() => {
+    const onPaste = (event: any) => {
+      const {files} = event.clipboardData;
+      if (!isEmpty(files)) sendFileOnPaste(files);
+    };
+    window.addEventListener('paste', onPaste);
+    return () => {
+      window.removeEventListener('paste', onPaste);
+    };
+  }, []);
 
   const getWidthHeightImage = (file: File) => {
     return new Promise<{width: number; height: number}>((resolve, reject) => {
@@ -457,44 +473,40 @@ const CustomUpload = ({
     );
   };
 
-  const sendFileOnPaste = (files: FileList) => {
-    checkConditionForSendFile(files)
-      .then(() => {
-        const file = files[0];
-        customRequest({
-          file,
-          action: getAction,
-          headers,
-          onError: () => {
-            if (onChange) onChange(value);
-            else setValueState(valueState);
-          },
-          onSuccess: (response: any) => {
-            if (isString(response)) response = {path: response};
-            const newImage = {
-              originFileObj: files[0],
-              status: 'done',
-              type: 'image/jpeg',
-              ...response
-            };
-            if (onChange) onChange(value ? [...value, newImage] : [newImage]);
-            else setValueState(valueState ? [...valueState, newImage] : [newImage]);
-          },
-          status: 'done',
-          ...file
+  const sendFileOnPaste = (files: FileList | any) => {
+    for (const file of files) {
+      checkConditionForSendFile({file})
+        .then(() => {
+          customRequest({
+            file,
+            action: getAction,
+            headers,
+            onError: () => {
+              if (onChange) onChange(value);
+              else setValueState(valueState);
+            },
+            onSuccess: (response: any) => {
+              if (isString(response)) response = {path: response};
+              const newImage = {
+                originFileObj: file,
+                status: 'done',
+                type: file?.type,
+                ...response
+              };
+              if (onChange) onChange(valueCache.current ? [...valueCache.current, newImage] : [newImage]);
+              else setValueState(valueState ? [...valueState, newImage] : [newImage]);
+            },
+            status: 'done'
+          });
+        })
+        .catch((error) => {
+          message.error(error);
         });
-      })
-      .catch((error) => {
-        message.error(error);
-      });
+    }
   };
+
   return (
-    <Row
-      className="w-full flex flex-col"
-      onPaste={(event) => {
-        const {files} = event.clipboardData;
-        if (!isEmpty(files)) sendFileOnPaste(files);
-      }}>
+    <Row className="w-full flex flex-col">
       {sortable && (
         <Col span={8} xs={24} md={8}>
           <Button

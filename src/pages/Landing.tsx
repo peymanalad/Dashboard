@@ -1,6 +1,7 @@
 import React, {type FC} from 'react';
 import {Typography, Row, Image, Col, Button, Card} from 'antd';
-import {Link, useLocation} from 'react-router-dom';
+import {useFetch} from 'hooks';
+import {Link} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {DeedLogoImg} from 'assets';
 import {AndroidOutlined, LoginOutlined} from '@ant-design/icons';
@@ -9,6 +10,14 @@ const {Text} = Typography;
 
 const LandingPage: FC = () => {
   const {t} = useTranslation('login');
+  const fetchSoftwareUpdates = useFetch({
+    url: 'services/app/SoftwareUpdates/GetLatestUpdateInformation',
+    name: 'LatestUpdateInformation',
+    onSuccess(data: any) {
+      window.open(data?.data?.softwareUpdate?.downloadLink, '_blank');
+    },
+    enabled: false
+  });
 
   return (
     <Row className="login-bg flex flex-col justify-center items-center">
@@ -18,10 +27,11 @@ const LandingPage: FC = () => {
           <Col span={24}>
             <Button
               type="link"
-              href="https://api.ideed.ir/api/services/app/SoftwareUpdates/LatestAndroid"
               className="w-full flex-center"
               style={{color: '#8FBC46'}}
               size="large"
+              onClick={fetchSoftwareUpdates.fetch}
+              loading={fetchSoftwareUpdates.isFetching}
               icon={<AndroidOutlined style={{fontSize: 25}} />}>
               {t('download_app')}
             </Button>
