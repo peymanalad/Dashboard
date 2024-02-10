@@ -169,7 +169,7 @@ const UserShowList: FC = () => {
             </Link>
           </Tooltip>
           <Tooltip title={t('send_message')}>
-            <Link to={`/message/friend/${user?.id}`}>
+            <Link to={{pathname: `/message/friend/${user?.id}`, state: user}}>
               <Button type="text" icon={<MailOutlined className="text-orange" />} />
             </Link>
           </Tooltip>

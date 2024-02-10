@@ -101,7 +101,7 @@ const ShowOrganizationGraph: FC = () => {
     directed: true,
     focusAnimationDuration: 0.75,
     focusZoom: 1,
-    freezeAllDragEvents: false,
+    freezeAllDragEvents: true,
     height: 700,
     highlightDegree: 1,
     highlightOpacity: 0.2,
@@ -111,7 +111,7 @@ const ShowOrganizationGraph: FC = () => {
     minZoom: 0.05,
     nodeHighlightBehavior: true,
     panAndZoom: false,
-    staticGraph: false,
+    staticGraph: true,
     staticGraphWithDragAndDrop: false,
     width: width || 800,
     d3: {

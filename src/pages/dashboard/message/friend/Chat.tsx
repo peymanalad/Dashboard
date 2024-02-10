@@ -3,14 +3,15 @@ import {Button} from 'antd';
 import {UserOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {MessageContainer} from 'components';
-import {useParams, Link} from 'react-router-dom';
+import {useParams, Link, useLocation} from 'react-router-dom';
 import {useInfinite, useUser} from 'hooks';
-import get from 'lodash/get';
 
 const SupportChat = () => {
   const {t} = useTranslation('message');
   const user = useUser();
   const {user_id} = useParams<{user_id: string}>();
+  const location = useLocation<any>();
+  const friend = location.state;
 
   const getMessageData = useInfinite({
     url: 'services/app/Chat/GetPagedUserChatMessages?TenantId=1&',
@@ -33,9 +34,7 @@ const SupportChat = () => {
       disableMentionUser
       disableReadyMessage
       disableVoice
-      cardTitle={
-        get(getMessageData?.data, ['user', 'full_name']) || get(getMessageData?.data, ['user', 'username']) || ''
-      }
+      cardTitle={`${friend?.friendName || friend?.name || ''} ${friend?.friendSurName || friend?.surname || ''}`}
       cardExtra={
         <Link to={`/user/edit/${user_id}`}>
           <Button className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset" icon={<UserOutlined />}>

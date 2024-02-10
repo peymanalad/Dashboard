@@ -56,7 +56,7 @@ const SupportMessages: FC = () => {
       render: (permissions: {view: boolean}, friend: any) => (
         <Space size={2}>
           <Tooltip title={t('reply_chat')}>
-            <Link to={`/message/friend/${friend?.friendUserId}`}>
+            <Link to={{pathname: `/message/friend/${friend?.friendUserId}`, state: friend}}>
               <Button type="text" style={{color: '#035aa6'}} icon={<EditOutlined />} />
             </Link>
           </Tooltip>

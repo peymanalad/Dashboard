@@ -191,7 +191,7 @@ const CustomUpload = ({
           headers: files.headers,
           timeout: 1200000,
           onUploadProgress: (event: any) => {
-            if (files?.onProgress) files.onProgress({percent: (event.loaded / event.total) * 100});
+            if (files?.onProgress) files.onProgress({percent: (event.loaded / event.total) * 100, uniqueId});
           }
         };
         try {
@@ -201,7 +201,7 @@ const CustomUpload = ({
             if (files?.onSuccess) {
               let thumbUrl;
               if (files.file.type?.startsWith('image/')) thumbUrl = await getBase64(files.file);
-              files.onSuccess({...res?.data?.result, thumbUrl} || {fileToken: uniqueId});
+              files.onSuccess({...res?.data?.result, thumbUrl} || {fileToken: uniqueId}, uniqueId);
             }
           } else {
             message.error(t('file_upload_failed'));
@@ -209,12 +209,12 @@ const CustomUpload = ({
           }
         } catch (err: any) {
           ResponseErrorHandler(err);
-          if (files?.onError) files.onError({err});
+          if (files?.onError) files.onError({err, id: uniqueId});
         }
       })
       .catch((error) => {
         message.error(error);
-        if (files?.onError) files.onError();
+        if (files?.onError) files.onError({...error, id: uniqueId});
       });
   };
 
@@ -485,7 +485,26 @@ const CustomUpload = ({
               if (onChange) onChange(value);
               else setValueState(valueState);
             },
-            onSuccess: (response: any) => {
+            onProgress: ({percent, uniqueId}: any) => {
+              const newImage = {
+                id: uniqueId,
+                originFileObj: file,
+                status: 'uploading',
+                type: file?.type,
+                percent
+              };
+              if (onChange)
+                onChange(
+                  valueCache.current
+                    ? [...valueCache.current?.filter((img: any) => img.id !== uniqueId), newImage]
+                    : [newImage]
+                );
+              else
+                setValueState(
+                  valueState ? [...valueState?.filter((img: any) => img.id !== uniqueId), newImage] : [newImage]
+                );
+            },
+            onSuccess: (response: any, id: any) => {
               if (isString(response)) response = {path: response};
               const newImage = {
                 originFileObj: file,
@@ -493,14 +512,22 @@ const CustomUpload = ({
                 type: file?.type,
                 ...response
               };
-              if (onChange) onChange(valueCache.current ? [...valueCache.current, newImage] : [newImage]);
-              else setValueState(valueState ? [...valueState, newImage] : [newImage]);
+              if (onChange)
+                onChange(
+                  valueCache.current
+                    ? [...valueCache.current?.filter((img: any) => img.id !== id), newImage]
+                    : [newImage]
+                );
+              else
+                setValueState(valueState ? [...valueState?.filter((img: any) => img.id !== id), newImage] : [newImage]);
             },
-            status: 'done'
+            status: 'uploading'
           });
         })
-        .catch((error) => {
+        .catch((error: any) => {
           message.error(error);
+          if (onChange) onChange(valueCache.current?.filter((img: any) => img.id !== error.id));
+          else setValueState(valueState?.filter((img: any) => img.id !== error.id));
         });
     }
   };
