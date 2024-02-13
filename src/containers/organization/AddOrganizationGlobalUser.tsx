@@ -18,12 +18,11 @@ interface refProps {
 }
 
 interface props {
-  organizationId?: string;
   ref: RefObject<refProps>;
 }
 
 const AddOrganizationGlobalUserModal: ForwardRefRenderFunction<refProps, props> = (
-  {organizationId}: props,
+  props: props,
   forwardedRef: ForwardedRef<refProps>
 ) => {
   const {t} = useTranslation('organization');
@@ -75,11 +74,11 @@ const AddOrganizationGlobalUserModal: ForwardRefRenderFunction<refProps, props> 
                 mode="single"
                 urlName="GetAllNoOrganization"
                 url="services/app/GroupMembers/GetAllNoOrganization"
-                params={{organizationId}}
+                params={{organizationId: selectedOrganizationId}}
                 renderCustomLabel={(option) => {
-                  return `${option?.name || ''} ${option?.surName || ''} - ${
-                    option?.memberPosition ? `${option?.memberPosition} -` : ''
-                  }  ${option?.organizationGroupName}`;
+                  return `${option?.name || ''} ${option?.surName || ''}  ${
+                    option?.memberPosition ? `${option?.memberPosition} ` : ''
+                  }  ${option?.organizationGroupName || ''}`;
                 }}
                 keyValue="userId"
                 keyLabel="displayName"

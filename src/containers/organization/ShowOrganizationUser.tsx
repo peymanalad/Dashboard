@@ -105,7 +105,8 @@ const ShowOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
   ];
 
   const onAdd = () => {
-    if (addOrganizationRef.current && selectedOrganizationId) addOrganizationRef.current.open(selectedOrganizationId);
+    if (addOrganizationRef.current && selectedOrganizationId)
+      addOrganizationRef.current.open(Number(id || selectedOrganizationId));
   };
 
   return (

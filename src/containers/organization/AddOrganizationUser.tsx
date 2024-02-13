@@ -80,7 +80,7 @@ const AddOrganizationUserModal: ForwardRefRenderFunction<refProps, props> = (
                 renderCustomLabel={(option) => {
                   return `${option?.name || ''} ${option?.surName || ''} - ${
                     option?.memberPosition ? `${option?.memberPosition} -` : ''
-                  }  ${option?.organizationGroupName}`;
+                  }  ${option?.organizationGroupName || ''}`;
                 }}
                 keyValue="userId"
                 keyLabel="displayName"
