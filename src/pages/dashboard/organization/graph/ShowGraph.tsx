@@ -27,6 +27,7 @@ const ShowGraph: FC = () => {
   const history = useHistory();
   const CardRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState<number | null>(null);
+  const [rendred, setRendered] = useState<boolean>(false);
   const addOrganizationRef = useRef<ElementRef<typeof AddOrganizationModal>>(null);
   const setOrganizationRef = useRef<ElementRef<typeof SetOrganizationModal>>(null);
   const showOrganizationUserRef = useRef<ElementRef<typeof ShowOrganizationUserModal>>(null);
@@ -159,6 +160,10 @@ const ShowGraph: FC = () => {
     calculateWidth();
   }, [CardRef.current]);
 
+  useEffect(() => {
+    if (width && fetchOrganizationChart?.data) setTimeout(() => setRendered(true), 2000);
+  }, [width, fetchOrganizationChart?.data]);
+
   const myConfig: GraphProps<any, any>['config'] | any = {
     automaticRearrangeAfterDropNode: false,
     collapsible: false,
@@ -172,20 +177,21 @@ const ShowGraph: FC = () => {
     highlightOpacity: 1,
     linkHighlightBehavior: true,
     initialZoom: 0.75,
-    maxZoom: 12,
+    maxZoom: 0.85,
     minZoom: 0.05,
     nodeHighlightBehavior: true,
     // nodeHighlightBehavior: false,
     panAndZoom: false,
-    staticGraph: false,
-    staticGraphWithDragAndDrop: false,
+    staticGraph: rendred,
+    staticGraphWithDragAndDrop: rendred,
     width: width || 800,
     d3: {
       alphaTarget: 0.05,
       gravity: -1000,
       linkLength: 200,
       linkStrength: 1.5,
-      disableLinkForce: false
+      disableLinkForce: false,
+      _onDragStart: () => {}
     },
     node: {
       color: '#d3d3d3',
@@ -208,7 +214,6 @@ const ShowGraph: FC = () => {
       },
       strokeColor: 'none',
       strokeWidth: 1.5,
-      // svg: '',
       symbolType: 'circle',
       viewGenerator: (node: any) => {
         const splitLayer = node?.leafPath?.slice(0, -1)?.split('\\');
@@ -315,6 +320,7 @@ const ShowGraph: FC = () => {
   };
 
   const onReOrder = () => {
+    setRendered(false);
     setWidth(0);
     setTimeout(calculateWidth, 300);
   };
