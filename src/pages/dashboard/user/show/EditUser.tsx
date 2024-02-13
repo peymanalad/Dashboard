@@ -40,7 +40,7 @@ const EditUser: FC = () => {
     url: 'services/app/Profile/UpdateProfilePicture',
     method: 'PUT',
     showError: false,
-    refetchQueries: isMySelf ? ['profile'] : undefined
+    refetchQueries: isMySelf ? ['profile'] : [['user', id]]
   });
 
   const sendUser = usePost({

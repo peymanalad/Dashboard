@@ -201,7 +201,7 @@ const CustomUpload = ({
             if (files?.onSuccess) {
               let thumbUrl;
               if (files.file.type?.startsWith('image/')) thumbUrl = await getBase64(files.file);
-              files.onSuccess({...res?.data?.result, thumbUrl} || {fileToken: uniqueId}, uniqueId);
+              files.onSuccess({fileToken: uniqueId, ...res?.data?.result, thumbUrl} || {fileToken: uniqueId}, uniqueId);
             }
           } else {
             message.error(t('file_upload_failed'));
