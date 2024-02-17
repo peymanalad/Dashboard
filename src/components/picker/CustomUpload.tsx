@@ -510,6 +510,7 @@ const CustomUpload = ({
                 originFileObj: file,
                 status: 'done',
                 type: file?.type,
+                response,
                 ...response
               };
               if (onChange)
