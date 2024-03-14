@@ -1,17 +1,15 @@
-import React, {useRef, type ElementRef, type FC} from 'react';
-import {Button, Card, Space, Tooltip} from 'antd';
-import {FormOutlined, CheckCircleOutlined, CloseCircleOutlined, EditOutlined} from '@ant-design/icons';
+import React, {type FC} from 'react';
+import {Button, Card, Tooltip} from 'antd';
+import {CheckCircleOutlined, CloseCircleOutlined, EditOutlined} from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link} from 'react-router-dom';
-import {CustomTable, Search, SearchButton} from 'components';
-import {useUser} from 'hooks';
+import {CustomTable} from 'components';
+
 import {convertUtcTimeToLocal} from 'utils';
 import type {simplePermissionProps} from 'types/common';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('permission');
-  const searchRef = useRef<ElementRef<typeof Search>>(null);
-  const {hasPermission} = useUser();
 
   const columns: any = [
     {
@@ -81,28 +79,8 @@ const ShowList: FC = () => {
     }
   ];
 
-  const showSearch = () => {
-    if (searchRef.current) searchRef.current.open();
-  };
-
   return (
-    <Card
-      title={t('role')}
-      extra={
-        <Space size="small">
-          {!hasPermission('organizations.store') && (
-            <Link to="/setting/role/create">
-              <Button
-                type="primary"
-                className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"
-                icon={<FormOutlined />}>
-                {t('add_role')}
-              </Button>
-            </Link>
-          )}
-          <SearchButton />
-        </Space>
-      }>
+    <Card title={t('role')}>
       <CustomTable fetch="services/app/Role/GetListOfRoles" dataName="roles" columns={columns} hasIndexColumn />
     </Card>
   );

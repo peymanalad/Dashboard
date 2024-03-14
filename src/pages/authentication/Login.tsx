@@ -81,9 +81,6 @@ const LoginPage: FC = () => {
             </Button>
           </Row>
         </Form>
-        <Text className="mt-2 text-sm px-3" type="secondary" strong>
-          {t('messages.support')}
-        </Text>
       </Card>
     </Row>
   );

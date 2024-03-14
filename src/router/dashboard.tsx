@@ -1384,20 +1384,20 @@ const Dashboard: Array<dashboardRouteProps> = [
         route: '/setting/role/list',
         cmp: <PermissionRole />,
         title: i18n.t('side_menu:show_roles'),
-        permission: 'roles.view',
-        extra: {
-          route: '/setting/role/new',
-          title: i18n.t('side_menu:create_role'),
-          permission: 'roles.store'
-        }
+        permission: 'roles.view'
+        // extra: {
+        //   route: '/setting/role/new',
+        //   title: i18n.t('side_menu:create_role'),
+        //   permission: 'roles.store'
+        // }
       },
-      {
-        route: '/setting/role/new',
-        cmp: <EditRoles />,
-        title: i18n.t('side_menu:show_roles'),
-        hidden: true,
-        permission: 'roles.store'
-      },
+      // {
+      //   route: '/setting/role/new',
+      //   cmp: <EditRoles />,
+      //   title: i18n.t('side_menu:show_roles'),
+      //   hidden: true,
+      //   permission: 'roles.store'
+      // },
       {
         route: '/setting/role/edit/:id',
         cmp: <EditRoles />,

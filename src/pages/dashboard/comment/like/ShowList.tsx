@@ -36,10 +36,21 @@ const ShowList: FC = () => {
       align: 'center'
     },
     {
-      title: t('user'),
+      title: t('userName'),
       dataIndex: 'userName',
       key: 'userName',
-      sorter: true,
+      align: 'center'
+    },
+    {
+      title: t('firstName'),
+      dataIndex: 'firstName',
+      key: 'firstName',
+      align: 'center'
+    },
+    {
+      title: t('lastName'),
+      dataIndex: 'lastName',
+      key: 'firstName',
       align: 'center'
     },
     {

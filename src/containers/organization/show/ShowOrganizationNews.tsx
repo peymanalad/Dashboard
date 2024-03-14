@@ -154,7 +154,7 @@ const ShowOrganizationNews: FC<Props> = ({id}) => {
   return (
     <CustomTable
       fetch="services/app/Posts/GetAll"
-      dataName={['news', id]}
+      dataName={['news', 'organization', id]}
       query={{Sorting: 'creationTime desc', organizationId: id}}
       columns={columns}
       hasIndexColumn

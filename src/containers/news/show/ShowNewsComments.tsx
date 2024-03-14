@@ -73,7 +73,7 @@ const ShowNewsComments: FC<Props> = ({id}) => {
   return (
     <CustomTable
       fetch="services/app/Comments/GetListOfComments"
-      dataName="comments"
+      dataName={['news', id, 'comments']}
       columns={columns}
       query={{PostId: id}}
     />

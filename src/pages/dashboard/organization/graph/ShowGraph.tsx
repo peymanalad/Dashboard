@@ -157,12 +157,16 @@ const ShowGraph: FC = () => {
   };
 
   useEffect(() => {
+    if (!!data) setRendered(false);
+  }, [data]);
+
+  useEffect(() => {
     calculateWidth();
   }, [CardRef.current]);
 
   useEffect(() => {
-    if (width && fetchOrganizationChart?.data) setTimeout(() => setRendered(true), 2000);
-  }, [width, fetchOrganizationChart?.data]);
+    if (width && data) setTimeout(() => setRendered(true), 2000);
+  }, [width, data]);
 
   const myConfig: GraphProps<any, any>['config'] | any = {
     automaticRearrangeAfterDropNode: false,
