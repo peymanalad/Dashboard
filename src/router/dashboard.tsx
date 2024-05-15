@@ -18,7 +18,7 @@ import filter from 'lodash/filter';
 import {lazyWithRetry} from 'utils';
 import {dashboardRouteProps} from 'types/dashboard';
 
-const DashboardCmp = lazyWithRetry(() => import('pages/dashboard/Dashboard'));
+const DashboardCmp = lazyWithRetry(() => import('pages/dashboard/Dashboard2'));
 // const Reports = lazyWithRetry(() => import('pages/dashboard/report/Reports'));
 // const ReportTable = lazyWithRetry(() => import('pages/dashboard/report/TableReport'));
 // prescription

@@ -17,7 +17,7 @@ type Props = {
   showLegend?: boolean;
 };
 
-const EPie: FC<Props> = ({
+const ETreeMap: FC<Props> = ({
   data,
   labelKey,
   valueKey,
@@ -51,11 +51,9 @@ const EPie: FC<Props> = ({
     series: [
       {
         name: chartKey || '',
-        type: 'pie',
+        type: 'treemap',
         radius: ['40%', '85%'],
-        padAngle: 10,
         itemStyle: {
-          borderRadius: 10,
           color: (params: any) => {
             return colors[params.dataIndex];
           }
@@ -78,4 +76,4 @@ const EPie: FC<Props> = ({
   return <ReactEcharts option={options} style={{height, width: '100%'}} loadingOption />;
 };
 
-export default EPie;
+export default ETreeMap;

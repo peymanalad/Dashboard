@@ -1,0 +1,680 @@
+{
+    "last_patients_list": [
+      {
+        "id": 24121,
+        "username": "grqtg3",
+        "full_name": null,
+        "created_at": "2024-05-15 17:19:23"
+      },
+      {
+        "id": 24120,
+        "username": "iz2wo1",
+        "full_name": null,
+        "created_at": "2024-05-15 16:25:41"
+      },
+      {
+        "id": 24119,
+        "username": "rwboxb",
+        "full_name": "معصومه پرستش",
+        "created_at": "2024-05-15 12:42:17"
+      },
+      {
+        "id": 24118,
+        "username": "jlcb6x",
+        "full_name": "محبوبه محلوجی",
+        "created_at": "2024-05-15 06:35:56"
+      },
+      {
+        "id": 24117,
+        "username": "6ejhon",
+        "full_name": "علیرضا بخشایش",
+        "created_at": "2024-05-15 05:56:03"
+      }
+    ],
+    "pending_patient_count": 32,
+    "last_day_visit_count": 4,
+    "multi_visit_patients_percent": "6",
+    "pending_doctor_count": 2,
+    "register_user_count": 195,
+    "tickets_messages_count": 6,
+    "support_messages_count": 70,
+    "most_diseases_visits_chart": [
+      {
+        "name": "پیشگیری از کرونا",
+        "percent": "8"
+      },
+      {
+        "name": "ناباروری زنان",
+        "percent": "4"
+      },
+      {
+        "name": "اضطراب",
+        "percent": "4"
+      },
+      {
+        "name": "ارتقا سلامت",
+        "percent": "4"
+      },
+      {
+        "name": "شیردهی",
+        "percent": "3"
+      },
+      {
+        "name": "دوره نوزادی",
+        "percent": "3"
+      },
+      {
+        "name": "سوءهاضمه",
+        "percent": "3"
+      },
+      {
+        "name": "دوران شیرخوارگی",
+        "percent": "3"
+      },
+      {
+        "name": "تغذیه با شیرخشک",
+        "percent": "3"
+      },
+      {
+        "name": "غیره",
+        "percent": 65
+      }
+    ],
+    "patient_comment_count": 133,
+    "doctor_comment_count": 0,
+    "feedback_recommendations_count": 121848,
+    "new_recommendations_count": 0,
+    "incomplete_patient_count": 0,
+    "satisfaction_patients_chart": [
+      {
+        "month": 9,
+        "percent": "55.6"
+      },
+      {
+        "month": 10,
+        "percent": "51.1"
+      },
+      {
+        "month": 11,
+        "percent": "55.6"
+      },
+      {
+        "month": 12,
+        "percent": "46.7"
+      },
+      {
+        "month": 1,
+        "percent": "51.9"
+      },
+      {
+        "month": 2,
+        "percent": "55.6"
+      }
+    ],
+    "annual_income": "628172475",
+    "not_confirmed_recommendations_count": 0,
+    "answers_count": 497,
+    "strength_and_weakness_answers_count": 195,
+    "last_patients_weekly_chart": [
+      {
+        "date": "2024-03-02",
+        "count": 38
+      },
+      {
+        "date": "2024-03-09",
+        "count": 44
+      },
+      {
+        "date": "2024-03-16",
+        "count": 24
+      },
+      {
+        "date": "2024-03-23",
+        "count": 19
+      },
+      {
+        "date": "2024-03-30",
+        "count": 21
+      },
+      {
+        "date": "2024-04-06",
+        "count": 15
+      },
+      {
+        "date": "2024-04-13",
+        "count": 39
+      },
+      {
+        "date": "2024-04-20",
+        "count": 21
+      },
+      {
+        "date": "2024-04-27",
+        "count": 50
+      },
+      {
+        "date": "2024-05-04",
+        "count": 35
+      },
+      {
+        "date": "2024-05-11",
+        "count": 26
+      },
+      {
+        "date": "2024-05-18",
+        "count": 26
+      }
+    ],
+    "warnings_count": 13,
+    "recommendations_send_count": 168925,
+    "offer_answers_count": 20,
+    "recommender_logs_count": 13,
+    "edit_recommendations_count": 1,
+    "order_items_weekly_chart": [
+      {
+        "date": "2024-03-02",
+        "recommendations_count": 16,
+        "tickets_count": 6
+      },
+      {
+        "date": "2024-03-09",
+        "recommendations_count": 13,
+        "tickets_count": 8
+      },
+      {
+        "date": "2024-03-16",
+        "recommendations_count": 11,
+        "tickets_count": 3
+      },
+      {
+        "date": "2024-03-23",
+        "recommendations_count": 6,
+        "tickets_count": 4
+      },
+      {
+        "date": "2024-03-30",
+        "recommendations_count": 7,
+        "tickets_count": 1
+      },
+      {
+        "date": "2024-04-06",
+        "recommendations_count": 5,
+        "tickets_count": 1
+      },
+      {
+        "date": "2024-04-13",
+        "recommendations_count": 16,
+        "tickets_count": 6
+      },
+      {
+        "date": "2024-04-20",
+        "recommendations_count": 7,
+        "tickets_count": 2
+      },
+      {
+        "date": "2024-04-27",
+        "recommendations_count": 16,
+        "tickets_count": 3
+      },
+      {
+        "date": "2024-05-04",
+        "recommendations_count": 14,
+        "tickets_count": 5
+      },
+      {
+        "date": "2024-05-11",
+        "recommendations_count": 4,
+        "tickets_count": 5
+      },
+      {
+        "date": "2024-05-18",
+        "recommendations_count": 11,
+        "tickets_count": 1
+      }
+    ],
+    "important_answers_list": [
+      {
+        "id": 19558,
+        "username": "ywyibg",
+        "full_name": "محمدحسن زیبا",
+        "created_at": "2022-07-16T05:46:58.000000Z",
+        "answer_detail_id": 3684
+      },
+      {
+        "id": 19558,
+        "username": "ywyibg",
+        "full_name": "محمدحسن زیبا",
+        "created_at": "2022-07-26T04:23:08.000000Z",
+        "answer_detail_id": 3695
+      },
+      {
+        "id": 19558,
+        "username": "ywyibg",
+        "full_name": "محمدحسن زیبا",
+        "created_at": "2022-07-26T04:23:36.000000Z",
+        "answer_detail_id": 3696
+      },
+      {
+        "id": 19982,
+        "username": "by4wpd",
+        "full_name": "زهرا مهدی زاده",
+        "created_at": "2022-07-29T06:44:01.000000Z",
+        "answer_detail_id": 3706
+      },
+      {
+        "id": 21070,
+        "username": "g8njbc",
+        "full_name": "فاطمه عباس نژاد",
+        "created_at": "2022-12-14T08:57:14.000000Z",
+        "answer_detail_id": 3883
+      },
+      {
+        "id": 21070,
+        "username": "g8njbc",
+        "full_name": "فاطمه عباس نژاد",
+        "created_at": "2023-01-09T11:28:08.000000Z",
+        "answer_detail_id": 3920
+      },
+      {
+        "id": 21429,
+        "username": "7ntsbn",
+        "full_name": "کیارش قلخانی",
+        "created_at": "2023-02-02T08:04:09.000000Z",
+        "answer_detail_id": 3956
+      },
+      {
+        "id": 20072,
+        "username": "6r6kks",
+        "full_name": "مژده مسرت",
+        "created_at": "2023-02-10T18:40:45.000000Z",
+        "answer_detail_id": 3971
+      },
+      {
+        "id": 21574,
+        "username": "owwnai",
+        "full_name": "فاطمه فتحی",
+        "created_at": "2023-02-22T11:02:28.000000Z",
+        "answer_detail_id": 3985
+      },
+      {
+        "id": 22028,
+        "username": "ngkrl9",
+        "full_name": "محمد فخاری",
+        "created_at": "2023-05-22T03:11:14.000000Z",
+        "answer_detail_id": 4123
+      },
+      {
+        "id": 22028,
+        "username": "ngkrl9",
+        "full_name": "محمد فخاری",
+        "created_at": "2023-05-22T03:11:26.000000Z",
+        "answer_detail_id": 4124
+      },
+      {
+        "id": 22143,
+        "username": "2vd56f",
+        "full_name": "مهرناز فضی",
+        "created_at": "2023-06-05T10:07:00.000000Z",
+        "answer_detail_id": 4144
+      },
+      {
+        "id": 22221,
+        "username": "sfs0cy",
+        "full_name": "فائزه عبادی",
+        "created_at": "2023-06-15T01:06:04.000000Z",
+        "answer_detail_id": 4160
+      },
+      {
+        "id": 21916,
+        "username": "x69gf",
+        "full_name": "فیروزه درافشانی",
+        "created_at": "2023-06-28T09:06:20.000000Z",
+        "answer_detail_id": 4189
+      },
+      {
+        "id": 21916,
+        "username": "x69gf",
+        "full_name": "فیروزه درافشانی",
+        "created_at": "2023-07-08T05:47:37.000000Z",
+        "answer_detail_id": 4202
+      },
+      {
+        "id": 21916,
+        "username": "x69gf",
+        "full_name": "فیروزه درافشانی",
+        "created_at": "2023-07-08T05:50:13.000000Z",
+        "answer_detail_id": 4203
+      },
+      {
+        "id": 21916,
+        "username": "x69gf",
+        "full_name": "فیروزه درافشانی",
+        "created_at": "2023-07-08T05:51:52.000000Z",
+        "answer_detail_id": 4204
+      },
+      {
+        "id": 20451,
+        "username": "wlhhfp",
+        "full_name": "امیر یزدانفر",
+        "created_at": "2023-07-22T14:48:15.000000Z",
+        "answer_detail_id": 4234
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:46:34.000000Z",
+        "answer_detail_id": 4251
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:48:17.000000Z",
+        "answer_detail_id": 4252
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:49:03.000000Z",
+        "answer_detail_id": 4253
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:49:27.000000Z",
+        "answer_detail_id": 4254
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:50:08.000000Z",
+        "answer_detail_id": 4255
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:50:36.000000Z",
+        "answer_detail_id": 4256
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:50:53.000000Z",
+        "answer_detail_id": 4257
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:51:20.000000Z",
+        "answer_detail_id": 4258
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:51:37.000000Z",
+        "answer_detail_id": 4259
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:52:10.000000Z",
+        "answer_detail_id": 4260
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:52:24.000000Z",
+        "answer_detail_id": 4261
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:52:46.000000Z",
+        "answer_detail_id": 4262
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:54:48.000000Z",
+        "answer_detail_id": 4263
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:55:11.000000Z",
+        "answer_detail_id": 4264
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:55:28.000000Z",
+        "answer_detail_id": 4265
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-07-29T11:56:02.000000Z",
+        "answer_detail_id": 4266
+      },
+      {
+        "id": 20203,
+        "username": "s0rvb4",
+        "full_name": "عاطفه زارع",
+        "created_at": "2023-07-30T15:35:29.000000Z",
+        "answer_detail_id": 4268
+      },
+      {
+        "id": 20203,
+        "username": "s0rvb4",
+        "full_name": "عاطفه زارع",
+        "created_at": "2023-07-30T15:35:39.000000Z",
+        "answer_detail_id": 4269
+      },
+      {
+        "id": 20203,
+        "username": "s0rvb4",
+        "full_name": "عاطفه زارع",
+        "created_at": "2023-07-30T15:35:50.000000Z",
+        "answer_detail_id": 4270
+      },
+      {
+        "id": 22640,
+        "username": "hzwzfh",
+        "full_name": "فاطمه محمدتبار",
+        "created_at": "2023-08-11T03:30:15.000000Z",
+        "answer_detail_id": 4295
+      },
+      {
+        "id": 21215,
+        "username": "pmpopk",
+        "full_name": "زهرا سادات سیدهاشمی",
+        "created_at": "2023-09-10T13:44:18.000000Z",
+        "answer_detail_id": 4345
+      },
+      {
+        "id": 21215,
+        "username": "pmpopk",
+        "full_name": "زهرا سادات سیدهاشمی",
+        "created_at": "2023-09-10T13:44:56.000000Z",
+        "answer_detail_id": 4346
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-09-13T02:19:56.000000Z",
+        "answer_detail_id": 4349
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-09-13T02:20:27.000000Z",
+        "answer_detail_id": 4350
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-09-13T02:20:49.000000Z",
+        "answer_detail_id": 4351
+      },
+      {
+        "id": 22325,
+        "username": "agk2yn",
+        "full_name": "سید اسماعیل ابوطالب زاده",
+        "created_at": "2023-09-13T02:21:08.000000Z",
+        "answer_detail_id": 4352
+      },
+      {
+        "id": 3154,
+        "username": "bvkck4",
+        "full_name": "خلیج ایرانی",
+        "created_at": "2023-11-20T20:58:23.000000Z",
+        "answer_detail_id": 4473
+      },
+      {
+        "id": 3154,
+        "username": "bvkck4",
+        "full_name": "خلیج ایرانی",
+        "created_at": "2023-11-20T20:59:20.000000Z",
+        "answer_detail_id": 4474
+      },
+      {
+        "id": 24058,
+        "username": "gnucbh",
+        "full_name": "ام لیلی قاسمی",
+        "created_at": "2024-05-06T05:01:02.000000Z",
+        "answer_detail_id": 4643
+      },
+      {
+        "id": 24059,
+        "username": "xoklyg",
+        "full_name": "حمیده رهبر",
+        "created_at": "2024-05-07T10:49:57.000000Z",
+        "answer_detail_id": 4644
+      },
+      {
+        "id": 24059,
+        "username": "xoklyg",
+        "full_name": "حمیده رهبر",
+        "created_at": "2024-05-07T10:53:56.000000Z",
+        "answer_detail_id": 4645
+      }
+    ],
+    "ticket_response_average_chart": [
+      {
+        "date": "2024-03-02",
+        "average": 352
+      },
+      {
+        "date": "2024-03-09",
+        "average": 322
+      },
+      {
+        "date": "2024-03-16",
+        "average": 353
+      },
+      {
+        "date": "2024-03-23",
+        "average": 351
+      },
+      {
+        "date": "2024-03-30",
+        "average": 346
+      },
+      {
+        "date": "2024-04-06",
+        "average": 347
+      },
+      {
+        "date": "2024-04-13",
+        "average": 348
+      },
+      {
+        "date": "2024-04-20",
+        "average": 237
+      },
+      {
+        "date": "2024-04-27",
+        "average": 346
+      },
+      {
+        "date": "2024-05-04",
+        "average": 217
+      },
+      {
+        "date": "2024-05-11",
+        "average": 11
+      },
+      {
+        "date": "2024-05-18",
+        "average": 0
+      }
+    ],
+    "support_message_count_chart": [
+      {
+        "date": "2024-03-02",
+        "count": 19
+      },
+      {
+        "date": "2024-03-09",
+        "count": 10
+      },
+      {
+        "date": "2024-03-16",
+        "count": 14
+      },
+      {
+        "date": "2024-03-23",
+        "count": 7
+      },
+      {
+        "date": "2024-03-30",
+        "count": 21
+      },
+      {
+        "date": "2024-04-06",
+        "count": 0
+      },
+      {
+        "date": "2024-04-13",
+        "count": 13
+      },
+      {
+        "date": "2024-04-20",
+        "count": 11
+      },
+      {
+        "date": "2024-04-27",
+        "count": 18
+      },
+      {
+        "date": "2024-05-04",
+        "count": 7
+      },
+      {
+        "date": "2024-05-11",
+        "count": 14
+      },
+      {
+        "date": "2024-05-18",
+        "count": 7
+      }
+    ]
+  }

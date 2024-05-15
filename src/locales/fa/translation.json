@@ -2238,6 +2238,7 @@
     "ticket_response_average_chart": "میانگین زمان پاسخ دهی تیکت",
     "support_message_count_chart": "تعداد پیام های پشتیبانی",
     "averageHour": "میانگین (ساعت)",
+    "organization": "سازمان",
     "strengthWeaknessQuestionTitle": "نقاط قوت و ضعف خدمات ما چیست؟ لطفا مواردی را که برای خلق بهتر یک سرویس مکمل درمان موثر است بنویسید",
     "warnings": "هشدارها",
     "calculating": "در حال محاسبه",

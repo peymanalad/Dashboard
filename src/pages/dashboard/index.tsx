@@ -66,7 +66,7 @@ const Dashboard: FC = () => {
           />
           <Content
             className={`mt-4 w-full h-full m-0 min-h-75vh px-0 ${!isDashboard ? 'md:px-6' : ''}  ${
-              !isChatSection ? (isDashboard ? '' : 'py-6') : 'py-0 md:py-6'
+              !isChatSection ? (isDashboard ? 'py-6' : 'py-6') : 'py-0 md:py-6'
             }`}>
             <Suspense fallback={<FullScreenLoading />}>
               {fetchMenu?.isFetching && (

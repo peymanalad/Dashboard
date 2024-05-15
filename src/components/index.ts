@@ -79,8 +79,10 @@ export {default as SearchButton} from 'components/search/SearchButton';
 // chart
 export {default as Pie} from 'components/chart/EPie';
 export {default as Line} from 'components/chart/ELine';
+export {default as TreeMap} from 'components/chart/ETreeMap';
 export {default as VerticalBar} from 'components/chart/VerticalBar';
 export {default as HorizontalBar} from 'components/chart/HorizontalBar';
+export {default as StackBar} from 'components/chart/StackBar';
 
 // collapse
 export {default as CollapseR} from 'components/collapse/CollapseR';
