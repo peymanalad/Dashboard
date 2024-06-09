@@ -59,7 +59,7 @@ const Dashboard: FC = () => {
         <Layout className={`${isChatSection ? 'h-full md:h-unset' : ''}`}>
           <TopHeader
             allowFetchDashboard={fetchMenu.isSuccess}
-            backgroundColor={isDashboard ? '#333333' : undefined}
+            // backgroundColor={isDashboard ? '#333333' : undefined}
             onMenuClick={() => {
               if (sideMenuRef.current) sideMenuRef.current.collapseMenu();
             }}

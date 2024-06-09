@@ -56,3 +56,29 @@ export interface DashboardSchema {
   menubar: DashboardMenubarSchema[];
   content: DashboardContentSchema[];
 }
+
+export type DashboardCountInfo = {
+  count: number;
+  dateOfCount: string;
+};
+
+export type DashboardOrganizationData = {
+  organizationId: number;
+  organizationName: string;
+  countInfo: DashboardCountInfo[];
+};
+
+export type DashboardTransformedValues = {
+  [key: string]: number | string;
+  dateOfCount: string;
+};
+
+export type DashboardTransformedData = {
+  labels: Array<string>;
+  values: Array<DashboardTransformedValues>;
+};
+
+export type DashboardPercentData = {
+  name: string;
+  percent: string;
+};

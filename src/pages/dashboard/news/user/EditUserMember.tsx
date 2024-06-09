@@ -4,6 +4,7 @@ import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {FormActions, MultiSelectPaginate} from 'components';
+import {queryStringToObject} from 'utils';
 
 const EditMemberShowList: FC = () => {
   const {t} = useTranslation('news');
@@ -11,6 +12,7 @@ const EditMemberShowList: FC = () => {
   const location = useLocation<any>();
   const user = location.state?.user;
   const {id} = useParams<{id?: string}>();
+  const queryObject = queryStringToObject(location.search);
 
   const [form] = Form.useForm();
 
@@ -80,6 +82,8 @@ const EditMemberShowList: FC = () => {
                       id: fetchNewsUserMember?.data?.groupMember?.organizationId,
                       displayName: fetchNewsUserMember?.data?.organizationGroupGroupName
                     }
+                  : +queryObject?.organization?.id > 0
+                  ? {id: +queryObject?.organization?.id, displayName: queryObject?.organization?.name}
                   : undefined
               }>
               <MultiSelectPaginate
@@ -97,7 +101,7 @@ const EditMemberShowList: FC = () => {
           <Form.Item
             noStyle
             shouldUpdate={(prevValues, nextValues) => {
-              if (prevValues.organization?.id !== nextValues.organization?.id) {
+              if (prevValues.organization?.id !== nextValues.organization?.id && !user) {
                 form.setFieldsValue({
                   organizationUser: null
                 });

@@ -1,7 +1,7 @@
 import React, {FC, useMemo, useState} from 'react';
 import {Card, Form, Row, Col, Input, Button, Checkbox, Tag, Modal} from 'antd';
 import {SearchOutlined, SmileOutlined} from '@ant-design/icons';
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory, useParams, useLocation} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';
 import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
@@ -10,16 +10,19 @@ import {getImageUrl, wordCounter} from 'utils';
 import compact from 'lodash/compact';
 import {Picker} from 'emoji-mart';
 import {v4 as uuidv4} from 'uuid';
+import {queryStringToObject} from 'utils';
 
 const {TextArea} = Input;
 
 const EditNews: FC = () => {
   const {t} = useTranslation('news');
   const history = useHistory();
+  const location = useLocation<any>();
   const {id} = useParams<{id?: string}>();
   const [isUploading, setIsUploading] = useState<boolean>();
   const [showEmoji, setShowEmoji] = useState<boolean>();
   const [contentPos, setContentPos] = useState<number>(0);
+  const queryObject = queryStringToObject(location.search);
 
   const postKey = useMemo(() => uuidv4(), []);
 
@@ -109,7 +112,13 @@ const EditNews: FC = () => {
                 name="organization"
                 label={t('organization')}
                 rules={[{required: true, message: t('messages.required')}]}
-                initialValue={fetchNews?.data?.organizationId}>
+                initialValue={
+                  fetchNews?.data?.organizationId
+                    ? fetchNews?.data?.organizationId
+                    : +queryObject?.organization?.id > 0
+                    ? +queryObject?.organization?.id
+                    : undefined
+                }>
                 <SelectOrganization />
               </Form.Item>
             </Col>

@@ -1,11 +1,12 @@
 import React, {FC} from 'react';
+import {useTranslation} from 'react-i18next';
 import ReactEcharts, {EChartsOption} from 'echarts-for-react';
-import {isArray, isFunction, keys, map, round, values} from 'lodash';
+import {entries, isArray, isFunction, isString, keys, map, merge, round, values, get, shuffle} from 'lodash';
 
 type Props = {
   data: any;
-  labelKey?: string;
-  valueKey?: string;
+  labelKey: string;
+  valueKey?: string | string[];
   height?: string;
   valueConvertor?: (value: any) => string;
   labelConvertor?: (value: any) => string;
@@ -14,15 +15,26 @@ type Props = {
   showLegend?: boolean;
 };
 
-const ELine: FC<Props> = ({data, labelKey, valueKey, height = '250px', valueConvertor, chartKey, labelConvertor}) => {
+const ELine: FC<Props> = ({
+  data,
+  labelKey,
+  valueKey,
+  height = '250px',
+  valueConvertor,
+  chartKey,
+  labelConvertor,
+  showLabel
+}) => {
+  const {t} = useTranslation('charts');
+
   const extractValues = () => {
     if (isArray(data)) {
-      if (valueKey) {
-        return map(data, valueKey);
+      if (isString(valueKey)) {
+        return map(data, (item: any) => round(item[valueKey], 2));
       }
-    } else {
-      return map(values(data), (item: any) => round(item, 2));
-    }
+    } else if (isArray(valueKey)) {
+      map(values(data));
+    } else return map(values(data), (item: any) => round(item, 2));
   };
 
   const extractLabels = () => {
@@ -34,59 +46,103 @@ const ELine: FC<Props> = ({data, labelKey, valueKey, height = '250px', valueConv
         return map(data, labelKey);
       }
     } else {
+      if (isFunction(labelConvertor)) {
+        return map(keys(data), labelConvertor);
+      }
       return keys(data);
     }
   };
 
-  const options: EChartsOption = {
-    textStyle: {
-      fontFamily: 'IRANSansFaNum'
-    },
-    tooltip: {
-      trigger: 'item',
-      axisPointer: {
-        type: 'line'
-      }
-    },
-    grid: {
-      left: '3%',
-      right: '5%',
-      bottom: '10%',
-      containLabel: true
-    },
-    yAxis: [
-      {
-        type: 'value',
-        axisLabel: {
-          formatter: valueConvertor || undefined
-        }
-      }
-    ],
-    xAxis: [
-      {
-        data: extractLabels(),
-        axisTick: {
-          alignWithLabel: true
+  const options: EChartsOption = !isArray(valueKey)
+    ? {
+        textStyle: {
+          fontFamily: 'IRANSansFaNum'
         },
-        axisLabel: {
-          padding: 5
+        tooltip: {
+          trigger: 'item',
+          axisPointer: {
+            type: 'line'
+          }
         },
-        type: 'category'
+        grid: {
+          left: '3%',
+          right: '5%',
+          bottom: '10%',
+          containLabel: true
+        },
+        yAxis: [
+          {
+            type: 'value',
+            axisLabel: {
+              formatter: valueConvertor || undefined
+            }
+          }
+        ],
+        xAxis: [
+          {
+            data: extractLabels(),
+            axisTick: {
+              alignWithLabel: true
+            },
+            axisLabel: {
+              padding: 5
+            },
+            type: 'category'
+          }
+        ],
+        series: [
+          {
+            name: chartKey || '',
+            type: 'line',
+            smooth: true,
+            data: extractValues(),
+            label: {
+              show: true,
+              fontSize: 10
+            }
+          }
+        ]
       }
-    ],
-    series: [
-      {
-        name: chartKey || '',
-        type: 'line',
-        smooth: true,
-        data: extractValues(),
-        label: {
-          show: true,
-          fontSize: 10
-        }
-      }
-    ]
-  };
+    : {
+        textStyle: {
+          fontFamily: 'IRANSansFaNum'
+        },
+        tooltip: {
+          trigger: 'item',
+          axisPointer: {
+            type: 'line'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '5%',
+          bottom: '10%',
+          containLabel: true
+        },
+        dataset: {
+          dimensions: ['data', ...valueKey],
+          source: isArray(data)
+            ? map(data, (item) =>
+                merge(item, {
+                  data: isFunction(labelConvertor) ? labelConvertor(get(item, labelKey)) : get(item, labelKey)
+                })
+              )
+            : map(entries(data), ([key, value]) =>
+                merge(value, {data: isFunction(labelConvertor) ? labelConvertor(key) : key})
+              )
+        },
+        xAxis: {type: 'category'},
+        yAxis: {type: 'value'},
+        series: map(valueKey, (value: any) => ({
+          type: 'line',
+          name: t(value?.key || value),
+          smooth: true,
+          label: {
+            show: showLabel,
+            fontSize: 10
+          }
+        }))
+      };
   return (
     <ReactEcharts option={options} style={{height, width: '100%'}} className="flex pie-chart shrink-0" loadingOption />
   );

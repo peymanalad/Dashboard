@@ -12,6 +12,7 @@ import {
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
 import {CustomTable} from 'components';
+import qs from 'qs';
 import SearchNews from 'containers/news/show/SearchNews';
 import {useDelete, usePost, useUser} from 'hooks';
 import {convertUtcTimeToLocal, getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
@@ -22,6 +23,7 @@ const ShowList: FC = () => {
   const {t} = useTranslation('news');
   const {hasPermission, isSuperUser} = useUser();
   const location = useLocation();
+  const queryObject = queryStringToObject(location.search);
 
   const fetchExcel = usePost({
     url: 'services/app/Posts/GetPostsToExcel',
@@ -202,12 +204,19 @@ const ShowList: FC = () => {
             icon={<FileExcelOutlined />}
             loading={fetchExcel.isLoading}
             onClick={() => {
-              fetchExcel.post({}, queryStringToObject(location.search));
+              fetchExcel.post({}, queryObject);
             }}>
             {t('excel')}
           </Button>
           {!hasPermission('news.store') && (
-            <Link to="/news/news/create">
+            <Link
+              to={{
+                pathname: '/news/news/create',
+                search:
+                  +queryObject?.organization?.id > 0
+                    ? qs.stringify({organization: queryObject?.organization})
+                    : undefined
+              }}>
               <Button
                 type="primary"
                 className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"

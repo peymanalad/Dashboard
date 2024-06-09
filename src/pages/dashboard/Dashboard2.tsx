@@ -1,36 +1,51 @@
 import React, {FC, ReactNode} from 'react';
+import {useLocation} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
-import {Row, Col, Card, Spin, Badge, Space, Typography, Image, Form} from 'antd';
+import {Row, Col, Card, Spin, Badge, Space, Typography, Image} from 'antd';
 import {FileOutlined, CommentOutlined, EyeOutlined, UserOutlined} from '@ant-design/icons';
 import {DashboardCountCard} from 'containers';
 import moment from 'moment-jalaali';
-import {LinkableListItem, Line, Pie, VerticalBar, StackBar, TreeMap} from 'components';
+import {Line, Pie, VerticalBar, TreeMap} from 'components';
 import {useFetch, useUser} from 'hooks';
-import {dashboardDefaultList, dashboardDefaultChart, dashboardImage} from 'assets';
+import {dashboardDefaultChart, dashboardImage} from 'assets';
 import {months} from 'assets';
 import {convertUtcTimeToLocal} from 'utils';
 import forEach from 'lodash/forEach';
-import toNumber from 'lodash/toNumber';
-import isUndefined from 'lodash/isUndefined';
 import isNil from 'lodash/isNil';
+import {transformOrganizationData, calculatePercentages} from 'utils/dashboard';
+import {queryStringToObject} from 'utils/common';
 import SelectOrganization from 'containers/organization/SelectOrganization';
-import data from './data.json';
+// import data from './data.json';
 
 const {Text} = Typography;
 
 const Dashboard: FC = () => {
   const {t} = useTranslation('dashboard');
+  const location = useLocation<any>();
   const {isSuperUser} = useUser();
   const superUser = isSuperUser();
+  const queryObject = queryStringToObject(location?.search);
 
-  const fetchDashboard = useFetch({
-    url: '/dashboard',
-    name: 'dashboard',
-    isGeneral: true,
-    staleTime: 10000,
-    enabled: false
+  const fetchOrganizationDashboard = useFetch({
+    name: ['Dashboard', 'GetOrganizationDashboardView'],
+    url: '/services/app/Posts/GetOrganizationDashboardView',
+    query: {organizationId: queryObject?.organization?.id ? queryObject?.organization?.id : undefined},
+    enabled: true
   });
-  fetchDashboard.data = data;
+
+  const fetchSuperDashboard = useFetch({
+    name: ['Dashboard', 'GetSuperUserDashboardView'],
+    url: '/services/app/Posts/GetSuperUserDashboardView',
+    enabled: superUser
+  });
+
+  const top5ViewCountPerDay = transformOrganizationData(fetchSuperDashboard?.data?.top5ViewCountPerDay);
+
+  const top5PostCountPerDay = transformOrganizationData(fetchSuperDashboard?.data?.top5PostCountPerDay);
+
+  const top5LikeCountPerDay = calculatePercentages(fetchSuperDashboard?.data?.top5LikeCountPerDay);
+
+  const top5CommentCountPerDay = calculatePercentages(fetchSuperDashboard?.data?.top5CommentCountPerDay);
 
   const formatTime = (date: any) => `${moment(date, 'YYYY-MM-DD').format('jMM/jDD')}`;
 
@@ -48,14 +63,14 @@ const Dashboard: FC = () => {
     <Badge status="processing" text={t('calculating')} title={t('calculating')} size="small" className="font-bold" />
   );
 
-  if (fetchDashboard?.isFetching)
+  if (fetchOrganizationDashboard?.isFetching)
     return (
       <Row justify="center" align="middle" className="min-h-75vh">
         <Spin tip={t('fetching_dashboard')} />
       </Row>
     );
 
-  if (isNil(fetchDashboard?.data))
+  if (isNil(fetchOrganizationDashboard?.data))
     return (
       <Row justify="center" align="middle" className="min-h-75vh">
         <Space direction="vertical" align="center">
@@ -67,14 +82,20 @@ const Dashboard: FC = () => {
 
   return (
     <>
-      <Row gutter={[8, 8]} className="w-full px-2 m-0">
+      {superUser && (
+        <Row gutter={[8, 8]} className="w-full px-2 m-0">
+          <Col span={24}>
+            <SelectOrganization hasAll />
+          </Col>
+        </Row>
+      )}
+      <Row gutter={[8, 8]} className="w-full px-2 my-4">
         <Col xs={24} md={12} lg={6}>
           <DashboardCountCard
             color="#FFC107"
             title={t('users_count')}
-            count={fetchDashboard?.data?.recommendations_send_count || 0}
+            count={fetchSuperDashboard?.data?.totalUserCount || fetchOrganizationDashboard?.data?.totalUserCount || 0}
             icon={<UserOutlined className="text-3xl" style={{color: '#c99702'}} />}
-            wrapper={isUndefined(toNumber(fetchDashboard?.data?.annual_income)?.toLocaleString())}
             wrapperContent={calculateContent}
           />
         </Col>
@@ -82,9 +103,8 @@ const Dashboard: FC = () => {
           <DashboardCountCard
             color="#be79df"
             title={t('news_count')}
-            count={`%${fetchDashboard?.data?.multi_visit_patients_percent || 0}`}
+            count={fetchSuperDashboard?.data?.totalPostCount || fetchOrganizationDashboard?.data?.totalPostCount || 0}
             icon={<FileOutlined className="text-3xl" style={{color: '#8100bf'}} />}
-            wrapper={isUndefined(toNumber(fetchDashboard?.data?.annual_income)?.toLocaleString())}
             wrapperContent={calculateContent}
           />
         </Col>
@@ -92,9 +112,10 @@ const Dashboard: FC = () => {
           <DashboardCountCard
             color="#34b7c7"
             title={t('comments_count')}
-            count={fetchDashboard?.data?.answers_count || 0}
+            count={
+              fetchSuperDashboard?.data?.totalCommentCount || fetchOrganizationDashboard?.data?.totalCommentCount || 0
+            }
             icon={<CommentOutlined className="text-3xl" style={{color: '#00a6bb'}} />}
-            wrapper={isUndefined(toNumber(fetchDashboard?.data?.annual_income)?.toLocaleString())}
             wrapperContent={calculateContent}
           />
         </Col>
@@ -102,38 +123,25 @@ const Dashboard: FC = () => {
           <DashboardCountCard
             color="#26a69a"
             title={t('views_count')}
-            count={fetchDashboard?.data?.feedback_recommendations_count || 0}
+            count={
+              fetchSuperDashboard?.data?.totalPostViewCount || fetchOrganizationDashboard?.data?.totalPostViewCount || 0
+            }
             icon={<EyeOutlined className="text-3xl" style={{color: '#019385'}} />}
-            wrapper={isUndefined(toNumber(fetchDashboard?.data?.annual_income)?.toLocaleString())}
             wrapperContent={calculateContent}
           />
         </Col>
       </Row>
-      {superUser && (
-        <Form layout="vertical" name="product" requiredMark={false} className="my-4">
-          <Row gutter={[8, 8]} className="w-full px-2 m-0">
-            <Col span={24}>
-              <Form.Item
-                name="organization"
-                label={t('organization')}
-                rules={[{required: true, message: t('messages.required')}]}>
-                <SelectOrganization />
-              </Form.Item>
-            </Col>
-          </Row>
-        </Form>
-      )}
       <Row gutter={[8, 8]} className="w-full px-2 m-0">
         <Col span={24}>
           <Card title={t('news_release_process')} bodyStyle={{padding: 0}} className="rounded-lg shadow-lg">
             <Line
               data={
-                isNil(fetchDashboard?.data?.support_message_count_chart)
+                isNil(fetchOrganizationDashboard?.data?.postCountPerDay)
                   ? dashboardDefaultChart
-                  : fetchDashboard?.data?.support_message_count_chart
+                  : fetchOrganizationDashboard?.data?.postCountPerDay
               }
-              labelKey={isNil(fetchDashboard?.data?.support_message_count_chart) ? 'key' : 'date'}
-              valueKey={isNil(fetchDashboard?.data?.support_message_count_chart) ? 'value' : 'count'}
+              labelKey={isNil(fetchOrganizationDashboard?.data?.postCountPerDay) ? 'key' : 'dateOfCount'}
+              valueKey={isNil(fetchOrganizationDashboard?.data?.postCountPerDay) ? 'value' : 'count'}
               labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
               height="300px"
               chartKey={t('count')}
@@ -144,14 +152,13 @@ const Dashboard: FC = () => {
           <Card title={t('views_histogram')} className="rounded-lg shadow-lg my-4">
             <VerticalBar
               data={
-                isNil(fetchDashboard?.data?.order_items_weekly_chart)
+                isNil(fetchOrganizationDashboard?.data?.viewCountPerDay)
                   ? dashboardDefaultChart
-                  : fetchDashboard?.data?.order_items_weekly_chart
+                  : fetchOrganizationDashboard?.data?.viewCountPerDay
               }
-              valueKey={isNil(fetchDashboard?.data?.order_items_weekly_chart) ? 'value' : ['tickets_count']}
-              labelKey={isNil(fetchDashboard?.data?.order_items_weekly_chart) ? 'key' : 'date'}
+              valueKey={isNil(fetchOrganizationDashboard?.data?.viewCountPerDay) ? 'value' : 'count'}
+              labelKey={isNil(fetchOrganizationDashboard?.data?.viewCountPerDay) ? 'key' : 'dateOfCount'}
               height="320px"
-              showLegend
               labelConvertor={formatTime}
               chartKey={t('count')}
             />
@@ -161,12 +168,12 @@ const Dashboard: FC = () => {
           <Card title={t('comment_process')} bodyStyle={{padding: 0}} className="rounded-lg shadow-lg">
             <Line
               data={
-                isNil(fetchDashboard?.data?.support_message_count_chart)
+                isNil(fetchOrganizationDashboard?.data?.commentCountPerDay)
                   ? dashboardDefaultChart
-                  : fetchDashboard?.data?.support_message_count_chart
+                  : fetchOrganizationDashboard?.data?.commentCountPerDay
               }
-              labelKey={isNil(fetchDashboard?.data?.support_message_count_chart) ? 'key' : 'date'}
-              valueKey={isNil(fetchDashboard?.data?.support_message_count_chart) ? 'value' : 'count'}
+              labelKey={isNil(fetchOrganizationDashboard?.data?.commentCountPerDay) ? 'key' : 'dateOfCount'}
+              valueKey={isNil(fetchOrganizationDashboard?.data?.commentCountPerDay) ? 'value' : 'count'}
               labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
               height="300px"
               chartKey={t('count')}
@@ -177,12 +184,12 @@ const Dashboard: FC = () => {
           <Card title={t('news_like_process')} bodyStyle={{padding: 0}} className="rounded-lg shadow-lg">
             <Line
               data={
-                isNil(fetchDashboard?.data?.support_message_count_chart)
+                isNil(fetchOrganizationDashboard?.data?.likeCountPerDay)
                   ? dashboardDefaultChart
-                  : fetchDashboard?.data?.support_message_count_chart
+                  : fetchOrganizationDashboard?.data?.likeCountPerDay
               }
-              labelKey={isNil(fetchDashboard?.data?.support_message_count_chart) ? 'key' : 'date'}
-              valueKey={isNil(fetchDashboard?.data?.support_message_count_chart) ? 'value' : 'count'}
+              labelKey={isNil(fetchOrganizationDashboard?.data?.likeCountPerDay) ? 'key' : 'dateOfCount'}
+              valueKey={isNil(fetchOrganizationDashboard?.data?.likeCountPerDay) ? 'value' : 'count'}
               labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
               height="300px"
               chartKey={t('count')}
@@ -198,74 +205,25 @@ const Dashboard: FC = () => {
               bodyStyle={{padding: 0}}
               className="rounded-lg shadow-lg">
               <Line
-                data={
-                  isNil(fetchDashboard?.data?.support_message_count_chart)
-                    ? dashboardDefaultChart
-                    : fetchDashboard?.data?.support_message_count_chart
-                }
-                labelKey={isNil(fetchDashboard?.data?.support_message_count_chart) ? 'key' : 'date'}
-                valueKey={isNil(fetchDashboard?.data?.support_message_count_chart) ? 'value' : 'count'}
+                data={isNil(top5PostCountPerDay) ? dashboardDefaultChart : top5PostCountPerDay?.values}
+                labelKey={isNil(top5PostCountPerDay) ? 'key' : 'dateOfCount'}
+                valueKey={isNil(top5PostCountPerDay) ? 'value' : top5PostCountPerDay?.labels}
                 labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
+                showLegend
                 height="300px"
                 chartKey={t('count')}
               />
             </Card>
           </Col>
-          {/* <Col xs={24} md={12}>
-          <Card title={t('most_numerous_diseases')} bodyStyle={{padding: 0}} className="rounded-lg shadow-lg w-full">
-            <Pie
-              data={
-                isNil(fetchDashboard?.data?.most_diseases_visits_chart)
-                  ? dashboardDefaultChart
-                  : fetchDashboard?.data?.most_diseases_visits_chart
-              }
-              labelKey={isNil(fetchDashboard?.data?.last_patients_weekly_chart) ? 'key' : 'name'}
-              showValue
-              valueKey={isNil(fetchDashboard?.data?.last_patients_weekly_chart) ? 'value' : 'percent'}
-              height="347px"
-              suffix="%"
-              chartKey={t('disease')}
-            />
-          </Card>
-        </Col>
-        <Col xs={24} md={12}>
-          <Card title={t('orderCount')} className="rounded-lg shadow-lg">
-            <StackBar
-              data={
-                isNil(fetchDashboard?.data?.order_items_weekly_chart)
-                  ? dashboardDefaultChart
-                  : fetchDashboard?.data?.order_items_weekly_chart
-              }
-              valueKey={
-                isNil(fetchDashboard?.data?.order_items_weekly_chart)
-                  ? 'value'
-                  : ['recommendations_count', 'tickets_count']
-              }
-              labelKey={isNil(fetchDashboard?.data?.order_items_weekly_chart) ? 'key' : 'date'}
-              height="300px"
-              showLegend
-              labelConvertor={formatTime}
-              chartKey={t('count')}
-            />
-          </Card>
-        </Col> */}
           <Col span={24}>
             <Card title={t('views_histogram_top_organizations')} className="rounded-lg shadow-lg my-4">
               <VerticalBar
-                data={
-                  isNil(fetchDashboard?.data?.order_items_weekly_chart)
-                    ? dashboardDefaultChart
-                    : fetchDashboard?.data?.order_items_weekly_chart
-                }
-                valueKey={
-                  isNil(fetchDashboard?.data?.order_items_weekly_chart)
-                    ? 'value'
-                    : ['recommendations_count', 'tickets_count']
-                }
-                labelKey={isNil(fetchDashboard?.data?.order_items_weekly_chart) ? 'key' : 'date'}
+                data={isNil(top5ViewCountPerDay) ? dashboardDefaultChart : top5ViewCountPerDay?.values}
+                valueKey={isNil(top5ViewCountPerDay) ? 'value' : top5ViewCountPerDay?.labels}
+                labelKey={isNil(top5ViewCountPerDay) ? 'key' : 'dateOfCount'}
                 height="320px"
                 showLegend
-                labelConvertor={formatTime}
+                labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
                 chartKey={t('count')}
               />
             </Card>
@@ -276,17 +234,13 @@ const Dashboard: FC = () => {
               bodyStyle={{padding: 0}}
               className="rounded-lg shadow-lg w-full">
               <TreeMap
-                data={
-                  isNil(fetchDashboard?.data?.most_diseases_visits_chart)
-                    ? dashboardDefaultChart
-                    : fetchDashboard?.data?.most_diseases_visits_chart
-                }
-                labelKey={isNil(fetchDashboard?.data?.last_patients_weekly_chart) ? 'key' : 'name'}
+                data={isNil(top5LikeCountPerDay) ? dashboardDefaultChart : top5LikeCountPerDay}
+                labelKey={isNil(top5LikeCountPerDay) ? 'key' : 'name'}
                 showValue
-                valueKey={isNil(fetchDashboard?.data?.last_patients_weekly_chart) ? 'value' : 'percent'}
+                valueKey={isNil(top5LikeCountPerDay) ? 'value' : 'percent'}
                 height="300px"
                 suffix="%"
-                chartKey={t('disease')}
+                chartKey={t('news_like_process_top_organizations')}
               />
             </Card>
           </Col>
@@ -296,14 +250,10 @@ const Dashboard: FC = () => {
               bodyStyle={{padding: 0}}
               className="rounded-lg shadow-lg w-full">
               <Pie
-                data={
-                  isNil(fetchDashboard?.data?.most_diseases_visits_chart)
-                    ? dashboardDefaultChart
-                    : fetchDashboard?.data?.most_diseases_visits_chart
-                }
-                labelKey={isNil(fetchDashboard?.data?.last_patients_weekly_chart) ? 'key' : 'name'}
+                data={isNil(top5CommentCountPerDay) ? dashboardDefaultChart : top5CommentCountPerDay}
+                labelKey={isNil(top5CommentCountPerDay) ? 'key' : 'name'}
                 showValue
-                valueKey={isNil(fetchDashboard?.data?.last_patients_weekly_chart) ? 'value' : 'percent'}
+                valueKey={isNil(top5CommentCountPerDay) ? 'value' : 'percent'}
                 height="300px"
                 suffix="%"
                 chartKey={t('disease')}

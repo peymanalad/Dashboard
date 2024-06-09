@@ -3,8 +3,9 @@ import {Link, useLocation} from 'react-router-dom';
 import {useDelete, usePost, useUser} from 'hooks';
 import {useTranslation} from 'react-i18next';
 import {Button, Card, Space, Tooltip} from 'antd';
+import qs from 'qs';
 import {FormOutlined, EditOutlined, DeleteOutlined, FileExcelOutlined} from '@ant-design/icons';
-import {CustomTable, Search, SearchButton} from 'components';
+import {CustomTable, SearchButton} from 'components';
 import {queryStringToObject} from 'utils/common';
 import {getTempFileUrl} from 'utils/file';
 import type {simplePermissionProps} from 'types/common';
@@ -12,9 +13,9 @@ import type {simplePermissionProps} from 'types/common';
 const UserMemberShowList: FC = () => {
   const {t} = useTranslation('news');
   const user = useUser();
-  const searchRef = useRef<ElementRef<typeof Search>>(null);
   const tableRef = useRef<ElementRef<typeof CustomTable>>(null);
   const location = useLocation();
+  const queryObject = queryStringToObject(location.search);
 
   const deleteRequest = useDelete({
     url: 'services/app/GroupMembers/Delete',
@@ -97,10 +98,6 @@ const UserMemberShowList: FC = () => {
     }
   ];
 
-  const showSearch = () => {
-    if (searchRef.current) searchRef.current.open();
-  };
-
   return (
     <Card
       extra={
@@ -111,12 +108,19 @@ const UserMemberShowList: FC = () => {
             icon={<FileExcelOutlined />}
             loading={fetchExcel.isLoading}
             onClick={() => {
-              fetchExcel.post({}, queryStringToObject(location.search));
+              fetchExcel.post({}, queryObject);
             }}>
             {t('excel')}
           </Button>
           {user?.isSuperUser() && (
-            <Link to="/news/member/create">
+            <Link
+              to={{
+                pathname: '/news/member/create',
+                search:
+                  +queryObject?.organization?.id > 0
+                    ? qs.stringify({organization: queryObject?.organization})
+                    : undefined
+              }}>
               <Button className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset" icon={<FormOutlined />}>
                 {t('add')}
               </Button>
