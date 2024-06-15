@@ -27,7 +27,7 @@ const Dashboard: FC = () => {
   const queryObject = queryStringToObject(location?.search);
 
   const fetchOrganizationDashboard = useFetch({
-    name: ['Dashboard', 'GetOrganizationDashboardView'],
+    name: ['Dashboard', 'GetOrganizationDashboardView', queryObject?.organization?.id || 'all'],
     url: '/services/app/Posts/GetOrganizationDashboardView',
     query: {organizationId: queryObject?.organization?.id ? queryObject?.organization?.id : undefined},
     enabled: true
@@ -94,7 +94,7 @@ const Dashboard: FC = () => {
           <DashboardCountCard
             color="#FFC107"
             title={t('users_count')}
-            count={fetchSuperDashboard?.data?.totalUserCount || fetchOrganizationDashboard?.data?.totalUserCount || 0}
+            count={fetchOrganizationDashboard?.data?.totalUserCount || fetchSuperDashboard?.data?.totalUserCount || 0}
             icon={<UserOutlined className="text-3xl" style={{color: '#c99702'}} />}
             wrapperContent={calculateContent}
           />
@@ -103,7 +103,7 @@ const Dashboard: FC = () => {
           <DashboardCountCard
             color="#be79df"
             title={t('news_count')}
-            count={fetchSuperDashboard?.data?.totalPostCount || fetchOrganizationDashboard?.data?.totalPostCount || 0}
+            count={fetchOrganizationDashboard?.data?.totalPostCount || fetchSuperDashboard?.data?.totalPostCount || 0}
             icon={<FileOutlined className="text-3xl" style={{color: '#8100bf'}} />}
             wrapperContent={calculateContent}
           />
@@ -113,7 +113,7 @@ const Dashboard: FC = () => {
             color="#34b7c7"
             title={t('comments_count')}
             count={
-              fetchSuperDashboard?.data?.totalCommentCount || fetchOrganizationDashboard?.data?.totalCommentCount || 0
+              fetchOrganizationDashboard?.data?.totalCommentCount || fetchSuperDashboard?.data?.totalCommentCount || 0
             }
             icon={<CommentOutlined className="text-3xl" style={{color: '#00a6bb'}} />}
             wrapperContent={calculateContent}
@@ -124,7 +124,7 @@ const Dashboard: FC = () => {
             color="#26a69a"
             title={t('views_count')}
             count={
-              fetchSuperDashboard?.data?.totalPostViewCount || fetchOrganizationDashboard?.data?.totalPostViewCount || 0
+              fetchOrganizationDashboard?.data?.totalPostViewCount || fetchSuperDashboard?.data?.totalPostViewCount || 0
             }
             icon={<EyeOutlined className="text-3xl" style={{color: '#019385'}} />}
             wrapperContent={calculateContent}
