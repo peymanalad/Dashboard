@@ -112,25 +112,25 @@ const ShowList: FC = () => {
       sorter: true,
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
-    {
-      title: t('special.title'),
-      dataIndex: ['post', 'isSpecial'],
-      key: 'isSpecial',
-      align: 'center',
-      responsive: ['sm'],
-      sorter: true,
-      render: (isSpecial: boolean) => (
-        <Space size={2}>
-          <Tooltip title={t(isSpecial ? 'special.true' : 'special.false')}>
-            {isSpecial ? (
-              <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
-            ) : (
-              <CloseCircleOutlined style={{color: '#F44336', fontSize: 16}} />
-            )}
-          </Tooltip>
-        </Space>
-      )
-    },
+    // {
+    //   title: t('special.title'),
+    //   dataIndex: ['post', 'isSpecial'],
+    //   key: 'isSpecial',
+    //   align: 'center',
+    //   responsive: ['sm'],
+    //   sorter: true,
+    //   render: (isSpecial: boolean) => (
+    //     <Space size={2}>
+    //       <Tooltip title={t(isSpecial ? 'special.true' : 'special.false')}>
+    //         {isSpecial ? (
+    //           <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
+    //         ) : (
+    //           <CloseCircleOutlined style={{color: '#F44336', fontSize: 16}} />
+    //         )}
+    //       </Tooltip>
+    //     </Space>
+    //   )
+    // },
     {
       title: t('publish.title'),
       dataIndex: ['post', 'isPublished'],

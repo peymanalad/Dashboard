@@ -75,6 +75,7 @@ const EditNews: FC = () => {
     values.postFileToken10 = values.postFileToken?.[9]?.response?.fileToken;
     values.postFile = values.postFileToken?.[0]?.fileToken;
     values.postFileToken = values.postFileToken?.[0]?.response?.fileToken;
+    values.isSpecial = false;
     storeNews.post({id: id ? +id : undefined, ...values});
   };
 
@@ -322,7 +323,7 @@ const EditNews: FC = () => {
             </Col>
           </Row>
           <Row>
-            <Col xs={12} className="flex align-center justify-center">
+            {/* <Col xs={12} className="flex align-center justify-center">
               <Form.Item
                 name="isSpecial"
                 valuePropName="checked"
@@ -330,8 +331,8 @@ const EditNews: FC = () => {
                 initialValue={fetchNews?.data?.post?.isSpecial}>
                 <Checkbox>{t('special.title')}</Checkbox>
               </Form.Item>
-            </Col>
-            <Col xs={12} className="flex align-center justify-center">
+            </Col> */}
+            <Col xs={24} className="flex align-center justify-center">
               <Form.Item
                 name="isPublished"
                 valuePropName="checked"
