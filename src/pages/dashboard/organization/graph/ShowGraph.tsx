@@ -28,6 +28,7 @@ const ShowGraph: FC = () => {
   const CardRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState<number | null>(null);
   const [rendred, setRendered] = useState<boolean>(false);
+  const [staticGraph, setStaticGraph] = useState<boolean>(false);
   const addOrganizationRef = useRef<ElementRef<typeof AddOrganizationModal>>(null);
   const setOrganizationRef = useRef<ElementRef<typeof SetOrganizationModal>>(null);
   const showOrganizationUserRef = useRef<ElementRef<typeof ShowOrganizationUserModal>>(null);
@@ -165,7 +166,13 @@ const ShowGraph: FC = () => {
   }, [CardRef.current]);
 
   useEffect(() => {
-    if (width && data) setTimeout(() => setRendered(true), 2000);
+    if (width && data)
+      setTimeout(() => {
+        setRendered(true);
+        setTimeout(() => {
+          setStaticGraph(true);
+        }, 2000);
+      }, 1000);
   }, [width, data]);
 
   const myConfig: GraphProps<any, any>['config'] | any = {
@@ -175,23 +182,23 @@ const ShowGraph: FC = () => {
     focusAnimationDuration: 0.75,
     focusZoom: 1,
     freezeAllDragEvents: false,
-    height: 700,
+    height: rendred ? 600 : 500,
     highlightDegree: 0,
     // highlightDegree: 1,
     highlightOpacity: 1,
     linkHighlightBehavior: true,
-    initialZoom: 0.75,
+    initialZoom: 0.6,
     maxZoom: 0.85,
     minZoom: 0.05,
     nodeHighlightBehavior: true,
     // nodeHighlightBehavior: false,
     panAndZoom: false,
-    staticGraph: rendred,
-    staticGraphWithDragAndDrop: rendred,
+    staticGraph,
+    staticGraphWithDragAndDrop: staticGraph,
     width: width || 800,
     d3: {
       alphaTarget: 0.05,
-      gravity: -1000,
+      gravity: -1200,
       linkLength: 200,
       linkStrength: 1.5,
       disableLinkForce: false,

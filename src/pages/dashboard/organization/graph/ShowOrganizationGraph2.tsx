@@ -134,8 +134,6 @@ const ShowOrganizationGraph: FC = () => {
     ));
   };
 
-  console.log(nestedArrayData);
-
   return (
     <Card
       title={t('organizationChatFor', {name: mainOrganization?.organizationChart?.caption})}
