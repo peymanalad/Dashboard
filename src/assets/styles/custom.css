@@ -877,8 +877,14 @@ ul.ant-pagination.ant-table-pagination .ant-pagination-prev {
 }
 
 
+.ant-card-meta.text-xs {
+  width: 100%;
+}
+
 .ant-card-meta.text-xs .ant-card-meta-title {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
+  text-align: center;
+  white-space: normal;
 }
 
 /*--------------------medias */

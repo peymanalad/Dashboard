@@ -140,7 +140,7 @@ const ShowList: FC = () => {
       sorter: true,
       render: (isSpecial: boolean) => (
         <Space size={2}>
-          <Tooltip title={t(isSpecial ? 'special.true' : 'special.false')}>
+          <Tooltip title={t(isSpecial ? 'publish.true' : 'publish.false')}>
             {isSpecial ? (
               <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
             ) : (

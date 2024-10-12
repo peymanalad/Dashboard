@@ -140,7 +140,7 @@ const ShowOrganizationGraph: FC = () => {
       loading={!nestedArrayData?.length}
       ref={CardRef}>
       {!!width && (
-        <div style={{direction: 'ltr'}}>
+        <div style={{direction: 'ltr', overflowX: 'scroll'}} className="pb-8">
           <Tree
             lineWidth="2px"
             lineColor="green"

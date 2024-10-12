@@ -15,21 +15,27 @@ import isNil from 'lodash/isNil';
 import {transformOrganizationData, calculatePercentages} from 'utils/dashboard';
 import {queryStringToObject} from 'utils/common';
 import SelectOrganization from 'containers/organization/SelectOrganization';
-// import data from './data.json';
 
 const {Text} = Typography;
 
 const Dashboard: FC = () => {
   const {t} = useTranslation('dashboard');
   const location = useLocation<any>();
-  const {isSuperUser} = useUser();
+  const {isSuperUser, getAllOrganizations} = useUser();
   const superUser = isSuperUser();
+  const organizationId = getAllOrganizations()?.[0]?.organizationId;
   const queryObject = queryStringToObject(location?.search);
 
   const fetchOrganizationDashboard = useFetch({
     name: ['Dashboard', 'GetOrganizationDashboardView', queryObject?.organization?.id || 'all'],
     url: '/services/app/Posts/GetOrganizationDashboardView',
-    query: {organizationId: queryObject?.organization?.id ? queryObject?.organization?.id : undefined},
+    query: {
+      organizationId: queryObject?.organization?.id
+        ? queryObject?.organization?.id
+        : !superUser
+        ? organizationId
+        : undefined
+    },
     enabled: true
   });
 

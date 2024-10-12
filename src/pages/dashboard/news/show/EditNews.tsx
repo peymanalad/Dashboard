@@ -152,13 +152,14 @@ const EditNews: FC = () => {
                         url="services/app/Posts/GetAllPostGroupForLookupTable"
                         params={{organizationId: organization}}
                         disabled={!organization}
+                        searchKey="Filter"
+                        showSearch
                         keyValue="id"
                         keyLabel="displayName"
                         renderCustomLabel={(option) =>
                           !!option?.displayName ? `${option?.displayName} - ${option?.organizationName}` : ''
                         }
                         placeholder={t('choose')}
-                        showSearch={false}
                       />
                     </Form.Item>
                   </Col>

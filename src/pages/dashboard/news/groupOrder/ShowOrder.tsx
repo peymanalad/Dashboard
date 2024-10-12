@@ -59,11 +59,14 @@ const SquareCard: FC<{
         rootClassName="h-full"
         bodyStyle={{
           height: '100%',
+          width: '100%',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: news?.color,
-          borderRadius: 8
+          borderRadius: 8,
+          paddingLeft: 5,
+          paddingRight: 5
         }}>
         <Meta title={news?.postGroupDescription || '-'} className="text-xs" />
       </Card>
@@ -77,21 +80,21 @@ const generateRow = (initialNews: PostGroupProps[], chunkNews: PostGroupProps[],
       return (
         <Row gutter={[5, 5]} className="flex-row-reverse mb-1/4">
           <Col span={8}>
-            <Row gutter={[5, 5]}>
+            <Row gutter={[5, 5]} className="flex flex-col h-full">
               {chunkNews?.[1] && (
-                <Col span={24} className="h-full">
+                <Col span={24} className="flex-1">
                   <SquareCard initialNews={initialNews} news={chunkNews[1]} setNews={setNews} />
                 </Col>
               )}
               {chunkNews?.[2] && (
-                <Col span={24}>
+                <Col span={24} className="flex-1">
                   <SquareCard initialNews={initialNews} news={chunkNews[2]} setNews={setNews} />
                 </Col>
               )}
             </Row>
           </Col>
           {chunkNews?.[0] && (
-            <Col span={16} style={{height: 140}}>
+            <Col span={16} style={{minHeight: 140}}>
               <SquareCard initialNews={initialNews} news={chunkNews[0]} setNews={setNews} />
             </Col>
           )}
@@ -101,21 +104,21 @@ const generateRow = (initialNews: PostGroupProps[], chunkNews: PostGroupProps[],
       return (
         <Row gutter={[5, 5]} className="mb-1/4">
           <Col span={8}>
-            <Row gutter={[5, 5]}>
+            <Row gutter={[5, 5]} className="flex flex-col h-full">
               {chunkNews?.[0] && (
-                <Col span={24} className="h-full">
+                <Col span={24} className="flex-1">
                   <SquareCard initialNews={initialNews} news={chunkNews[0]} setNews={setNews} />
                 </Col>
               )}
               {chunkNews?.[2] && (
-                <Col span={24}>
+                <Col span={24} className="flex-1">
                   <SquareCard initialNews={initialNews} news={chunkNews[2]} setNews={setNews} />
                 </Col>
               )}
             </Row>
           </Col>
           {chunkNews?.[1] && (
-            <Col span={16} style={{height: 140}}>
+            <Col span={16} style={{minHeight: 140}}>
               <SquareCard initialNews={initialNews} news={chunkNews[1]} setNews={setNews} />
             </Col>
           )}

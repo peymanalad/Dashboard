@@ -98,7 +98,7 @@ const MultiSelectPaginate: FC<props> = ({
     debounce(async (str) => {
       fetchInfiniteData.remove();
       fetchInfiniteData.fetch({}, {search: trim(str)});
-    }, 1500)
+    }, 500)
   ).current;
 
   const onSearch = useCallback((str: string) => {
