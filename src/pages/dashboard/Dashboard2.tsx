@@ -4,17 +4,16 @@ import {useTranslation} from 'react-i18next';
 import {Row, Col, Card, Spin, Badge, Space, Typography, Image} from 'antd';
 import {FileOutlined, CommentOutlined, EyeOutlined, UserOutlined} from '@ant-design/icons';
 import {DashboardCountCard} from 'containers';
+import SelectOrganization from 'containers/organization/SelectOrganization';
 import moment from 'moment-jalaali';
 import {Line, Pie, VerticalBar, TreeMap} from 'components';
 import {useFetch, useUser} from 'hooks';
 import {dashboardDefaultChart, dashboardImage} from 'assets';
 import {months} from 'assets';
-import {convertUtcTimeToLocal} from 'utils';
 import forEach from 'lodash/forEach';
 import isNil from 'lodash/isNil';
 import {transformOrganizationData, calculatePercentages} from 'utils/dashboard';
 import {queryStringToObject} from 'utils/common';
-import SelectOrganization from 'containers/organization/SelectOrganization';
 
 const {Text} = Typography;
 
@@ -148,7 +147,7 @@ const Dashboard: FC = () => {
               }
               labelKey={isNil(fetchOrganizationDashboard?.data?.postCountPerDay) ? 'key' : 'dateOfCount'}
               valueKey={isNil(fetchOrganizationDashboard?.data?.postCountPerDay) ? 'value' : 'count'}
-              labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
+              // labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
               height="300px"
               chartKey={t('count')}
             />
@@ -165,7 +164,7 @@ const Dashboard: FC = () => {
               valueKey={isNil(fetchOrganizationDashboard?.data?.viewCountPerDay) ? 'value' : 'count'}
               labelKey={isNil(fetchOrganizationDashboard?.data?.viewCountPerDay) ? 'key' : 'dateOfCount'}
               height="320px"
-              labelConvertor={formatTime}
+              // labelConvertor={formatTime}
               chartKey={t('count')}
             />
           </Card>
@@ -180,7 +179,7 @@ const Dashboard: FC = () => {
               }
               labelKey={isNil(fetchOrganizationDashboard?.data?.commentCountPerDay) ? 'key' : 'dateOfCount'}
               valueKey={isNil(fetchOrganizationDashboard?.data?.commentCountPerDay) ? 'value' : 'count'}
-              labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
+              // labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
               height="300px"
               chartKey={t('count')}
             />
@@ -196,7 +195,7 @@ const Dashboard: FC = () => {
               }
               labelKey={isNil(fetchOrganizationDashboard?.data?.likeCountPerDay) ? 'key' : 'dateOfCount'}
               valueKey={isNil(fetchOrganizationDashboard?.data?.likeCountPerDay) ? 'value' : 'count'}
-              labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
+              // labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
               height="300px"
               chartKey={t('count')}
             />
@@ -214,7 +213,7 @@ const Dashboard: FC = () => {
                 data={isNil(top5PostCountPerDay) ? dashboardDefaultChart : top5PostCountPerDay?.values}
                 labelKey={isNil(top5PostCountPerDay) ? 'key' : 'dateOfCount'}
                 valueKey={isNil(top5PostCountPerDay) ? 'value' : top5PostCountPerDay?.labels}
-                labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
+                // labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
                 showLegend
                 height="300px"
                 chartKey={t('count')}
@@ -229,7 +228,7 @@ const Dashboard: FC = () => {
                 labelKey={isNil(top5ViewCountPerDay) ? 'key' : 'dateOfCount'}
                 height="320px"
                 showLegend
-                labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
+                // labelConvertor={(date) => convertUtcTimeToLocal(date, 'jMM/jDD')}
                 chartKey={t('count')}
               />
             </Card>
