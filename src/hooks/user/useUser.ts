@@ -31,6 +31,7 @@ function useUser() {
   };
 
   const isSuperUser = () => getInfo()?.isSuperUser;
+  const isNewsPublisher = () => getInfo()?.userType >= 3;
 
   const getId = () => {
     const profile: any = queryClient.getQueryData('profile');
@@ -46,6 +47,7 @@ function useUser() {
     ...user,
     setUser,
     isSuperUser,
+    isNewsPublisher,
     hasPermission,
     getAllPermissions,
     getInfo,

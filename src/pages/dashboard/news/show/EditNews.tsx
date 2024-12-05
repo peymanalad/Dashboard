@@ -3,7 +3,7 @@ import {Card, Form, Row, Col, Input, Button, Checkbox, Tag, Modal} from 'antd';
 import {SearchOutlined, SmileOutlined} from '@ant-design/icons';
 import {useHistory, useParams, useLocation} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
-import {usePost, useFetch} from 'hooks';
+import {usePost, useFetch, useUser} from 'hooks';
 import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 import SelectOrganization from 'containers/organization/SelectOrganization';
 import {getImageUrl, wordCounter} from 'utils';
@@ -16,6 +16,8 @@ const {TextArea} = Input;
 
 const EditNews: FC = () => {
   const {t} = useTranslation('news');
+  const {isNewsPublisher} = useUser();
+  const isPublisher = isNewsPublisher();
   const history = useHistory();
   const location = useLocation<any>();
   const {id} = useParams<{id?: string}>();
@@ -54,6 +56,7 @@ const EditNews: FC = () => {
   const onFinish = (values: any) => {
     values.postKey = postKey;
     values.postGroupId = values.postGroupId?.id;
+    values.postSubGroupId = values.postSubGroupId?.postSubGroup?.id;
     values.groupMemberId = values.groupMemberId?.id;
     values.postFile2 = values.postFileToken?.[1]?.fileToken;
     values.postFileToken2 = values.postFileToken?.[1]?.response?.fileToken;
@@ -76,6 +79,7 @@ const EditNews: FC = () => {
     values.postFile = values.postFileToken?.[0]?.fileToken;
     values.postFileToken = values.postFileToken?.[0]?.response?.fileToken;
     values.isSpecial = false;
+    values.isPublished = isPublisher ? values.isPublished : false;
     storeNews.post({id: id ? +id : undefined, ...values});
   };
 
@@ -127,9 +131,7 @@ const EditNews: FC = () => {
               noStyle
               shouldUpdate={(prevValues, nextValues) => {
                 if (prevValues.organization !== nextValues.organization) {
-                  form.setFieldsValue({
-                    postGroupId: null
-                  });
+                  form.setFieldValue('postGroupId', null);
                   return true;
                 }
                 return false;
@@ -141,11 +143,15 @@ const EditNews: FC = () => {
                     <Form.Item
                       label={t('news_group')}
                       name="postGroupId"
-                      initialValue={{
-                        id: fetchNews?.data?.post?.postGroupId,
-                        displayName: fetchNews?.data?.postGroupPostGroupDescription,
-                        organizationName: fetchNews?.data?.organizationName || ''
-                      }}>
+                      initialValue={
+                        !!fetchNews?.data?.post?.postGroupId
+                          ? {
+                              id: fetchNews?.data?.post?.postGroupId,
+                              displayName: fetchNews?.data?.postGroupPostGroupDescription,
+                              organizationName: fetchNews?.data?.organizationName || ''
+                            }
+                          : undefined
+                      }>
                       <MultiSelectPaginate
                         mode="single"
                         urlName={['newsGroupSearch', organization]}
@@ -159,6 +165,50 @@ const EditNews: FC = () => {
                         renderCustomLabel={(option) =>
                           !!option?.displayName ? `${option?.displayName} - ${option?.organizationName}` : ''
                         }
+                        placeholder={t('choose')}
+                      />
+                    </Form.Item>
+                  </Col>
+                );
+              }}
+            </Form.Item>
+            <Form.Item
+              noStyle
+              shouldUpdate={(prevValues, nextValues) => {
+                if (prevValues.postGroupId !== nextValues.postGroupId) {
+                  form.setFieldValue('postSubGroupId', null);
+                  return true;
+                }
+                return false;
+              }}>
+              {(fields) => {
+                const postGroupId = fields.getFieldValue('postGroupId');
+                return (
+                  <Col xs={24} md={8}>
+                    <Form.Item
+                      label={t('news_subgroup')}
+                      name="postSubGroupId"
+                      initialValue={
+                        !!fetchNews?.data?.post?.postSubGroupId
+                          ? {
+                              postSubGroup: {
+                                id: fetchNews?.data?.post?.postSubGroupId,
+                                postSubGroupDescription: fetchNews?.data?.postGroupPostSubGroupDescription
+                              }
+                            }
+                          : undefined
+                      }>
+                      <MultiSelectPaginate
+                        mode="single"
+                        urlName={['postSubGroups', postGroupId?.id]}
+                        url="services/app/PostSubGroups/GetAll"
+                        params={{postGroupId: postGroupId?.id}}
+                        disabled={!postGroupId}
+                        searchKey="Filter"
+                        keyPath={['postSubGroup']}
+                        keyValue="id"
+                        keyLabel="postSubGroupDescription"
+                        showSearch
                         placeholder={t('choose')}
                       />
                     </Form.Item>
@@ -324,7 +374,7 @@ const EditNews: FC = () => {
             </Col>
           </Row>
           <Row>
-            {/* <Col xs={12} className="flex align-center justify-center">
+            <Col xs={12} className="flex align-center justify-center">
               <Form.Item
                 name="isSpecial"
                 valuePropName="checked"
@@ -332,16 +382,18 @@ const EditNews: FC = () => {
                 initialValue={fetchNews?.data?.post?.isSpecial}>
                 <Checkbox>{t('special.title')}</Checkbox>
               </Form.Item>
-            </Col> */}
-            <Col xs={24} className="flex align-center justify-center">
-              <Form.Item
-                name="isPublished"
-                valuePropName="checked"
-                className="m-0"
-                initialValue={id ? fetchNews?.data?.post?.isPublished : true}>
-                <Checkbox>{t('publish.title')}</Checkbox>
-              </Form.Item>
             </Col>
+            {isPublisher && (
+              <Col xs={12} className="flex align-center justify-center">
+                <Form.Item
+                  name="isPublished"
+                  valuePropName="checked"
+                  className="m-0"
+                  initialValue={id ? fetchNews?.data?.post?.isPublished : true}>
+                  <Checkbox>{t('publish.title')}</Checkbox>
+                </Form.Item>
+              </Col>
+            )}
           </Row>
           <FormActions isLoading={storeNews.isLoading} disabled={isUploading} onBack={onBack} />
         </Form>

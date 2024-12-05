@@ -94,6 +94,7 @@ export const maxSizeType: Record<uploadType, number | null> = {
   messages: null,
   posts: null,
   postGroups: null,
+  postSubGroups: null,
   visits: null,
   banks: null,
   recommendations: null,

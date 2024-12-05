@@ -271,6 +271,8 @@ const CustomUpload = ({
         return `${process.env.REACT_APP_BASE_URL}/Posts/UploadPostFileFile`;
       case 'postGroups':
         return `${process.env.REACT_APP_BASE_URL}/PostGroups/UploadGroupFileFile`;
+      case 'postSubGroups':
+        return `${process.env.REACT_APP_BASE_URL}/PostGroups/UploadGroupFileFile`;
       default:
         return `${process.env.REACT_APP_BASE_URL}/SoftwareUpdates/UploadUpdateFileFile`;
     }

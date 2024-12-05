@@ -12,10 +12,11 @@ import {DeedLogoImg} from 'assets';
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
   const {hasPermission, isSuperUser} = useUser();
-  const location = useLocation();
+  const location = useLocation<any>();
+  const postGroup = location?.state?.postGroup;
 
   const fetchExcel = usePost({
-    url: 'services/app/PostGroups/GetPostGroupsToExcel',
+    url: 'services/app/PostSubGroups/GetPostSubGroupsToExcel',
     method: 'GET',
     onSuccess(data: any) {
       window.open(getTempFileUrl(data?.fileType, data?.fileToken, data?.fileName), '_self');
@@ -23,15 +24,15 @@ const ShowList: FC = () => {
   });
 
   const deleteRequest = useDelete({
-    url: '/services/app/PostGroups/Delete',
-    name: 'postGroups',
-    titleKey: 'postGroupDescription'
+    url: '/services/app/PostSubGroups/Delete',
+    name: ['postSubGroups', postGroup?.id],
+    titleKey: 'postSubGroupDescription'
   });
 
   const columns: any = [
     {
       title: t('image'),
-      dataIndex: ['postGroup', 'groupFile'],
+      dataIndex: ['postSubGroup', 'subGroupFile'],
       key: 'image',
       className: 'pt-2 pb-0',
       align: 'center',
@@ -57,16 +58,9 @@ const ShowList: FC = () => {
     },
     {
       title: t('name'),
-      dataIndex: ['postGroup', 'postGroupDescription'],
+      dataIndex: ['postSubGroup', 'postSubGroupDescription'],
       key: 'postGroupDescription',
       sorter: true,
-      align: 'center'
-    },
-    {
-      title: t('organization'),
-      dataIndex: 'organizationGroupGroupName',
-      key: 'organizationGroupGroupName',
-      sorter: false,
       align: 'center'
     },
     {
@@ -74,16 +68,16 @@ const ShowList: FC = () => {
       dataIndex: 'permissions',
       key: 'permissions',
       align: 'center',
-      render: (permissions: simplePermissionProps, newsGroup: any) => (
+      render: (permissions: simplePermissionProps, newsSubGroup: any) => (
         <Space size={2}>
           <Tooltip title={t('update')}>
-            <Link to={`/organization/group/edit/${newsGroup.postGroup?.id}`}>
+            <Link to={{pathname: `/news/subgroup/edit/${newsSubGroup.postSubGroup?.id}`, state: {postGroup}}}>
               <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
             </Link>
           </Tooltip>
           <Tooltip title={t('do_delete')}>
             <Button
-              onClick={() => deleteRequest.show(newsGroup.postGroup, {Id: newsGroup.postGroup?.id})}
+              onClick={() => deleteRequest.show(newsSubGroup.postSubGroup, {Id: newsSubGroup.postSubGroup?.id})}
               type="text"
               icon={<DeleteOutlined className="text-red" />}
             />
@@ -95,7 +89,7 @@ const ShowList: FC = () => {
 
   return (
     <Card
-      title={t('news_groups')}
+      title={t('news_subgroups_group', {group: `${postGroup?.name} - ${postGroup?.organizationName || '-'}`})}
       extra={
         <Space size="small">
           <Button
@@ -109,12 +103,12 @@ const ShowList: FC = () => {
             {t('excel')}
           </Button>
           {!hasPermission('news.store') && (
-            <Link to="/organization/group/create">
+            <Link to={{pathname: '/news/subgroup/create', state: {postGroup}}}>
               <Button
                 type="primary"
                 className="d-none sm:d-block ant-btn-warning d-text-none md:d-text-unset"
                 icon={<FormOutlined />}>
-                {t('add_news_group')}
+                {t('add_news_subgroup')}
               </Button>
             </Link>
           )}
@@ -122,11 +116,12 @@ const ShowList: FC = () => {
         </Space>
       }>
       <CustomTable
-        fetch="services/app/PostGroups/GetAll"
-        dataName="postGroups"
+        fetch="services/app/PostSubGroups/GetAll"
+        dataName={['postSubGroups', postGroup?.id]}
+        query={{postGroupId: postGroup?.id}}
         columns={columns}
         hasIndexColumn
-        hasOrganization
+        hasOrganization={false}
         selectOrganizationProps={{hasAll: isSuperUser()}}
       />
     </Card>

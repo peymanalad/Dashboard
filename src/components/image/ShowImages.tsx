@@ -69,7 +69,7 @@ const ShowImages = ({data, className, style, listType, defaultImageName, removed
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: formData,
-      url: 'https://a.deed.com/general/v1/files/delete'
+      url: 'https://mobinn.ir/general/v1/files/delete'
     };
     return new Promise<boolean>((resolve, reject) => {
       Modal.confirm({

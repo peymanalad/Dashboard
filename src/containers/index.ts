@@ -26,13 +26,6 @@ export {default as SearchUsers} from 'containers/users/show/Search';
 export {default as NoteModal} from 'containers/users/show/NoteModal';
 export {default as SearchTemporary} from 'containers/temporary/show/Search';
 
-// recommendations
-export {default as SearchRecommendation} from 'containers/recommendation/show/Search';
-export {default as SearchRecommendationLog} from 'containers/recommendation/show/SearchLog';
-export {default as RecommendationTable} from 'containers/recommendation/show/Table';
-export {default as RecommendationBaseInfo} from 'containers/recommendation/create/BaseInfo';
-export {default as RecommendationSource} from 'containers/recommendation/create/Source';
-
 // care
 export {default as SearchCareList} from 'containers/care/show/Search';
 

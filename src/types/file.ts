@@ -10,6 +10,7 @@ export type uploadType =
   | 'messages'
   | 'posts'
   | 'postGroups'
+  | 'postSubGroups'
   | 'visits'
   | 'banks'
   | 'recommendations'

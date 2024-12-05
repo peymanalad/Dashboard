@@ -1,23 +1,23 @@
-import React, {useRef, ElementRef, FC} from 'react';
+import React, {type FC} from 'react';
 import {Button, Card, Image, Space, Tooltip} from 'antd';
 import {
   FormOutlined,
   EditOutlined,
+  ApartmentOutlined,
   DeleteOutlined,
-  FilterOutlined,
   EyeOutlined,
   FileExcelOutlined
 } from '@ant-design/icons';
 import {useTranslation} from 'react-i18next';
 import {Link, useLocation} from 'react-router-dom';
-import {CustomTable, Search} from 'components';
+import {CustomTable, SearchButton} from 'components';
 import {useDelete, usePost, useUser} from 'hooks';
-import {simplePermissionProps} from 'types/common';
+import type {simplePermissionProps} from 'types/common';
 import {getImageUrl, getTempFileUrl, queryStringToObject} from 'utils';
+import {DeedLogoImg} from 'assets';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
-  const searchRef = useRef<ElementRef<typeof Search>>(null);
   const {hasPermission, isSuperUser} = useUser();
   const location = useLocation();
 
@@ -31,8 +31,8 @@ const ShowList: FC = () => {
 
   const deleteRequest = useDelete({
     url: '/services/app/PostGroups/Delete',
-    name: 'newsGroups',
-    titleKey: 'newsName'
+    name: 'postGroups',
+    titleKey: 'postGroupDescription'
   });
 
   const columns: any = [
@@ -56,6 +56,7 @@ const ShowList: FC = () => {
             width={50}
             height={50}
             src={getImageUrl(imageId)}
+            fallback={DeedLogoImg}
           />
         ) : (
           '-'
@@ -64,13 +65,15 @@ const ShowList: FC = () => {
     {
       title: t('name'),
       dataIndex: ['postGroup', 'postGroupDescription'],
-      key: 'name',
+      key: 'postGroupDescription',
+      sorter: true,
       align: 'center'
     },
     {
-      title: t('group'),
+      title: t('organization'),
       dataIndex: 'organizationGroupGroupName',
-      key: 'group',
+      key: 'organizationGroupGroupName',
+      sorter: false,
       align: 'center'
     },
     {
@@ -85,6 +88,21 @@ const ShowList: FC = () => {
               <Button type="text" icon={<EditOutlined className="text-blueDark" />} />
             </Link>
           </Tooltip>
+          <Tooltip title={t('subGroup')}>
+            <Link
+              to={{
+                pathname: '/news/subGroup/list',
+                state: {
+                  postGroup: {
+                    id: newsGroup?.postGroup?.id,
+                    name: newsGroup?.postGroup?.postGroupDescription,
+                    organizationName: newsGroup?.organizationGroupGroupName
+                  }
+                }
+              }}>
+              <Button type="text" icon={<ApartmentOutlined className="text-orange" />} />
+            </Link>
+          </Tooltip>
           <Tooltip title={t('do_delete')}>
             <Button
               onClick={() => deleteRequest.show(newsGroup.postGroup, {Id: newsGroup.postGroup?.id})}
@@ -96,10 +114,6 @@ const ShowList: FC = () => {
       )
     }
   ];
-
-  const showSearch = () => {
-    if (searchRef.current) searchRef.current.open();
-  };
 
   return (
     <Card
@@ -126,17 +140,15 @@ const ShowList: FC = () => {
               </Button>
             </Link>
           )}
-          <Button type="primary" className="d-text-none md:d-text-unset" icon={<FilterOutlined />} onClick={showSearch}>
-            {t('filter')}
-          </Button>
+          <SearchButton />
         </Space>
       }>
-      <Search ref={searchRef} />
       <CustomTable
         fetch="services/app/PostGroups/GetAll"
         dataName="postGroups"
         columns={columns}
         hasIndexColumn
+        hasOrganization
         selectOrganizationProps={{hasAll: isSuperUser()}}
       />
     </Card>

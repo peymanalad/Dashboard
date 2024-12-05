@@ -25,9 +25,6 @@ const EditOrganization = lazyWithRetry(() => import('pages/dashboard/organizatio
 const ShowOrganization = lazyWithRetry(() => import('pages/dashboard/organization/show/ShowOrganization'));
 const OrganizationShowList = lazyWithRetry(() => import('pages/dashboard/organization/show/ShowList'));
 
-const EditOrganizationGroup = lazyWithRetry(() => import('pages/dashboard/organization/group/EditOrganizationGroup'));
-const OrganizationGroupShowList = lazyWithRetry(() => import('pages/dashboard/organization/group/ShowList'));
-
 const OrganizationsShowGraph = lazyWithRetry(() => import('pages/dashboard/organization/graph/ShowGraph'));
 const OrganizationChartGraph = lazyWithRetry(() => import('pages/dashboard/organization/graph/ShowOrganizationGraph2'));
 
@@ -44,6 +41,12 @@ const EditPermissionUser = lazyWithRetry(() => import('pages/dashboard/user/show
 const EditNews = lazyWithRetry(() => import('pages/dashboard/news/show/EditNews'));
 const ShowNews = lazyWithRetry(() => import('pages/dashboard/news/show/ShowNews'));
 const NewsShowList = lazyWithRetry(() => import('pages/dashboard/news/show/ShowList'));
+
+const EditNewsGroup = lazyWithRetry(() => import('pages/dashboard/news/group/EditNewsGroup'));
+const NewsGroupShowList = lazyWithRetry(() => import('pages/dashboard/news/group/ShowList'));
+
+const EditNewsSubgroup = lazyWithRetry(() => import('pages/dashboard/news/subgroup/EditNewsSubgroup'));
+const NewsSubgroupShowList = lazyWithRetry(() => import('pages/dashboard/news/subgroup/ShowList'));
 
 const NewsGroupOrder = lazyWithRetry(() => import('pages/dashboard/news/groupOrder/ShowOrder'));
 
@@ -286,31 +289,60 @@ const Dashboard: Array<dashboardRouteProps> = [
         hidden: true
       },
       {
-        key: 'organizationGroupList',
-        route: '/organization/group/list',
-        cmp: <OrganizationGroupShowList />,
+        key: 'newsGroupList',
+        route: '/news/group/list',
+        cmp: <NewsGroupShowList />,
         title: i18n.t('side_menu:group'),
-        permission: 'OrganizationUnits',
+        permission: 'newsUnits',
         extra: {
-          route: '/organization/group/create',
-          title: i18n.t('side_menu:addOrganizationGroup'),
-          permission: 'OrganizationUnits'
+          route: '/news/group/create',
+          title: i18n.t('side_menu:addNewsGroup'),
+          permission: 'newsUnits'
         }
       },
       {
-        key: 'organizationGroupCreate',
-        route: '/organization/group/create',
-        cmp: <EditOrganizationGroup />,
-        title: i18n.t('side_menu:addOrganizationGroup'),
+        key: 'newsGroupCreate',
+        route: '/news/group/create',
+        cmp: <EditNewsGroup />,
+        title: i18n.t('side_menu:addnewsGroup'),
         hidden: true,
-        permission: 'OrganizationUnits'
+        permission: 'newsUnits'
       },
       {
-        key: 'organizationGroupEdit',
-        route: '/organization/group/edit/:id',
-        cmp: <EditOrganizationGroup />,
-        title: i18n.t('side_menu:editOrganizationGroup'),
-        permission: 'OrganizationUnits',
+        key: 'newsGroupEdit',
+        route: '/news/group/edit/:id',
+        cmp: <EditNewsGroup />,
+        title: i18n.t('side_menu:editNewsGroup'),
+        permission: 'newsUnits',
+        hidden: true
+      },
+      {
+        key: 'newsSubgroupList',
+        route: '/news/subgroup/list',
+        cmp: <NewsSubgroupShowList />,
+        title: i18n.t('side_menu:subgroup'),
+        permission: 'newsUnits',
+        extra: {
+          route: '/news/subgroup/create',
+          title: i18n.t('side_menu:addNewsSubgroup'),
+          permission: 'newsUnits'
+        },
+        hidden: true
+      },
+      {
+        key: 'newsSubgroupCreate',
+        route: '/news/subgroup/create',
+        cmp: <EditNewsSubgroup />,
+        title: i18n.t('side_menu:addnewsSubGroup'),
+        hidden: true,
+        permission: 'newsUnits'
+      },
+      {
+        key: 'newsSubgroupEdit',
+        route: '/news/subgroup/edit/:id',
+        cmp: <EditNewsSubgroup />,
+        title: i18n.t('side_menu:editNewsSubgroup'),
+        permission: 'newsUnits',
         hidden: true
       },
       {

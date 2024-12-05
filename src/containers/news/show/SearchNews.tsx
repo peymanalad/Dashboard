@@ -15,11 +15,14 @@ const SearchNews: FC = () => {
 
   const [visible, setVisible] = useState(false);
 
+  const [form] = Form.useForm();
+
   const onFinish = (values: any) => {
     if (values?.search?.length) values.search = convertNumbers2English(values?.search);
     values.FromDate = values.FromDate ? convertTimeToUTC(values.FromDate, 'YYYY-MM-DD') : undefined;
     values.ToDate = values.ToDate ? convertTimeToUTC(values.ToDate, 'YYYY-MM-DD') : undefined;
     values.PostGroupPostGroupDescriptionFilter = values?.postGroup?.displayName;
+    values.PostGroupPostSubGroupDescriptionFilter = values?.postSubGroup?.postSubGroup?.postSubGroupDescription;
     history.replace({
       search: qs.stringify({...queryObject, ...values, page: 1})
     });
@@ -31,6 +34,7 @@ const SearchNews: FC = () => {
     queryObject?.ToDate ||
     queryObject?.search ||
     queryObject?.PostGroupPostGroupDescriptionFilter ||
+    queryObject?.PostSubGroupPostSubGroupDescriptionFilter ||
     queryObject?.PostTitleFilter ||
     queryObject?.PostCaptionFilter;
 
@@ -79,13 +83,47 @@ const SearchNews: FC = () => {
                 mode="single"
                 urlName={['newsGroupSearch', organizationId || 'all']}
                 url="services/app/Posts/GetAllPostGroupForLookupTable"
-                params={{organizationId}}
+                params={{organizationId: +organizationId || undefined}}
                 keyValue="id"
                 keyLabel="displayName"
                 placeholder={t('choose')}
                 showSearch={false}
                 allowClear
               />
+            </Form.Item>
+            <Form.Item
+              noStyle
+              shouldUpdate={(prevValues, nextValues) => {
+                if (prevValues.postGroup !== nextValues.postGroup) {
+                  form.setFieldValue('postGroup', null);
+                  return true;
+                }
+                return false;
+              }}>
+              {(fields) => {
+                const postGroup = fields.getFieldValue('postGroup');
+                return (
+                  <Form.Item
+                    label={t('news_subgroup')}
+                    name="postSubGroup"
+                    className="mb-1/2 label-p-0"
+                    initialValue={queryObject?.postSubGroup}>
+                    <MultiSelectPaginate
+                      mode="single"
+                      urlName={['postSubGroups', postGroup?.id]}
+                      url="services/app/PostSubGroups/GetAll"
+                      params={{postGroupId: postGroup?.id}}
+                      disabled={!postGroup}
+                      searchKey="Filter"
+                      keyPath={['postSubGroup']}
+                      keyValue="id"
+                      keyLabel="postSubGroupDescription"
+                      showSearch
+                      placeholder={t('choose')}
+                    />
+                  </Form.Item>
+                );
+              }}
             </Form.Item>
             <Form.Item
               name="FromDate"

@@ -86,6 +86,13 @@ const ShowList: FC = () => {
       sorter: false
     },
     {
+      title: t('subGroup'),
+      dataIndex: 'postGroupPostSubGroupDescription',
+      key: 'postGroupPostSubGroupDescription',
+      align: 'center',
+      sorter: false
+    },
+    {
       title: t('context'),
       dataIndex: ['post', 'postCaption'],
       key: 'postCaption',
@@ -112,25 +119,25 @@ const ShowList: FC = () => {
       sorter: true,
       render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
     },
-    // {
-    //   title: t('special.title'),
-    //   dataIndex: ['post', 'isSpecial'],
-    //   key: 'isSpecial',
-    //   align: 'center',
-    //   responsive: ['sm'],
-    //   sorter: true,
-    //   render: (isSpecial: boolean) => (
-    //     <Space size={2}>
-    //       <Tooltip title={t(isSpecial ? 'special.true' : 'special.false')}>
-    //         {isSpecial ? (
-    //           <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
-    //         ) : (
-    //           <CloseCircleOutlined style={{color: '#F44336', fontSize: 16}} />
-    //         )}
-    //       </Tooltip>
-    //     </Space>
-    //   )
-    // },
+    {
+      title: t('special.title'),
+      dataIndex: ['post', 'isSpecial'],
+      key: 'isSpecial',
+      align: 'center',
+      responsive: ['sm'],
+      sorter: true,
+      render: (isSpecial: boolean) => (
+        <Space size={2}>
+          <Tooltip title={t(isSpecial ? 'special.true' : 'special.false')}>
+            {isSpecial ? (
+              <CheckCircleOutlined style={{color: '#4CAF50', fontSize: 16}} />
+            ) : (
+              <CloseCircleOutlined style={{color: '#F44336', fontSize: 16}} />
+            )}
+          </Tooltip>
+        </Space>
+      )
+    },
     {
       title: t('publish.title'),
       dataIndex: ['post', 'isPublished'],
@@ -149,6 +156,21 @@ const ShowList: FC = () => {
           </Tooltip>
         </Space>
       )
+    },
+    {
+      title: t('publisher'),
+      dataIndex: ['post', 'publisherUserId'],
+      key: 'publisherUserId',
+      align: 'center',
+      sorter: false,
+      render: (publisherUserId: string, news: any) =>
+        !!publisherUserId ? (
+          <Link to={`/user/show/${publisherUserId}`}>
+            {`${news?.publisherUserFirstName} ${news?.publisherUserLastName}`}
+          </Link>
+        ) : (
+          '-'
+        )
     },
     {
       title: t('likeCount'),
