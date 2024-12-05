@@ -700,6 +700,13 @@
       "required_date": "تاریخ الزامی است",
       "required_note": "یادداشت الزامی است"
     },
+    "userType": "نوع کاربر",
+    "normalUser": "کاربر عادی",
+    "creatorUser": "کاربر ایجادکننده خبر",
+    "monitorUser": "کاربر رصد ",
+    "distributerUser": "کاربر انتشار",
+    "adminUser": "کاربر ادمین",
+    "superAdminUser": "کاربر سوپر ادمین",
     "sendWhatsAppMessage": "ارسال پیام در واتس اپ",
     "from_creation_date": "از تاریخ ایجاد",
     "to_creation_date": "تا تاریخ ایجاد",
@@ -1036,6 +1043,13 @@
     "lockout": "امکان قفل گشایی",
     "random_password": "کلمه عبور تصادفی",
     "profile": "پروفایل",
+    "userType": "نوع کاربر",
+    "normalUser": "کاربر عادی",
+    "creatorUser": "کاربر ایجادکننده خبر",
+    "monitorUser": "کاربر رصد ",
+    "distributerUser": "کاربر انتشار",
+    "adminUser": "کاربر ادمین",
+    "superAdminUser": "کاربر سوپر ادمین",
     "organizations": "سازمان ها",
     "likedNews": "اخبار لایک کرده",
     "seenNews": "اخبار مشاهده کرده",
@@ -2486,6 +2500,16 @@
       "title": "انتشار",
       "true": "منتشر شده",
       "false": "پیش نویس"
+    },
+    "reject": {
+      "title": "رد",
+      "true": "رد شده",
+      "false": "رد نشده"
+    },
+    "confirm": {
+      "title": "تایید",
+      "true": "تایید شده",
+      "false": "تایید نشده"
     },
     "apply": "اعمال تغییرات",
     "ok": "بله",

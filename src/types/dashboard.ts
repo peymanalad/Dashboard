@@ -1,5 +1,6 @@
 import {ReactNode} from 'react';
-import {ResponsiveScreenProps, ChartType} from 'types/general';
+import type {ResponsiveScreenProps, ChartType} from 'types/general';
+import type {UserTypeEnum} from 'types/user';
 
 export interface extraDashboardRouteProps {
   title: string;
@@ -20,6 +21,7 @@ export interface dashboardRouteProps {
   route?: string;
   hidden?: boolean;
   forSuperAdmin?: boolean;
+  allowUserType?: UserTypeEnum;
   permission?: string;
   cmp?: ReactNode;
   subs?: Array<subDashboardRouteProps>;

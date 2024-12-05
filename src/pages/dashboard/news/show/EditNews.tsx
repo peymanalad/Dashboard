@@ -11,13 +11,16 @@ import compact from 'lodash/compact';
 import {Picker} from 'emoji-mart';
 import {v4 as uuidv4} from 'uuid';
 import {queryStringToObject} from 'utils';
+import {UserTypeEnum} from 'types/user';
+import {PostStatusEnum} from 'types/news';
 
 const {TextArea} = Input;
 
 const EditNews: FC = () => {
   const {t} = useTranslation('news');
-  const {isNewsPublisher} = useUser();
+  const {isNewsPublisher, id: userId, getUserType} = useUser();
   const isPublisher = isNewsPublisher();
+  const userType = getUserType();
   const history = useHistory();
   const location = useLocation<any>();
   const {id} = useParams<{id?: string}>();
@@ -57,7 +60,7 @@ const EditNews: FC = () => {
     values.postKey = postKey;
     values.postGroupId = values.postGroupId?.id;
     values.postSubGroupId = values.postSubGroupId?.postSubGroup?.id;
-    values.groupMemberId = values.groupMemberId?.id;
+    values.groupMemberId = fetchNews?.data?.post?.groupMemberId;
     values.postFile2 = values.postFileToken?.[1]?.fileToken;
     values.postFileToken2 = values.postFileToken?.[1]?.response?.fileToken;
     values.postFile3 = values.postFileToken?.[2]?.fileToken;
@@ -79,7 +82,33 @@ const EditNews: FC = () => {
     values.postFile = values.postFileToken?.[0]?.fileToken;
     values.postFileToken = values.postFileToken?.[0]?.response?.fileToken;
     values.isSpecial = false;
-    values.isPublished = isPublisher ? values.isPublished : false;
+    if (userType === UserTypeEnum.Normal && !fetchNews?.data?.post?.isPublished && values?.isConfirm) {
+      values.isPublished = false;
+      values.currentPostStatus = values.isConfirm ? PostStatusEnum.Pending : fetchNews?.data?.post?.currentPostStatus;
+    } else if (userType === UserTypeEnum.Creator && !fetchNews?.data?.post?.isPublished && values.isConfirm) {
+      values.isPublished = false;
+      values.currentPostStatus = values.isConfirm ? PostStatusEnum.Pending : fetchNews?.data?.post?.currentPostStatus;
+    } else if (userType === UserTypeEnum.Monitor && !fetchNews?.data?.post?.isPublished && values.isConfirm) {
+      values.isPublished = false;
+      values.currentPostStatus = values.isConfirm ? PostStatusEnum.Revised : fetchNews?.data?.post?.currentPostStatus;
+    } else if (isPublisher) {
+      values.isPublished = isPublisher ? values.isPublished : false;
+      values.currentPostStatus = values.isPublished
+        ? PostStatusEnum.Published
+        : fetchNews?.data?.post?.currentPostStatus !== PostStatusEnum.Published
+        ? fetchNews?.data?.post?.currentPostStatus
+        : PostStatusEnum.Revised;
+    }
+
+    if (isPublisher && values.isRejected) {
+      values.datePublished = undefined;
+      values.publisherUserId = undefined;
+      values.isPublished = false;
+      values.currentPostStatus = PostStatusEnum.Rejected;
+    } else if (isPublisher && values.isPublished && !fetchNews?.data?.post?.isPublished) {
+      values.datePublished = new Date();
+      values.publisherUserId = userId;
+    }
     storeNews.post({id: id ? +id : undefined, ...values});
   };
 
@@ -103,7 +132,7 @@ const EditNews: FC = () => {
         className="w-full">
         <Form form={form} layout="vertical" name="product" requiredMark={false} onFinish={onFinish}>
           <Row gutter={[16, 8]} className="w-full">
-            <Col xs={24} md={8}>
+            <Col xs={24} md={12} lg={8}>
               <Form.Item
                 name="postTitle"
                 label={t('title')}
@@ -112,7 +141,7 @@ const EditNews: FC = () => {
                 <Input />
               </Form.Item>
             </Col>
-            <Col xs={24} md={8}>
+            <Col xs={24} md={12} lg={8}>
               <Form.Item
                 name="organization"
                 label={t('organization')}
@@ -131,6 +160,7 @@ const EditNews: FC = () => {
               noStyle
               shouldUpdate={(prevValues, nextValues) => {
                 if (prevValues.organization !== nextValues.organization) {
+                  form.setFieldValue('groupMemberId', null);
                   form.setFieldValue('postGroupId', null);
                   return true;
                 }
@@ -139,36 +169,71 @@ const EditNews: FC = () => {
               {(fields) => {
                 const organization = fields.getFieldValue('organization');
                 return (
-                  <Col xs={24} md={8}>
-                    <Form.Item
-                      label={t('news_group')}
-                      name="postGroupId"
-                      initialValue={
-                        !!fetchNews?.data?.post?.postGroupId
-                          ? {
-                              id: fetchNews?.data?.post?.postGroupId,
-                              displayName: fetchNews?.data?.postGroupPostGroupDescription,
-                              organizationName: fetchNews?.data?.organizationName || ''
-                            }
-                          : undefined
-                      }>
-                      <MultiSelectPaginate
-                        mode="single"
-                        urlName={['newsGroupSearch', organization]}
-                        url="services/app/Posts/GetAllPostGroupForLookupTable"
-                        params={{organizationId: organization}}
-                        disabled={!organization}
-                        searchKey="Filter"
-                        showSearch
-                        keyValue="id"
-                        keyLabel="displayName"
-                        renderCustomLabel={(option) =>
-                          !!option?.displayName ? `${option?.displayName} - ${option?.organizationName}` : ''
-                        }
-                        placeholder={t('choose')}
-                      />
-                    </Form.Item>
-                  </Col>
+                  <>
+                    {/* <Col xs={24} md={12} lg={8}>
+                      <Form.Item
+                        label={t('news_user')}
+                        name="groupMemberId"
+                        initialValue={
+                          !!fetchNews?.data?.post?.groupMemberId
+                            ? {
+                                groupMember: {
+                                  id: fetchNews?.data?.post?.groupMemberId,
+                                  memberPosition: fetchNews?.data?.groupMemberMemberPosition
+                                }
+                              }
+                            : undefined
+                        }>
+                        <MultiSelectPaginate
+                          mode="single"
+                          urlName={['organization', 'groupMembers', organization]}
+                          url="services/app/GroupMembers/GetAll"
+                          params={{organizationId: organization}}
+                          renderCustomLabel={(option) => {
+                            return `${option?.userName || ''} ${
+                              option?.groupMember?.memberPosition ? `- ${option?.groupMember?.memberPosition}` : ''
+                            }`;
+                          }}
+                          disabled={!organization}
+                          keyPath={['groupMember']}
+                          keyValue="id"
+                          keyLabel="memberPosition"
+                          placeholder={t('choose')}
+                          showSearch={false}
+                        />
+                      </Form.Item>
+                    </Col> */}
+                    <Col xs={24} md={12} lg={8}>
+                      <Form.Item
+                        label={t('news_group')}
+                        name="postGroupId"
+                        initialValue={
+                          !!fetchNews?.data?.post?.postGroupId
+                            ? {
+                                id: fetchNews?.data?.post?.postGroupId,
+                                displayName: fetchNews?.data?.postGroupPostGroupDescription,
+                                organizationName: fetchNews?.data?.organizationName || ''
+                              }
+                            : undefined
+                        }>
+                        <MultiSelectPaginate
+                          mode="single"
+                          urlName={['newsGroupSearch', organization]}
+                          url="services/app/Posts/GetAllPostGroupForLookupTable"
+                          params={{organizationId: organization}}
+                          disabled={!organization}
+                          searchKey="Filter"
+                          showSearch
+                          keyValue="id"
+                          keyLabel="displayName"
+                          renderCustomLabel={(option) =>
+                            !!option?.displayName ? `${option?.displayName} - ${option?.organizationName}` : ''
+                          }
+                          placeholder={t('choose')}
+                        />
+                      </Form.Item>
+                    </Col>
+                  </>
                 );
               }}
             </Form.Item>
@@ -184,7 +249,7 @@ const EditNews: FC = () => {
               {(fields) => {
                 const postGroupId = fields.getFieldValue('postGroupId');
                 return (
-                  <Col xs={24} md={8}>
+                  <Col xs={24} md={12} lg={8}>
                     <Form.Item
                       label={t('news_subgroup')}
                       name="postSubGroupId"
@@ -374,7 +439,7 @@ const EditNews: FC = () => {
             </Col>
           </Row>
           <Row>
-            <Col xs={12} className="flex align-center justify-center">
+            <Col xs={24} md={12} lg={8} className="flex align-center justify-center">
               <Form.Item
                 name="isSpecial"
                 valuePropName="checked"
@@ -383,14 +448,53 @@ const EditNews: FC = () => {
                 <Checkbox>{t('special.title')}</Checkbox>
               </Form.Item>
             </Col>
-            {isPublisher && (
-              <Col xs={12} className="flex align-center justify-center">
+            <Col xs={24} md={12} lg={8} className="flex align-center justify-center">
+              <Form.Item
+                name="isPublished"
+                valuePropName="checked"
+                className="m-0"
+                initialValue={id ? fetchNews?.data?.post?.isPublished : true}>
+                <Checkbox disabled={!isPublisher}>{t('publish.title')}</Checkbox>
+              </Form.Item>
+            </Col>
+            {isPublisher ? (
+              <Col xs={24} md={12} lg={8} className="flex align-center justify-center">
                 <Form.Item
-                  name="isPublished"
+                  name="isRejected"
                   valuePropName="checked"
                   className="m-0"
-                  initialValue={id ? fetchNews?.data?.post?.isPublished : true}>
-                  <Checkbox>{t('publish.title')}</Checkbox>
+                  initialValue={id ? fetchNews?.data?.post?.currentPostStatus === PostStatusEnum.Rejected : false}>
+                  <Checkbox>{t('reject.title')}</Checkbox>
+                </Form.Item>
+              </Col>
+            ) : (
+              <Col xs={24} md={12} lg={8} className="flex align-center justify-center">
+                <Form.Item
+                  name="isConfirm"
+                  valuePropName="checked"
+                  className="m-0"
+                  initialValue={
+                    id && fetchNews?.data?.post?.currentPostStatus !== PostStatusEnum.Rejected
+                      ? (userType === UserTypeEnum.Normal &&
+                          fetchNews?.data?.post?.currentPostStatus >= PostStatusEnum.Pending) ||
+                        (userType === UserTypeEnum.Creator &&
+                          fetchNews?.data?.post?.currentPostStatus >= PostStatusEnum.Pending) ||
+                        (userType === UserTypeEnum.Monitor &&
+                          fetchNews?.data?.post?.currentPostStatus >= PostStatusEnum.Revised) ||
+                        fetchNews?.data?.post?.isPublished
+                      : false
+                  }>
+                  <Checkbox
+                    disabled={
+                      (userType === UserTypeEnum.Normal &&
+                        fetchNews?.data?.post?.currentPostStatus > PostStatusEnum.Pending) ||
+                      (userType === UserTypeEnum.Creator &&
+                        fetchNews?.data?.post?.currentPostStatus > PostStatusEnum.Pending) ||
+                      (userType === UserTypeEnum.Monitor &&
+                        fetchNews?.data?.post?.currentPostStatus > PostStatusEnum.Revised)
+                    }>
+                    {t('confirm.title')}
+                  </Checkbox>
                 </Form.Item>
               </Col>
             )}

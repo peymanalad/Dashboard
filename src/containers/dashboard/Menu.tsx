@@ -47,7 +47,7 @@ const SideMenu: FC<Props> = ({onChangeRoute}) => {
       )
     );
 
-  const filterMenu = useMemo(() => getFilteredMenusList(user?.getAllPermissions(), user?.isSuperUser()), [user]);
+  const filterMenu = useMemo(() => getFilteredMenusList(user?.getUserType(), user?.isSuperUser()), [user]);
 
   return (
     <Menu

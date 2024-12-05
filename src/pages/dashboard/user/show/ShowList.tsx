@@ -18,7 +18,7 @@ import {CustomTable, Search} from 'components';
 import SearchUsers from 'containers/users/show/SearchUsers';
 import {convertUtcTimeToLocal, queryStringToObject, getTempFileUrl, getImageUrl} from 'utils';
 import type {simplePermissionProps} from 'types/common';
-import {DeedLogoImg} from 'assets';
+import {DeedLogoImg, UserTypes} from 'assets';
 
 const UserShowList: FC = () => {
   const {t} = useTranslation('user-show');
@@ -103,6 +103,14 @@ const UserShowList: FC = () => {
       align: 'center',
       sorter: false,
       render: (role?: string) => t(role || 'User')
+    },
+    {
+      title: t('userType'),
+      dataIndex: 'userType',
+      key: 'userType',
+      align: 'center',
+      sorter: false,
+      render: (userType: number = 0) => UserTypes.find((userTypeItem) => userTypeItem?.id === userType)?.name
     },
     {
       title: t('active'),

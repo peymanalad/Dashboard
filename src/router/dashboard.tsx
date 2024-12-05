@@ -17,6 +17,7 @@ import compact from 'lodash/compact';
 import filter from 'lodash/filter';
 import {lazyWithRetry} from 'utils';
 import {dashboardRouteProps} from 'types/dashboard';
+import {UserTypeEnum} from 'types/user';
 
 const DashboardCmp = lazyWithRetry(() => import('pages/dashboard/Dashboard2'));
 
@@ -96,6 +97,7 @@ const Dashboard: Array<dashboardRouteProps> = [
     title: i18n.t('side_menu:organization'),
     icon: <BankOutlined />,
     key: 'organization',
+    allowUserType: UserTypeEnum.Admin,
     subs: [
       {
         key: 'organizationList',
@@ -155,6 +157,7 @@ const Dashboard: Array<dashboardRouteProps> = [
     title: i18n.t('side_menu:identity'),
     icon: <UserOutlined />,
     key: 'user',
+    allowUserType: UserTypeEnum.Admin,
     subs: [
       {
         key: 'userList',
@@ -382,6 +385,7 @@ const Dashboard: Array<dashboardRouteProps> = [
   {
     title: i18n.t('side_menu:messages'),
     icon: <MailOutlined />,
+    forSuperAdmin: true,
     key: 'message',
     subs: [
       {
@@ -464,51 +468,28 @@ const Dashboard: Array<dashboardRouteProps> = [
         hidden: true
       }
     ]
-  },
-  {
-    title: i18n.t('side_menu:reports'),
-    icon: <SlidersOutlined />,
-    route: '/report/reports/list',
-    cmp: <ReportsShowList />,
-    permission: 'statistics.view',
-    key: 'report',
-    hidden: true,
-    subs: [
-      {
-        key: 'newsGroupEdit',
-        route: '/report/reports/edit/:id',
-        cmp: <EditReports />,
-        title: i18n.t('side_menu:reports'),
-        permission: 'NewsMember',
-        hidden: true
-      }
-    ]
   }
 ];
 
-export const getFilteredMenusList = (permissions: string[], isSuperUser?: boolean) =>
+export const getFilteredMenusList = (userType: UserTypeEnum, isSuperUser?: boolean) =>
   compact(
     map(Dashboard, (menuItem: any) => {
-      if (!menuItem?.forSuperAdmin || isSuperUser)
-        if (!menuItem?.permission || true || includes(permissions, menuItem?.permission))
-          return {
-            ...menuItem,
-            subs: compact(
-              map(menuItem?.subs, (firstSub: any) => {
-                // if (true || includes(permissions, firstSub?.permission))
-                if (!firstSub?.forSuperAdmin || isSuperUser) {
-                  return {
-                    ...firstSub,
-                    extra: (includes(permissions, firstSub?.extra?.permission) || true) && firstSub?.extra,
-                    subs: filter(
-                      firstSub?.subs,
-                      (secondSub: any) => true || includes(permissions, secondSub?.permission)
-                    )
-                  };
-                }
-              })
-            )
-          };
+      if (
+        (!menuItem?.allowUserType && !menuItem?.forSuperAdmin) ||
+        (menuItem?.allowUserType && userType >= menuItem?.allowUserType) ||
+        (menuItem?.forSuperAdmin && isSuperUser)
+      )
+        return {
+          ...menuItem,
+          subs: compact(
+            map(menuItem?.subs, (firstSub: any) => {
+              // if (true || includes(permissions, firstSub?.permission))
+              if (!firstSub?.forSuperAdmin || isSuperUser) {
+                return firstSub;
+              }
+            })
+          )
+        };
     })
   );
 

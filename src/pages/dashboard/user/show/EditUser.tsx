@@ -6,6 +6,7 @@ import {useFetch, useLogOut, usePost, useUser} from 'hooks';
 import {getImageUrl, getLangSearchParam} from 'utils';
 import {Card, Form, Checkbox, Button, Input, Row, Col} from 'antd';
 import {LogoutOutlined} from '@ant-design/icons';
+import {UserTypes} from 'assets/constants/User';
 import filter from 'lodash/filter';
 import isArray from 'lodash/isArray';
 import {v4 as uuidv4} from 'uuid';
@@ -183,6 +184,15 @@ const EditUser: FC = () => {
               label={t('email')}
               initialValue={fetchUser?.data?.user?.emailAddress || ''}>
               <Input type="email" className="ltr-input" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <Form.Item
+              name="userType"
+              rules={[{required: true, message: t('validation.required')}]}
+              label={t('userType')}
+              initialValue={fetchUser?.data?.user?.userType}>
+              <SimpleSelect keys="id" label="name" data={UserTypes} />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8} className="flex-center">

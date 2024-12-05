@@ -76,7 +76,7 @@ const Dashboard: FC = () => {
               )}
               <Switch>
                 {fetchMenu?.data &&
-                  flatMap(getFilteredMenusList(user.getAllPermissions(), user?.isSuperUser()), (item: any) => {
+                  flatMap(getFilteredMenusList(user?.getUserType(), user?.isSuperUser()), (item: any) => {
                     if (item?.cmp && item?.route && item?.subs) {
                       return [{route: item?.route, title: item.title, cmp: item.cmp}, ...item?.subs];
                     }

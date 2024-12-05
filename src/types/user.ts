@@ -1,6 +1,15 @@
 import {Role} from 'types/common';
 import {diseaseProps} from './visit';
 
+export enum UserTypeEnum {
+  Normal = 0,
+  Creator = 1,
+  Monitor = 2,
+  Distributer = 3,
+  Admin = 4,
+  SuperAdmin = 5
+}
+
 export interface UserProfile {
   name: string;
   roles: Array<number>;

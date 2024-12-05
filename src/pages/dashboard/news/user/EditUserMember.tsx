@@ -125,7 +125,7 @@ const EditMemberShowList: FC = () => {
                   }>
                   <MultiSelectPaginate
                     mode="single"
-                    urlName="usersSearch"
+                    urlName={['groupMembersUsers', fields.getFieldValue('organization')?.id]}
                     url="services/app/GroupMembers/GetAllUserForLookupTable"
                     params={{organizationId: fields.getFieldValue('organization')?.id}}
                     keyValue="id"

@@ -1,4 +1,5 @@
 import {i18n} from 'libs';
+import {UserTypeEnum} from 'types/user';
 
 export const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~\\\-=`|"'";]*$/;
 
@@ -8,6 +9,15 @@ export const Complexities = [
   {id: '1', name: '1'},
   {id: '2', name: '2'},
   {id: '3', name: '3'}
+];
+
+export const UserTypes = [
+  {id: UserTypeEnum.Normal, name: i18n.t('user-show:normalUser')},
+  {id: UserTypeEnum.Creator, name: i18n.t('user-show:creatorUser')},
+  {id: UserTypeEnum.Monitor, name: i18n.t('user-show:monitorUser')},
+  {id: UserTypeEnum.Distributer, name: i18n.t('user-show:distributerUser')},
+  {id: UserTypeEnum.Admin, name: i18n.t('user-show:adminUser')},
+  {id: UserTypeEnum.SuperAdmin, name: i18n.t('user-show:superAdminUser')}
 ];
 
 export const UserStatues = [

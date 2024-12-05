@@ -7,3 +7,10 @@ export interface PostGroupProps {
   organizationGroupId?: null;
   postGroupDescription: string;
 }
+
+export enum PostStatusEnum {
+  Pending = 0,
+  Revised = 1,
+  Published = 2,
+  Rejected = 3
+}
