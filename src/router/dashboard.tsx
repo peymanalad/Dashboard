@@ -46,6 +46,9 @@ const NewsShowList = lazyWithRetry(() => import('pages/dashboard/news/show/ShowL
 const EditNewsGroup = lazyWithRetry(() => import('pages/dashboard/news/group/EditNewsGroup'));
 const NewsGroupShowList = lazyWithRetry(() => import('pages/dashboard/news/group/ShowList'));
 
+const EditNewsGroupUser = lazyWithRetry(() => import('pages/dashboard/news/groupUser/EditGroupUser'));
+const NewsGroupUserShowList = lazyWithRetry(() => import('pages/dashboard/news/groupUser/ShowList'));
+
 const EditNewsSubgroup = lazyWithRetry(() => import('pages/dashboard/news/subgroup/EditNewsSubgroup'));
 const NewsSubgroupShowList = lazyWithRetry(() => import('pages/dashboard/news/subgroup/ShowList'));
 
@@ -293,10 +296,42 @@ const Dashboard: Array<dashboardRouteProps> = [
       },
       {
         key: 'newsGroupList',
+        route: '/news/group/user/list',
+        cmp: <NewsGroupUserShowList />,
+        title: i18n.t('side_menu:newsGroupUser'),
+        permission: 'newsUnits',
+        allowUserType: UserTypeEnum.Admin,
+        extra: {
+          route: '/news/group/user/create',
+          title: i18n.t('side_menu:addNewsGroupUser'),
+          permission: 'newsUnits'
+        }
+      },
+      {
+        key: 'newsGroupCreate',
+        route: '/news/group/user/create',
+        cmp: <EditNewsGroupUser />,
+        title: i18n.t('side_menu:addNewsGroupUser'),
+        hidden: true,
+        permission: 'newsUnits',
+        allowUserType: UserTypeEnum.Admin
+      },
+      {
+        key: 'newsGroupEdit',
+        route: '/news/group/user/edit/:id',
+        cmp: <EditNewsGroupUser />,
+        title: i18n.t('side_menu:editNewsGroupUser'),
+        permission: 'newsUnits',
+        allowUserType: UserTypeEnum.Admin,
+        hidden: true
+      },
+      {
+        key: 'newsGroupList',
         route: '/news/group/list',
         cmp: <NewsGroupShowList />,
         title: i18n.t('side_menu:group'),
         permission: 'newsUnits',
+        allowUserType: UserTypeEnum.Distributer,
         extra: {
           route: '/news/group/create',
           title: i18n.t('side_menu:addNewsGroup'),
@@ -309,7 +344,8 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <EditNewsGroup />,
         title: i18n.t('side_menu:addnewsGroup'),
         hidden: true,
-        permission: 'newsUnits'
+        permission: 'newsUnits',
+        allowUserType: UserTypeEnum.Distributer
       },
       {
         key: 'newsGroupEdit',
@@ -317,6 +353,7 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <EditNewsGroup />,
         title: i18n.t('side_menu:editNewsGroup'),
         permission: 'newsUnits',
+        allowUserType: UserTypeEnum.Distributer,
         hidden: true
       },
       {
@@ -325,6 +362,7 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <NewsSubgroupShowList />,
         title: i18n.t('side_menu:subgroup'),
         permission: 'newsUnits',
+        allowUserType: UserTypeEnum.Distributer,
         extra: {
           route: '/news/subgroup/create',
           title: i18n.t('side_menu:addNewsSubgroup'),
@@ -338,6 +376,7 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <EditNewsSubgroup />,
         title: i18n.t('side_menu:addnewsSubGroup'),
         hidden: true,
+        allowUserType: UserTypeEnum.Distributer,
         permission: 'newsUnits'
       },
       {
@@ -346,6 +385,7 @@ const Dashboard: Array<dashboardRouteProps> = [
         cmp: <EditNewsSubgroup />,
         title: i18n.t('side_menu:editNewsSubgroup'),
         permission: 'newsUnits',
+        allowUserType: UserTypeEnum.Distributer,
         hidden: true
       },
       {
@@ -353,6 +393,7 @@ const Dashboard: Array<dashboardRouteProps> = [
         route: '/news/group/order',
         cmp: <NewsGroupOrder />,
         title: i18n.t('side_menu:order_group'),
+        allowUserType: UserTypeEnum.Distributer,
         permission: 'NewsUnits'
       },
       {
@@ -484,7 +525,11 @@ export const getFilteredMenusList = (userType: UserTypeEnum, isSuperUser?: boole
           subs: compact(
             map(menuItem?.subs, (firstSub: any) => {
               // if (true || includes(permissions, firstSub?.permission))
-              if (!firstSub?.forSuperAdmin || isSuperUser) {
+              if (
+                (!firstSub?.allowUserType && !firstSub?.forSuperAdmin) ||
+                (firstSub?.allowUserType && userType >= firstSub?.allowUserType) ||
+                (firstSub?.forSuperAdmin && isSuperUser)
+              ) {
                 return firstSub;
               }
             })

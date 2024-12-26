@@ -439,6 +439,13 @@ const EditNews: FC = () => {
             </Col>
           </Row>
           <Row>
+            <Col span={24}>
+              <Form.Item name="postComment" label={t('comment')} initialValue={fetchNews?.data?.post?.postComment}>
+                <Input.TextArea rows={3} />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row>
             <Col xs={24} md={12} lg={8} className="flex align-center justify-center">
               <Form.Item
                 name="isSpecial"

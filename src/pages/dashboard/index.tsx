@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-curly-brace-presence */
-import React, {Suspense, lazy, FC, useRef, ElementRef, useMemo} from 'react';
-import {useUser, useFetch} from 'hooks';
+import React, {Suspense, lazy, FC, useRef, ElementRef, useMemo, useEffect} from 'react';
+import {useUser, useFetch, useLogOut} from 'hooks';
 import {Redirect, Switch, Route, useLocation} from 'react-router-dom';
 import {Layout, Row, Spin, Typography} from 'antd';
 import {TopHeader, SideMenu} from 'containers';
@@ -10,6 +10,7 @@ import {FullScreenLoading} from 'components';
 import {useTranslation} from 'react-i18next';
 import flatMap from 'lodash/flatMap';
 import includes from 'lodash/includes';
+import {UserTypeEnum} from 'types/user';
 
 const NotFoundPage = lazy(() => import('pages/dashboard/NotFoundPage'));
 
@@ -21,6 +22,9 @@ const Dashboard: FC = () => {
   const sideMenuRef = useRef<ElementRef<typeof SideMenu>>(null);
   const location = useLocation();
   const user = useUser();
+  const userType = user.getUserType();
+  const logOut = useLogOut();
+
   const isDashboard = includes(location.pathname, 'dashboard');
   const isChatSection = useMemo(
     () =>
@@ -51,6 +55,12 @@ const Dashboard: FC = () => {
     },
     enabled: true
   });
+
+  useEffect(() => {
+    if (user?.id && userType === UserTypeEnum.Normal) {
+      logOut.logOut();
+    }
+  }, [user?.id]);
 
   return (
     <Layout className={`w-screen h-screen ${isDashboard ? 'bg-grayDark' : ''}`}>
