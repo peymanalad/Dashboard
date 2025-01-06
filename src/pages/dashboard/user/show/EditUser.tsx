@@ -192,7 +192,7 @@ const EditUser: FC = () => {
               rules={[{required: true, message: t('validation.required')}]}
               label={t('userType')}
               initialValue={fetchUser?.data?.user?.userType}>
-              <SimpleSelect keys="id" label="name" data={UserTypes} />
+              <SimpleSelect keys="id" label="name" data={UserTypes} disabled={isMySelf} />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8} className="flex-center">
@@ -215,7 +215,7 @@ const EditUser: FC = () => {
               valuePropName="checked"
               className="m-0"
               initialValue={fetchUser?.data?.user?.isActive}>
-              <Checkbox>{t('active')}</Checkbox>
+              <Checkbox disabled={isMySelf}>{t('active')}</Checkbox>
             </Form.Item>
           </Col>
         </Row>

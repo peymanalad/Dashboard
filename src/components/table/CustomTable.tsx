@@ -20,17 +20,21 @@ import concat from 'lodash/concat';
 import isFunction from 'lodash/isFunction';
 import replace from 'lodash/replace';
 import SelectOrganization from 'containers/organization/SelectOrganization';
+import type {SizeType} from 'antd/es/config-provider/SizeContext';
+import type {ExpandableConfig} from 'antd/es/table/interface';
 
 interface refProps {
   refresh: () => void;
 }
 
 interface TableProps {
-  fetch: string;
-  dataName: Array<string | number | undefined | null> | string;
+  data?: Array<Object>;
+  fetch?: string;
+  dataName?: Array<string | number | undefined | null> | string;
   columns: Array<object>;
   hasIndexColumn?: boolean;
-  expandable?: object;
+  size?: SizeType;
+  expandable?: ExpandableConfig<any>;
   search?: object;
   params?: object;
   query?: object;
@@ -50,7 +54,8 @@ const {Text} = Typography;
 
 const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
   {
-    fetch,
+    data = [],
+    fetch = '',
     dataName,
     columns,
     hasIndexColumn,
@@ -75,6 +80,8 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
 
   const queryObject = queryStringToObject(location.search);
   const selectedOrganization = queryObject?.organization;
+
+  const currentPage = +queryObject?.page || 1;
 
   const [searchPage, setSearchPage] = useState<number>(queryObject?.page ?? 1);
 
@@ -101,7 +108,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
       structSearch: null
     },
     params,
-    enabled: hasOrganization ? !!selectedOrganization?.id && enabled : enabled
+    enabled: hasOrganization ? !!selectedOrganization?.id && !!fetch && enabled : !!fetch && enabled
   });
 
   useImperativeHandle(forwardedRef, () => ({
@@ -112,11 +119,12 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
 
   const onChangePage = (page: any, per_page?: any) => {
     history.push({
-      search: qs.stringify({...queryObject, page, per_page})
+      search: qs.stringify({...queryObject, page: queryObject?.per_page != per_page ? 1 : page, per_page})
     });
   };
 
   const goToOnChange = (page: any) => setSearchPage(page);
+
   const itemRender = (page: any, type: any, originalElement: any) =>
     type === 'prev' ? (
       <Button type="text">{t('previous')}</Button>
@@ -125,6 +133,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     ) : (
       originalElement
     );
+
   const locale = {
     emptyText: (
       <span>
@@ -133,17 +142,17 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     )
   };
 
+  const dataSource = isArray(path?.length ? get(paginateData?.data, path) : paginateData?.data)
+    ? path?.length
+      ? get(paginateData?.data, path)
+      : paginateData?.data
+    : data;
+
   return (
     <>
       {hasOrganization && <SelectOrganization {...selectOrganizationProps} />}
       <Table
-        dataSource={
-          isArray(path?.length ? get(paginateData?.data, path) : paginateData?.data)
-            ? path?.length
-              ? get(paginateData?.data, path)
-              : paginateData?.data
-            : []
-        }
+        dataSource={dataSource}
         columns={
           hasIndexColumn
             ? concat(
@@ -180,21 +189,23 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
               }
             : undefined
         }
-        pagination={{
-          total: paginateData?.data?.totalCount,
-          itemRender,
-          onChange: onChangePage,
-          current: +queryObject?.page || 1,
-          defaultPageSize: +queryObject?.per_page || 10,
-          pageSize: +queryObject?.per_page || 10,
-          pageSizeOptions: ['10', '20', '25', '50', '100'],
-          showSizeChanger: showTableSizeChange,
-          showQuickJumper: false,
-          showTotal: (total, range) => (
-            <Text className="text-md">{t('showTotal', {from: get(range, 0), to: get(range, 1), total})}</Text>
-          ),
-          responsive: true
-        }}
+        pagination={
+          !data?.length
+            ? {
+                total: dataSource?.length * currentPage + 1,
+                itemRender,
+                onChange: onChangePage,
+                disabled: false,
+                current: currentPage,
+                defaultPageSize: +queryObject?.per_page || 10,
+                pageSize: +queryObject?.per_page || 10,
+                pageSizeOptions: ['10', '20', '25', '50', '100'],
+                showSizeChanger: showTableSizeChange,
+                showQuickJumper: false,
+                responsive: true
+              }
+            : false
+        }
       />
       {get(paginateData, path)?.length > 0 && paginateData?.meta?.last_page > 1 && (
         <Space className="flex-center">

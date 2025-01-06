@@ -1,4 +1,4 @@
-import React, {type FC} from 'react';
+import React, {type FC, useCallback} from 'react';
 import {Button, Card, Space, Tooltip, Image} from 'antd';
 import {
   FormOutlined,
@@ -215,6 +215,31 @@ const ShowList: FC = () => {
     }
   ];
 
+  const expandedRowRender = useCallback((row) => {
+    const columns: any = [
+      {
+        title: t('editorName'),
+        dataIndex: 'editorName',
+        key: 'editorName',
+        align: 'center'
+      },
+      {
+        title: t('editTime'),
+        dataIndex: 'editTime',
+        key: 'editTime',
+        align: 'center',
+        render: (dateTime: string) => (dateTime ? convertUtcTimeToLocal(dateTime, 'jYYYY/jMM/jDD HH:mm') : '-')
+      },
+      {
+        title: t('changes'),
+        dataIndex: 'changes',
+        key: 'changes',
+        align: 'center'
+      }
+    ];
+    return <CustomTable data={row?.postEditHistories} columns={columns} size="small" />;
+  }, []);
+
   return (
     <Card
       title={t('news')}
@@ -258,6 +283,10 @@ const ShowList: FC = () => {
         hasIndexColumn
         hasOrganization
         selectOrganizationProps={{hasAll: isSuperUser()}}
+        expandable={{
+          expandedRowRender,
+          rowExpandable: (row) => !!row?.postEditHistories?.length
+        }}
       />
     </Card>
   );

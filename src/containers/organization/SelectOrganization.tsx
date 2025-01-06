@@ -1,12 +1,12 @@
 import React, {FC, useEffect, useMemo} from 'react';
 import {useFetch, useUser} from 'hooks';
-import {SimpleSelect} from 'components';
+import SimpleSelect, {props as SimpleSelectProps} from 'components/select/SimpleSelect';
 import {useTranslation} from 'react-i18next';
 import {useHistory, useLocation} from 'react-router-dom';
 import {queryStringToObject} from 'utils';
 import qs from 'qs';
 
-interface props {
+interface props extends Pick<SimpleSelectProps, 'disabled'> {
   hasAll?: boolean;
 }
 

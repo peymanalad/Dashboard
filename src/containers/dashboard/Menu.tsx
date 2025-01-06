@@ -53,7 +53,7 @@ const SideMenu: FC<Props> = ({onChangeRoute}) => {
     <Menu
       mode="inline"
       theme="dark"
-      style={{background: '#0A325A'}}
+      // style={{background: '#0A325A'}}
       defaultSelectedKeys={[pathname]}
       defaultOpenKeys={window.innerWidth < 992 && window.innerWidth > 767 ? undefined : split(pathname, '/')}
       className="w-full border-0">

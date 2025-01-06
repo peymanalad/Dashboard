@@ -1,5 +1,5 @@
 // images
-export {default as DeedLogoImg} from 'assets/img/deed_logo.png';
+export {default as DeedLogoImg} from 'assets/img/mobin.png';
 export {default as dashboardImage} from 'assets/img/dashboard.png';
 export {default as logo} from 'assets/img/logo.png';
 export {default as defaultUser} from 'assets/svg/user_default.svg';

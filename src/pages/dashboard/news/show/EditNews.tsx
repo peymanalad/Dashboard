@@ -81,8 +81,8 @@ const EditNews: FC = () => {
     values.postFileToken10 = values.postFileToken?.[9]?.response?.fileToken;
     values.postFile = values.postFileToken?.[0]?.fileToken;
     values.postFileToken = values.postFileToken?.[0]?.response?.fileToken;
-    values.isSpecial = false;
-    if (userType === UserTypeEnum.Normal && !fetchNews?.data?.post?.isPublished && values?.isConfirm) {
+    // values.isSpecial = false;
+    if (userType === UserTypeEnum.Normal) {
       values.isPublished = false;
       values.currentPostStatus = values.isConfirm ? PostStatusEnum.Pending : fetchNews?.data?.post?.currentPostStatus;
     } else if (userType === UserTypeEnum.Creator && !fetchNews?.data?.post?.isPublished && values.isConfirm) {
@@ -153,7 +153,7 @@ const EditNews: FC = () => {
                     ? +queryObject?.organization?.id
                     : undefined
                 }>
-                <SelectOrganization />
+                <SelectOrganization disabled={!!fetchNews?.data?.organizationId} />
               </Form.Item>
             </Col>
             <Form.Item
@@ -452,7 +452,7 @@ const EditNews: FC = () => {
                 valuePropName="checked"
                 className="m-0"
                 initialValue={fetchNews?.data?.post?.isSpecial}>
-                <Checkbox>{t('special.title')}</Checkbox>
+                <Checkbox disabled={userType === UserTypeEnum.Normal}>{t('special.title')}</Checkbox>
               </Form.Item>
             </Col>
             <Col xs={24} md={12} lg={8} className="flex align-center justify-center">
@@ -461,7 +461,7 @@ const EditNews: FC = () => {
                 valuePropName="checked"
                 className="m-0"
                 initialValue={id ? fetchNews?.data?.post?.isPublished : true}>
-                <Checkbox disabled={!isPublisher}>{t('publish.title')}</Checkbox>
+                <Checkbox disabled={!isPublisher || userType === UserTypeEnum.Normal}>{t('publish.title')}</Checkbox>
               </Form.Item>
             </Col>
             {isPublisher ? (
@@ -471,7 +471,7 @@ const EditNews: FC = () => {
                   valuePropName="checked"
                   className="m-0"
                   initialValue={id ? fetchNews?.data?.post?.currentPostStatus === PostStatusEnum.Rejected : false}>
-                  <Checkbox>{t('reject.title')}</Checkbox>
+                  <Checkbox disabled={userType === UserTypeEnum.Normal}>{t('reject.title')}</Checkbox>
                 </Form.Item>
               </Col>
             ) : (
