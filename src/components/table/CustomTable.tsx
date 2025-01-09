@@ -33,6 +33,7 @@ interface TableProps {
   dataName?: Array<string | number | undefined | null> | string;
   columns: Array<object>;
   hasIndexColumn?: boolean;
+  rowKey?: string | ((record: any) => string);
   size?: SizeType;
   expandable?: ExpandableConfig<any>;
   search?: object;
@@ -57,6 +58,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
     data = [],
     fetch = '',
     dataName,
+    rowKey = 'id',
     columns,
     hasIndexColumn,
     search,
@@ -118,8 +120,15 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
   }));
 
   const onChangePage = (page: any, per_page?: any) => {
+    if (queryObject?.per_page && queryObject?.per_page != per_page) return;
     history.push({
-      search: qs.stringify({...queryObject, page: queryObject?.per_page != per_page ? 1 : page, per_page})
+      search: qs.stringify({...queryObject, page, per_page})
+    });
+  };
+
+  const onChangePerPage = (page: any, per_page?: any) => {
+    history.push({
+      search: qs.stringify({...queryObject, page: 1, per_page})
     });
   };
 
@@ -172,7 +181,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
         locale={locale}
         loading={paginateData?.isFetching}
         expandable={expandable}
-        rowKey="id"
+        rowKey={rowKey}
         rowClassName={rowClassName}
         onChange={(pagination, filters, sorter: any) => {
           paginateData.fetch(undefined, undefined, {
@@ -195,6 +204,7 @@ const CustomTable: ForwardRefRenderFunction<refProps, TableProps> = (
                 total: dataSource?.length * currentPage + 1,
                 itemRender,
                 onChange: onChangePage,
+                onShowSizeChange: onChangePerPage,
                 disabled: false,
                 current: currentPage,
                 defaultPageSize: +queryObject?.per_page || 10,

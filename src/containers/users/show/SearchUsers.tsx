@@ -5,8 +5,9 @@ import {DateTimePicker, MultiSelectPaginate, SimpleSelect} from 'components';
 import {useTranslation} from 'react-i18next';
 import {convertNumbers2English, convertTimeToUTC, queryStringToObject} from 'utils';
 import {useHistory, useLocation} from 'react-router-dom';
+import isNumber from 'lodash/isNumber';
 import qs from 'qs';
-import {UserStatues} from 'assets';
+import {UserStatues, UserTypes} from 'assets';
 
 const SearchUsers: FC = () => {
   const {t} = useTranslation('user-show');
@@ -30,7 +31,6 @@ const SearchUsers: FC = () => {
     values.ToLastLoginDate = values.ToLastLoginDate
       ? convertTimeToUTC(values.ToLastLoginDate, 'YYYY-MM-DD')
       : undefined;
-    values.role = values?.roles?.id;
     history.replace({
       search: qs.stringify({...queryObject, ...values, page: 1})
     });
@@ -52,7 +52,7 @@ const SearchUsers: FC = () => {
     queryObject?.NationalIdFilter ||
     queryObject?.UserNameFilter ||
     queryObject?.IsActiveFilter ||
-    queryObject?.role;
+    queryObject?.userType;
 
   return (
     <>
@@ -91,21 +91,11 @@ const SearchUsers: FC = () => {
               <Input placeholder={t('empty')} className="w-full" />
             </Form.Item>
             <Form.Item
-              name="roles"
+              name="userType"
               label={t('access_level')}
               className="mb-1/2 label-p-0"
-              initialValue={queryObject?.roles}>
-              <MultiSelectPaginate
-                mode="single"
-                urlName="roles"
-                url="services/app/Role/GetListOfRoles"
-                keyValue="id"
-                keyLabel="displayName"
-                renderCustomLabel={(option) => t(option?.displayName)}
-                placeholder={t('choose')}
-                showSearch={false}
-                allowClear
-              />
+              initialValue={isNumber(queryObject?.userType) ? +queryObject?.userType : undefined}>
+              <SimpleSelect keys="id" label="name" placeholder={t('choose')} data={UserTypes} allowClear />
             </Form.Item>
             <Form.Item
               name="PhoneNumberFilter"

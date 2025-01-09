@@ -14,7 +14,7 @@ import {
   FileExcelOutlined,
   EyeOutlined
 } from '@ant-design/icons';
-import {CustomTable, Search} from 'components';
+import {CustomTable} from 'components';
 import SearchUsers from 'containers/users/show/SearchUsers';
 import {convertUtcTimeToLocal, queryStringToObject, getTempFileUrl, getImageUrl} from 'utils';
 import type {simplePermissionProps} from 'types/common';
@@ -22,7 +22,6 @@ import {DeedLogoImg, UserTypes} from 'assets';
 
 const UserShowList: FC = () => {
   const {t} = useTranslation('user-show');
-  const searchRef = useRef<ElementRef<typeof Search>>(null);
   const tableRef = useRef<ElementRef<typeof CustomTable>>(null);
   const {hasPermission, isSuperUser} = useUser();
   const location = useLocation();
@@ -202,10 +201,6 @@ const UserShowList: FC = () => {
       )
     }
   ];
-
-  const showSearch = () => {
-    if (searchRef.current) searchRef.current.open();
-  };
 
   return (
     <Card

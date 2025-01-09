@@ -237,7 +237,7 @@ const ShowList: FC = () => {
         align: 'center'
       }
     ];
-    return <CustomTable data={row?.postEditHistories} columns={columns} size="small" />;
+    return <CustomTable data={row?.postEditHistories} columns={columns} rowKey="editTime" size="small" />;
   }, []);
 
   return (
@@ -278,6 +278,7 @@ const ShowList: FC = () => {
       <CustomTable
         fetch="services/app/Posts/GetAll"
         dataName="news"
+        rowKey={(row) => row?.post?.id}
         query={{Sorting: 'creationTime desc'}}
         columns={columns}
         hasIndexColumn
