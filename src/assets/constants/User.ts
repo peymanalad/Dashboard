@@ -1,7 +1,7 @@
 import {i18n} from 'libs';
 import {UserTypeEnum} from 'types/user';
 
-export const passwordRegex = /^[a-zA-Z0-9!@#$%^&*()_+{}\[\]:;<>,.?/~\\\-=`|"'";]*$/;
+export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~\\\-=`|"'"]).{8,}$/;
 
 export const Complexities = [
   {id: 'all', name: 'همه'},

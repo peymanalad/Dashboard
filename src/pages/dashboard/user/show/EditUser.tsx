@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {useTranslation} from 'react-i18next';
+import {JSEncrypt} from 'jsencrypt';
 import {CustomUpload, FormActions, SimpleSelect} from 'components';
 import {useHistory, useParams} from 'react-router-dom';
 import {useFetch, useLogOut, usePost, useUser} from 'hooks';
@@ -11,6 +12,7 @@ import filter from 'lodash/filter';
 import isArray from 'lodash/isArray';
 import {v4 as uuidv4} from 'uuid';
 import {passwordRegex} from 'assets';
+import {publicKey} from 'assets/constants/keys';
 
 const EditUser: FC = () => {
   const {t} = useTranslation('user_create');
@@ -57,7 +59,16 @@ const EditUser: FC = () => {
     }
   });
 
+  const changePassword = usePost({
+    url: 'services/app/profile/changePassword',
+    method: 'POST'
+  });
+
   const onFinish = (val: any) => {
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey);
+    const encryptedPassword = !!val?.password ? encrypt.encrypt(val?.password) : null;
+
     sendUser.post({
       assignedRoleNames: isArray(val?.roles) ? val?.roles : [val?.roles],
       organizationUnits: [1],
@@ -68,160 +79,235 @@ const EditUser: FC = () => {
         roles: val?.roles,
         isLockoutEnabled: 1,
         isTwoFactorEnabled: false,
-        password: val?.password || null,
+        password: encryptedPassword || null,
         updateFileToken: val?.updateFileToken?.fileToken,
         id: +id
       }
     });
   };
 
+  const onFinishChangePassword = (val: any) => {
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey);
+    const encryptedCurrentPassword = encrypt.encrypt(val.currentPassword);
+    const encryptedNewPassword = encrypt.encrypt(val.newPassword);
+
+    changePassword.post({currentPassword: encryptedCurrentPassword, newPassword: encryptedNewPassword});
+  };
+
   return (
-    <Form layout="vertical" requiredMark={false} form={form} className=" w-full" name="AccountInfo" onFinish={onFinish}>
-      <Card
-        title={t('edit_user')}
-        bordered={false}
-        className="w-full"
-        extra={
-          <>
-            {isMySelf && (
-              <Button
-                type="primary"
-                htmlType="button"
-                className="ml-auto sm:w-unset"
-                loading={logOut.isLoading}
-                icon={<LogoutOutlined />}
-                onClick={logOut.logOut}
-                danger>
-                {t('logout')}
-              </Button>
+    <Row>
+      <Form
+        layout="vertical"
+        requiredMark={false}
+        form={form}
+        className=" w-full"
+        name="AccountInfo"
+        onFinish={onFinish}>
+        <Card
+          title={t('edit_user')}
+          bordered={false}
+          className="w-full"
+          extra={
+            <>
+              {isMySelf && (
+                <Button
+                  type="primary"
+                  htmlType="button"
+                  className="ml-auto sm:w-unset"
+                  loading={logOut.isLoading}
+                  icon={<LogoutOutlined />}
+                  onClick={logOut.logOut}
+                  danger>
+                  {t('logout')}
+                </Button>
+              )}
+            </>
+          }
+          loading={(id && !fetchUser?.data) || fetchUser.isFetching}>
+          <Row gutter={[16, 8]} className="w-full">
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item
+                name="roles"
+                label={t('access_level')}
+                rules={[{required: true, message: t('validation.required')}]}
+                initialValue={filter(fetchUser?.data?.roles, 'isAssigned')?.[0]?.roleName || 'User'}>
+                <SimpleSelect
+                  keys="roleName"
+                  label="roleName"
+                  placeholder={t('choose')}
+                  data={fetchUser?.data?.roles}
+                  disabled={isMySelf}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item name="username" label={t('username')} initialValue={fetchUser?.data?.user?.userName}>
+                <Input className="ltr-input" disabled />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8} className="flex upload-center">
+              <Form.Item
+                name="updateFileToken"
+                noStyle
+                initialValue={
+                  fetchUser?.data?.profilePictureId && {
+                    updateFileToken: fetchUser?.data?.profilePictureId,
+                    url: getImageUrl(fetchUser?.data?.profilePictureId)
+                  }
+                }>
+                <CustomUpload type="users" name="image" mode="single" typeFile="image" hasCrop />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item name="name" label={t('first_name')} initialValue={fetchUser?.data?.user?.name || ''}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item name="surname" label={t('last_name')} initialValue={fetchUser?.data?.user?.surname || ''}>
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item
+                name="phoneNumber"
+                label={t('mobile')}
+                initialValue={fetchUser?.data?.user?.phoneNumber}
+                rules={[{required: true, message: t('validation.required')}]}>
+                <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item
+                name="nationalId"
+                label={t('nationalId')}
+                initialValue={fetchUser?.data?.user?.nationalId}
+                rules={[{pattern: /^\d{10}$/, message: t('validation.nationalCode')}]}>
+                <Input inputMode="tel" minLength={10} maxLength={10} className="ltr-input" />
+              </Form.Item>
+            </Col>
+            {!isMySelf && (
+              <Form.Item
+                noStyle
+                shouldUpdate={(prevValues, nextValues) => prevValues.randomPassword !== nextValues.randomPassword}>
+                {(fields) => (
+                  <Col xs={24} md={12} lg={8}>
+                    <Form.Item
+                      name="password"
+                      label={t('password')}
+                      rules={[
+                        {required: true, message: t('validation.required')},
+                        {pattern: passwordRegex, message: t('validation.correctPassword')},
+                        {min: 8, message: t('validation.minEightCharacter')},
+                        {max: 20, message: t('validation.maxTwentyCharacter')}
+                      ]}>
+                      <Input className="ltr-input" disabled={fields.getFieldValue('randomPassword')} />
+                    </Form.Item>
+                  </Col>
+                )}
+              </Form.Item>
             )}
-          </>
-        }
-        loading={(id && !fetchUser?.data) || fetchUser.isFetching}>
-        <Row gutter={[16, 8]} className="w-full">
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="roles"
-              label={t('access_level')}
-              rules={[{required: true, message: t('validation.required')}]}
-              initialValue={filter(fetchUser?.data?.roles, 'isAssigned')?.[0]?.roleName || 'User'}>
-              <SimpleSelect
-                keys="roleName"
-                label="roleName"
-                placeholder={t('choose')}
-                data={fetchUser?.data?.roles}
-                disabled={isMySelf}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item name="username" label={t('username')} initialValue={fetchUser?.data?.user?.userName}>
-              <Input className="ltr-input" disabled />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8} className="flex upload-center">
-            <Form.Item
-              name="updateFileToken"
-              noStyle
-              initialValue={
-                fetchUser?.data?.profilePictureId && {
-                  updateFileToken: fetchUser?.data?.profilePictureId,
-                  url: getImageUrl(fetchUser?.data?.profilePictureId)
-                }
-              }>
-              <CustomUpload type="users" name="image" mode="single" typeFile="image" hasCrop />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item name="name" label={t('first_name')} initialValue={fetchUser?.data?.user?.name || ''}>
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item name="surname" label={t('last_name')} initialValue={fetchUser?.data?.user?.surname || ''}>
-              <Input />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="phoneNumber"
-              label={t('mobile')}
-              initialValue={fetchUser?.data?.user?.phoneNumber}
-              rules={[{required: true, message: t('validation.required')}]}>
-              <Input inputMode="tel" minLength={11} maxLength={11} className="ltr-input" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="nationalId"
-              label={t('nationalId')}
-              initialValue={fetchUser?.data?.user?.nationalId}
-              rules={[{pattern: /^\d{10}$/, message: t('validation.nationalCode')}]}>
-              <Input inputMode="tel" minLength={10} maxLength={10} className="ltr-input" />
-            </Form.Item>
-          </Col>
-          <Form.Item
-            noStyle
-            shouldUpdate={(prevValues, nextValues) => prevValues.randomPassword !== nextValues.randomPassword}>
-            {(fields) => (
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item
+                name="emailAddress"
+                rules={[{type: 'email', message: t('validation.email')}]}
+                label={t('email')}
+                initialValue={fetchUser?.data?.user?.emailAddress || ''}>
+                <Input type="email" className="ltr-input" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <Form.Item
+                name="userType"
+                rules={[{required: true, message: t('validation.required')}]}
+                label={t('userType')}
+                initialValue={fetchUser?.data?.user?.userType}>
+                <SimpleSelect keys="id" label="name" data={UserTypes} disabled={isMySelf} />
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8} className="flex-center">
+              <Form.Item name="randomPassword" valuePropName="checked" className="m-0" initialValue={false}>
+                <Checkbox>{t('random_password')}</Checkbox>
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8} className="flex-center">
+              <Form.Item
+                name="shouldChangePasswordOnNextLogin"
+                valuePropName="checked"
+                className="m-0"
+                initialValue={fetchUser?.data?.user?.shouldChangePasswordOnNextLogin}>
+                <Checkbox>{t('change_password_next_login')}</Checkbox>
+              </Form.Item>
+            </Col>
+            <Col xs={24} md={12} lg={8} className="flex-center">
+              <Form.Item
+                name="isActive"
+                valuePropName="checked"
+                className="m-0"
+                initialValue={fetchUser?.data?.user?.isActive}>
+                <Checkbox disabled={isMySelf}>{t('active')}</Checkbox>
+              </Form.Item>
+            </Col>
+          </Row>
+          <FormActions isLoading={sendUser.isLoading} onBack={onBack} />
+        </Card>
+      </Form>
+      {isMySelf && (
+        <Form
+          layout="vertical"
+          requiredMark={false}
+          className="w-full my-6"
+          name="ChangePassword"
+          onFinish={onFinishChangePassword}>
+          <Card title={t('changePassword')} bordered={false} className="w-full">
+            <Row gutter={[16, 8]} className="w-full">
               <Col xs={24} md={12} lg={8}>
                 <Form.Item
-                  name="password"
+                  name="currentPassword"
                   label={t('password')}
-                  rules={[
-                    {pattern: passwordRegex, message: t('validation.correctPassword')},
-                    {min: 6, message: t('validation.minSixCharacter')}
-                  ]}>
-                  <Input className="ltr-input" disabled={fields.getFieldValue('randomPassword')} />
+                  rules={[{required: true, message: t('validation.required')}]}>
+                  <Input className="ltr-input" type="password" />
                 </Form.Item>
               </Col>
-            )}
-          </Form.Item>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="emailAddress"
-              rules={[{type: 'email', message: t('validation.email')}]}
-              label={t('email')}
-              initialValue={fetchUser?.data?.user?.emailAddress || ''}>
-              <Input type="email" className="ltr-input" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8}>
-            <Form.Item
-              name="userType"
-              rules={[{required: true, message: t('validation.required')}]}
-              label={t('userType')}
-              initialValue={fetchUser?.data?.user?.userType}>
-              <SimpleSelect keys="id" label="name" data={UserTypes} disabled={isMySelf} />
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8} className="flex-center">
-            <Form.Item name="randomPassword" valuePropName="checked" className="m-0" initialValue={false}>
-              <Checkbox>{t('random_password')}</Checkbox>
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8} className="flex-center">
-            <Form.Item
-              name="shouldChangePasswordOnNextLogin"
-              valuePropName="checked"
-              className="m-0"
-              initialValue={fetchUser?.data?.user?.shouldChangePasswordOnNextLogin}>
-              <Checkbox>{t('change_password_next_login')}</Checkbox>
-            </Form.Item>
-          </Col>
-          <Col xs={24} md={12} lg={8} className="flex-center">
-            <Form.Item
-              name="isActive"
-              valuePropName="checked"
-              className="m-0"
-              initialValue={fetchUser?.data?.user?.isActive}>
-              <Checkbox disabled={isMySelf}>{t('active')}</Checkbox>
-            </Form.Item>
-          </Col>
-        </Row>
-        <FormActions isLoading={sendUser.isLoading} onBack={onBack} />
-      </Card>
-    </Form>
+              <Col xs={24} md={12} lg={8}>
+                <Form.Item
+                  name="newPassword"
+                  label={t('newPassword')}
+                  rules={[
+                    {required: true, message: t('validation.required')},
+                    {pattern: passwordRegex, message: t('validation.correctPassword')},
+                    {min: 8, message: t('validation.minEightCharacter')},
+                    {max: 20, message: t('validation.maxTwentyCharacter')}
+                  ]}>
+                  <Input className="ltr-input" type="password" />
+                </Form.Item>
+              </Col>
+              <Col xs={24} md={12} lg={8}>
+                <Form.Item
+                  name="repeatNewPassword"
+                  label={t('repeatNewPassword')}
+                  dependencies={['newPassword']}
+                  rules={[
+                    {required: true, message: t('validation.required')},
+                    ({getFieldValue}) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue('newPassword') === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(new Error(t('confirmPassword')));
+                      }
+                    })
+                  ]}>
+                  <Input className="ltr-input" type="password" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <FormActions isLoading={sendUser.isLoading} />
+          </Card>
+        </Form>
+      )}
+    </Row>
   );
 };
 

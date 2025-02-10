@@ -8,7 +8,6 @@ import {useUser} from 'hooks';
 import {notification} from 'antd';
 import qs from 'qs';
 import {getLangSearchParam, urlGenerator} from 'utils';
-import get from 'lodash/get';
 import type {userAccessProps} from 'types/user';
 
 const useAxios = () => {

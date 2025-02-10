@@ -1,12 +1,14 @@
 import React, {type FC} from 'react';
+import {JSEncrypt} from 'jsencrypt';
 import {Card, Form, Checkbox, Input, Row, Col, Modal} from 'antd';
 import {useTranslation} from 'react-i18next';
 import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 import {useHistory} from 'react-router-dom';
 import {usePost, useUser} from 'hooks';
 import {getLangSearchParam, convertNumbers2English} from 'utils';
+import {generateRandomEmail} from 'utils/email';
 import {passwordRegex} from 'assets';
-import {generateRandomEmail} from '../../../../utils/email';
+import {publicKey} from 'assets/constants/keys';
 
 const AccountInfo: FC = () => {
   const {t} = useTranslation('user_create');
@@ -58,6 +60,10 @@ const AccountInfo: FC = () => {
   });
 
   const onFinish = (val: any) => {
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey);
+    const encryptedPassword = !!val?.password ? encrypt.encrypt(val?.password) : null;
+
     sendUser.post({
       assignedRoleNames: [],
       organizationUnits: [1],
@@ -70,7 +76,7 @@ const AccountInfo: FC = () => {
         phoneNumber: convertNumbers2English(val?.phoneNumber),
         username: convertNumbers2English(val?.phoneNumber),
         isTwoFactorEnabled: false,
-        password: val?.password || null,
+        password: encryptedPassword || null,
         updateFileToken: val?.updateFileToken?.fileToken
       }
     });
@@ -155,7 +161,8 @@ const AccountInfo: FC = () => {
                       pattern: passwordRegex,
                       message: t('validation.correctPassword')
                     },
-                    {min: 6, message: t('validation.minSixCharacter')}
+                    {min: 8, message: t('validation.minEightCharacter')},
+                    {max: 20, message: t('validation.maxTwentyCharacter')}
                   ]}>
                   <Input className="ltr-input" disabled={fields.getFieldValue('randomPassword')} autoComplete="off" />
                 </Form.Item>

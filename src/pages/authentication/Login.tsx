@@ -1,11 +1,15 @@
 import React, {useContext, type FC} from 'react';
 import {Typography, Row, Image, Form, Col, Input, Button, Card} from 'antd';
-import {usePost} from 'hooks';
+import ReCAPTCHA from 'react-google-recaptcha';
+import {JSEncrypt} from 'jsencrypt';
+import usePost from 'hooks/resource/usePost';
+import useRecaptcha from 'hooks/user/useRecaptcha';
 import {UsersContext} from 'context';
 import {useHistory, useLocation} from 'react-router-dom';
 import {queryStringToObject} from 'utils';
 import {useTranslation} from 'react-i18next';
 import {DeedLogoImg} from 'assets';
+import {publicKey} from 'assets/constants/keys';
 import type {userAccessProps} from 'types/user';
 import type {AuthFormProps, AuthResponseProps} from 'types/auth';
 
@@ -17,6 +21,7 @@ const LoginPage: FC = () => {
   const query = queryStringToObject(location.search);
   const history = useHistory();
   const {setUser} = useContext(UsersContext);
+  const {capchaToken, recaptchaRef, handleRecaptcha} = useRecaptcha();
 
   const userToDashboard = (user: userAccessProps) => {
     setUser({...user});
@@ -39,14 +44,25 @@ const LoginPage: FC = () => {
   });
 
   const onSubmit = (values: AuthFormProps) => {
+    const encrypt = new JSEncrypt();
+    encrypt.setPublicKey(publicKey);
+    const encryptedPassword = encrypt.encrypt(values.password);
+
     loginRequest.post({
       userNameOrEmailAddress: values.username,
-      password: values.password,
+      password: encryptedPassword.toString(),
       rememberClient: true,
       singleSignIn: false,
       returnUrl: null,
-      captchaResponse: null
+      captchaResponse: null,
+      capchaToken
     });
+  };
+
+  const onExpired = () => {
+    if (recaptchaRef.current) {
+      recaptchaRef.current.reset();
+    }
   };
 
   return (
@@ -76,7 +92,15 @@ const LoginPage: FC = () => {
             </Col>
           </Row>
           <Row gutter={[16, 8]} justify="center" className="py-4">
-            <Button type="primary" htmlType="submit" loading={loginRequest.isLoading}>
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              hl="fa"
+              size="normal"
+              sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ''}
+              onChange={handleRecaptcha}
+              onExpired={onExpired}
+            />
+            <Button type="primary" htmlType="submit" disabled={!capchaToken} loading={loginRequest.isLoading}>
               {t('continue')}
             </Button>
           </Row>

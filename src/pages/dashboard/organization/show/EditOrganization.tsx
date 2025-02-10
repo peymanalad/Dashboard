@@ -1,4 +1,5 @@
 import React, {FC} from 'react';
+import {JSEncrypt} from 'jsencrypt';
 import {Card, Form, Row, Col, Input, Checkbox, Divider} from 'antd';
 import {useHistory, useLocation, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
@@ -6,6 +7,7 @@ import {usePost, useFetch} from 'hooks';
 import {convertNumbers2English, getImageUrl, getLangSearchParam} from 'utils';
 import {CustomUpload, FormActions, MultiSelectPaginate} from 'components';
 import {passwordRegex} from 'assets';
+import {publicKey} from 'assets/constants/keys';
 
 const EditOrganization: FC = () => {
   const {t} = useTranslation('organization');
@@ -102,6 +104,10 @@ const EditOrganization: FC = () => {
       });
     }
     if (!!fetchOrganizationAdmin?.data?.userId) {
+      const encrypt = new JSEncrypt();
+      encrypt.setPublicKey(publicKey);
+      const encryptedPassword = !!values.user?.password ? encrypt.encrypt(values.user?.password) : null;
+
       updateUser.post({
         assignedRoleNames: ['Admin'],
         organizationUnits: [1],
@@ -115,7 +121,7 @@ const EditOrganization: FC = () => {
           roles: ['Admin'],
           isLockoutEnabled: 1,
           isTwoFactorEnabled: false,
-          password: values.user?.password || null,
+          password: encryptedPassword || null,
           id: +fetchOrganizationAdmin?.data?.userId
         }
       });
@@ -254,8 +260,10 @@ const EditOrganization: FC = () => {
               name={['user', 'password']}
               label={t('password')}
               rules={[
-                {pattern: passwordRegex, message: t('messages.correctPassword')},
-                {min: 6, message: t('messages.minSixCharacter')}
+                {required: true, message: t('validation.required')},
+                {pattern: passwordRegex, message: t('validation.correctPassword')},
+                {min: 8, message: t('validation.minEightCharacter')},
+                {max: 20, message: t('validation.maxTwentyCharacter')}
               ]}>
               <Input className="ltr-input" type="password" autoComplete="off" />
             </Form.Item>
