@@ -260,7 +260,6 @@ const EditOrganization: FC = () => {
               name={['user', 'password']}
               label={t('password')}
               rules={[
-                {required: true, message: t('validation.required')},
                 {pattern: passwordRegex, message: t('validation.correctPassword')},
                 {min: 8, message: t('validation.minEightCharacter')},
                 {max: 20, message: t('validation.maxTwentyCharacter')}

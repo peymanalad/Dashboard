@@ -43,7 +43,7 @@ const EditUser: FC = () => {
     url: 'services/app/Profile/UpdateProfilePicture',
     method: 'PUT',
     showError: false,
-    refetchQueries: isMySelf ? ['profile'] : [['user', id]]
+    refetchQueries: isMySelf ? ['profile', ['user', id]] : [['user', id]]
   });
 
   const sendUser = usePost({
@@ -197,7 +197,6 @@ const EditUser: FC = () => {
                       name="password"
                       label={t('password')}
                       rules={[
-                        {required: true, message: t('validation.required')},
                         {pattern: passwordRegex, message: t('validation.correctPassword')},
                         {min: 8, message: t('validation.minEightCharacter')},
                         {max: 20, message: t('validation.maxTwentyCharacter')}
