@@ -266,7 +266,7 @@ const EditUser: FC = () => {
                   name="currentPassword"
                   label={t('password')}
                   rules={[{required: true, message: t('validation.required')}]}>
-                  <Input className="ltr-input" type="password" />
+                  <Input className="ltr-input" type="password" autoComplete="new-password" />
                 </Form.Item>
               </Col>
               <Col xs={24} md={12} lg={8}>
@@ -279,7 +279,7 @@ const EditUser: FC = () => {
                     {min: 8, message: t('validation.minEightCharacter')},
                     {max: 20, message: t('validation.maxTwentyCharacter')}
                   ]}>
-                  <Input className="ltr-input" type="password" />
+                  <Input className="ltr-input" type="password" autoComplete="new-password" />
                 </Form.Item>
               </Col>
               <Col xs={24} md={12} lg={8}>
@@ -294,11 +294,11 @@ const EditUser: FC = () => {
                         if (!value || getFieldValue('newPassword') === value) {
                           return Promise.resolve();
                         }
-                        return Promise.reject(new Error(t('confirmPassword')));
+                        return Promise.reject(new Error(t('validation.confirmPassword')));
                       }
                     })
                   ]}>
-                  <Input className="ltr-input" type="password" />
+                  <Input className="ltr-input" type="password" autoComplete="new-password" />
                 </Form.Item>
               </Col>
             </Row>

@@ -331,9 +331,10 @@ const ShowGraph: FC = () => {
   };
 
   const onReOrder = () => {
-    setRendered(false);
-    setWidth(0);
-    setTimeout(calculateWidth, 300);
+    window.location.reload();
+    // setRendered(false);
+    // setWidth(0);
+    // setTimeout(calculateWidth, 300);
   };
 
   return (

@@ -164,7 +164,11 @@ const AccountInfo: FC = () => {
                     {min: 8, message: t('validation.minEightCharacter')},
                     {max: 20, message: t('validation.maxTwentyCharacter')}
                   ]}>
-                  <Input className="ltr-input" disabled={fields.getFieldValue('randomPassword')} autoComplete="off" />
+                  <Input
+                    className="ltr-input"
+                    disabled={fields.getFieldValue('randomPassword')}
+                    autoComplete="new-password"
+                  />
                 </Form.Item>
               </Col>
             )}

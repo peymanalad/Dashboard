@@ -46,10 +46,10 @@ const LoginPage: FC = () => {
   const onSubmit = (values: AuthFormProps) => {
     const encrypt = new JSEncrypt();
     encrypt.setPublicKey(publicKey);
-    const encryptedPassword = encrypt.encrypt(values.password);
+    const encryptedPassword = encrypt.encrypt(values.pass);
 
     loginRequest.post({
-      userNameOrEmailAddress: values.username,
+      userNameOrEmailAddress: values.name,
       password: encryptedPassword.toString(),
       rememberClient: true,
       singleSignIn: false,
@@ -77,17 +77,17 @@ const LoginPage: FC = () => {
             <Col span={24}>
               <Form.Item
                 label={t('username')}
-                name="username"
+                name="name"
                 rules={[{required: true, message: t('messages.required_username')}]}>
-                <Input className="ltr-input" />
+                <Input className="ltr-input" autoComplete="off" />
               </Form.Item>
             </Col>
             <Col span={24}>
               <Form.Item
                 label={t('password')}
-                name="password"
+                name="pass"
                 rules={[{required: true, message: t('messages.required_password')}]}>
-                <Input.Password className="ltr-input" type="password" />
+                <Input.Password className="ltr-input" type="password" autoComplete="new-password" />
               </Form.Item>
             </Col>
           </Row>

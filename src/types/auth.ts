@@ -1,6 +1,6 @@
 export interface AuthFormProps {
-  username: string;
-  password: string;
+  name: string;
+  pass: string;
 }
 
 export interface AuthResponseProps {

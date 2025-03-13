@@ -264,7 +264,7 @@ const EditOrganization: FC = () => {
                 {min: 8, message: t('validation.minEightCharacter')},
                 {max: 20, message: t('validation.maxTwentyCharacter')}
               ]}>
-              <Input className="ltr-input" type="password" autoComplete="off" />
+              <Input className="ltr-input" type="password" autoComplete="new-password" />
             </Form.Item>
           </Col>
           <Col xs={24} md={12} lg={8}>
@@ -281,7 +281,7 @@ const EditOrganization: FC = () => {
                   }
                 })
               ]}>
-              <Input className="ltr-input" type="password" autoComplete="off" />
+              <Input className="ltr-input" type="password" autoComplete="new-password" />
             </Form.Item>
           </Col>
           <Col span={24}>
