@@ -158,6 +158,19 @@ const ShowList: FC = () => {
       )
     },
     {
+      title: t('creator'),
+      dataIndex: ['post', 'creatorUserId'],
+      key: 'creatorUserId',
+      align: 'center',
+      sorter: false,
+      render: (creatorUserId: string, news: any) =>
+        !!creatorUserId ? (
+          <Link to={`/user/show/${creatorUserId}`}>{`${news?.creatorUserFirstName} ${news?.creatorUserLastName}`}</Link>
+        ) : (
+          '-'
+        )
+    },
+    {
       title: t('publisher'),
       dataIndex: ['post', 'publisherUserId'],
       key: 'publisherUserId',
