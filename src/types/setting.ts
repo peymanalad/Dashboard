@@ -1,10 +1,6 @@
 import {FileModeProps, FileTypeProps} from 'types/file';
 import {SelectModeProps, SelectTypeProps} from 'types/general';
 
-export interface searchOptionsProps {
-  search?: string;
-}
-
 export type itemElementType =
   | 'object'
   | 'array'

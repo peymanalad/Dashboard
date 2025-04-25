@@ -6,7 +6,6 @@ import {Link, useLocation} from 'react-router-dom';
 import {CustomTable, Search, SearchButton} from 'components';
 import {useDelete, usePost, useUser} from 'hooks';
 import {convertUtcTimeToLocal, getTempFileUrl, queryStringToObject} from 'utils';
-import {simplePermissionProps} from 'types/common';
 
 const ShowList: FC = () => {
   const {t} = useTranslation('news');
@@ -54,10 +53,10 @@ const ShowList: FC = () => {
     },
     {
       title: t('actions'),
-      dataIndex: 'permissions',
-      key: 'permissions',
+      dataIndex: 'postPostTitle',
+      key: 'postPostTitle',
       align: 'center',
-      render: (permissions: simplePermissionProps, postLike: any) => (
+      render: (postPostTitle: string, postLike: any) => (
         <Space size={2}>
           <Tooltip title={t('newsProfile')}>
             <Link to={`/news/news/show/${postLike?.postLike?.postId}`}>

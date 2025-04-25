@@ -1,5 +1,5 @@
 import React, {memo} from 'react';
-import {chatMessageProps, replyUpdateProps} from 'types/message';
+import {IChatMessageProps, IReplyUpdateProps} from 'types/message';
 import {
   EyeOutlined,
   LoadingOutlined,
@@ -15,8 +15,8 @@ import {ReplyIcon} from 'assets';
 import {normalizeMessage} from '../../utils';
 
 export interface props {
-  data: chatMessageProps;
-  setReply?: (parent: replyUpdateProps) => void;
+  data: IChatMessageProps;
+  setReply?: (parent: IReplyUpdateProps) => void;
   visibleDelete: (visible: boolean) => void;
   actionLoading?: boolean;
   onRejectClick: (id?: number) => void;

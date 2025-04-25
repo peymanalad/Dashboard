@@ -21,8 +21,8 @@ import toString from 'lodash/toString';
 import flattenDeep from 'lodash/flattenDeep';
 import isString from 'lodash/isString';
 import {normalizeMessage} from 'utils/message';
-import type {chatMessageProps, replyUpdateProps, chatType, commentType} from 'types/message';
-import type {uploadAdvancedInputType} from 'types/file';
+import type {IChatMessageProps, IReplyUpdateProps, ChatType, CommentType} from 'types/message';
+import type {UploadAdvancedInputType} from 'types/file';
 import type {userProps} from 'types/user';
 
 export interface props {
@@ -32,8 +32,8 @@ export interface props {
   friendUserID?: number;
   messagesKey?: string;
   postUrl: string;
-  uploadType?: uploadAdvancedInputType;
-  commentType?: commentType;
+  uploadType?: UploadAdvancedInputType;
+  commentType?: CommentType;
   updateUrl: string;
   deleteUrl: string;
   confirmUrl?: string;
@@ -88,7 +88,7 @@ const MessageContainer = ({
   const inputRef = useRef<ElementRef<typeof AdvancedComposer>>(null);
   const UserId: number = myUserID || user.getId();
 
-  const [reply, setReply] = useState<replyUpdateProps | undefined>(undefined);
+  const [reply, setReply] = useState<IReplyUpdateProps | undefined>(undefined);
   const [searchRef, setSearchRef] = useState<boolean>(false);
   const [loadingId, setLoadingId] = useState<number | string | undefined>(undefined);
 
@@ -341,8 +341,8 @@ const MessageContainer = ({
 
   const onStoreMessage = (
     message: string | File,
-    reply: replyUpdateProps | undefined,
-    type: chatType | commentType,
+    reply: IReplyUpdateProps | undefined,
+    type: ChatType | CommentType,
     file?: File
   ) => {
     const sendData = {
@@ -401,14 +401,17 @@ const MessageContainer = ({
     });
   };
 
-  const getReplyData = async (replyData: replyUpdateProps) => {
+  const getReplyData = async (replyData: IReplyUpdateProps) => {
     setSearch(true);
-    let ReplyComment: chatMessageProps[] = filter(messages, (comment: chatMessageProps) => comment.id === replyData.id);
+    let ReplyComment: IChatMessageProps[] = filter(
+      messages,
+      (comment: IChatMessageProps) => comment.id === replyData.id
+    );
     if (ReplyComment?.length) JumpToComment(toString(replyData.id));
     else {
       while (getMessageData.canFetchMore && !ReplyComment.length) {
         await getMessageData?.fetchMore();
-        ReplyComment = filter(messages, (comment: chatMessageProps) => comment.id === replyData.id);
+        ReplyComment = filter(messages, (comment: IChatMessageProps) => comment.id === replyData.id);
         if (!isEmpty(ReplyComment)) return JumpToComment(toString(replyData.id));
       }
     }
@@ -437,7 +440,7 @@ const MessageContainer = ({
                 <Spin tip={t('loadingNextPage')} />
               </Row>
             )}
-            {map(messages, (message: chatMessageProps, index: number) => (
+            {map(messages, (message: IChatMessageProps, index: number) => (
               <MessageChat
                 data={message}
                 key={`${index}`}
@@ -511,7 +514,7 @@ const MessageContainer = ({
             onError={() => {
               // updateMessage({content: inputRef?.current?.getContent(), status: 'error'}, 'newMessage');
             }}
-            onSend={(message: string, type: chatType, file?: File) => {
+            onSend={(message: string, type: ChatType, file?: File) => {
               onStoreMessage(message, reply, commentType || type, file);
             }}
           />

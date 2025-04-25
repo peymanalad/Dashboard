@@ -9,7 +9,7 @@ import isString from 'lodash/isString';
 import isEmpty from 'lodash/isEmpty';
 import values from 'lodash/values';
 import merge from 'lodash/merge';
-import {dynamicParams} from 'types/common';
+import {IDynamicParams} from 'types/common';
 
 interface IGetConfig {
   url: string;
@@ -48,7 +48,7 @@ const useFetch = ({
   const AxiosInstance = useAxios();
   const errorHandler = useError();
 
-  const [dynamicParams, setDynamicParams] = useState<dynamicParams | undefined>(undefined);
+  const [dynamicParams, setDynamicParams] = useState<IDynamicParams | undefined>(undefined);
 
   const requestConfig: AxiosRequestConfig = {
     headers: {Authorization: user?.access_token ? `Bearer ${user?.access_token}` : '', silent: !showError},

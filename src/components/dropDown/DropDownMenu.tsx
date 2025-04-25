@@ -2,16 +2,16 @@ import React from 'react';
 import {Menu, Dropdown, Button} from 'antd';
 import {MoreOutlined} from '@ant-design/icons';
 import map from 'lodash/map';
-import {menuItem} from 'types/general';
+import {IMenuItem} from 'types/general';
 
 export interface props {
-  items: menuItem[];
+  items: IMenuItem[];
 }
 
 const DropDownMenu = ({items}: props) => {
   const menu = (
     <Menu>
-      {map(items, (item: menuItem, index: number) => (
+      {map(items, (item: IMenuItem, index: number) => (
         <Menu.Item
           key={index}
           icon={item?.icon}

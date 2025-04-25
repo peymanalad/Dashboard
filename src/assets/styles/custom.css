@@ -589,28 +589,6 @@ span.ant-divider-inner-text {
   background: #fff0f0;
 }
 
-.react-json-view {
-  margin: 0;
-  min-width: 0;
-  padding: 4px 11px;
-  font-size: 14px;
-  direction: ltr;
-  text-align: left;
-  line-height: 1.5715;
-  background-image: none;
-  border: 1px solid #d9d9d9;
-  border-radius: 2px;
-  transition: all 0.3s;
-}
-
-.react-json-view .variable-value span.string-value {
-  word-break: break-all;
-}
-
-.ant-form-item-has-error .react-json-view {
-  border-color: #ff4d4f;
-}
-
 .ant-modal-root .ant-modal-confirm.delete .ant-modal-confirm-btns {
   width: 100%;
   display: flex;
@@ -631,21 +609,10 @@ span.ant-divider-inner-text {
   max-width: unset;
 }
 
-.ant-form-item-has-error .react-json-view:focus {
-  border-color: #ff7875;
-  border-right-width: 1px !important;
-  outline: 0;
-  box-shadow: 0 0 0 2px rgb(255 77 79 / 20%);
-}
-
 .ant-form-item-has-error .ant-upload.ant-upload-select-picture-card > .ant-upload > button,
 .ant-form-item-has-error .ant-upload.ant-upload-select-picture-card {
   border-color: #ff4d4f;
   color: #ff4d4f;
-}
-
-div.rtl .react-json-view .variable-value {
-  direction: rtl;
 }
 
 label[for='config_schema'] {

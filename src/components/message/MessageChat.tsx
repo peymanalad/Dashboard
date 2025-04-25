@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import {Col, ConfigProvider, Divider, Space, Typography, Image, Modal, Button, Card} from 'antd';
 import {useTranslation} from 'react-i18next';
-import {chatImageDefault, Drop, PrescriptionIcon} from 'assets';
+import {chatImageDefault, Drop} from 'assets';
 import * as Scroll from 'react-scroll';
 import AudioPlayer from 'react-h5-audio-player';
 import {convertUtcTimeToLocal, getChatImageUrl, getImageUrl, normalizeMessage} from 'utils';
@@ -17,16 +17,16 @@ import {useUser} from 'hooks';
 import toString from 'lodash/toString';
 import includes from 'lodash/includes';
 import Linkify from 'linkify-react';
-import type {chatMessageProps, replyUpdateProps} from 'types/message';
+import type {IChatMessageProps, IReplyUpdateProps} from 'types/message';
 import {Link} from 'react-router-dom';
 
 export interface props {
-  data: chatMessageProps;
-  before?: chatMessageProps;
-  after?: chatMessageProps;
+  data: IChatMessageProps;
+  before?: IChatMessageProps;
+  after?: IChatMessageProps;
   myUserID?: number;
-  setReply?: (parent: replyUpdateProps) => void;
-  getReply?: (parent: replyUpdateProps) => void;
+  setReply?: (parent: IReplyUpdateProps) => void;
+  getReply?: (parent: IReplyUpdateProps) => void;
   actionLoading?: boolean;
   onDeleteClick: (sharedMessageId: string) => void;
   onRejectClick: (id?: number) => void;

@@ -12,6 +12,5 @@ export {default as useUser} from 'hooks/user/useUser';
 export {default as useLogOut} from 'hooks/user/useLogOut';
 
 // storage
-export {default as useModifyQuery} from 'hooks/storage/useModifyQuery';
 export {default as usePersist} from 'hooks/storage/usePersist';
 export {default as useSubscribeQuery} from 'hooks/storage/useSubscribeQuery';

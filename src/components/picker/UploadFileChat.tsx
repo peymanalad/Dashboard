@@ -4,18 +4,18 @@ import axios from 'axios';
 import {useTranslation} from 'react-i18next';
 import {PaperClipOutlined} from '@ant-design/icons';
 import useUser from 'hooks/user/useUser';
-import {chatType} from 'types/message';
+import {ChatType} from 'types/message';
 import first from 'lodash/first';
-import {uploadAdvancedInputType} from 'types/file';
+import {UploadAdvancedInputType} from 'types/file';
 
 export interface props {
   className?: string;
   style?: CSSProperties;
   disabled?: boolean;
-  uploadType: uploadAdvancedInputType;
+  uploadType: UploadAdvancedInputType;
   sendFile: (file: File) => void;
   ErrorFile: () => void;
-  sendPath: (path: string, type: chatType, file: File) => void;
+  sendPath: (path: string, type: ChatType, file: File) => void;
 }
 
 const ShowImages: FC<props> = ({className, style, sendFile, sendPath, disabled, uploadType, ErrorFile}) => {

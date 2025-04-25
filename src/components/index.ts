@@ -15,7 +15,6 @@ export {default as LinkableListItem} from 'components/box/LinkableListItem';
 // picker
 export {default as CustomUpload} from 'components/picker/CustomUpload';
 export {default as UploadFileChat} from 'components/picker/UploadFileChat';
-export {default as ColorPicker} from 'components/picker/Color';
 export {default as DateTimePicker} from 'components/picker/DateTimePicker';
 
 // button
@@ -48,15 +47,9 @@ export {default as MessageActions} from 'components/message/MessageActions';
 export {default as LanguageInput} from 'components/input/LanguageInput';
 export {default as AdvancedComposer} from 'components/input/AdvancedComposer';
 export {default as SimpleComposer} from 'components/input/SimpleComposer';
-export {default as JsonEditor} from 'components/input/JsonEditor';
-export {default as FormBuilder} from 'components/input/FormBuilder';
-export {default as FormItemBuilder} from 'components/input/FormItemBuilder';
-export {default as GroupInput} from 'components/input/GroupInput';
-export {default as InputBuilder} from 'components/input/InputBuilder';
 
 // dropDowns
 export {default as DropDownMenu} from 'components/dropDown/DropDownMenu';
-export {default as UserDropDownMenu} from 'components/dropDown/UserDropDownMenu';
 
 // drillDOwn
 export {default as DrillDownMenu} from 'components/drillDown/DrillDownMenu';
@@ -64,9 +57,6 @@ export {default as DrillDownMenu} from 'components/drillDown/DrillDownMenu';
 // graph
 export {default as LineGraph} from 'components/graph/Line';
 export {default as NodeGraph} from 'components/graph/Node';
-
-// show
-export {default as ShowItems} from 'components/show/ShowItems';
 
 // tag
 export {default as TagRender} from 'components/tag/TagRender';
@@ -84,11 +74,5 @@ export {default as VerticalBar} from 'components/chart/VerticalBar';
 export {default as HorizontalBar} from 'components/chart/HorizontalBar';
 export {default as StackBar} from 'components/chart/StackBar';
 
-// collapse
-export {default as CollapseR} from 'components/collapse/CollapseR';
-
 // sort
 export {default as SortItems} from 'components/sort/SortItems';
-
-// modal
-export {default as FormBuilderHelpModal} from 'components/modal/FormBuilderHelpModal';

@@ -1,13 +1,6 @@
-import {userProps} from 'types/user';
-
 export interface user {
   full_name?: string;
   username?: string;
-  id?: number;
-}
-
-export interface recommendationType {
-  title?: string;
   id?: number;
 }
 
@@ -16,32 +9,11 @@ export enum confirm {
   confirm
 }
 
-interface permissions {
-  view?: boolean;
-  update?: boolean;
-  delete?: boolean;
-  response?: boolean;
-  open?: boolean;
-  close?: boolean;
-  confirm?: boolean;
-  reject?: boolean;
-  parent?: boolean;
-  read?: boolean;
-}
+export type ChatStatusType = 'loading' | 'done' | 'error';
+export type ChatType = 'sound' | 'text' | 'image' | 'video' | 'prescription' | 'question' | 'audio';
+export type CommentType = 'support_to_patient' | 'support_to_doctor' | 'research_to_research';
 
-export interface chatItemProps {
-  id: number;
-  user: user;
-  count: number;
-  updated_at: string;
-  permissions: permissions;
-}
-
-export type chatStatus = 'loading' | 'done' | 'error';
-export type chatType = 'sound' | 'text' | 'image' | 'video' | 'prescription' | 'question' | 'audio';
-export type commentType = 'support_to_patient' | 'support_to_doctor' | 'research_to_research';
-
-export interface chatMessageProps {
+export interface IChatMessageProps {
   userId: number;
   tenantId: number;
   targetUserId: number;
@@ -55,66 +27,29 @@ export interface chatMessageProps {
   id: number;
   recommendation_id?: {id: number; title: string};
   content: any;
-  status?: chatStatus;
-  type: chatType;
+  status?: ChatStatusType;
+  type: ChatType;
 }
 
-export interface commentMessageProps {
-  content: string;
-  created_at: any;
-  from?: user;
-  to?: user | null;
-  from_id?: number;
-  to_id?: number;
-  id: string;
-  is_confirm?: confirm;
-  parent?: boolean;
-  permissions?: permissions;
-  read_at: string;
-  status?: chatStatus;
-  recommendation_id: recommendationType;
-  reply?: replyUpdateCommentProps;
-  type: commentType;
-  user: user;
-}
-
-export interface replyUpdateProps {
+export interface IReplyUpdateProps {
   id: number | string;
   user?: user;
-  type?: chatType;
+  type?: ChatType;
   content?: any | File;
   isReply?: boolean;
 }
 
-export interface replyUpdateCommentProps {
+export interface IReplyUpdateCommentProps {
   id: string;
   user?: user;
-  type: commentType;
+  type: CommentType;
   content: string | File;
   isReply: boolean;
 }
 
-export interface reply {
+export interface IReply {
   id: string;
   user?: user;
-  type: chatType;
+  type: ChatType;
   content: string | File;
-}
-
-export interface defaultMessageOptionProps {
-  id: number;
-  name: string;
-  value: string;
-}
-
-export enum ticketStatus {
-  PatientPending = 1,
-  DoctorPending,
-  Inactive
-}
-
-export interface updateMessageProps {
-  content?: string | File;
-  status?: chatStatus;
-  permissions?: permissions;
 }

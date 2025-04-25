@@ -1,4 +1,4 @@
-import {i18n} from 'libs';
+import i18n from 'libs/I18n';
 
 export const typeSetting = [
   {name: 'int'},
@@ -11,21 +11,7 @@ export const typeSetting = [
 
 export const directions = [{name: 'ltr'}, {name: 'rtl'}];
 
-export const requiredVersionType = [
-  {id: 1, name: 'required'},
-  {id: 0, name: 'not_required'}
-];
-
 export const OSType = [{name: 'ios'}, {name: 'android'}];
-
-export const AppType = [{name: 'pros'}, {name: 'care'}];
-
-export const FaqStatus = [
-  {name: i18n.t('setting:active'), id: 1},
-  {name: i18n.t('setting:inactive'), id: 0}
-];
-
-export const FaqType = [{name: 'doctor'}, {name: 'patient'}];
 
 export const configHelp = [
   {

@@ -15,7 +15,7 @@ import values from 'lodash/values';
 import isEmpty from 'lodash/isEmpty';
 import {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
 import {ResponseProps} from 'types/request';
-import {dynamicParams} from 'types/common';
+import {IDynamicParams} from 'types/common';
 
 interface IGetConfig {
   url: string;
@@ -62,7 +62,7 @@ const useInfinite = ({
   const AxiosInstance = useAxios();
   const errorHandler = useError();
 
-  const [dynamicParams, setDynamicParams] = useState<dynamicParams | undefined>(undefined);
+  const [dynamicParams, setDynamicParams] = useState<IDynamicParams | undefined>(undefined);
 
   const requestConfig: AxiosRequestConfig = {
     url: allocateParamToString(urlGenerator(url), merge(params, dynamicParams?.params)),

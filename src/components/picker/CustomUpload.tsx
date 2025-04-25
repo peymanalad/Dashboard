@@ -30,7 +30,7 @@ import isFunction from 'lodash/isFunction';
 import {v4 as uuidv4} from 'uuid';
 import {maxSizeType, maxSizeExtension} from 'assets';
 import type {UploadProps} from 'antd/lib/upload/interface';
-import type {FileTypeProps, FileModeProps, uploadType} from 'types/file';
+import type {FileTypeProps, FileModeProps, UploadType} from 'types/file';
 
 interface props {
   mode: FileModeProps;
@@ -44,7 +44,7 @@ interface props {
   notifyDelete?: boolean;
   typeFile: FileTypeProps;
   uploadButton?: (isLoading: boolean, disabled?: boolean) => ReactNode;
-  type: uploadType;
+  type: UploadType;
   listType?: UploadProps['listType'];
   showUploadList?: UploadProps['showUploadList'];
   outPutKeys?: string | string[];

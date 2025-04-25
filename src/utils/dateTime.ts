@@ -1,4 +1,3 @@
-import moment from 'jalali-moment';
 import momentJ, {Moment} from 'moment-jalaali';
 
 export const getNowDateTime = (format: string = 'jYYYY/jMM/jDD HH:mm:ss') => momentJ().utc(true).format(format);
@@ -26,9 +25,4 @@ export const convertTimeToUTC = (
   } catch (e) {
     return '';
   }
-};
-
-export const convertMiladiToShamsiiiYear = (date: any) => {
-  if (!date) return '';
-  return moment.from(date, 'en', 'YYYY-MM-DD').locale('fa').format('YYYY/MM/DD');
 };

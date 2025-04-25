@@ -11,12 +11,10 @@ import {
   BankOutlined
 } from '@ant-design/icons';
 import {i18n} from 'libs';
-import includes from 'lodash/includes';
 import map from 'lodash/map';
 import compact from 'lodash/compact';
-import filter from 'lodash/filter';
 import {lazyWithRetry} from 'utils';
-import {dashboardRouteProps} from 'types/dashboard';
+import type {dashboardRouteProps} from 'types/dashboard';
 import {UserTypeEnum} from 'types/user';
 
 const DashboardCmp = lazyWithRetry(() => import('pages/dashboard/Dashboard2'));
@@ -65,11 +63,9 @@ const CommentLikeShowList = lazyWithRetry(() => import('pages/dashboard/comment/
 const FriendChatList = lazyWithRetry(() => import('pages/dashboard/message/friend/ShowList'));
 const FriendChat = lazyWithRetry(() => import('pages/dashboard/message/friend/Chat'));
 
-// permission
-const PermissionRole = lazyWithRetry(() => import('pages/dashboard/setting/role/ShowList'));
-
-const EditRoles = lazyWithRetry(() => import('pages/dashboard/setting/role/EditRoles'));
 // setting
+const PermissionRole = lazyWithRetry(() => import('pages/dashboard/setting/role/ShowList'));
+const EditRoles = lazyWithRetry(() => import('pages/dashboard/setting/role/EditRoles'));
 
 const ApplicationShowList = lazyWithRetry(() => import('pages/dashboard/setting/application/ShowList'));
 const EditApplication = lazyWithRetry(() => import('pages/dashboard/setting/application/EditApplication'));
@@ -77,9 +73,6 @@ const EditApplication = lazyWithRetry(() => import('pages/dashboard/setting/appl
 // notifications
 const BroadcastNotification = lazyWithRetry(() => import('pages/dashboard/notifications/BroadcastNotification'));
 const ShowGroupNotification = lazyWithRetry(() => import('pages/dashboard/notifications/group/ShowGroupNotifInfo'));
-
-const ReportsShowList = lazyWithRetry(() => import('pages/dashboard/report/show/ShowList'));
-const EditReports = lazyWithRetry(() => import('pages/dashboard/report/show/ShowReport'));
 
 const Dashboard: Array<dashboardRouteProps> = [
   {

@@ -1,7 +1,7 @@
 import React, {useState, memo} from 'react';
 import {Button, Input, Row, Typography} from 'antd';
 import {SendOutlined, CloseCircleOutlined} from '@ant-design/icons';
-import {replyUpdateProps} from 'types/message';
+import {IReplyUpdateProps} from 'types/message';
 import {useTranslation} from 'react-i18next';
 import ScrollArea from 'react-scrollbar';
 import {useUser} from 'hooks';
@@ -9,7 +9,7 @@ import {useUser} from 'hooks';
 export interface props {
   onSend: (val: string) => void;
   loading?: boolean;
-  reply?: replyUpdateProps;
+  reply?: IReplyUpdateProps;
   replyEmpty?: () => void;
 }
 

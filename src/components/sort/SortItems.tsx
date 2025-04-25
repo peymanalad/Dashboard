@@ -11,10 +11,10 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 import isFunction from 'lodash/isFunction';
 import {reorderList} from 'utils';
-import {sortItem} from 'types/general';
+import {ISortItem} from 'types/general';
 
 export interface Props {
-  showData: sortItem[];
+  showData: ISortItem[];
   actionSpan?: number;
   titleKey?: string;
   name: string | string[];
@@ -79,7 +79,7 @@ function SortItems({name, query, fetchUrl, sendUrl, sendKey, showData, titleKey 
       }>
       <Row className="flex-center w-full flex-col mb-2">
         <Row className="w-full p-3 bg-snow border-1 border-gainsBoro border-solid">
-          {map(showData, (data: sortItem, index: number) => (
+          {map(showData, (data: ISortItem, index: number) => (
             <Col key={index} span={data.span} className="text-center">
               <Text strong className="text-center d-block">
                 {t(data.key)}
@@ -118,7 +118,7 @@ function SortItems({name, query, fetchUrl, sendUrl, sendKey, showData, titleKey 
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}>
-                          {map(showData, (data: sortItem, index: number) => (
+                          {map(showData, (data: ISortItem, index: number) => (
                             <Col key={index} span={data.span} className="flex-center">
                               <Text className="text-center d-block">
                                 {isFunction(data?.render) ? data?.render(get(item, data.key)) : get(item, data.key)}

@@ -26,8 +26,8 @@ import {Picker} from 'emoji-mart';
 import last from 'lodash/last';
 import split from 'lodash/split';
 import toString from 'lodash/toString';
-import type {chatType, replyUpdateProps} from 'types/message';
-import type {uploadAdvancedInputType} from 'types/file';
+import type {ChatType, IReplyUpdateProps} from 'types/message';
+import type {UploadAdvancedInputType} from 'types/file';
 import type {userProps} from 'types/user';
 
 interface refProps {
@@ -36,11 +36,11 @@ interface refProps {
 
 export interface props {
   onClick: (val: string | File, mentions?: userProps[]) => void;
-  onSend: (id: string, type: chatType, file?: File) => void;
+  onSend: (id: string, type: ChatType, file?: File) => void;
   onError: () => void;
   loading?: boolean;
-  uploadType: uploadAdvancedInputType;
-  reply?: replyUpdateProps;
+  uploadType: UploadAdvancedInputType;
+  reply?: IReplyUpdateProps;
   replyEmpty: () => void;
   disabled?: boolean;
   disableEmoji?: boolean;

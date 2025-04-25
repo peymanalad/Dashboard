@@ -5,7 +5,6 @@ import {useTranslation} from 'react-i18next';
 import {CustomTable} from 'components';
 import {useDelete} from 'hooks';
 import {convertUtcTimeToLocal} from 'utils';
-import {simplePermissionProps} from 'types/common';
 
 interface Props {
   id?: string;
@@ -53,10 +52,10 @@ const ShowNewsComments: FC<Props> = ({id}) => {
     },
     {
       title: t('actions'),
-      dataIndex: 'permissions',
-      key: 'permissions',
+      dataIndex: ['comment', 'commentCaption'],
+      key: 'commentCaption',
       align: 'center',
-      render: (permissions: simplePermissionProps, comment: any) => (
+      render: (commentCaption: string, comment: any) => (
         <Space size={2}>
           <Tooltip title={t('do_delete')}>
             <Button

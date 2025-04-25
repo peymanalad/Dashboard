@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
-import {Card, Form, Row, Col, Input, Button, Checkbox} from 'antd';
+import {Card, Form, Row, Col, Input, Checkbox} from 'antd';
 import {FormActions, TreeSelect} from 'components';
-import {SaveOutlined} from '@ant-design/icons';
 import {useHistory, useParams} from 'react-router-dom';
 import {useTranslation} from 'react-i18next';
 import {usePost, useFetch} from 'hooks';

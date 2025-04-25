@@ -1,4 +1,4 @@
-import {uploadType} from 'types/file';
+import {UploadType} from 'types/file';
 
 export const colors = [
   '#ffe0b2',
@@ -88,7 +88,7 @@ export const pieChartColors = [
   {id: 9, color: '#E59866'}
 ];
 
-export const maxSizeType: Record<uploadType, number | null> = {
+export const maxSizeType: Record<UploadType, number | null> = {
   users: null,
   applications: null,
   messages: null,

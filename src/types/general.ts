@@ -1,5 +1,5 @@
-import React, {ReactNode} from 'react';
-import {PropertyPath} from 'lodash';
+import type React from 'react';
+import type {PropertyPath} from 'lodash';
 
 export interface language {
   id: number;
@@ -41,11 +41,11 @@ export interface ResponsiveScreenProps {
 export interface DropDownMenuItemProps {
   onClick: () => void;
   name: string;
-  icon?: ReactNode;
+  icon?: React.ReactNode;
   danger?: boolean;
 }
 
-export interface sortItem {
+export interface ISortItem {
   key: string;
   span: number;
   render?: (value: any) => string;
@@ -56,7 +56,7 @@ export interface SubscribeDataProps {
   path: string | string[];
 }
 
-export interface menuItem {
+export interface IMenuItem {
   onClick: () => void;
   name: string;
   icon?: React.ReactNode;
@@ -64,7 +64,7 @@ export interface menuItem {
   disabled?: boolean;
 }
 
-export interface updatePathList {
+export interface IUpdatePathList {
   objectPath?: PropertyPath;
   listPath?: PropertyPath;
 }

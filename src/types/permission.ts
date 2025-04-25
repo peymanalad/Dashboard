@@ -13,10 +13,6 @@ export interface permissionRoleProps {
   on_role?: permissionProps;
 }
 
-export interface searchOptionsProps {
-  search?: string;
-}
-
 export interface PermissionProps {
   description: string | null;
   displayName: string;

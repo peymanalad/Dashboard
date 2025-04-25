@@ -10,7 +10,7 @@ import {useAxios, useError} from 'hooks';
 import compact from 'lodash/compact';
 import concat from 'lodash/concat';
 import isEmpty from 'lodash/isEmpty';
-import type {dynamicParams} from 'types/common';
+import type {IDynamicParams} from 'types/common';
 import values from 'lodash/values';
 import without from 'lodash/without';
 
@@ -44,7 +44,7 @@ const usePagination = ({
   staleTime = 180000,
   cacheTime = 600000
 }: IGetConfig) => {
-  const [dynamicParams, setDynamicParams] = useState<dynamicParams | undefined>(undefined);
+  const [dynamicParams, setDynamicParams] = useState<IDynamicParams | undefined>(undefined);
   let prettyName: Array<string | number | undefined | null> | string = isString(name) ? name : compact(name);
 
   if (
