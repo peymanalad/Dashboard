@@ -1,6 +1,6 @@
 export type FileModeProps = 'multiple' | 'single';
 
-export type FileTypeProps = 'image' | 'sound' | 'video' | 'pdf' | 'excel' | 'application' | 'image,video';
+export type FileTypeProps = 'image' | 'sound' | 'video' | 'pdf' | 'excel' | 'application' | 'image,video,pdf';
 
 export type UploadAdvancedInputType = 'messages' | 'visits' | 'recommendations';
 

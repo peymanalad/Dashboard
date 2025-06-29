@@ -56,6 +56,7 @@ interface props {
   sortable?: boolean;
   value?: any;
   imageHint?: boolean;
+  hint?: string;
   maxWidth?: number;
   maxHeight?: number;
   'aria-invalid'?: string;
@@ -87,6 +88,7 @@ const CustomUpload = ({
   notifyDelete = true,
   showUploadList = true,
   imageHint,
+  hint,
   maxWidth,
   maxHeight,
   ...props
@@ -280,8 +282,8 @@ const CustomUpload = ({
 
   const getAccess = useMemo(() => {
     switch (typeFile) {
-      case 'image,video':
-        return 'image/*, video/*';
+      case 'image,video,pdf':
+        return 'image/*, video/*, application/pdf';
       case 'image':
         return 'image/*';
       case 'sound':
@@ -588,6 +590,11 @@ const CustomUpload = ({
       {imageHint && (
         <Text mark className="text-xs text-center">
           {t('imageHint', {width: maxWidth, height: maxHeight})}
+        </Text>
+      )}
+      {hint && (
+        <Text mark className="text-xs text-center">
+          {hint}
         </Text>
       )}
       {typeFile === 'image' && showUploadList && (

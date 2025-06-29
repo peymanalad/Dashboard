@@ -51,6 +51,7 @@
     "camelcase": "off",
     "react-hooks/exhaustive-deps": "off",
     "no-useless-return": "off",
+    "import/no-unresolved": "off",
     "react/no-unused-prop-types": "off",
     "react/no-deprecated": "off",
     "no-underscore-dangle": "off",

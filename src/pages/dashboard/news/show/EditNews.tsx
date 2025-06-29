@@ -364,12 +364,13 @@ const EditNews: FC = () => {
                   name={t('file')}
                   mode="multiple"
                   maxFile={10}
-                  typeFile="image,video"
+                  typeFile="image,video,pdf"
                   hasCrop
                   sortable
                   multiple
                   hasChangeCrop
                   aspect={1}
+                  hint={t('pdfHint')}
                   onUploading={setIsUploading}
                 />
               </Form.Item>
