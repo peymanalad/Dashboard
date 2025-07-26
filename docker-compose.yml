@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  frontend:
+    container_name: deed-dashboard
+    hostname: deed-dashboard
+    build:
+      context: .
+      network: host
+    ports:
+      - "4200:80"
+    restart: always
