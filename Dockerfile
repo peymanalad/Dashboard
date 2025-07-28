@@ -18,7 +18,7 @@ RUN npm run build
 FROM docker.repo.stinascloud.ir/nginx:1.27.2
 
 # Copy build files from the builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html
 
 # Set up Nginx configuration inline
 COPY /deployments/nginx/default.conf /etc/nginx/conf.d/default.conf
