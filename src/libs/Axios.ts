@@ -3,9 +3,10 @@ import {ResponseErrorHandler} from 'utils';
 import {ResponseProps} from 'types/request';
 import {notification} from 'antd';
 import {i18n} from 'libs';
+import {windowProcess} from 'utils/process';
 
 const instance = axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}/api`,
+  baseURL: `${windowProcess('REACT_APP_BASE_URL')}/api`,
   timeout: 60000
 });
 instance.interceptors.response.use(

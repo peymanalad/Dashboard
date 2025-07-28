@@ -8,6 +8,7 @@ import {Scrollbars} from 'react-custom-scrollbars';
 import {getFilteredMenusList} from 'router/dashboard';
 import {FullScreenLoading} from 'components';
 import {useTranslation} from 'react-i18next';
+import {windowProcess} from 'utils/process';
 import flatMap from 'lodash/flatMap';
 import includes from 'lodash/includes';
 import {UserTypeEnum} from 'types/user';
@@ -69,7 +70,6 @@ const Dashboard: FC = () => {
         <Layout className={`${isChatSection ? 'h-full md:h-unset' : ''}`}>
           <TopHeader
             allowFetchDashboard={fetchMenu.isSuccess}
-            // backgroundColor={isDashboard ? '#333333' : undefined}
             onMenuClick={() => {
               if (sideMenuRef.current) sideMenuRef.current.collapseMenu();
             }}
@@ -114,7 +114,9 @@ const Dashboard: FC = () => {
               className={`w-full flex-col sm:flex-row justify-around items-center p-8 ${
                 isChatSection ? 'd-none md:d-flex' : 'd-flex'
               }`}>
-              <Text className="text-gray">{t('footer.message', {version: process.env?.REACT_APP_APP_VERSION})}</Text>
+              <Text className="text-gray">
+                {t('footer.message', {version: windowProcess('REACT_APP_APP_VERSION')})}
+              </Text>
             </Footer>
           )}
         </Layout>

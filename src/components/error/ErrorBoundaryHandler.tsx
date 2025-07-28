@@ -6,9 +6,7 @@ import * as Sentry from '@sentry/react';
 // Sentry.init({
 //   dsn: 'https://f4281d7a02c541e68828f202af96d088@sentry.mobinn.ir/1',
 //   integrations: [new BrowserTracing()],
-//   release: process.env.REACT_APP_APP_VERSION,
-//   // enabled: process.env.NODE_ENV === 'production',
-//   enabled: false,
+//   enabled: process.env.NODE_ENV === 'production',
 //   debug: process.env.NODE_ENV === 'development'
 // });
 
