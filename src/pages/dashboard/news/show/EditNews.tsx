@@ -357,6 +357,13 @@ const EditNews: FC = () => {
                         fileToken: fetchNews?.data?.post?.postFile10,
                         url: getImageUrl(fetchNews?.data?.post?.postFile10)
                       }
+                    : null,
+                  fetchNews?.data?.post?.pdfFile
+                    ? {
+                        fileName: fetchNews?.data?.pdfFileFileName,
+                        fileToken: fetchNews?.data?.post?.pdfFile,
+                        url: getImageUrl(fetchNews?.data?.post?.pdfFile)
+                      }
                     : null
                 ])}>
                 <CustomUpload

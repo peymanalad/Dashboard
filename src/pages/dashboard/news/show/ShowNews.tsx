@@ -7,7 +7,7 @@ import ShowNewsLikedUsers from 'containers/news/show/ShowNewsLikedUsers';
 import ShowNewsSeenUsers from 'containers/news/show/ShowNewsSeenUsers';
 import ShowNewsComments from 'containers/news/show/ShowNewsComments';
 import {getImageUrl} from 'utils';
-import {FormOutlined} from '@ant-design/icons';
+import {FormOutlined, FilePdfOutlined} from '@ant-design/icons';
 
 const {TabPane} = Tabs;
 const {Text, Title, Paragraph} = Typography;
@@ -43,6 +43,11 @@ function ShowNews() {
         <Col xs={24} sm={12} md={8}>
           <div className="flex flex-col justify-center align-center">
             <Avatar size={80} src={getImageUrl(fetchNews?.data?.post?.postFile)} />
+            {fetchNews?.data?.post?.pdfFile && (
+              <Typography.Link href={getImageUrl(fetchNews?.data?.post?.pdfFile)} target="_blank" className="mt-2">
+                <FilePdfOutlined /> PDF
+              </Typography.Link>
+            )}
           </div>
         </Col>
         <Col xs={24} sm={12} md={8}>
