@@ -9,7 +9,7 @@ import {
 import {Col, ConfigProvider, Divider, Space, Typography, Image, Modal, Button, Card} from 'antd';
 import {useTranslation} from 'react-i18next';
 import {chatImageDefault, Drop} from 'assets';
-import * as Scroll from 'react-scroll';
+import {Element as ScrollElementOrig} from 'react-scroll';
 import AudioPlayer from 'react-h5-audio-player';
 import {convertUtcTimeToLocal, getChatImageUrl, getImageUrl, normalizeMessage} from 'utils';
 import {MessageActions, ShowLocation} from 'components';
@@ -19,6 +19,8 @@ import includes from 'lodash/includes';
 import Linkify from 'linkify-react';
 import type {IChatMessageProps, IReplyUpdateProps} from 'types/message';
 import {Link} from 'react-router-dom';
+
+const ScrollElement = ScrollElementOrig as unknown as React.FC<any>;
 
 export interface props {
   data: IChatMessageProps;
@@ -101,7 +103,7 @@ const MessageChat = ({
           </Text>
         </Divider>
       )}
-      <Scroll.Element
+      <ScrollElement
         name={toString(data?.id)}
         className={`message flex-col ${isMyMessage ? 'my-message' : ''} ${isLastMessage ? 'droplet' : ''} ${
           !before ? 'mt-1' : ''
@@ -243,7 +245,7 @@ const MessageChat = ({
             {convertUtcTimeToLocal(data?.creationTime, 'HH:mm')}
           </Text>
         </div>
-      </Scroll.Element>
+      </ScrollElement>
       <Drop />
     </>
   );
