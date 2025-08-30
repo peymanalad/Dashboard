@@ -7,7 +7,7 @@ import {Button, Card, Space} from 'antd';
 import {FilterOutlined} from '@ant-design/icons';
 
 const {Meta} = Card;
-
+const GridLayoutAny = GridLayout as any;
 const initialSquares: Layout[] = [
   {i: '1', x: 0, y: 0, w: 2, h: 2},
   {i: '2', x: 2, y: 0, w: 1, h: 1},
@@ -41,7 +41,7 @@ const NewsGroupOrder: React.FC = () => {
           </Button>
         </Space>
       }>
-      <GridLayout
+      <GridLayoutAny
         className="ltr"
         layout={layout}
         cols={3}
@@ -54,7 +54,7 @@ const NewsGroupOrder: React.FC = () => {
             <Meta title={`Square ${item.i}`} />
           </Card>
         ))}
-      </GridLayout>
+      </GridLayoutAny>
     </Card>
   );
 };

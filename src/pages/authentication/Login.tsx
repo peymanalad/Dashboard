@@ -14,6 +14,8 @@ import {windowProcess} from 'utils/process';
 import type {userAccessProps} from 'types/user';
 import type {AuthFormProps, AuthResponseProps} from 'types/auth';
 
+const ReCAPTCHAAny = ReCAPTCHA as any;
+
 const {Text} = Typography;
 
 const LoginPage: FC = () => {
@@ -93,7 +95,7 @@ const LoginPage: FC = () => {
             </Col>
           </Row>
           <Row gutter={[16, 8]} justify="center" className="py-4">
-            <ReCAPTCHA
+            <ReCAPTCHAAny
               ref={recaptchaRef}
               hl="fa"
               size="normal"

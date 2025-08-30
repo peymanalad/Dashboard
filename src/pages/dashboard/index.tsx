@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-curly-brace-presence */
 import React, {Suspense, lazy, FC, useRef, ElementRef, useMemo, useEffect} from 'react';
 import {useUser, useFetch, useLogOut} from 'hooks';
-import {Redirect, Switch, Route, useLocation} from 'react-router-dom';
+import {Redirect as RouterRedirect, Switch as RouterSwitch, Route as RouterRoute, useLocation} from 'react-router-dom';
 import {Layout, Row, Spin, Typography} from 'antd';
 import {TopHeader, SideMenu} from 'containers';
 import {Scrollbars} from 'react-custom-scrollbars';
@@ -12,6 +12,13 @@ import {windowProcess} from 'utils/process';
 import flatMap from 'lodash/flatMap';
 import includes from 'lodash/includes';
 import {UserTypeEnum} from 'types/user';
+
+const ScrollbarsAny = Scrollbars as any;
+
+// react-router-dom's Switch is typed for React 17; cast to any for React 18 compatibility.
+const Switch: any = RouterSwitch;
+const Route: any = RouterRoute;
+const Redirect: any = RouterRedirect;
 
 const NotFoundPage = lazy(() => import('pages/dashboard/NotFoundPage'));
 
@@ -66,7 +73,7 @@ const Dashboard: FC = () => {
   return (
     <Layout className={`w-screen h-screen ${isDashboard ? 'bg-grayDark' : ''}`}>
       <SideMenu ref={sideMenuRef} />
-      <Scrollbars id="MainContent" style={{width: '0'}}>
+      <ScrollbarsAny id="MainContent" style={{width: '0'}}>
         <Layout className={`${isChatSection ? 'h-full md:h-unset' : ''}`}>
           <TopHeader
             allowFetchDashboard={fetchMenu.isSuccess}
@@ -120,7 +127,7 @@ const Dashboard: FC = () => {
             </Footer>
           )}
         </Layout>
-      </Scrollbars>
+      </ScrollbarsAny>
     </Layout>
   );
 };

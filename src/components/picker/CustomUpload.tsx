@@ -32,6 +32,9 @@ import {maxSizeType, maxSizeExtension} from 'assets';
 import {windowProcess} from 'utils/process';
 import type {UploadProps} from 'antd/lib/upload/interface';
 import type {FileTypeProps, FileModeProps, UploadType} from 'types/file';
+const DragDropContextAny = DragDropContext as any;
+const DroppableAny = Droppable as any;
+const DraggableAny = Draggable as any;
 
 interface props {
   mode: FileModeProps;
@@ -449,8 +452,8 @@ const CustomUpload = ({
         itemRender={(originNode: any, file: any, fileList) => {
           const index = findIndex(fileList, ['uid', file?.uid]);
           return (
-            <Draggable key={index} draggableId={toString(index)} index={index} isDragDisabled={!isDraggingMode}>
-              {(provided, snapshot) => (
+            <DraggableAny key={index} draggableId={toString(index)} index={index} isDragDisabled={!isDraggingMode}>
+              {(provided: any, snapshot: any) => (
                 <div
                   ref={provided.innerRef}
                   {...provided.draggableProps}
@@ -460,7 +463,7 @@ const CustomUpload = ({
                   {originNode}
                 </div>
               )}
-            </Draggable>
+            </DraggableAny>
           );
         }}
         onChange={onChangeFile}
@@ -554,8 +557,8 @@ const CustomUpload = ({
           </Button>
         </Col>
       )}
-      <DragDropContext
-        onDragEnd={(result) => {
+        <DragDropContextAny
+        onDragEnd={(result: any) => {
           if (onChange) {
             onChange(
               cloneWith(value, (copyValue: any[]) =>
@@ -570,8 +573,8 @@ const CustomUpload = ({
             );
           }
         }}>
-        <Droppable droppableId="droppable" direction="horizontal">
-          {(provided, snapshotContext) => (
+        <DroppableAny droppableId="droppable" direction="horizontal">
+          {(provided: any, snapshotContext: any) => (
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
@@ -586,8 +589,8 @@ const CustomUpload = ({
               )}
             </div>
           )}
-        </Droppable>
-      </DragDropContext>
+        </DroppableAny>
+      </DragDropContextAny>
       {imageHint && (
         <Text mark className="text-xs text-center">
           {t('imageHint', {width: maxWidth, height: maxHeight})}

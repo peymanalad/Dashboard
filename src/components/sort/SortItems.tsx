@@ -13,6 +13,10 @@ import isFunction from 'lodash/isFunction';
 import {reorderList} from 'utils';
 import {ISortItem} from 'types/general';
 
+const DragDropContextAny = DragDropContext as any;
+const DroppableAny = Droppable as any;
+const DraggableAny = Draggable as any;
+
 export interface Props {
   showData: ISortItem[];
   actionSpan?: number;
@@ -93,8 +97,8 @@ function SortItems({name, query, fetchUrl, sendUrl, sendKey, showData, titleKey 
           </Col>
         </Row>
         <Row className="flex-center w-full flex-col mb-2">
-          <DragDropContext
-            onDragEnd={(result) => {
+          <DragDropContextAny
+            onDragEnd={(result: any) => {
               queryClient.setQueryData(name, (items: any) =>
                 cloneWith(items, (newItems: any) => {
                   set(
@@ -106,12 +110,12 @@ function SortItems({name, query, fetchUrl, sendUrl, sendKey, showData, titleKey 
                 })
               );
             }}>
-            <Droppable droppableId="droppable">
-              {(provided, snapshot) => (
+            <DroppableAny droppableId="droppable">
+              {(provided: any, snapshot: any) => (
                 <div ref={provided.innerRef} {...provided.droppableProps} style={getListStyle(snapshot.isDraggingOver)}>
                   {map(fetchItems?.data, (item: any, index: number) => (
-                    <Draggable key={index} draggableId={toString(index)} index={index}>
-                      {(provided, snapshot) => (
+                    <DraggableAny key={index} draggableId={toString(index)} index={index}>
+                      {(provided: any, snapshot: any) => (
                         <Row
                           className="w-full p-3 border-1 border-gainsBoro border-solid"
                           ref={provided.innerRef}
@@ -130,12 +134,12 @@ function SortItems({name, query, fetchUrl, sendUrl, sendKey, showData, titleKey 
                           </Col>
                         </Row>
                       )}
-                    </Draggable>
+                    </DraggableAny>
                   ))}
                 </div>
               )}
-            </Droppable>
-          </DragDropContext>
+            </DroppableAny>
+          </DragDropContextAny>
         </Row>
       </Row>
       <Row gutter={[16, 8]} className="w-full flex justify-end align-center my-5">
