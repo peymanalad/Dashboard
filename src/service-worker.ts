@@ -8,6 +8,7 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
+import {windowProcess} from 'utils/process';
 import {clientsClaim} from 'workbox-core';
 import {ExpirationPlugin} from 'workbox-expiration';
 import {precacheAndRoute, createHandlerBoundToURL} from 'workbox-precaching';
@@ -51,7 +52,7 @@ registerRoute(
     // Return true to signal that we want to use the handler.
     return true;
   },
-  createHandlerBoundToURL(`${process.env.PUBLIC_URL}/index.html`)
+  createHandlerBoundToURL(`${windowProcess('PUBLIC_URL')}/index.html`)
 );
 
 // An example runtime caching route for requests that aren't handled by the

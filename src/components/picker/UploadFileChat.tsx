@@ -4,9 +4,10 @@ import axios from 'axios';
 import {useTranslation} from 'react-i18next';
 import {PaperClipOutlined} from '@ant-design/icons';
 import useUser from 'hooks/user/useUser';
-import {ChatType} from 'types/message';
 import first from 'lodash/first';
-import {UploadAdvancedInputType} from 'types/file';
+import {windowProcess} from 'utils/process';
+import type {ChatType} from 'types/message';
+import type {UploadAdvancedInputType} from 'types/file';
 
 export interface props {
   className?: string;
@@ -61,7 +62,7 @@ const ShowImages: FC<props> = ({className, style, sendFile, sendPath, disabled, 
       className={className}
       style={style}
       accept={'image/*,audio/*,video/*'}
-      action={`${process.env.REACT_APP_BASE_URL}/Chat/UploadFile`}
+      action={`${windowProcess('REACT_APP_BASE_URL')}/Chat/UploadFile`}
       headers={headers}
       showUploadList={false}
       method="POST"

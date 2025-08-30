@@ -10,6 +10,7 @@ import {queryStringToObject} from 'utils';
 import {useTranslation} from 'react-i18next';
 import {DeedLogoImg} from 'assets';
 import {publicKey} from 'assets/constants/keys';
+import {windowProcess} from 'utils/process';
 import type {userAccessProps} from 'types/user';
 import type {AuthFormProps, AuthResponseProps} from 'types/auth';
 
@@ -96,7 +97,7 @@ const LoginPage: FC = () => {
               ref={recaptchaRef}
               hl="fa"
               size="normal"
-              sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY || ''}
+              sitekey={windowProcess('REACT_APP_RECAPTCHA_SITE_KEY') || ''}
               onChange={handleRecaptcha}
               onExpired={onExpired}
             />

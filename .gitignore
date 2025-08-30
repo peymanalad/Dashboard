@@ -27,5 +27,7 @@ yarn.lock
 # editors
 .vscode
 
+.env
+
 #keys
 keys

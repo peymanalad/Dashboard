@@ -21,6 +21,7 @@ import toString from 'lodash/toString';
 import flattenDeep from 'lodash/flattenDeep';
 import isString from 'lodash/isString';
 import {normalizeMessage} from 'utils/message';
+import {windowProcess} from 'utils/process';
 import type {IChatMessageProps, IReplyUpdateProps, ChatType, CommentType} from 'types/message';
 import type {UploadAdvancedInputType} from 'types/file';
 import type {userProps} from 'types/user';
@@ -59,12 +60,6 @@ const MessageContainer = ({
   messagesKey = '',
   uploadType = 'messages',
   commentType,
-  postUrl,
-  updateUrl,
-  deleteUrl,
-  confirmUrl = '',
-  rejectUrl = '',
-  readUrl = '',
   cardTitle,
   cardExtra,
   hasReply,
@@ -170,12 +165,7 @@ const MessageContainer = ({
   }, []);
 
   const addToMessages = useCallback(
-    (
-      message: any
-      // parent: replyUpdateProps | undefined,
-      // status: chatStatus,
-      // ChatID: number | string
-    ) => {
+    (message: any) => {
       const msgNormalize = normalizeMessage(message);
       queryClient.setQueryData(urlName, (responses: any) =>
         cloneWith(responses, (value: any[]) => {
@@ -203,9 +193,10 @@ const MessageContainer = ({
     connection.current = new HubConnectionBuilder()
       // .configureLogging(LogLevel.Debug)
       .withUrl(
-        `${process.env.REACT_APP_BASE_URL?.replace('https', 'wss')}/signalr-chat?enc_auth_token=${encodeURIComponent(
-          user.encrypted_access_token!
-        )}`,
+        `${windowProcess('REACT_APP_BASE_URL')?.replace(
+          'https',
+          'wss'
+        )}/signalr-chat?enc_auth_token=${encodeURIComponent(user.encrypted_access_token!)}`,
         {
           skipNegotiation: true,
           transport: HttpTransportType.WebSockets
@@ -255,76 +246,6 @@ const MessageContainer = ({
     };
   }, []);
 
-  // const postChat = usePost({
-  //   url: postUrl,
-  //   method: 'POST',
-  //   onSuccess: () => {
-  //     getMessageData.refetch();
-  //   },
-  //   onError: () => {
-  //     updateMessage({content: inputRef?.current?.getContent(), status: 'error'}, 'newMessage');
-  //   }
-  // });
-
-  // const updateChat = usePost({
-  //   url: updateUrl,
-  //   method: 'PATCH',
-  //   onSuccess: (response: any, request: any, params: {id: number}) => {
-  //     updateMessage({status: 'done'}, params?.id);
-  //   },
-  //   onError: (err: any, data: any, params: {id: number}) => {
-  //     updateMessage({status: 'error'}, params?.id);
-  //   }
-  // });
-
-  // const deleteMessage = usePost({
-  //   url: deleteUrl,
-  //   method: 'DELETE',
-  //   onSuccess() {
-  //     setLoadingId(undefined);
-  //     getMessageData.refetch();
-  //   },
-  //   onError() {
-  //     setLoadingId(undefined);
-  //   }
-  // });
-
-  const confirmMessage = usePost({
-    url: confirmUrl,
-    method: 'POST',
-    onSuccess: () => {
-      setLoadingId(undefined);
-      getMessageData.refetch();
-    },
-    onError() {
-      setLoadingId(undefined);
-    }
-  });
-
-  const rejectMessage = usePost({
-    url: rejectUrl,
-    method: 'POST',
-    onSuccess: () => {
-      setLoadingId(undefined);
-      getMessageData.refetch();
-    },
-    onError() {
-      setLoadingId(undefined);
-    }
-  });
-
-  const readMessage = usePost({
-    url: readUrl,
-    method: 'POST',
-    onSuccess: () => {
-      setLoadingId(undefined);
-      getMessageData.refetch();
-    },
-    onError() {
-      setLoadingId(undefined);
-    }
-  });
-
   useEffect(() => {
     Scroll.Events.scrollEvent.register('end', (to, element) => {
       element.classList.add('find');
@@ -345,16 +266,6 @@ const MessageContainer = ({
     type: ChatType | CommentType,
     file?: File
   ) => {
-    const sendData = {
-      content: message,
-      type: type === 'audio' ? 'sound' : type,
-      patient_id,
-      doctor_id,
-      recommendation_id,
-      user_id,
-      reply_id
-      // meta: {mentions: map(mentions, 'id')}
-    };
     if (reply?.isReply === false) {
       connection.current?.invoke('editMessage', {
         sharedMessageId: reply?.id,
@@ -451,13 +362,6 @@ const MessageContainer = ({
                 hasReply={hasReply}
                 hasDelete
                 hasUpdate
-                // actionLoading={
-                //   loadingId === message?.id &&
-                //   (deleteMessage.isLoading ||
-                //     confirmMessage.isLoading ||
-                //     rejectMessage.isLoading ||
-                //     readMessage.isLoading)
-                // }
                 onDeleteClick={(sharedMessageId: string) => {
                   setLoadingId(sharedMessageId);
                   connection.current?.invoke('DeleteMessage', {
@@ -465,7 +369,6 @@ const MessageContainer = ({
                     userId: +user_id!,
                     tenantId: 1
                   });
-                  // deleteMessage.post({recommendation_id}, {}, {id});
                 }}
                 onConfirmClick={(id) => {
                   // setLoadingId(id);

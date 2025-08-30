@@ -1,5 +1,9 @@
+import {windowProcess} from './process';
+
 export const getTempFileUrl = (fileType: string, fileToken: string, fileName: string) =>
-  `${process.env.REACT_APP_BASE_URL}/File/DownloadTempFile?fileType=${fileType}&fileToken=${fileToken}&fileName=${fileName}`;
+  `${windowProcess(
+    'REACT_APP_BASE_URL'
+  )}/File/DownloadTempFile?fileType=${fileType}&fileToken=${fileToken}&fileName=${fileName}`;
 
 export function getMimeTypeFromFileName(fileName: string): string | undefined {
   if (!fileName?.length) return undefined;

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Create the env-config.js file dynamically
+echo "Generating runtime environment variables..."
+
+cat <<EOF > /usr/share/nginx/html/env-config.js
+window.env = {
+  SKIP_PREFLIGHT_CHECK: "$DC_SKIP_PREFLIGHT_CHECK",
+  REACT_APP_BASE_URL: "$DC_REACT_APP_BASE_URL",
+  REACT_APP_STIMULSOFT_LICENCE_KEY: "$DC_REACT_APP_STIMULSOFT_LICENCE_KEY",
+  REACT_APP_VERSION: "$DC_REACT_APP_VERSION",
+  REACT_APP_APP_VERSION: "$DC_REACT_APP_APP_VERSION",
+  GENERATE_SOURCEMAP: "$DC_GENERATE_SOURCEMAP",
+  REACT_APP_RECAPTCHA_SITE_KEY: "$DC_REACT_APP_RECAPTCHA_SITE_KEY",
+  REACT_APP_RECAPTCHA_SECRET_KEY: "$DC_REACT_APP_RECAPTCHA_SECRET_KEY"
+}
+EOF
+
+
+echo "Started..."
+
+# Start Nginx
+nginx -g 'daemon off;'

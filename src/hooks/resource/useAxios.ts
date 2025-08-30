@@ -8,6 +8,7 @@ import {useUser} from 'hooks';
 import {notification} from 'antd';
 import qs from 'qs';
 import {getLangSearchParam, urlGenerator} from 'utils';
+import {windowProcess} from 'utils/process';
 import type {userAccessProps} from 'types/user';
 
 const useAxios = () => {
@@ -20,7 +21,7 @@ const useAxios = () => {
     const token: userAccessProps = persist.getData('token');
 
     const requestConfig: AxiosRequestConfig = {
-      baseURL: `${process.env.REACT_APP_BASE_URL}/api`,
+      baseURL: `${windowProcess('REACT_APP_BASE_URL')}/api`,
       timeout: 60000,
       url: urlGenerator('TokenAuth/RefreshToken'),
       method: 'POST',

@@ -5,6 +5,7 @@ import {Stimulsoft, StiOptions} from 'stimulsoft-dashboards-js/Scripts/stimulsof
 import {useFetch, useUser} from 'hooks';
 import {dashboardImage} from 'assets';
 import isNil from 'lodash/isNil';
+import {windowProcess} from 'utils/process';
 
 const {Text} = Typography;
 
@@ -15,7 +16,7 @@ const Dashboard: FC = () => {
   const user = useUser();
 
   const fetchDashboard = useFetch({
-    url: `${process.env.REACT_APP_BASE_URL}/Dashboard/Js`,
+    url: `${windowProcess('REACT_APP_BASE_URL')}/Dashboard/Js`,
     name: 'dashboard',
     responseType: 'text',
     staleTime: 10000,
@@ -25,10 +26,10 @@ const Dashboard: FC = () => {
   useEffect(() => {
     if (fetchDashboard?.data) {
       const report = Stimulsoft.Report.StiReport.createNewDashboard();
-      StiOptions.WebServer.url = `${process.env.REACT_APP_BASE_URL}/DataAdapters`;
+      StiOptions.WebServer.url = `${windowProcess('REACT_APP_BASE_URL')}/DataAdapters`;
       StiOptions.WebServer.encryptData = false;
       StiOptions.WebServer.checkDataAdaptersVersion = false;
-      Stimulsoft.Base.StiLicense.loadFromString(process.env.REACT_APP_STIMULSOFT_LICENCE_KEY!);
+      Stimulsoft.Base.StiLicense.loadFromString(windowProcess('REACT_APP_STIMULSOFT_LICENCE_KEY'));
       report.onBeginProcessData = function (args) {
         args.headers.push({key: 'Authorization', value: `Bearer ${user.access_token}`});
       };

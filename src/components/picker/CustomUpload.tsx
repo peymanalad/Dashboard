@@ -29,6 +29,7 @@ import cloneWith from 'lodash/cloneWith';
 import isFunction from 'lodash/isFunction';
 import {v4 as uuidv4} from 'uuid';
 import {maxSizeType, maxSizeExtension} from 'assets';
+import {windowProcess} from 'utils/process';
 import type {UploadProps} from 'antd/lib/upload/interface';
 import type {FileTypeProps, FileModeProps, UploadType} from 'types/file';
 
@@ -266,17 +267,17 @@ const CustomUpload = ({
   const getAction = useMemo(() => {
     switch (type) {
       case 'users':
-        return `${process.env.REACT_APP_BASE_URL}/Profile/UploadProfilePicture`;
+        return `${windowProcess('REACT_APP_BASE_URL')}/Profile/UploadProfilePicture`;
       case 'applications':
-        return `${process.env.REACT_APP_BASE_URL}/SoftwareUpdates/UploadUpdateFileFile`;
+        return `${windowProcess('REACT_APP_BASE_URL')}/SoftwareUpdates/UploadUpdateFileFile`;
       case 'posts':
-        return `${process.env.REACT_APP_BASE_URL}/Posts/UploadPostFileFile`;
+        return `${windowProcess('REACT_APP_BASE_URL')}/Posts/UploadPostFileFile`;
       case 'postGroups':
-        return `${process.env.REACT_APP_BASE_URL}/PostGroups/UploadGroupFileFile`;
+        return `${windowProcess('REACT_APP_BASE_URL')}/PostGroups/UploadGroupFileFile`;
       case 'postSubGroups':
-        return `${process.env.REACT_APP_BASE_URL}/PostGroups/UploadGroupFileFile`;
+        return `${windowProcess('REACT_APP_BASE_URL')}/PostGroups/UploadGroupFileFile`;
       default:
-        return `${process.env.REACT_APP_BASE_URL}/SoftwareUpdates/UploadUpdateFileFile`;
+        return `${windowProcess('REACT_APP_BASE_URL')}/SoftwareUpdates/UploadUpdateFileFile`;
     }
   }, []);
 
