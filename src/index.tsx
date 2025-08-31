@@ -10,7 +10,7 @@ Sentry.init({
   // Setting this option to true will send default PII data to Sentry.
   // For example, automatic IP address collection on events
   sendDefaultPii: true,
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 1.0
 });
 
 const container = document.getElementById('root') as HTMLElement;
