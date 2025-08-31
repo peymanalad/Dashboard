@@ -8,7 +8,6 @@ const Login = lazyWithRetry(() => import('pages/authentication/Login'));
 const Landing = lazyWithRetry(() => import('pages/Landing'));
 const DashboardRoutes = lazyWithRetry(() => import('pages/dashboard/index'));
 const NotFoundPage = lazyWithRetry(() => import('pages/error/404'));
-
 function Root() {
   const user = useUser();
 

@@ -554,7 +554,7 @@ const CustomUpload = ({
           </Button>
         </Col>
       )}
-      <DragDropContext
+      <DragDropContextAny
         onDragEnd={(result) => {
           if (onChange) {
             onChange(
@@ -587,7 +587,7 @@ const CustomUpload = ({
             </div>
           )}
         </Droppable>
-      </DragDropContext>
+      </DragDropContextAny>
       {imageHint && (
         <Text mark className="text-xs text-center">
           {t('imageHint', {width: maxWidth, height: maxHeight})}
