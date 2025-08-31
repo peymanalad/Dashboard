@@ -1,6 +1,5 @@
 import React from 'react';
-import {createRoot} from 'react-dom/client';
-import App from 'App';
+import {createRoot} from 'react-dom/client';import App from 'App';
 import {ServiceWorker} from 'libs';
 import 'App.css';
 import * as Sentry from '@sentry/react';
